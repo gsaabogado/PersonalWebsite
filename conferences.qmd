@@ -1,0 +1,87 @@
+---
+title: "{{< fa person-chalkboard >}} Conferences"
+# uncomment this line to produce HTML and PDF in RStudio:
+#knit: pagedown::chrome_print
+format: html
+fontsize: "0.8em"
+toc: true
+always_allow_html: true
+---
+
+```{r}
+#| echo: false 
+conference <- c("EAERE Annual Conference", 
+                "Mannheim Conference on Energy and the Environment",
+                "BSE Workshop: The Distributional Consequences of Environmental Policies", 
+                "CMCC Annual Conference", 
+                "EAERE Annual Conference", 
+                "Verein für Socialpolitik", 
+                "EAERE Annual Conferece", 
+                "Seventh Latin-American Meeting of Energy Economics", 
+                "World Congress of Environmental and Resource Economists", 
+                "Meeting of the Latin-American and Caribbean Economic Association", 
+                "Essen Health Conference", 
+                "Mannheim Energy Conference", 
+                "European Conference of the International Association of Energy Economists")
+
+
+presentation <- c("The Air Quality Effects of Uber", 
+                "The Unaccounted Effects of Low Emission Zones: Evidence from Madrid Central",
+                "The Air Quality Effects of Uber", 
+                "Towards the Debornization of the Transportation Sector", 
+                "The Nonlinear Effects of Pollution on Crime: Evidence from Mexico City and New York", 
+                "Make Sure the Kids are OK: Indirect Effects of Air Pollution on Well-Being", 
+                "Air Pollution and the Productivity of High-Skill Labor: Evidence from Court Hearings", 
+                "Analysing Scenarios for the Integration of Renewable Energy Sources in the Mexican Energy System", 
+                "External costs of electricity transmission infrastructure: evidence from well-being data", 
+                "Air Pollution and the Productivity of High-Skill Labor: Evidence from Court Hearings", 
+                "Make Sure the Kids are OK: Indirect Effects of Air Pollution on Well-Being", 
+                "External costs of electricity transmission infrastructure: evidence from well-being data", 
+                "External costs of electricity transmission infrastructure: evidence from well-being data")
+
+
+place = c("Rimini", 
+          "Mannheim",
+          "Berlin",
+          "Lecce", 
+          "Berlin", 
+          "Leipzig", 
+          "Manchester", 
+          "Buenos Aires", 
+          "Götheborg", 
+          "Guayaquil", 
+          "Essen", 
+          "Mannheim", 
+          "Vienna")
+
+year = c("2022", "2022", "2022", "2021", "2020", "2019", 
+         "2019", "2019", "2018", "2018", "2017", "2017", "2017")
+
+
+country = c("https://img.icons8.com/color/344/italy-circular.png", 
+            "https://img.icons8.com/color/344/germany-circular.png",
+            "https://img.icons8.com/color/344/germany-circular.png", 
+            "https://img.icons8.com/color/344/italy-circular.png", 
+            "https://img.icons8.com/color/344/germany-circular.png", 
+            "https://img.icons8.com/color/344/germany-circular.png", 
+            "https://img.icons8.com/fluency/344/england-circular.png",
+            "https://img.icons8.com/fluency/344/argentina-circular.png",
+            "https://img.icons8.com/color/344/sweden-circular.png",
+            "https://img.icons8.com/color/344/ecuador-circular.png",
+            "https://img.icons8.com/color/344/germany-circular.png",
+            "https://img.icons8.com/color/344/germany-circular.png",
+            "https://img.icons8.com/color/344/austria-circular.png")
+
+conf <- data.frame(conference, presentation,city = place,country, year) |> mutate(year = as.numeric(year))
+
+
+reactable(
+  conf, theme = fivethirtyeight(),
+  defaultColDef = colDef(align = "left", maxWidth = 200), 
+  columns = list(city = colDef(maxWidth = 100), 
+                 conference = colDef(maxWidth = 350), 
+                 presentation = colDef(maxWidth = 350),
+                 year = colDef(maxWidth = 50, style = color_scales(conf, colors = c("gray", "#0b263d"))), 
+                 country = colDef(cell = embed_img(height = "25", width = "25"), maxWidth = 100, align = "center"))
+  )
+```
