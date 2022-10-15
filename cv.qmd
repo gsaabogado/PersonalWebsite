@@ -20,7 +20,15 @@ always_allow_html: true
 
 <p style="margin-bottom:0.5cm;">`r fa("location-dot")` Via Bergognone, 34, 20144 Milan MI, Ital</p>
 
-Applied economist focusing on **causal inference**. Current research activities encompass : looking at the effects of **air pollution** on human well-being, studying the intersection between **digitalization** and **environmental degradation**, and analyzing pathways for the **decarbonization** of the energy sector.
+Applied economist focusing on **causal inference** and **energy modelling**. 
+
+Current research activities encompass:
+
+- The effects of **air pollution** on human well-being
+- The efficacy and impacts of pollution-reducing mechanisms in urban agglomerations
+- The intersection between **digitalization**, the **transportation sector**, and **environmental degradation**
+- Analyzing pathways for the **decarbonization** of the energy sector
+- Distributional consequences of the *green transition*
 
 ### `r fa("briefcase")` Professional Experience
 
