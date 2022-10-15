@@ -1,0 +1,39 @@
+"0","#| echo: false 
+pub = data.frame(Year = c(2021, 2021, 2019), 
+                 
+                 
+                 
+                 Article = c( html(""<a href='https://www.sciencedirect.com/science/article/abs/pii/S0301421521002482'>Mexico and US 
+                              Power Systems Under Variations in Natural Gas Prices</a>""), 
+                                   
+                              html(""<ahref='https://www.sciencedirect.com/science/article/abs/pii/S0301421521000288'>The Role of 
+                              Energy Storage in the Uptake of Renewable Energy: A Model Comparison Approach""),
+                          
+                             
+                              html(""<a href= 'https://www.mdpi.com/1996-1073/12/17/3270'>Analysing Scenarios for the Integration of 
+                                   Renewable Energy Sources in the Mexican Energy System"")), 
+                 
+                 Journal = c(""Energy Policy, 151, 113378"", 
+                              ""Energy Policy 151, 112159"", 
+                              ""Energies, 12.17, 3270""), 
+                 
+                 Coauthors = c(""Juan Rosellon, Sauleh Sidiqui, Max Brown, Avraam Charalampos, Anahi Molar, Baltazar Solano"", 
+                                ""Sara Giarola, Kathleen Vaillancourt, Max Brown, Anahi Molar, Ivan Garcia Kerdan"", 
+                                ""Thorstan Burandt, Konstantin Löffler, Pao-yu Oei""),
+                 
+                 Institute = c(""RFF-CMCC: European Institute on Economics and the Environment and German
+                               Institute of Economic Research"", 
+                               
+                               ""RFF-CMCC: European Institute on Economics and the Environment and German
+                               Institute of Economic Research"", 
+                               
+                               ""RFF-CMCC: European Institute on Economics and the Environment and German
+                               Institute of Economic Research""),
+                 
+                 Country = c(""https://img.icons8.com/color/344/italy-circular.png"", 
+                             ""https://img.icons8.com/color/344/italy-circular.png"",
+                             ""https://img.icons8.com/color/344/germany-circular.png""))
+"
+"2","Error in html(""<a href='https://www.sciencedirect.com/science/article/abs/pii/S0301421521002482'>Mexico and US \n                              Power Systems Under Variations in Natural Gas Prices</a>"") : 
+  could not find function ""html""
+"

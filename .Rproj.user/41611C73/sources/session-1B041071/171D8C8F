@@ -1,0 +1,32 @@
+{
+    "id": "171D8C8F",
+    "path": "C:/Users/Sarmiento/Dropbox (CMCC)/EIEE/Website/mysite/cv.qmd",
+    "project_path": "mysite/cv.qmd",
+    "type": "quarto_markdown",
+    "hash": "0",
+    "contents": "",
+    "dirty": false,
+    "created": 1665227401622.0,
+    "source_on_save": false,
+    "relative_order": 3,
+    "properties": {
+        "rmdVisualMode": "false",
+        "rmdVisualWrapConfigured": "true",
+        "tempName": "Untitled1",
+        "source_window_id": "",
+        "Source": "Source",
+        "cursorPosition": "220,17",
+        "scrollLine": "228",
+        "docOutlineVisible": "0",
+        "rmdVisualCollapsedChunks": "",
+        "rmdVisualModeLocation": "1122:786"
+    },
+    "folds": "28|6|95|0|\n103|6|143|0|\n150|6|169|0|\n175|6|204|0|\n284|6|342|0|\n346|6|422|0|\n",
+    "lastKnownWriteTime": 1665827486,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1665827486036,
+    "read_only": false,
+    "read_only_alternatives": []
+}

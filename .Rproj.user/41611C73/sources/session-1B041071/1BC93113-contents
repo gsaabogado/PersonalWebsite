@@ -1,0 +1,47 @@
+project:
+  type: website
+  output-dir: docs
+  render:
+    - cv.qmd
+    - econometrics.qmd
+    - EnergyMod.qmd
+    - conferences.qmd
+    - contact.qmd
+
+website:
+  title: "Luis Sarmiento -- Economist"
+  navbar:
+    search: true
+    pinned: true
+    collapse: true
+    right:
+      - text: CV
+        href: cv.qmd 
+      - icon: github
+        href: https://github.com/gsaabogado
+      - icon: twitter
+        href: https://twitter.com/gsaabogado
+      - icon: linkedin 
+        href: https://www.linkedin.com/in/luis-sarmiento-eco 
+      - text: Institutional Site
+        href: https://www.eiee.org/member/luis-alejandro-sarmiento/
+  sidebar:
+    style: "docked"
+    search: true
+    contents:
+      - section: "Sections"
+        contents:
+        - cv.qmd
+        - econometrics.qmd
+        - EnergyMod.qmd
+        - conferences.qmd
+        - contact.qmd
+
+format:
+  html:
+    theme: flatly
+    css: styles.css
+
+
+
+

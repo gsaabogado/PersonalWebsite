@@ -1,0 +1,28 @@
+"0","#| echo: false 
+pub = data.frame(Year = c(2022, 2021, 2021, 2021, 2021, 2019), 
+                 
+                 
+                 
+                 Article = c(""The Nonlinear Effects of Pollution on Crime: Evidence from Mexico City and New York"",
+                             
+                              html(""<a href='https://onlinelibrary.wiley.com/doi/full/10.1111/sjoe.12458'>Air Pollution 
+                                   and the Productivity of High-Skill Labor: Evidence from Court Hearings""), 
+                             
+                              html(""<a href='https://www.sciencedirect.com/science/article/abs/pii/S0301421521002482'>Mexico and US 
+                              Power Systems Under Variations in Natural Gas Prices</a>""), 
+                                   
+                              html(""<a href='https://www.sciencedirect.com/science/article/abs/pii/S0301421521000288'>The Role of Energy
+                              Storage in the Uptake of Renewable Energy: A Model Comparison Approach""),
+                             
+                              html(""<a href = 'https://www.sciencedirect.com/science/article/abs/pii/S1361920919307278'>The Effects of 
+                                   the 2013 Floods on Germany's Road Freight Traffic""), 
+                             
+                              html(""<a href= 'https://www.mdpi.com/1996-1073/12/17/3270'>Analysing Scenarios for the Integration of 
+                                   Renewable Energy Sources in the Mexican Energy System"")) 
+                 
+                 Journal = c(""Environmental Research - Health"",
+"
+"2","Error: unexpected symbol in:
+""                 
+                 Journal""
+"
