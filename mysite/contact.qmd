@@ -1,0 +1,22 @@
+---
+title: "{{< fa address-card >}} Contact"
+# uncomment this line to produce HTML and PDF in RStudio:
+#knit: pagedown::chrome_print
+format: html
+fontsize: "0.8em"
+toc: true
+always_allow_html: true
+---
+städtisches Gebiet 
+<p style="margin-bottom:-0.2cm;">Luis **Sarmiento**</p>
+<p style="margin-bottom:0.15cm;">Environmental Economist</p>
+
+<p style="margin-bottom:-0.15cm;">{{< fa earth-americas >}} luis.sarmiento.net</p>
+
+<p style="margin-bottom:-0.15cm;">{{< fa at >}} gsaabogado\@gmail.com</p>
+
+<p style="margin-bottom:-0.15cm;">{{< fa brands linkedin >}} luis-sarmiento-eco</p>
+
+<p style="margin-bottom:-0.15cm;">{{< fa mobile-button >}} +39 030 897890</p>
+
+<p style="margin-bottom:0.5cm;">{{< fa location-dot >}} Via Bergognone, 34, 20144 Milan MI, Ital</p>

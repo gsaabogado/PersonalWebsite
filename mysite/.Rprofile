@@ -1,0 +1,10 @@
+library(tidyverse)
+library(kableExtra)
+library(knitr)
+library(icons)
+library(vitae)
+library(emoji)
+library(emo)
+# Tables
+library(reactable)
+library(reactablefmtr)

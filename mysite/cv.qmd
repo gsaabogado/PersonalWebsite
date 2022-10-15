@@ -1,0 +1,423 @@
+---
+title: "{{< fa book-open-reader >}} Curriculum Vitae"
+# uncomment this line to produce HTML and PDF in RStudio:
+#knit: pagedown::chrome_print
+format: html
+fontsize: "0.8em"
+toc: true
+always_allow_html: true
+---
+
+<p style="margin-bottom:-0.2cm;">Luis **Sarmiento**</p>
+<p style="margin-bottom:0.15cm;">Environmental Economist</p>
+
+<p style="margin-bottom:-0.15cm;">{{< fa earth-americas >}} luis.sarmiento.net</p>
+
+<p style="margin-bottom:-0.15cm;">{{< fa at >}} gsaabogado\@gmail.com</p>
+
+<p style="margin-bottom:-0.15cm;">{{< fa brands linkedin >}} [luis-sarmiento-eco](https://www.linkedin.com/in/luis-sarmiento-eco)</p>
+
+<p style="margin-bottom:-0.15cm;">{{< fa mobile-button >}} +39 030 897890</p>
+
+<p style="margin-bottom:0.5cm;">{{< fa location-dot >}} Via Bergognone, 34, 20144 Milan MI, Ital</p>
+
+Applied economist focusing on **causal inference**. Current research activities encompass : looking at the effects of **air pollution** on human well-being, studying the intersection between **digitalization** and **environmental degradation**, and analyzing pathways for the **decarbonization** of the energy sector.
+
+### {{< fa briefcase >}} Professional Experience
+
+------------------------------------------------------------------------
+```{r}
+#| echo: false 
+position = c("Junior Scientist", "Postdoc Researcher", 
+             "Research Associate", "Research Associate", 
+             "Business Executive")
+
+startdates = c("Sep.2022 -", "Sep.2020 Sep.2022", 
+               "Apr.2017 Sep.2020", "Nov.2019 Aug.2020", 
+               "Sep.2012 Sep.2015")
+
+institution = c(html("<a href='https://www.eiee.org/'>RFF-CMCC: European Institute on Economics and the 
+                     Environment</a>"), 
+                html("<a href='https://www.eiee.org/'>RFF-CMCC: European Institute on Economics and the 
+                     Environment</a>"), 
+                html("<a
+                     href='https://www.diw.de/en'>DIW-Berlin: German Institute of Economic Research</a>"),
+                html("<a href='https://www.hertie-school.org/en/'>Hertie School of Governance</a>"), 
+                
+                html("<a href='https://www.bb.com.mx/webcenter/portal/BanBajio/home?_afrRedirect=64903577593997558'>Ban
+                     co del Bajio SA </a>"))
+
+
+activities = c("Scientific support to institutional projects, Mentoring of junior Scholars, applied econometrics, and 
+               the development of agent-based models, Study the relationship between the transportation sector, 
+               digitalization, and the environment as part of the EU 2D4D project.", 
+               
+               "Study the relationship between the transportation sector, digitalization, and the environment; Applied 
+               econometric projects on air pollution, air pollution control policies, and natural disasters, Scientific
+               support to institutional projects.", 
+               
+               "Research and publication of scientific articles in the realm of energy and environmental economics; 
+               Research projects on the effects of air pollution and air pollution control policies on productivity, 
+               health, and wellbeing.", 
+               
+               "Study the relationship between daylight savings and transit patterns.", 
+               
+               "Financial advice to small and midium-sized companies")
+
+countries = c("https://img.icons8.com/color/344/italy-circular.png",
+              "https://img.icons8.com/color/344/italy-circular.png",
+              "https://img.icons8.com/color/344/germany-circular.png",
+              "https://img.icons8.com/color/344/germany-circular.png",
+              "https://img.icons8.com/color/344/mexico-circular.png")
+
+prof = data.frame(Dates = startdates, Position = position, 
+                  Institution = institution, Country = countries,  `Activities` = activities)
+
+
+reactable(
+  prof, theme = fivethirtyeight(),
+  defaultColDef = colDef(align = "left", maxWidth = 200), 
+  columns = list(Dates = colDef(maxWidth = 70),
+                 
+                 Activities = colDef(maxWidth = 500), 
+                 
+                 Position = colDef(maxWidth = 100,
+                                   style = cell_style(font_color = "#0b263d", font_weight = "bold")), 
+                 
+                 Institution = colDef(maxWidth = 200, 
+                                      html = TRUE),
+                 
+                                
+                 Country = colDef(cell = embed_img(height = "25", width = "25"), maxWidth = 75, align = "left")), 
+  
+  )
+
+
+```
+
+<p style="margin-bottom:1.5cm;">
+
+### {{< fa building-columns >}} Education
+
+------------------------------------------------------------------------
+
+```{r}
+#| echo: false
+degree = c("Doctor in Economics (Summa Cum Laude)", 
+           "Master of Science in Economics and Management", 
+           "Bachelor of International Business")
+
+dates = c("2017-2020", "2014-2016", "2007-2012")
+
+
+institution = c(html("<a href='https://www.tu.berlin/en/'>Berlin Institute of Technology</a>"),
+                html("<a href='https://www.hu-berlin.de/en'>Humboldt University of Berlin</a>"),
+                 html("<a href='https://bajio.delasalle.edu.mx/'>University of Lasalle Bajio</a>"))
+
+
+dissertation = c("An Econometric Analysis of Envvironmental Phenomena", 
+                 "Electricity Production from Renewable Sources in Mexico: A Time Series Analysis", 
+                 "A Project of Foreign Direct Investment between Mexico and Colombia") 
+
+countries = c("https://img.icons8.com/color/344/germany-circular.png",
+              "https://img.icons8.com/color/344/germany-circular.png",
+              "https://img.icons8.com/color/344/mexico-circular.png")
+          
+
+educ = data.frame(Dates = dates, Degree = degree,
+                  Institution = institution, 
+                  Country = countries, Dissertation = dissertation)
+
+
+
+
+reactable(
+  educ, theme = fivethirtyeight(),
+  defaultColDef = colDef(align = "left", maxWidth = 200), 
+  columns = list(Dates = colDef(maxWidth = 100),
+                 Dissertation = colDef(maxWidth = 400), 
+                 Degree = colDef(maxWidth = 150, 
+                                  style = cell_style(font_color = "#0b263d", font_weight = "bold")), 
+                 Institution = colDef(maxWidth = 200, html = TRUE),
+                 Country = colDef(cell = embed_img(height = "25", width = "25"), maxWidth = 75, align = "left"))
+  )
+```
+
+<p style="margin-bottom:1.5cm;">
+
+### {{< fa book-open >}} Research Interests
+
+
+```{r}
+#| echo: false 
+topics <- c("Applied Econometrics", "Digitalization and the Environment", "Energy Modeling", "Agent Based Models")
+details2 <- c("Use of econometric methods for causal inference", 
+              "Analysis of the inter-dependenencies between the transportation sector, digitalization, and the environment", 
+              
+              "Design and Implementation of optimization models to assess public policies for the decabornization of energy systems",
+              
+              "Design and implementation of agent-based models to understand households' adoption of green technologies ")
+
+
+awards <- data.frame(topics,details2)
+
+
+kable(align = 'rl',awards, booktabs= T,col.names = NULL) %>%
+  kable_styling(font_size = 12.5) %>%
+  column_spec(1, bold = T, color = "#696969", width = "12em") %>%
+  column_spec(2, bold = FALSE, color = "#696969", width = "52.5em") %>%
+  kable_styling(bootstrap_options ="hover")
+```
+
+<p style="margin-bottom:0.5cm;">
+
+### {{< fa language >}} Softwares and Lenguages
+
+```{r}
+#| echo: false 
+#| layout-ncol: 2
+soft <- data.frame(lenguage = c("R (R-Studio)", "Quarto", "Markdown", "Git", "GAMS", "Julia", "Python" ), proficiency = c(5,5,5,5,3,2,2))
+
+
+   
+
+reactable(
+  soft, outlined = F, borderless = T, compact = T, bordered = F, 
+  defaultColDef = colDef(align = "left", maxWidth = 200), 
+  columns = list(
+    proficiency = colDef(cell = icon_assign(soft, icon = "github", fill_color = "#0b263d"), 
+                         name = "", sortable = TRUE), lenguage = colDef(name = ""))
+)
+
+
+data <- data.frame(lenguage = c("English", "Spanish", "Italian", "German"), proficiency = c(5,5,4,3))
+data$proficiency <- as.numeric(as.character(data$proficiency))
+
+reactable(
+  data, outlined = F, borderless = T, compact = T, bordered = F, 
+  defaultColDef = colDef(align = "left", maxWidth = 200), 
+  columns = list(
+    proficiency = colDef(cell = icon_assign(data, icon = "earth-americas", fill_color = "#0b263d"), 
+                         name = "", sortable = TRUE), lenguage = colDef(name = ""))
+)
+
+
+```
+
+<p style="margin-bottom:1.5cm;">
+
+### {{< ai archive >}} Publications
+```{r}
+#| echo: false 
+pub = data.frame(Year = c(2022, 2021, 2021, 2021, 2021, 2019), 
+                 
+                 
+                 
+                 Article = c( html("<a href='https://doi.org/10.1088/2752-5309/ac9a65'>The Nonlinear 
+                                   Effects of Pollution on Crime: Evidence from Mexico City and New York"),
+                             
+                              html("<a href='https://onlinelibrary.wiley.com/doi/full/10.1111/sjoe.12458'>Air Pollution 
+                                   and the Productivity of High-Skill Labor: Evidence from Court Hearings"), 
+                             
+                              html("<a href='https://www.sciencedirect.com/science/article/abs/pii/S0301421521002482'>Mexico and US 
+                              Power Systems Under Variations in Natural Gas Prices</a>"), 
+                                   
+                              html("<a href='https://www.sciencedirect.com/science/article/abs/pii/S0301421521000288'>The Role of Energy
+                              Storage in the Uptake of Renewable Energy: A Model Comparison Approach"),
+                             
+                              html("<a href = 'https://www.sciencedirect.com/science/article/abs/pii/S1361920919307278'>The Effects of 
+                                   the 2013 Floods on Germany's Road Freight Traffic"), 
+                             
+                              html("<a href= 'https://www.mdpi.com/1996-1073/12/17/3270'>Analysing Scenarios for the Integration of 
+                                   Renewable Energy Sources in the Mexican Energy System")), 
+                 
+                 Journal = c("Environmental Research - Health",
+                              "Scandinavian Journal of Economics 124: 301-332.", 
+                              "Energy Policy, 151, 113378", 
+                              "Energy Policy 151, 112159", 
+                              "Transportation Research Part D: Transport and the Environment, S.1022774", 
+                              "Energies, 12.17, 3270"), 
+                 
+                 Coauthors = c("",
+                                "", 
+                                "Juan Rosellon, Sauleh Sidiqui, Max Brown, Avraam Charalampos, Anahi Molar, Baltazar Solano", 
+                                "Sara Giarola, Kathleen Vaillancourt, Max Brown, Anahi Molar, Ivan Garcia Kerdan", 
+                                "Julio Fournier", 
+                                "Thorstan Burandt, Konstantin Löffler, Pao-yu Oei"),
+                 
+                 Institute = c("RFF-CMCC: European Institute on Economics and the Environment", 
+                               
+                               "RFF-CMCC: European Institute on Economics and the Environment and German
+                               Institute of Economic Research", 
+                               
+                               "RFF-CMCC: European Institute on Economics and the Environment and German
+                               Institute of Economic Research", 
+                               
+                               "RFF-CMCC: European Institute on Economics and the Environment and German
+                               Institute of Economic Research", 
+                               
+                               "German Institute of Economic Research", 
+                               
+                               "German Institute of Economic Research"),
+                 
+                 Country = c("https://img.icons8.com/color/344/italy-circular.png", 
+                             "https://img.icons8.com/color/344/italy-circular.png",
+                             "https://img.icons8.com/color/344/italy-circular.png", 
+                             "https://img.icons8.com/color/344/italy-circular.png", 
+                             "https://img.icons8.com/color/344/germany-circular.png", 
+                             "https://img.icons8.com/color/344/germany-circular.png"))
+
+
+
+
+reactable(
+  pub, theme = fivethirtyeight(),
+  defaultColDef = colDef(align = "left", maxWidth = 200), 
+  columns = list(Article = colDef(maxWidth = 500, html = TRUE), 
+                 Journal = colDef(maxWidth = 150), 
+                 Year = colDef(maxWidth = 50, style = color_scales(pub, colors = c("gray", "#0b263d"))), 
+                 Country = colDef(cell = embed_img(height = "25", width = "25"), maxWidth = 100, align = "center"))
+  )
+
+```
+
+### {{< fa person-digging >}} Working Papers
+```{r}
+#| echo: false 
+pub = data.frame(Start = c(2021, 2019, 2018, 2021,2022, 2020), 
+                 
+                 Article = c("The Air Quality Effects of Uber", 
+                              "Effectiveness, Spillovers, and Well-Being Effects of Driving Restriction Policies", 
+                              "Make Sure the Kids are OK: Indirect Effects of Air Pollution on Well-Being",
+                             "The Unaccounted Consequences of Low Emission Zones: Evidence from Madrid Central",
+                              "Air Pollution and Court Decisions: Evidence from Ten Million Penal Cases in India", 
+                              "The Agent Base Model of Technology Adoption ABM-REN"), 
+                 
+                 Status = c("Under Review",
+                              "Revise and Resubmit", 
+                              "Under Review", 
+                            "Working Paper",
+                              "Working Paper", 
+                              "Working Paper"),
+                 
+                 Journal = c("The Review of Economics and Statistics",
+                              "Journal of Public Economics", 
+                              "Nature Sustainability", 
+                              "", 
+                              "", 
+                             ""), 
+                 
+                 Coauthors = c("Yeong-Jae Kim",
+                                "Nicole Wägner and Aleksandar Zaklan", 
+                                "Julia Rechliz, Nicole Wägner, and Aleksandar Zaklan", 
+                               "Adrian Santoja and Nicole Wägner",
+                                "Adam Nowakowski", 
+                                "Severin Reissl and Johanness Emmerling"),
+                 
+                 Institutes = c("European Institute on Economics and the Environment and KID School of Public Policy", 
+                               
+                               "European Institute on Economics and the Environment, German
+                               Institute of Economic Research, and Leibniz Institute for Economic Research", 
+                               
+                               "European Institute on Economics and the Environment, German
+                               Institute of Economic Research, and Leibniz Institute for Economic Research", 
+                               
+                               "European Institute on Economics and the Environment, German
+                               Institute of Economic Research, and Leibniz Institute for Economic Research",
+                               
+                               "European Institute on Economics and the Environment and Bocconi University", 
+                               
+                               "European Institute on Economics and the Environment"))
+
+
+
+reactable(
+  pub, theme = fivethirtyeight(),
+  defaultColDef = colDef(align = "left", maxWidth = 200), 
+  columns = list(Article = colDef(maxWidth = 400), 
+                 Journal = colDef(maxWidth = 200), 
+                 Start = colDef(maxWidth = 50, style = color_scales(pub, colors = c("gray", "#0b263d"))), 
+                 Country = colDef(cell = embed_img(height = "25", width = "25"), maxWidth = 100, align = "center"))
+  )
+
+```
+### {{< fa person-chalkboard >}} Latest Conference and Presentations
+
+------------------------------------------------------------------------
+```{r}
+#| echo: false 
+conference <- c("EAERE Annual Conference", 
+                "Mannheim Energy and Environmental Conference",
+                "BSE Workshop: The Distributional Consequences of Environmental Policies", 
+                "CMCC Annual Conference", 
+                "EAERE Annual Conference", 
+                "Verein für Socialpolitik", 
+                "EAERE Annual Conferece", 
+                "Seventh Latin-American Meeting of Energy Economics", 
+                "World Congress of Environmental and Resource Economists", 
+                "Meeting of the Latin-American and Caribbean Economic Association", 
+                "Essen Health Conference", 
+                "Mannheim Energy Conference", 
+                "European Conference of the International Association of Energy Economists")
+
+
+presentation <- c("The Air Quality Effects of Uber", 
+                "The Unaccounted Effects of Low Emission Zones: Evidence from Madrid Central",
+                "The Air Quality Effects of Uber", 
+                "Towards the Debornization of the Transportation Sector", 
+                "The Nonlinear Effects of Pollution on Crime: Evidence from Mexico City and New York", 
+                "Make Sure the Kids are OK: Indirect Effects of Air Pollution on Well-Being", 
+                "Air Pollution and the Productivity of High-Skill Labor: Evidence from Court Hearings", 
+                "Analysing Scenarios for the Integration of Renewable Energy Sources in the Mexican Energy System", 
+                "External costs of electricity transmission infrastructure: evidence from well-being data", 
+                "Air Pollution and the Productivity of High-Skill Labor: Evidence from Court Hearings", 
+                "Make Sure the Kids are OK: Indirect Effects of Air Pollution on Well-Being", 
+                "External costs of electricity transmission infrastructure: evidence from well-being data", 
+                "External costs of electricity transmission infrastructure: evidence from well-being data")
+
+
+place = c("Rimini", 
+          "Mannheim",
+          "Berlin",
+          "Lecce", 
+          "Berlin", 
+          "Leipzig", 
+          "Manchester", 
+          "Buenos Aires", 
+          "Götheborg", 
+          "Guayaquil", 
+          "Essen", 
+          "Mannheim", 
+          "Vienna")
+
+year = c("2022", "2022", "2022", "2021", "2020", "2019", 
+         "2019", "2019", "2018", "2018", "2017", "2017", "2017")
+
+
+country = c("https://img.icons8.com/color/344/italy-circular.png", 
+            "https://img.icons8.com/color/344/germany-circular.png",
+            "https://img.icons8.com/color/344/germany-circular.png", 
+            "https://img.icons8.com/color/344/italy-circular.png", 
+            "https://img.icons8.com/color/344/germany-circular.png", 
+            "https://img.icons8.com/color/344/germany-circular.png", 
+            "https://img.icons8.com/fluency/344/england-circular.png",
+            "https://img.icons8.com/fluency/344/argentina-circular.png",
+            "https://img.icons8.com/color/344/sweden-circular.png",
+            "https://img.icons8.com/color/344/ecuador-circular.png",
+            "https://img.icons8.com/color/344/germany-circular.png",
+            "https://img.icons8.com/color/344/germany-circular.png",
+            "https://img.icons8.com/color/344/austria-circular.png")
+
+conf <- data.frame(conference, presentation,city = place,country, year) |> mutate(year = as.numeric(year))
+
+
+reactable(
+  conf, theme = fivethirtyeight(),
+  defaultColDef = colDef(align = "left", maxWidth = 200), 
+  columns = list(city = colDef(maxWidth = 100), 
+                 conference = colDef(maxWidth = 350), 
+                 presentation = colDef(maxWidth = 350),
+                 year = colDef(maxWidth = 50, style = color_scales(conf, colors = c("gray", "#0b263d"))), 
+                 country = colDef(cell = embed_img(height = "25", width = "25"), maxWidth = 100, align = "center"))
+  )
+```
