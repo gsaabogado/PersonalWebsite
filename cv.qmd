@@ -408,7 +408,7 @@ country = c("https://img.icons8.com/color/344/italy-circular.png",
             "https://img.icons8.com/color/344/germany-circular.png",
             "https://img.icons8.com/color/344/austria-circular.png")
 
-conf <- data.frame(conference, presentation,city = place,country, year) |> mutate(year = as.numeric(year))
+conf <- data.frame(year, conference, presentation,city = place,country) |> mutate(year = as.numeric(year))
 
 
 reactable(
