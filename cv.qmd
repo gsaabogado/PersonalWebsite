@@ -7,7 +7,7 @@ always_allow_html: true
 ---
 
 
-<p style="margin-bottom:-0.2cm;">Luis **Sarmiento**</p>
+<p style="margin-bottom:-0.2cm;">Luis **Emmerling**</p>
 <p style="margin-bottom:0.15cm;">Environmental Economist</p>
 
 <p style="margin-bottom:-0.15cm;">`r fa("earth-americas")` luis.sarmiento.net</p>
@@ -23,7 +23,7 @@ always_allow_html: true
 Applied economist focusing on **causal inference** and **energy modelling**. 
 
 
-### `r fa("briefcase")` Professional Experience
+### `r fa("briefcase")` Work  Experience
 
 ------------------------------------------------------------------------
 ```{r}
