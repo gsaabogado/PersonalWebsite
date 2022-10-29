@@ -1,5 +1,5 @@
 ---
-title: "{{< fa book-open-reader >}} Curriculum Vitae"
+title: "{{< fa book-open-reader >}} Curriculum Vitae [{{< fa download >}}](https://www.dropbox.com/s/5kp8ft0nghhj0bo/cv_pdf.pdf?dl=0)"
 format: html
 fontsize: "0.8em"
 toc: true
@@ -7,7 +7,8 @@ always_allow_html: true
 ---
 
 
-<p style="margin-bottom:-0.2cm;">Luis **Emmerling**</p>
+
+<p style="margin-bottom:-0.2cm;">Luis **Sarmiento**</p>
 <p style="margin-bottom:0.15cm;">Environmental Economist</p>
 
 <p style="margin-bottom:-0.15cm;">`r fa("earth-americas")` luis.sarmiento.net</p>
@@ -28,6 +29,8 @@ Applied economist focusing on **causal inference** and **energy modelling**.
 ------------------------------------------------------------------------
 ```{r}
 #| echo: false 
+
+
 position = c("Junior Scientist", "Postdoc Researcher", 
              "Research Associate", "Research Associate", 
              "Business Executive")
@@ -186,7 +189,8 @@ reactable(
   defaultColDef = colDef(align = "left", maxWidth = 200), 
   columns = list(
     proficiency = colDef(cell = icon_assign(soft, icon = "github", fill_color = "#0b263d"), 
-                         name = "", sortable = TRUE), lenguage = colDef(name = ""))
+                         name = "", sortable = TRUE), 
+    lenguage = colDef(name = ""))
 )
 
 

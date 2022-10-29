@@ -7,6 +7,7 @@ library(vitae)
 library(emoji)
 library(emo)
 # Tables
+library(readxl)
 library(reactable)
 library(reactablefmtr)
 library(fontawesome)
