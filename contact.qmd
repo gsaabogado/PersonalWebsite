@@ -12,12 +12,14 @@ always_allow_html: true
 <p style="margin-bottom:-0.2cm;">Luis **Sarmiento**</p>
 <p style="margin-bottom:0.15cm;">Environmental Economist</p>
 
-<p style="margin-bottom:-0.15cm;">`r fa("earth-americas")` luis.sarmiento.net</p>
+<p style="margin-bottom:-0.15cm;">`r fa("earth-americas")` [luissarmiento.com](luissarmiento.com)</p>
 
-<p style="margin-bottom:-0.15cm;">`r fa("at")` gsaabogado\@gmail.com</p>
+<p style="margin-bottom:-0.15cm;">`r fa("at")` <a href = "mailto: gsaabogado@gmail.com">gsaabogado@gmail.com</a></p>
 
 <p style="margin-bottom:-0.15cm;">`r fa("linkedin")` [luis-sarmiento-eco](https://www.linkedin.com/in/luis-sarmiento-eco)</p>
 
 <p style="margin-bottom:-0.15cm;">`r fa("mobile-button")` +39 030 897890</p>
 
 <p style="margin-bottom:0.5cm;">`r fa("location-dot")` Via Bergognone, 34, 20144 Milan MI, Ital</p>
+
+Applied economist focusing on **causal inference** and **energy modelling**. 

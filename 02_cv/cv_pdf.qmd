@@ -50,6 +50,9 @@ the decarbonization of the energy sector.
 file = gsub("/02_cv", "", getwd())
 prof = read_excel(paste0(file, "/Codebook.xlsx"), sheet = "Occupation")
 
+#### Exclude the link ####
+prof = select(prof, -link )
+
 #### Create the table ####
 table = reactable(prof, theme = flatly(font_size = 17),
                   
@@ -82,6 +85,8 @@ webshot2::webshot(html, "table.png", cliprect = c(40, 30, 930, 460), zoom = 2)
 #| fig-width: 10
 #| fig-height: 4
 #| warning: false
+
+
 #### Load the excel file ####
 file = gsub("/02_cv", "", getwd())
 educ = read_excel(paste0(file, "/Codebook.xlsx"), sheet = "Education")
@@ -108,7 +113,7 @@ table = reactable(
 
 html = "table.html"
 htmlwidgets::saveWidget(table, html)
-webshot2::webshot(html, "table.png", cliprect = c(40, 35, 930, 280), zoom = 2)
+webshot2::webshot(html, "table.png", cliprect = c(40, 35, 930, 320), zoom = 2)
 
 
 ```
@@ -204,6 +209,9 @@ webshot2::webshot(html, "table.png", cliprect = c(20, 35, 370, 220), zoom = 2)
 file = gsub("/02_cv", "", getwd())
 pub = read_excel(paste0(file, "/Codebook.xlsx"), sheet = "Publications")
 
+#### Exclude not-necessary columns ####
+pub = select(pub, -link, -Type, -Institute, -Country)
+
 #### Construct the table ####
 table = reactable(
   pub, theme = flatly(font_size = 17),
@@ -221,13 +229,16 @@ webshot2::webshot(html, "table.png", cliprect = c(40, 35, 930, 520), zoom = 2)
 
 ```
 
-### `r fa("person-digging")` Working Papers
+### `r fa("person-praying")` Working Papers
 ```{r}
 #| echo: false 
 #### Load the data ####
 file = gsub("/02_cv", "", getwd())
 pub = read_excel(paste0(file, "/Codebook.xlsx"), sheet = "WorkingPapers")
 
+#### Exclude not-necessary columns ####
+pub = pub |>  dplyr::filter(WorkingVersion == "Yes") |> 
+  select(-Type, -WorkingVersion, -Institute)
 
 #### Construct the table ####
 table = reactable(
@@ -245,10 +256,36 @@ table = reactable(
 #### Make the screen-shot ####
 html = "table.html"
 htmlwidgets::saveWidget(table, html)
-webshot2::webshot(html, "table.png", cliprect = c(40, 35, 930, 450), zoom = 2)
+webshot2::webshot(html, "table.png", cliprect = c(40, 35, 930, 300), zoom = 2)
 
 ```
+### `r fa("person-digging")` Underway Research
+```{r}
+#| echo: false 
+#### Load the data ####
+file = gsub("/02_cv", "", getwd())
+pub = read_excel(paste0(file, "/Codebook.xlsx"), sheet = "UnderwayResearch")
 
+#### Only keep relevant studies ####
+pub = select(pub, -Type)
+
+#### Consutruct the table ####
+table = reactable(
+  pub, theme = flatly(font_size = 17),
+  defaultColDef = colDef(align = "left", maxWidth = 200), 
+  columns = list(Article = colDef(maxWidth = 400), 
+                 Institutes = colDef(maxWidth = 300), 
+                 Expected = colDef(maxWidth = 100), 
+                 Start = colDef(maxWidth = 50, style = color_scales(pub, colors = c("gray", "#0b263d"))), 
+                 Country = colDef(cell = embed_img(height = "25", width = "25"), maxWidth = 100, align = "center"))
+  )
+
+#### Make the screen-shot ####
+html = "table.html"
+htmlwidgets::saveWidget(table, html)
+webshot2::webshot(html, "table.png", cliprect = c(40, 35, 930, 650), zoom = 2)
+
+```
 
 ### `r fa("person-chalkboard")` Latest Presentations
 
@@ -262,8 +299,9 @@ webshot2::webshot(html, "table.png", cliprect = c(40, 35, 930, 450), zoom = 2)
 file = gsub("/02_cv", "", getwd())
 conf = read_excel(paste0(file, "/Codebook.xlsx"), sheet = "Conferences")
 
+
 ### Only keep the last eight conferences ####
-conf = conf[1:8,]
+#conf = conf[1:5,]
 
 
 table = reactable(conf, theme = flatly(font_size = 17),
@@ -280,7 +318,7 @@ table = reactable(conf, theme = flatly(font_size = 17),
 #### Screen-shot the languages table ####
 html = "table.html"
 htmlwidgets::saveWidget(table, html)
-webshot2::webshot(html, "table.png", cliprect = c(20, 35, 930, 520), zoom = 2)
+webshot2::webshot(html, "table.png", cliprect = c(20, 35, 930, 570), zoom = 2)
 
 
 ```

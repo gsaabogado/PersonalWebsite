@@ -6,6 +6,8 @@ library(icons)
 library(vitae)
 library(emoji)
 library(emo)
+# Read files 
+library(readxl)
 # Tables
 library(reactable)
 library(reactablefmtr)
