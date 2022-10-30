@@ -1,5 +1,5 @@
 ---
-title: "{{< fa book-open-reader >}} Curriculum Vitae [{{< fa download >}}](https://www.dropbox.com/s/5kp8ft0nghhj0bo/cv_pdf.pdf?dl=0)"
+title: "{{< fa copyright >}} Curriculum Vitae (Commercial) [{{< fa download >}}](https://www.dropbox.com/s/vhcyj6pz78a51xc/CommercialCv.pdf?dl=0)"
 format: html
 fontsize: "16px"
 toc: true
@@ -93,30 +93,7 @@ reactable(educ, theme = fivethirtyeight(),
 
 <p style="margin-bottom:1.5cm;">
 
-### `r fa("book-open")` Research Interests
 
-
-```{r}
-#| echo: false 
-
-#### Load the excel file ####
-file = gsub("/02_cv", "", getwd())
-int = read_excel(paste0(file, "/Codebook.xlsx"), sheet = "Research Interests")
-
-
-#### Create the table ####
-reactable(int, theme = nytimes(),
-                  
-                  defaultColDef = colDef(align = "left", maxWidth = 500), 
-                  
-                  columns = list(topics = colDef(maxWidth = 300, header = "", 
-                                                 align = "left", 
-                                                 style = cell_style(font_color = "#0b263d", font_weight = "bold")),
-                                 
-                                 details = colDef(maxWidth = 700, header = "")))
-```
-
-<p style="margin-bottom:0.5cm;">
 
 ### `r fa("language")` Softwares and Lenguages
 
@@ -182,56 +159,6 @@ reactable(pub, theme = fivethirtyeight(),
 
 ```
 
-### `r fa("person-praying")` Working Papers
-```{r}
-#| echo: false 
-#| 
-#### Load the data ####
-file = gsub("/02_cv", "", getwd())
-pub = read_excel(paste0(file, "/Codebook.xlsx"), sheet = "WorkingPapers") |> 
-  select(-Type)
-
-#### Only keep the articles with working paper versions ####
-pub = dplyr::filter(pub, WorkingVersion == "Yes") |> select(-WorkingVersion)
-
-#### Construct table ####
-reactable(
-  pub, theme = fivethirtyeight(),
-  defaultColDef = colDef(align = "left"), 
-  columns = list(Article = colDef(maxWidth = 300), 
-                 Coauthors = colDef(maxWidth = 150, align = "left"),
-                 Journal = colDef(maxWidth = 100, align = "center"), 
-                 Status = colDef(maxWidth = 70, align = "center"),
-                 Institution = colDef(maxWidth = 300),
-                 Start = colDef(maxWidth = 50, style = color_scales(pub, colors = c("gray", "#0b263d"))), 
-                 Country = colDef(cell = embed_img(height = "25", width = "25"), maxWidth = 100, align = "center"))
-  )
-
-```
-
-### {{< fa person-digging >}} Underway Research
-
-```{r}
-#| echo: false 
-#### Load the data ####
-file = gsub("/02_cv", "", getwd())
-pub = read_excel(paste0(file, "/Codebook.xlsx"), sheet = "UnderwayResearch")
-
-#### Only keep econometric papers ####
-pub = pub |> select(-Type)
-
-
-#### Present the table ####
-reactable(
-  pub, theme = fivethirtyeight(),
-  defaultColDef = colDef(align = "left", maxWidth = 200), 
-  columns = list(Article = colDef(maxWidth = 400), 
-                 Institutes = colDef(maxWidth = 300), 
-                 Expected = colDef(maxWidth = 100), 
-                 Start = colDef(maxWidth = 50, style = color_scales(pub, colors = c("gray", "#0b263d"))), 
-                 Country = colDef(cell = embed_img(height = "25", width = "25"), maxWidth = 100, align = "center"))
-  )
-```
 
 ### `r fa("person-chalkboard")` Conference presentations
 

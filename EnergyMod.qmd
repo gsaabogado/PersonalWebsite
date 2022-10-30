@@ -91,7 +91,7 @@ pub = read_excel(paste0(file, "/Codebook.xlsx"), sheet = "UnderwayResearch")
 pub = dplyr::filter(pub, Type == "modeling") |> select(-Type)
 
 
-
+#### Present the table ####
 reactable(
   pub, theme = fivethirtyeight(),
   defaultColDef = colDef(align = "left", maxWidth = 200), 

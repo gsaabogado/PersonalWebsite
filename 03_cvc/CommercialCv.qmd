@@ -48,7 +48,7 @@ the decarbonization of the energy sector.
 #| fig-height: 4
 
 #### Load the excel file ####
-file = gsub("/02_cv", "", getwd())
+file = gsub("/03_cvc", "", getwd())
 prof = read_excel(paste0(file, "/Codebook.xlsx"), sheet = "Occupation")
 
 #### Exclude the link ####
@@ -74,7 +74,7 @@ table = reactable(prof, theme = flatly(font_size = 16),
 #### Take an screen shot of the html output ####
 html = "table.html"
 htmlwidgets::saveWidget(table, html)
-webshot2::webshot(html, "table.png", cliprect = c(40, 30, 930, 420), zoom = 2)
+webshot2::webshot(html, "table.png", cliprect = c(40, 30, 930, 410), zoom = 2)
 
 
 ```
@@ -89,7 +89,7 @@ webshot2::webshot(html, "table.png", cliprect = c(40, 30, 930, 420), zoom = 2)
 
 
 #### Load the excel file ####
-file = gsub("/02_cv", "", getwd())
+file = gsub("/03_cvc", "", getwd())
 educ = read_excel(paste0(file, "/Codebook.xlsx"), sheet = "Education")
 
 #### Take away variables that I do not use ####
@@ -117,37 +117,8 @@ table = reactable(
 
 html = "table.html"
 htmlwidgets::saveWidget(table, html)
-webshot2::webshot(html, "table.png", cliprect = c(40, 35, 930, 220), zoom = 2)
+webshot2::webshot(html, "table.png", cliprect = c(40, 35, 930, 200), zoom = 2)
 
-
-```
-
-### `r fa("book-open")` Research Interests \vspace{-0.5cm}
-
-```{r}
-#| echo: false 
-#| warning: false
-#| fig-width: 10
-#| fig-height: 4
-#### Load the excel file ####
-file = gsub("/02_cv", "", getwd())
-int = read_excel(paste0(file, "/Codebook.xlsx"), sheet = "Research Interests")
-
-#### Create the table ####
-table = reactable(int, theme = nytimes(font_size = 16),
-                  
-                  defaultColDef = colDef(align = "left", maxWidth = 500), 
-                  
-                  columns = list(topics = colDef(maxWidth = 300, header = "", 
-                                                 align = "right", 
-                                                 style = cell_style(font_color = "#0b263d", font_weight = "bold")),
-                                 
-                                 details = colDef(maxWidth = 700, header = "")))
-
-#### Take an screen shot of the html output ####
-html = "table.html"
-htmlwidgets::saveWidget(table, html)
-webshot2::webshot(html, "table.png", cliprect = c(40, 30, 930, 200), zoom = 2)
 
 ```
 
@@ -162,11 +133,11 @@ webshot2::webshot(html, "table.png", cliprect = c(40, 30, 930, 200), zoom = 2)
 #| layout-ncol: 2
 
 #### Load the software excel file ####
-file = gsub("/02_cv", "", getwd())
+file = gsub("/03_cvc", "", getwd())
 soft = read_excel(paste0(file, "/Codebook.xlsx"), sheet = "Software")
 
 #### Create the Software Table ####
-table = reactable(theme = flatly(font_size = 15),
+table = reactable(theme = flatly(font_size = 13),
                   soft, outlined = F, borderless = T, compact = T, bordered = F, 
                   defaultColDef = colDef(align = "left", maxWidth = 200), 
                   columns = list(
@@ -178,11 +149,11 @@ table = reactable(theme = flatly(font_size = 15),
 #### Screen-shot the software table ####
 html = "table.html"
 htmlwidgets::saveWidget(table, html)
-webshot2::webshot(html, "table.png", cliprect = c(20, 35, 370, 170), zoom = 2)
+webshot2::webshot(html, "table.png", cliprect = c(40, 35, 370, 170), zoom = 2)
 
 
 #### Load the languages excel file ####
-file = gsub("/02_cv", "", getwd())
+file = gsub("/03_cvc", "", getwd())
 data = read_excel(paste0(file, "/Codebook.xlsx"), sheet = "Languages")
 
 #### Create the Languages Table ####
@@ -197,7 +168,7 @@ table = reactable(theme = flatly(font_size = 15),
 #### Screen-shot the languages table ####
 html = "table.html"
 htmlwidgets::saveWidget(table, html)
-webshot2::webshot(html, "table.png", cliprect = c(20, 35, 370, 150), zoom = 2)
+webshot2::webshot(html, "table.png", cliprect = c(40, 35, 370, 150), zoom = 2)
 
 ```
 
@@ -210,7 +181,7 @@ webshot2::webshot(html, "table.png", cliprect = c(20, 35, 370, 150), zoom = 2)
 #| fig-width: 10
 #| fig-height: 4
 #### Load the data ####
-file = gsub("/02_cv", "", getwd())
+file = gsub("/03_cvc", "", getwd())
 pub = read_excel(paste0(file, "/Codebook.xlsx"), sheet = "Publications")
 
 #### Exclude not-necessary columns ####
@@ -233,92 +204,6 @@ webshot2::webshot(html, "table.png", cliprect = c(40, 35, 930, 350), zoom = 2)
 
 ```
 
-### `r fa("person-praying")` Working Papers \vspace{-0.4cm}
-```{r}
-#| echo: false 
-#### Load the data ####
-file = gsub("/02_cv", "", getwd())
-pub = read_excel(paste0(file, "/Codebook.xlsx"), sheet = "WorkingPapers")
-
-#### Exclude not-necessary columns ####
-pub = pub |>  dplyr::filter(WorkingVersion == "Yes") |> 
-  select(-Type, -WorkingVersion, -Institute)
-
-#### Construct the table ####
-table = reactable(
-  pub, theme = flatly(font_size = 16),
-  defaultColDef = colDef(align = "left", maxWidth = 500), 
-  
-  columns = list(Article = colDef(maxWidth = 600), 
-                 Status = colDef(maxWidth = 150),
-                 Journal = colDef(maxWidth = 200),
-                 Coauthors = colDef(maxWidth = 300),
-                 Start = colDef(maxWidth = 50, style = color_scales(pub, colors = c("gray", "#0b263d"))), 
-                 Country = colDef(cell = embed_img(height = "25", width = "25"), maxWidth = 100, align = "center"))
-)
-
-#### Make the screen-shot ####
-html = "table.html"
-htmlwidgets::saveWidget(table, html)
-webshot2::webshot(html, "table.png", cliprect = c(40, 35, 930, 260), zoom = 2)
-
-```
-### `r fa("person-digging")` Underway Research \vspace{-0.4cm}
-```{r}
-#| echo: false 
-#### Load the data ####
-file = gsub("/02_cv", "", getwd())
-pub = read_excel(paste0(file, "/Codebook.xlsx"), sheet = "UnderwayResearch")
-
-#### Only keep relevant studies ####
-pub = select(pub, -Type)[1:2,]
-
-#### Construct the table ####
-table = reactable(
-  pub, theme = flatly(font_size = 16),
-  defaultColDef = colDef(align = "left", maxWidth = 200), 
-  columns = list(Article = colDef(maxWidth = 400), 
-                 Institutes = colDef(maxWidth = 300), 
-                 Expected = colDef(maxWidth = 100), 
-                 Start = colDef(maxWidth = 50, style = color_scales(pub, colors = c("gray", "#0b263d"))), 
-                 Country = colDef(cell = embed_img(height = "25", width = "25"), maxWidth = 100, align = "center"))
-  )
-
-#### Make the screen-shot ####
-html = "table.html"
-htmlwidgets::saveWidget(table, html)
-webshot2::webshot(html, "table.png", cliprect = c(40, 35, 930, 200), zoom = 2)
-
-```
-
-
-### `r fa("person-digging")` Underway Research (Cont.) \vspace{-0.4cm}
-```{r}
-#| echo: false 
-#### Load the data ####
-file = gsub("/02_cv", "", getwd())
-pub = read_excel(paste0(file, "/Codebook.xlsx"), sheet = "UnderwayResearch")
-
-#### Only keep relevant studies ####
-pub = select(pub, -Type)[2:8,]
-
-#### Construct the table ####
-table = reactable(
-  pub, theme = flatly(font_size = 16),
-  defaultColDef = colDef(align = "left", maxWidth = 200), 
-  columns = list(Article = colDef(maxWidth = 400), 
-                 Institutes = colDef(maxWidth = 300), 
-                 Expected = colDef(maxWidth = 100), 
-                 Start = colDef(maxWidth = 50, style = color_scales(pub, colors = c("gray", "#0b263d"))), 
-                 Country = colDef(cell = embed_img(height = "25", width = "25"), maxWidth = 100, align = "center"))
-  )
-
-#### Make the screen-shot ####
-html = "table.html"
-htmlwidgets::saveWidget(table, html)
-webshot2::webshot(html, "table.png", cliprect = c(40, 35, 930, 500), zoom = 2)
-
-```
 
 ### `r fa("person-chalkboard")` Latest Presentations \vspace{-0.4cm}
 
@@ -329,7 +214,7 @@ webshot2::webshot(html, "table.png", cliprect = c(40, 35, 930, 500), zoom = 2)
 #| fig-height: 4
 
 #### Load the data ####
-file = gsub("/02_cv", "", getwd())
+file = gsub("/03_cvc", "", getwd())
 conf = read_excel(paste0(file, "/Codebook.xlsx"), sheet = "Conferences")
 
 

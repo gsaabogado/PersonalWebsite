@@ -1,0 +1,17 @@
+library(conflicted)
+library(tidyverse)
+library(kableExtra)
+library(knitr)
+library(icons)
+library(vitae)
+library(emoji)
+library(emo)
+# Tables
+library(readxl)
+library(reactable)
+library(reactablefmtr)
+library(fontawesome)
+library(webshot2)
+library(htmlwidgets)
+# Conflicts
+conflict_prefer("fa", "fontawesome")
