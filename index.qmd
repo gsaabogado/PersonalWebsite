@@ -1,7 +1,48 @@
 ---
-title: "mysite"
+fontsize: "0.8 em"
+title: ""
+toc: true
+image: gto_yo.JPG
+about: 
+  links:
+    - text: <i class="fa-brands fa-linkedin"></i>
+      href: https://www.linkedin.com/in/samanthacsik/
+    - text: <i class="fa-brands fa-twitter"></i>
+      href: https://twitter.com/SamanthaCsik
+    - text: <i class="fa-brands fa-github"></i>
+      href: https://github.com/samanthacsik
+    - text: <i class="fa fa-at"></i>
+      href: mailto:scsik@ucsb.edu
+  template: trestles
+  image-shape: round
+  image-width: 25em
+
 ---
 
-This is a Quarto website.
+### <i class="fa fa-user"></i> **About Me**
 
-To learn more about Quarto websites visit <https://quarto.org/docs/websites>.
+------------------------------------------------------------------------
+
+I am an applied economist focusing on **causal inference** and **energy modelling**. <br>
+
+My main interest are: <br>
+
+- Studying urban policies to decrease environmental degradation
+- The welfare & justice effects of environmental externalities and market failure
+- The effects of net-zero scenarios on air pollution and equity <br>
+
+### <i class="fa fa-building-columns"></i> **Education**
+ 
+------------------------------------------------------------------------
+
+<p style="margin-bottom:-0.5cm;">**Doctor in Economics (Summa cum Laude) -- 2020 |  ** <p> 
+
+Berlin Institute of Technology <br>
+
+
+### <i class="fa fa-briefcase"></i> **Current Position**
+ 
+------------------------------------------------------------------------
+
+<p style="margin-bottom:-0.5cm;">**Junior Scientist** (2022-present) | <p> 
+European Institute on Economics and the Environment

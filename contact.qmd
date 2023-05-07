@@ -20,6 +20,4 @@ always_allow_html: true
 
 <p style="margin-bottom:-0.15cm;">`r fa("mobile-button")` +39 030 897890</p>
 
-<p style="margin-bottom:0.5cm;">`r fa("location-dot")` Via Bergognone, 34, 20144 Milan MI, Ital</p>
-
-Applied economist focusing on **causal inference** and **energy modelling**. 
+<p style="margin-bottom:0.5cm;">`r fa("location-dot")` Via Bergognone, 34, 20144 Milan MI, Italy</p>
