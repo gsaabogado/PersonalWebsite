@@ -1,5 +1,5 @@
 ---
-fontsize: "0.8 em"
+fontsize: "1 em"
 title: ""
 toc: true
 image: gto_yo.JPG
