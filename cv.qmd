@@ -2,7 +2,7 @@
 title: "{{< fa book-open-reader >}} Curriculum Vitae [{{< fa download >}}](https://www.dropbox.com/s/5kp8ft0nghhj0bo/cv_pdf.pdf?dl=0)"
 format: html
 theme: [flatly, costum.scss]
-fontsize: "16px"
+fontsize: "0.9 em"
 toc: true
 always_allow_html: true
 ---
@@ -23,7 +23,7 @@ always_allow_html: true
 
 ```{r}
 #| echo: false 
-fivethirtyeight <- function(font_size = 14,
+fivethirtyeight <- function(font_size = 12,
                             font_color = "#222222",
                             header_font_size = 12,
                             header_font_color = "#000000",

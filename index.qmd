@@ -15,7 +15,7 @@ about:
       href: mailto:scsik@ucsb.edu
   template: trestles
   image-shape: round
-  image-width: 25em
+  image-width: 30em
 
 ---
 
