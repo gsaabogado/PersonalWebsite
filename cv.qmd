@@ -1,12 +1,12 @@
 ---
 title: "{{< fa book-open-reader >}} Curriculum Vitae [{{< fa download >}}](https://www.dropbox.com/s/5kp8ft0nghhj0bo/cv_pdf.pdf?dl=0)"
-format: html
-theme: [flatly, costum.scss]
-fontsize: "0.9 em"
-toc: true
-always_allow_html: true
+format: 
+  html:
+    theme: [flatly, costum.scss]
+    fontsize: 0.85em
+    toc: true
+    always_allow_html: true
 ---
-
 
 <p style="margin-bottom:-0.2cm;"> Luis **Sarmiento**</p>
 <p style="margin-bottom:1.0cm;"> Environmental Economist</p>

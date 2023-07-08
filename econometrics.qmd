@@ -4,10 +4,12 @@ title: "{{< fa file-contract >}} Applied Econometrics"
 #knit: pagedown::chrome_print
 # uncomment this line to produce HTML and PDF in RStudio:
 #knit: pagedown::chrome_print
-format: html
-fontsize: "0.8em"
-toc: true
-always_allow_html: true
+format: 
+  html:
+    theme: [flatly, costum.scss]
+    fontsize: 0.85em
+    toc: true
+    always_allow_html: true
 ---
 ```{r}
 #| echo: false 
@@ -83,7 +85,7 @@ fivethirtyeight <- function(font_size = 12,
 
 ```
 
-### I use state-of-the-art econometric techniques in three main topics:
+**I use state-of-the-art econometric techniques in three main topics:**
 
 <span style="color:red;">**The effects of Air Pollution on the Individual**</span>
 

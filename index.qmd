@@ -1,47 +1,55 @@
 ---
 title: ""
-toc: true
-image: gto_yo.JPG
 about: 
+  id: hero-heading
+  image: gto_yo.JPG
   links:
     - text: <i class="fa-brands fa-linkedin"></i>
-      href: https://www.linkedin.com/in/samanthacsik/
+      href: https://www.linkedin.com/in/luis-sarmiento-eco
     - text: <i class="fa-brands fa-twitter"></i>
-      href: https://twitter.com/SamanthaCsik
+      href: https://twitter.com/gsaabogado
     - text: <i class="fa-brands fa-github"></i>
-      href: https://github.com/samanthacsik
+      href: https://github.com/gsaabogado
     - text: <i class="fa fa-at"></i>
-      href: mailto:scsik@ucsb.edu
+      href: mailto:luis.sarmiento@eiee.org
   template: trestles
   image-shape: round
-  image-width: 20em
-
+  image-width: 30em
+format: 
+  html:
+    theme: [flatly, costum.scss]
+    fontsize: 0.85em
+    toc: true
+    always_allow_html: true
 ---
+
+
+:::{#hero-heading}
 
 ### <i class="fa fa-user"></i> **About Me**
 
-------------------------------------------------------------------------
-
-I am an environmental economist focusing on **causal inference** and **energy modelling**. <br>
-
-My main interest are: <br>
-
-- Studying urban policies to decrease environmental degradation
-- The welfare & justice effects of environmental externalities and market failure
-- The effects of net-zero scenarios on air pollution and equity <br>
+I am an environmental economist focusing on **causal inference** and **energy modelling**
 
 ### <i class="fa fa-building-columns"></i> **Education**
- 
-------------------------------------------------------------------------
 
-<p style="margin-bottom:-0.5cm;">**Doctor in Economics (Summa cum Laude) -- 2020 |  ** <p> 
+**Doctor in Economics (Summa cum Laude)** | 2017 - 2020<br>
+Berlin Institute of Technology | Berlin, Germany
 
-Berlin Institute of Technology <br>
+**Master of Science in Economics** | 2014 - 2016<br>
+Humboldt University of Berlin | Berlin, Germany
 
 
-### <i class="fa fa-briefcase"></i> **Current Position**
- 
-------------------------------------------------------------------------
+### <i class="fa fa-briefcase"></i> **Experience**
+**Environmental Scientist** | August 2022 - present<br>
+European Institute on Economics and the Environment 
 
-<p style="margin-bottom:-0.5cm;">**Junior Scientist** (2022-present) | <p> 
+
+**Post-Doc** | August 2020 - August 2022<br> 
 European Institute on Economics and the Environment
+
+**Research Associate** | April 2017 - August 2020 <br>
+German Institute of Economic Research  
+
+
+:::
+

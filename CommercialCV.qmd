@@ -1,9 +1,11 @@
 ---
 title: "{{< fa copyright >}} Commercial CV [{{< fa download >}}](https://www.dropbox.com/s/vhcyj6pz78a51xc/CommercialCv.pdf?dl=0)"
-format: html
-fontsize: "16px"
-toc: true
-always_allow_html: true
+format: 
+  html:
+    theme: [flatly, costum.scss]
+    fontsize: 0.85em
+    toc: true
+    always_allow_html: true
 ---
 
 

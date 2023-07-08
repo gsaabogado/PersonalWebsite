@@ -2,10 +2,12 @@
 title: "{{< fa solar-panel >}} Energy Modeling"
 # uncomment this line to produce HTML and PDF in RStudio:
 #knit: pagedown::chrome_print
-format: html
-fontsize: "0.8em"
-toc: true
-always_allow_html: true
+format: 
+  html:
+    theme: [flatly, costum.scss]
+    fontsize: 0.85em
+    toc: true
+    always_allow_html: true
 ---
 ```{r}
 #| echo: false 
@@ -80,8 +82,6 @@ fivethirtyeight <- function(font_size = 12,
 }
 
 ```
-
-### {{< fa play >}} Introduction
 
 I employ techno-economic bottom-up energy models to examine transition pathways of the North-American energy system.
 
