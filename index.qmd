@@ -1,5 +1,4 @@
 ---
-fontsize: "1 em"
 title: ""
 toc: true
 image: gto_yo.JPG
@@ -15,7 +14,7 @@ about:
       href: mailto:scsik@ucsb.edu
   template: trestles
   image-shape: round
-  image-width: 30em
+  image-width: 20em
 
 ---
 
@@ -23,7 +22,7 @@ about:
 
 ------------------------------------------------------------------------
 
-I am an applied economist focusing on **causal inference** and **energy modelling**. <br>
+I am an environmental economist focusing on **causal inference** and **energy modelling**. <br>
 
 My main interest are: <br>
 

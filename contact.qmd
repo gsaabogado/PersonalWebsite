@@ -3,21 +3,22 @@ title: "{{< fa address-card >}} Contact"
 # uncomment this line to produce HTML and PDF in RStudio:
 #knit: pagedown::chrome_print
 format: html
-fontsize: "0.8em"
+theme: [flatly, costum.scss]
+fontsize: "0.9 em"
 toc: true
 always_allow_html: true
 ---
 
 
-<p style="margin-bottom:-0.2cm;">Luis **Sarmiento**</p>
-<p style="margin-bottom:0.15cm;">Environmental Economist</p>
+<p style="margin-bottom:-0.2cm;"> Luis **Sarmiento**</p>
+<p style="margin-bottom:1.0cm;"> Environmental Economist</p>
 
 <p style="margin-bottom:-0.15cm;">`r fa("earth-americas")` [luissarmiento.com](luissarmiento.com)</p>
 
-<p style="margin-bottom:-0.15cm;">`r fa("at")` <a href = "mailto: gsaabogado@gmail.com">gsaabogado@gmail.com</a></p>
+<p style="margin-bottom:-0.15cm;">`r fa("at")` <a href = "mailto: gsaabogado@gmail.com"> gsaabogado@gmail.com</a></p>
 
 <p style="margin-bottom:-0.15cm;">`r fa("linkedin")` [luis-sarmiento-eco](https://www.linkedin.com/in/luis-sarmiento-eco)</p>
 
 <p style="margin-bottom:-0.15cm;">`r fa("mobile-button")` +39 030 897890</p>
 
-<p style="margin-bottom:0.5cm;">`r fa("location-dot")` Via Bergognone, 34, 20144 Milan MI, Italy</p>
+<p style="margin-bottom:1.5cm;">`r fa("location-dot")` Via Bergognone, 34, 20144 Milan MI, Ital</p>

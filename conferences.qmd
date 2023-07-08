@@ -9,7 +9,7 @@ always_allow_html: true
 ---
 ```{r}
 #| echo: false 
-fivethirtyeight <- function(font_size = 14,
+fivethirtyeight <- function(font_size = 12,
                             font_color = "#222222",
                             header_font_size = 12,
                             header_font_color = "#000000",
@@ -82,7 +82,7 @@ fivethirtyeight <- function(font_size = 14,
 
 ```{r}
 #| echo: false 
-
+#| warning: false
 #### Load the data ####
 file = gsub("/02_cv", "", getwd())
 conf = read_excel(paste0(file, "/Codebook.xlsx"), sheet = "Conferences")
@@ -93,7 +93,7 @@ reactable(
   defaultColDef = colDef(align = "left"), 
   columns = list(City = colDef(maxWidth = 100), 
                  Conference = colDef(maxWidth = 400),
-                 Presentation = colDef(maxWidth = 300),
+                 Presentation = colDef(maxWidth = 400),
                  Year = colDef(maxWidth = 50, style = color_scales(conf, colors = c("gray", "#0b263d"))), 
                  Country = colDef(cell = embed_img(height = "25", width = "25"), maxWidth = 100, align = "center"))
   )

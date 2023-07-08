@@ -9,7 +9,8 @@ always_allow_html: true
 ---
 ```{r}
 #| echo: false 
-fivethirtyeight <- function(font_size = 14,
+#| 
+fivethirtyeight <- function(font_size = 12,
                             font_color = "#222222",
                             header_font_size = 12,
                             header_font_color = "#000000",
@@ -96,10 +97,11 @@ Besides techno-economic models of the energy system, I am currently developing a
 
 I also contribute to the [37th Energy Modelling Forum](https://emf.stanford.edu/emf-37-deep-decarbonization-high-electrificatio-scenarios-north-america) on high electrification scenarios in North America.
 
-### {{< ai google-scholar >}} Accepted and Published Manuscripts
+### {{< ai google-scholar >}} Publications
 
 ```{r}
 #| echo: false 
+#| warning: false
 #### Load the data ####
 file = gsub("/02_cv", "", getwd())
 pub = read_excel(paste0(file, "/Codebook.xlsx"), sheet = "Publications")
@@ -107,24 +109,26 @@ pub = read_excel(paste0(file, "/Codebook.xlsx"), sheet = "Publications")
 #### Add the link and only keep econometrics ###
 pub = mutate(pub, Article = paste0(link, Article)) |> 
   select(-link) %>% dplyr::filter(Type == "modeling") |> 
-  select(-Type)
+  select(-Type, -Country)
 
 
 #### Create the table ####
 reactable(pub, theme = fivethirtyeight(),
-          defaultColDef = colDef(align = "left", maxWidth = 200), 
+          defaultColDef = colDef(align = "left", maxWidth = 200, html = T, vAlign = "center"), 
           
-          columns = list(Article = colDef(maxWidth = 500, html = T), 
-                         Journal = colDef(maxWidth = 150), 
-                         Year = colDef(maxWidth = 50, style = color_scales(pub, colors = c("gray", "#0b263d"))), 
-                         Country = colDef(cell = embed_img(height = "25", width = "25"), maxWidth = 100, align = "center")))
+          columns = list(Article = colDef(maxWidth = 350, html = T), 
+                         Journal = colDef(maxWidth = 200), 
+                         Authors = colDef(maxWidth = 150),
+                         Affiliations = colDef(maxWidth = 250),
+                         Year = colDef(maxWidth = 50, style = color_scales(pub, colors = c("gray", "#0b263d")))))
 
 ```
 
-### {{< fa person-praying >}} Working Papers
+### {{< fa person-praying >}} Under Review
 
 ```{r}
 #| echo: false 
+#| warning: false
 #### Load the data ####
 file = gsub("/02_cv", "", getwd())
 pub = read_excel(paste0(file, "/Codebook.xlsx"), sheet = "WorkingPapers")
@@ -136,16 +140,14 @@ pub = dplyr::filter(pub, Type == "modeling", WorkingVersion == "Yes") |>
 
 #### Construct table ####
 reactable(
-  pub, theme = fivethirtyeight(),
-  defaultColDef = colDef(align = "left"), 
-  columns = list(Article = colDef(maxWidth = 300), 
-                 Coauthors = colDef(maxWidth = 150, align = "left"),
-                 Journal = colDef(maxWidth = 100, align = "center"), 
-                 Status = colDef(maxWidth = 70, align = "center"),
-                 Institution = colDef(maxWidth = 300),
-                 Start = colDef(maxWidth = 50, style = color_scales(pub, colors = c("gray", "#0b263d"))), 
-                 Country = colDef(cell = embed_img(height = "25", width = "25"), maxWidth = 100, align = "center"))
-  )
+  pub, theme = fivethirtyeight(font_size = 12),
+  defaultColDef = colDef(align = "left", html = T, vAlign = "center"), 
+  columns = list(Article = colDef(maxWidth = 350), 
+                 Authors = colDef(maxWidth = 150, align = "left"),
+                 Journal = colDef(maxWidth = 150), 
+                 Status = colDef(maxWidth = 70),
+                 Affiliations = colDef(maxWidth = 250),
+                 Start = colDef(maxWidth = 50, style = color_scales(pub, colors = c("gray", "#0b263d")))))
 
 
 
@@ -155,6 +157,9 @@ reactable(
 
 ```{r}
 #| echo: false 
+#| warning: false
+
+
 #### Load the data ####
 file = gsub("/02_cv", "", getwd())
 pub = read_excel(paste0(file, "/Codebook.xlsx"), sheet = "UnderwayResearch")
@@ -165,12 +170,13 @@ pub = dplyr::filter(pub, Type == "modeling") |> select(-Type)
 
 #### Present the table ####
 reactable(
-  pub, theme = fivethirtyeight(),
-  defaultColDef = colDef(align = "left", maxWidth = 200), 
-  columns = list(Article = colDef(maxWidth = 400), 
-                 Institutes = colDef(maxWidth = 300), 
-                 Expected = colDef(maxWidth = 100), 
-                 Start = colDef(maxWidth = 50, style = color_scales(pub, colors = c("gray", "#0b263d"))), 
+  pub, theme = fivethirtyeight(font_size = 12),  defaultPageSize = 5,
+  defaultColDef = colDef(align = "left", html = T, vAlign = "center"), 
+  columns = list(Article = colDef(maxWidth = 550), 
+                 Authors = colDef(maxWidth = 150, align = "left"),
+                 Affiliations = colDef(maxWidth = 250),
+                 Expected = colDef(maxWidth = 100),
+                 Start = colDef(maxWidth = 75, style = color_scales(pub, colors = c("gray", "#0b263d"))), 
                  Country = colDef(cell = embed_img(height = "25", width = "25"), maxWidth = 100, align = "center"))
   )
 

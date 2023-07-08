@@ -2,14 +2,17 @@
 title: "{{< fa file-contract >}} Applied Econometrics"
 # uncomment this line to produce HTML and PDF in RStudio:
 #knit: pagedown::chrome_print
+# uncomment this line to produce HTML and PDF in RStudio:
+#knit: pagedown::chrome_print
 format: html
-fontsize: "0.8 em"
+fontsize: "0.8em"
 toc: true
 always_allow_html: true
 ---
 ```{r}
 #| echo: false 
-fivethirtyeight <- function(font_size = 14,
+#| 
+fivethirtyeight <- function(font_size = 12,
                             font_color = "#222222",
                             header_font_size = 12,
                             header_font_color = "#000000",
@@ -80,21 +83,24 @@ fivethirtyeight <- function(font_size = 14,
 
 ```
 
-I use state-of-the-art econometric techniques in three main topics:
+### I use state-of-the-art econometric techniques in three main topics:
 
-**The effects of Air Pollution on the Individual**
+<span style="color:red;">**The effects of Air Pollution on the Individual**</span>
 
 - What are the effects of air pollution on productivity?
-- what are the effects of air pollution on criminality and Domestic Violence?
+- What are the effects of air pollution on criminality and Domestic Violence?
 - What are the effects of air pollution on Decision Making?
 - How do the indirect effects of air pollution on children affect the well-being of their parents?
+- How can we reduce children exposure to air pollution in Schools?
 
-**Air Pollution Control Mechanisms at the City Level**
+<span style="color:red;">**Air Pollution Control Mechanisms at the City Level**</span>
 
 - How efficient are current policies in reducing the use of internal combustion engines?
-- What are the effects of air quality alerts on parents' avoidance behaviour?
+- What are the equity consequences of urban air pollution control mechanisms?
+- What are the unexpected consequences of transit control policies?
+- What are the effects of air quality alerts on parents' avoidance behavior?
 
-**Digitalization, Transport, and Pollution**
+<span style="color:red;">**Digitalization, Transport, and Air Pollution**</span>
 
 - What is the effect of Ride-Hailing Technologies on Urban Air Pollution?
 
@@ -102,10 +108,11 @@ I use state-of-the-art econometric techniques in three main topics:
 In the future, I would like to study the effects of climate change on health, labor productivity, and human behavior.
 :::
 
-### {{< ai google-scholar >}} Accepted and Published Manuscripts
+### {{< ai google-scholar >}} Publications
 
 ```{r}
 #| echo: false 
+#| warning: false
 #### Load the data ####
 file = gsub("/02_cv", "", getwd())
 pub = read_excel(paste0(file, "/Codebook.xlsx"), sheet = "Publications")
@@ -113,24 +120,28 @@ pub = read_excel(paste0(file, "/Codebook.xlsx"), sheet = "Publications")
 #### Add the link and only keep econometrics ###
 pub = mutate(pub, Article = paste0(link, Article)) |> 
   select(-link) %>% dplyr::filter(Type == "econometrics") |> 
-  select(-Type)
+  select(-Type, -Country)
 
 
 #### Create the table ####
-reactable(pub, theme = fivethirtyeight(),
-          defaultColDef = colDef(align = "left", maxWidth = 200), 
+reactable(pub, theme = fivethirtyeight(font_size = 12),
+          defaultColDef = colDef(align = "left", maxWidth = 200, html = T, vAlign = "center"), 
           
-          columns = list(Article = colDef(maxWidth = 500, html = T), 
-                         Journal = colDef(maxWidth = 150), 
-                         Year = colDef(maxWidth = 50, style = color_scales(pub, colors = c("gray", "#0b263d"))), 
-                         Country = colDef(cell = embed_img(height = "25", width = "25"), maxWidth = 100, align = "center")))
+          columns = list(Article = colDef(maxWidth = 600, html = T), 
+                         Journal = colDef(maxWidth = 250), 
+                         Authors = colDef(maxWidth = 150),
+                         Affiliations = colDef(maxWidth = 250),
+                         Year = colDef(maxWidth = 50, style = color_scales(pub, colors = c("gray", "#0b263d")))))
 
 ```
 
-### {{< fa person-praying >}} Working Papers
+<p style="margin-bottom:1.5cm;">
+
+### {{< fa person-praying >}} Under Review
 
 ```{r}
 #| echo: false 
+#| warning: false
 #### Load the data ####
 file = gsub("/02_cv", "", getwd())
 pub = read_excel(paste0(file, "/Codebook.xlsx"), sheet = "WorkingPapers")
@@ -142,22 +153,21 @@ pub = dplyr::filter(pub, Type == "econometrics", WorkingVersion == "Yes") |>
 
 #### Construct table ####
 reactable(
-  pub, theme = fivethirtyeight(),
-  defaultColDef = colDef(align = "left"), 
-  columns = list(Article = colDef(maxWidth = 300), 
-                 Coauthors = colDef(maxWidth = 150, align = "left"),
-                 Journal = colDef(maxWidth = 100, align = "center"), 
-                 Status = colDef(maxWidth = 70, align = "center"),
-                 Institution = colDef(maxWidth = 300),
-                 Start = colDef(maxWidth = 50, style = color_scales(pub, colors = c("gray", "#0b263d"))), 
-                 Country = colDef(cell = embed_img(height = "25", width = "25"), maxWidth = 100, align = "center"))
-  )
+  pub, theme = fivethirtyeight(font_size = 12),
+  defaultColDef = colDef(align = "left", html = T, vAlign = "center"), 
+  columns = list(Article = colDef(maxWidth = 350), 
+                 Authors = colDef(maxWidth = 150, align = "left"),
+                 Journal = colDef(maxWidth = 150), 
+                 Status = colDef(maxWidth = 70),
+                 Affiliations = colDef(maxWidth = 250),
+                 Start = colDef(maxWidth = 50, style = color_scales(pub, colors = c("gray", "#0b263d")))))
 
 ```
 
 ### {{< fa person-digging >}} Underway Research
 ```{r}
 #| echo: false 
+#| warning: false
 #### Load the data ####
 file = gsub("/02_cv", "", getwd())
 pub = read_excel(paste0(file, "/Codebook.xlsx"), sheet = "UnderwayResearch")
@@ -168,12 +178,13 @@ pub = dplyr::filter(pub, Type == "econometrics") |> select(-Type)
 
 
 reactable(
-  pub, theme = fivethirtyeight(),
-  defaultColDef = colDef(align = "left", maxWidth = 200), 
-  columns = list(Article = colDef(maxWidth = 400), 
-                 Institutes = colDef(maxWidth = 300), 
-                 Expected = colDef(maxWidth = 100), 
-                 Start = colDef(maxWidth = 50, style = color_scales(pub, colors = c("gray", "#0b263d"))), 
+  pub, theme = fivethirtyeight(font_size = 12),  defaultPageSize = 5,
+  defaultColDef = colDef(align = "left", html = T, vAlign = "center"), 
+  columns = list(Article = colDef(maxWidth = 550), 
+                 Authors = colDef(maxWidth = 150, align = "left"),
+                 Affiliations = colDef(maxWidth = 250),
+                 Expected = colDef(maxWidth = 100),
+                 Start = colDef(maxWidth = 75, style = color_scales(pub, colors = c("gray", "#0b263d"))), 
                  Country = colDef(cell = embed_img(height = "25", width = "25"), maxWidth = 100, align = "center"))
   )
 

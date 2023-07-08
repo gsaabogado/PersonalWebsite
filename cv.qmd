@@ -172,6 +172,7 @@ fivethirtyeight2 <- function(font_size = 14,
 ------------------------------------------------------------------------
 ```{r}
 #| echo: false 
+#| warning: false
 #### Load the excel file ####
 file = gsub("/02_cv", "", getwd())
 prof = read_excel(paste0(file, "/Codebook.xlsx"), sheet = "Occupation")
@@ -207,7 +208,8 @@ reactable( prof, theme = fivethirtyeight(),
 
 ```{r}
 #| echo: false
-
+#| warning: false
+#| 
 #### Load the excel file ####
 file = gsub("/02_cv", "", getwd())
 educ = read_excel(paste0(file, "/Codebook.xlsx"), sheet = "Education")
@@ -235,41 +237,12 @@ reactable(educ, theme = fivethirtyeight(),
 
 <p style="margin-bottom:1.5cm;">
 
-
-
-### `r fa("file-zipper")` Publications
-
-------------------------------------------------------------------------
-
-```{r}
-#| echo: false 
-#### Load the data ####
-file = gsub("/02_cv", "", getwd())
-pub = read_excel(paste0(file, "/Codebook.xlsx"), sheet = "Publications")
-
-#### Add the link ###
-pub = mutate(pub, Article = paste0(link, Article)) |> 
-  select(-link)|> 
-  select(-Type)
-
-#### Create the table ####
-reactable(pub, theme = fivethirtyeight(),
-          defaultColDef = colDef(align = "left", maxWidth = 200), 
-          
-          columns = list(Article = colDef(maxWidth = 500, html = T), 
-                         Journal = colDef(maxWidth = 150), 
-                         Year = colDef(maxWidth = 50, style = color_scales(pub, colors = c("gray", "#0b263d"))), 
-                         Country = colDef(cell = embed_img(height = "25", width = "25"), maxWidth = 100, align = "center")))
-
-```
-
-<p style="margin-bottom:1.5cm;">
-
 ### `r fa("person-chalkboard")` Teaching
 
 ------------------------------------------------------------------------
 ```{r}
 #| echo: false 
+#| warning: false
 
 #### Load the data ####
 file = gsub("/02_cv", "", getwd())
@@ -282,7 +255,7 @@ reactable(
   columns = list(Level = colDef(maxWidth = 100), 
                  Institute = colDef(maxWidth = 500),
                  Semester = colDef(maxWidth = 100),
-                 Lecture = colDef(maxWidth = 300),
+                 Lecture = colDef(maxWidth = 500),
                  Year = colDef(maxWidth = 50, style = color_scales(conf, colors = c("gray", "#0b263d"))), 
                  Country = colDef(cell = embed_img(height = "25", width = "25"), maxWidth = 100, align = "center"))
   )
@@ -292,10 +265,42 @@ reactable(
 
 ------------------------------------------------------------------------
 
-### `r fa("person-praying")` Working Papers
+
+### `r fa("file-zipper")` Publications
+
+------------------------------------------------------------------------
+
 ```{r}
 #| echo: false 
-#| 
+#| warning: false
+#### Load the data ####
+file = gsub("/02_cv", "", getwd())
+pub = read_excel(paste0(file, "/Codebook.xlsx"), sheet = "Publications")
+
+#### Add the link ###
+pub = mutate(pub, Article = paste0(link, Article)) |> 
+  select(-link)|> 
+  select(-Type, -Country)
+
+#### Create the table ####
+reactable(pub, theme = fivethirtyeight(),
+          defaultColDef = colDef(align = "left", maxWidth = 200, html = T, vAlign = "center"), 
+          
+          columns = list(Article = colDef(maxWidth = 550, html = T), 
+                         Journal = colDef(maxWidth = 200), 
+                         Authors = colDef(maxWidth = 150),
+                         Affiliations = colDef(maxWidth = 250),
+                         Year = colDef(maxWidth = 50, style = color_scales(pub, colors = c("gray", "#0b263d")))))
+
+```
+
+<p style="margin-bottom:1.5cm;">
+
+
+### `r fa("person-praying")` Under Review
+```{r}
+#| echo: false 
+#| warning: false
 #### Load the data ####
 file = gsub("/02_cv", "", getwd())
 pub = read_excel(paste0(file, "/Codebook.xlsx"), sheet = "WorkingPapers") |> 
@@ -307,12 +312,12 @@ pub = dplyr::filter(pub, WorkingVersion == "Yes") |> select(-WorkingVersion)
 #### Construct table ####
 reactable(
   pub, theme = fivethirtyeight(),
-  defaultColDef = colDef(align = "left"), 
-  columns = list(Article = colDef(maxWidth = 300), 
-                 Coauthors = colDef(maxWidth = 150, align = "left"),
-                 Journal = colDef(maxWidth = 100, align = "center"), 
-                 Status = colDef(maxWidth = 70, align = "center"),
-                 Institution = colDef(maxWidth = 300),
+  defaultColDef = colDef(align = "left", html = T, vAlign = "center"), 
+  columns = list(Article = colDef(maxWidth = 350), 
+                 Authors = colDef(maxWidth = 150, align = "left"),
+                 Journal = colDef(maxWidth = 200), 
+                 Status = colDef(maxWidth = 70),
+                 Affiliations = colDef(maxWidth = 250),
                  Start = colDef(maxWidth = 50, style = color_scales(pub, colors = c("gray", "#0b263d"))), 
                  Country = colDef(cell = embed_img(height = "25", width = "25"), maxWidth = 100, align = "center"))
   )
@@ -326,22 +331,23 @@ reactable(
 
 ```{r}
 #| echo: false 
+#| warning: false
 #### Load the data ####
 file = gsub("/02_cv", "", getwd())
 pub = read_excel(paste0(file, "/Codebook.xlsx"), sheet = "UnderwayResearch")
 
 #### Only keep econometric papers ####
-pub = pub |> select(-Type)
-
+pub = pub |> select(-Type) %>% arrange(-Start)
 
 #### Present the table ####
 reactable(
-  pub, theme = fivethirtyeight(),  defaultPageSize = 3,
-  defaultColDef = colDef(align = "left", maxWidth = 200), 
-  columns = list(Article = colDef(maxWidth = 400), 
-                 Institutes = colDef(maxWidth = 300), 
-                 Expected = colDef(maxWidth = 100), 
-                 Start = colDef(maxWidth = 50, style = color_scales(pub, colors = c("gray", "#0b263d"))), 
+  pub, theme = fivethirtyeight(font_size = 12),  defaultPageSize = 5,
+  defaultColDef = colDef(align = "left", html = T, vAlign = "center"), 
+  columns = list(Article = colDef(maxWidth = 550), 
+                 Authors = colDef(maxWidth = 150, align = "left"),
+                 Affiliations = colDef(maxWidth = 250),
+                 Expected = colDef(maxWidth = 100),
+                 Start = colDef(maxWidth = 75, style = color_scales(pub, colors = c("gray", "#0b263d"))), 
                  Country = colDef(cell = embed_img(height = "25", width = "25"), maxWidth = 100, align = "center"))
   )
 ```
@@ -354,6 +360,7 @@ reactable(
 ------------------------------------------------------------------------
 ```{r}
 #| echo: false 
+#| warning: false
 
 #### Load the data ####
 file = gsub("/02_cv", "", getwd())
@@ -361,7 +368,7 @@ conf = read_excel(paste0(file, "/Codebook.xlsx"), sheet = "Conferences")
 
 #### Construct the table ####
 reactable(
-  conf, theme = fivethirtyeight(),  defaultPageSize = 3,
+  conf, theme = fivethirtyeight(),  defaultPageSize = 5,
   defaultColDef = colDef(align = "left"), 
   columns = list(City = colDef(maxWidth = 100), 
                  Conference = colDef(maxWidth = 400),
@@ -377,7 +384,9 @@ reactable(
 
 ```{r}
 #| echo: false 
+#| warning: false
 #| layout-ncol: 2
+#| layout-align: center
 
 
 #### Load the software excel file ####

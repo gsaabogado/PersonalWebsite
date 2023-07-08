@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.2.269">
+<meta name="generator" content="quarto-1.3.353">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -17,7 +17,7 @@ div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
   width: 0.8em;
-  margin: 0 0.8em 0.2em -1.6em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
 </style>
@@ -66,7 +66,7 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/react-17.0.0/react.min.js"></script>
 <script src="site_libs/react-17.0.0/react-dom.min.js"></script>
 <script src="site_libs/reactwidget-1.0.0/react-tools.js"></script>
-<script src="site_libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
+<script src="site_libs/htmlwidgets-1.6.2/htmlwidgets.js"></script>
 <script src="site_libs/reactable-binding-0.3.0/reactable.js"></script>
 
 
@@ -83,48 +83,55 @@ ul.task-list li input[type="checkbox"] {
     <span class="navbar-title">Luis Sarmiento – Economist</span>
     </a>
   </div>
+            <div id="quarto-search" class="" title="Search"></div>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
-    <a class="nav-link active" href="./index.html" aria-current="page">
+    <a class="nav-link active" href="./index.html" rel="" target="" aria-current="page">
  <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./cv.html">
+    <a class="nav-link" href="./cv.html" rel="" target="">
  <span class="menu-text">CV</span></a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="https://github.com/gsaabogado"><i class="bi bi-github" role="img">
+    <a class="nav-link" href="https://github.com/gsaabogado" rel="" target=""><i class="bi bi-github" role="img">
 </i> 
  <span class="menu-text"></span></a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="https://twitter.com/gsaabogado"><i class="bi bi-twitter" role="img">
+    <a class="nav-link" href="https://twitter.com/gsaabogado" rel="" target=""><i class="bi bi-twitter" role="img">
 </i> 
  <span class="menu-text"></span></a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="https://www.linkedin.com/in/luis-sarmiento-eco"><i class="bi bi-linkedin" role="img">
+    <a class="nav-link" href="https://www.linkedin.com/in/luis-sarmiento-eco" rel="" target=""><i class="bi bi-linkedin" role="img">
 </i> 
  <span class="menu-text"></span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="https://www.eiee.org/member/luis-alejandro-sarmiento/">
+    <a class="nav-link" href="https://www.eiee.org/member/luis-alejandro-sarmiento/" rel="" target="">
  <span class="menu-text">Institutional Site</span></a>
   </li>  
 </ul>
-              <div id="quarto-search" class="" title="Search"></div>
+            <div class="quarto-navbar-tools">
+</div>
           </div> <!-- /navcollapse -->
       </div> <!-- /container-fluid -->
     </nav>
-  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
-    <div class="container-fluid d-flex justify-content-between">
-      <h1 class="quarto-secondary-nav-title"><i class="fa-solid fa-file-contract" aria-label="file-contract"></i> Applied Econometrics</h1>
-      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
-        <i class="bi bi-chevron-right"></i>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./index.html">Sections</a></li><li class="breadcrumb-item"><a href="./econometrics.html"><i class="fa-solid fa-file-contract" aria-label="file-contract"></i> Applied Econometrics</a></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
       </button>
     </div>
   </nav>
@@ -132,55 +139,63 @@ ul.task-list li input[type="checkbox"] {
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation docked overflow-auto">
-      <div class="mt-2 flex-shrink-0 align-items-center">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation docked overflow-auto">
+        <div class="mt-2 flex-shrink-0 align-items-center">
         <div class="sidebar-search">
         <div id="quarto-search" class="" title="Search"></div>
         </div>
-      </div>
+        </div>
     <div class="sidebar-menu-container"> 
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">Sections</a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">Sections</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./index.html" class="sidebar-item-text sidebar-link"><i class="fa fa-user"></i> <strong>About Me</strong></a>
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><i class="fa fa-user"></i> <strong>About Me</strong></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./cv.html" class="sidebar-item-text sidebar-link"><i class="fa-solid fa-book-open-reader" aria-label="book-open-reader"></i> Curriculum Vitae <a href="https://www.dropbox.com/s/5kp8ft0nghhj0bo/cv_pdf.pdf?dl=0"><i class="fa-solid fa-download" aria-label="download"></i></a></a>
+  <a href="./cv.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><i class="fa-solid fa-book-open-reader" aria-label="book-open-reader"></i> Curriculum Vitae <a href="https://www.dropbox.com/s/5kp8ft0nghhj0bo/cv_pdf.pdf?dl=0"><i class="fa-solid fa-download" aria-label="download"></i></a></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./econometrics.html" class="sidebar-item-text sidebar-link active"><i class="fa-solid fa-file-contract" aria-label="file-contract"></i> Applied Econometrics</a>
+  <a href="./econometrics.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><i class="fa-solid fa-file-contract" aria-label="file-contract"></i> Applied Econometrics</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./EnergyMod.html" class="sidebar-item-text sidebar-link"><i class="fa-solid fa-solar-panel" aria-label="solar-panel"></i> Energy Modeling</a>
+  <a href="./EnergyMod.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><i class="fa-solid fa-solar-panel" aria-label="solar-panel"></i> Energy Modeling</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./conferences.html" class="sidebar-item-text sidebar-link"><i class="fa-solid fa-person-chalkboard" aria-label="person-chalkboard"></i> Conferences</a>
+  <a href="./conferences.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><i class="fa-solid fa-person-chalkboard" aria-label="person-chalkboard"></i> Conferences</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./contact.html" class="sidebar-item-text sidebar-link"><i class="fa-solid fa-address-card" aria-label="address-card"></i> Contact</a>
+  <a href="./contact.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><i class="fa-solid fa-address-card" aria-label="address-card"></i> Contact</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./CommercialCV.html" class="sidebar-item-text sidebar-link"><i class="fa-solid fa-copyright" aria-label="copyright"></i> Commercial CV <a href="https://www.dropbox.com/s/vhcyj6pz78a51xc/CommercialCv.pdf?dl=0"><i class="fa-solid fa-download" aria-label="download"></i></a></a>
+  <a href="./CommercialCV.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><i class="fa-solid fa-copyright" aria-label="copyright"></i> Commercial CV <a href="https://www.dropbox.com/s/vhcyj6pz78a51xc/CommercialCv.pdf?dl=0"><i class="fa-solid fa-download" aria-label="download"></i></a></span></a>
   </div>
 </li>
       </ul>
@@ -188,14 +203,16 @@ ul.task-list li input[type="checkbox"] {
     </ul>
     </div>
 </nav>
+<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         <nav id="TOC" role="doc-toc" class="toc-active">
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#ai-google-scholar-accepted-and-published-manuscripts" id="toc-ai-google-scholar-accepted-and-published-manuscripts" class="nav-link active" data-scroll-target="#ai-google-scholar-accepted-and-published-manuscripts"><i class="ai  ai-google-scholar" title="" style="color:"></i> Accepted and Published Manuscripts</a></li>
-  <li><a href="#fa-person-praying-working-papers" id="toc-fa-person-praying-working-papers" class="nav-link" data-scroll-target="#fa-person-praying-working-papers"><i class="fa-solid fa-person-praying" aria-label="person-praying"></i> Working Papers</a></li>
+  <li><a href="#i-use-state-of-the-art-econometric-techniques-in-three-main-topics" id="toc-i-use-state-of-the-art-econometric-techniques-in-three-main-topics" class="nav-link active" data-scroll-target="#i-use-state-of-the-art-econometric-techniques-in-three-main-topics">I use state-of-the-art econometric techniques in three main topics:</a></li>
+  <li><a href="#ai-google-scholar-publications" id="toc-ai-google-scholar-publications" class="nav-link" data-scroll-target="#ai-google-scholar-publications"><i class="ai  ai-google-scholar" title="" style="color:"></i> Publications</a></li>
+  <li><a href="#fa-person-praying-under-review" id="toc-fa-person-praying-under-review" class="nav-link" data-scroll-target="#fa-person-praying-under-review"><i class="fa-solid fa-person-praying" aria-label="person-praying"></i> Under Review</a></li>
   <li><a href="#fa-person-digging-underway-research" id="toc-fa-person-digging-underway-research" class="nav-link" data-scroll-target="#fa-person-digging-underway-research"><i class="fa-solid fa-person-digging" aria-label="person-digging"></i> Underway Research</a></li>
   </ul>
 </nav>
@@ -205,7 +222,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title d-none d-lg-block"><i class="fa-solid fa-file-contract" aria-label="file-contract"></i> Applied Econometrics</h1>
+<h1 class="title"><i class="fa-solid fa-file-contract" aria-label="file-contract"></i> Applied Econometrics</h1>
 </div>
 
 
@@ -220,32 +237,33 @@ ul.task-list li input[type="checkbox"] {
 
 </header>
 
-<div class="cell">
-
-</div>
-<p>I use state-of-the-art econometric techniques in three main topics:</p>
-<p><strong>The effects of Air Pollution on the Individual</strong></p>
+<section id="i-use-state-of-the-art-econometric-techniques-in-three-main-topics" class="level3">
+<h3 class="anchored" data-anchor-id="i-use-state-of-the-art-econometric-techniques-in-three-main-topics">I use state-of-the-art econometric techniques in three main topics:</h3>
+<p><span style="color:red;"><strong>The effects of Air Pollution on the Individual</strong></span></p>
 <ul>
 <li>What are the effects of air pollution on productivity?</li>
-<li>what are the effects of air pollution on criminality and Domestic Violence?</li>
+<li>What are the effects of air pollution on criminality and Domestic Violence?</li>
 <li>What are the effects of air pollution on Decision Making?</li>
 <li>How do the indirect effects of air pollution on children affect the well-being of their parents?</li>
+<li>How can we reduce children exposure to air pollution in Schools?</li>
 </ul>
-<p><strong>Air Pollution Control Mechanisms at the City Level</strong></p>
+<p><span style="color:red;"><strong>Air Pollution Control Mechanisms at the City Level</strong></span></p>
 <ul>
 <li>How efficient are current policies in reducing the use of internal combustion engines?</li>
-<li>What are the effects of air quality alerts on parents’ avoidance behaviour?</li>
+<li>What are the equity consequences of urban air pollution control mechanisms?</li>
+<li>What are the unexpected consequences of transit control policies?</li>
+<li>What are the effects of air quality alerts on parents’ avoidance behavior?</li>
 </ul>
-<p><strong>Digitalization, Transport, and Pollution</strong></p>
+<p><span style="color:red;"><strong>Digitalization, Transport, and Air Pollution</strong></span></p>
 <ul>
 <li>What is the effect of Ride-Hailing Technologies on Urban Air Pollution?</li>
 </ul>
-<div class="callout-note callout callout-style-default callout-captioned">
+<div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<div class="callout-caption-container flex-fill">
+<div class="callout-title-container flex-fill">
 Note
 </div>
 </div>
@@ -253,23 +271,25 @@ Note
 <p>In the future, I would like to study the effects of climate change on health, labor productivity, and human behavior.</p>
 </div>
 </div>
-<section id="ai-google-scholar-accepted-and-published-manuscripts" class="level3">
-<h3 class="anchored" data-anchor-id="ai-google-scholar-accepted-and-published-manuscripts"><i class="ai  ai-google-scholar" title="" style="color:"></i> Accepted and Published Manuscripts</h3>
-<div class="cell">
-<div class="cell-output-display">
-
-<div id="htmlwidget-dd1730f010d90957760e" class="reactable html-widget" style="width:auto;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-dd1730f010d90957760e">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"Year":[2022,2021,2021],"Article":["<a href='https://doi.org/10.1088/2752-5309/ac9a65'>The Nonlinear \r Effects of Pollution on Crime: Evidence from Mexico City and New York","<a href='https://onlinelibrary.wiley.com/doi/full/10.1111/sjoe.12458'>Air Pollution and the Productivity of High-Skill Labor: Evidence from Court Hearings","<a href = 'https://www.sciencedirect.com/science/article/abs/pii/S1361920919307278'>The Effects of \rthe 2013 Floods on Germany's Road Freight Traffic"],"Journal":["Environmental Research - Health","Scandinavian Journal of Economics 124: 301-332.","Transportation Research Part D, S.1022774"],"Coauthors":[null,null,"Julio Fournier"],"Institute":["RFF-CMCC: European Institute on Economics and the Environment","RFF-CMCC: European Institute on Economics and the Environment and DIW Berlin","German Institute of Economic Research (DIW Berlin)"],"Country":["https://img.icons8.com/color/344/italy-circular.png","https://img.icons8.com/color/344/italy-circular.png","https://img.icons8.com/color/344/germany-circular.png"]},"columns":[{"accessor":"Year","name":"Year","type":"numeric","maxWidth":50,"align":"left","style":[{"background":"#0B263DFF","color":"white","fontSize":null,"fontWeight":"normal","transition":"background 1s ease"},{"background":"#BEBEBEFF","color":"black","fontSize":null,"fontWeight":"normal","transition":"background 1s ease"},{"background":"#BEBEBEFF","color":"black","fontSize":null,"fontWeight":"normal","transition":"background 1s ease"}]},{"accessor":"Article","name":"Article","type":"character","maxWidth":500,"align":"left","html":true},{"accessor":"Journal","name":"Journal","type":"character","maxWidth":150,"align":"left"},{"accessor":"Coauthors","name":"Coauthors","type":"character","maxWidth":200,"align":"left"},{"accessor":"Institute","name":"Institute","type":"character","maxWidth":200,"align":"left"},{"accessor":"Country","name":"Country","type":"character","maxWidth":100,"align":"center","cell":[{"name":"Fragment","attribs":[],"children":[{"name":"div","attribs":{"style":{"display":"flex","justifyContent":"center"}},"children":[{"name":"img","attribs":{"src":"https://img.icons8.com/color/344/italy-circular.png","align":"center","height":"25","width":"25"},"children":[]}]}]},{"name":"Fragment","attribs":[],"children":[{"name":"div","attribs":{"style":{"display":"flex","justifyContent":"center"}},"children":[{"name":"img","attribs":{"src":"https://img.icons8.com/color/344/italy-circular.png","align":"center","height":"25","width":"25"},"children":[]}]}]},{"name":"Fragment","attribs":[],"children":[{"name":"div","attribs":{"style":{"display":"flex","justifyContent":"center"}},"children":[{"name":"img","attribs":{"src":"https://img.icons8.com/color/344/germany-circular.png","align":"center","height":"25","width":"25"},"children":[]}]}]}]}],"defaultPageSize":10,"paginationType":"numbers","showPageInfo":true,"minRows":1,"theme":{"color":"#222222","backgroundColor":"transparent","borderColor":"black","borderWidth":"1.25px","stripedColor":"#dddddd","highlightColor":"#f0f0f0","cellPadding":5,"tableStyle":{"fontSize":14,"borderBottom":"3px solid #222222"},"headerStyle":{"borderWidth":"5px","paddingTop":"12px","verticalAlign":"bottom","textAlign":"bottom","background":"transparent","textTransform":"uppercase","borderColor":"#222222","color":"#000000","&:hover":{"background":"#dddddd"},"&[aria-sort='ascending'], &[aria-sort='descending']":{"background":"#5b5e5f","color":"#ffffff"},"borderColor.1":"#333","fontSize":12},"groupHeaderStyle":{"&:not(:empty)":{"paddingBottom":"3px","verticalAlign":"bottom","textAlign":"bottom","backgroundColor":"#ffffff","textTransform":"uppercase","fontSize":12,"color":"#222222"}},"rowSelectedStyle":{"backgroundColor":"#dddddd"},"inputStyle":{"backgroundColor":"#ffffff","color":"#222222"},"searchInputStyle":{"textTransform":"uppercase","color":"#222222","fontSize":"14px"},"paginationStyle":{"textTransform":"uppercase","fontSize":"14px"},"pageButtonStyle":{"textTransform":"uppercase","fontSize":"14px"}},"dataKey":"cd027140881e90ad3615b9bd2eb06954"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
-</div>
-</div>
 </section>
-<section id="fa-person-praying-working-papers" class="level3">
-<h3 class="anchored" data-anchor-id="fa-person-praying-working-papers"><i class="fa-solid fa-person-praying" aria-label="person-praying"></i> Working Papers</h3>
+<section id="ai-google-scholar-publications" class="level3">
+<h3 class="anchored" data-anchor-id="ai-google-scholar-publications"><i class="ai  ai-google-scholar" title="" style="color:"></i> Publications</h3>
 <div class="cell">
 <div class="cell-output-display">
 
-<div id="htmlwidget-cb7f139b5ffa737d5ceb" class="reactable html-widget" style="width:auto;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-cb7f139b5ffa737d5ceb">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"Start":[2021,2019,2018],"Article":["The Air Quality Effects of Uber","Effectiveness, Spillovers, and Well-Being Effects of Driving Restriction Policies","Make Sure the Kids are OK: Indirect Effects of Air Pollution on Well-Being"],"Status":["Under Review","Revise and Resubmit","Under Review"],"Journal":["The Review of Economics and Statistics","Journal of Public Economics","Nature Sustainability"],"Coauthors":["Yeong-Jae Kim","Nicole Wägner and Aleksandar Zaklan","Julia Rechliz, Nicole Wägner, and Aleksandar Zaklan"],"Institute":["European Institute on Economics and the Environment and KID School of Public Policy","European Institute on Economics and the Environment, German\r Institute of Economic Research, and Leibniz Institute for Economic Research","European Institute on Economics and the Environment, German\r Institute of Economic Research, and Leibniz Institute for Economic Research"]},"columns":[{"accessor":"Start","name":"Start","type":"numeric","align":"left","maxWidth":50,"style":[{"background":"#0B263DFF","color":"white","fontSize":null,"fontWeight":"normal","transition":"background 1s ease"},{"background":"#828B93FF","color":"black","fontSize":null,"fontWeight":"normal","transition":"background 1s ease"},{"background":"#BEBEBEFF","color":"black","fontSize":null,"fontWeight":"normal","transition":"background 1s ease"}]},{"accessor":"Article","name":"Article","type":"character","align":"left","maxWidth":300},{"accessor":"Status","name":"Status","type":"character","align":"center","maxWidth":70},{"accessor":"Journal","name":"Journal","type":"character","align":"center","maxWidth":100},{"accessor":"Coauthors","name":"Coauthors","type":"character","align":"left","maxWidth":150},{"accessor":"Institute","name":"Institute","type":"character","align":"left"}],"defaultPageSize":10,"paginationType":"numbers","showPageInfo":true,"minRows":1,"theme":{"color":"#222222","backgroundColor":"transparent","borderColor":"black","borderWidth":"1.25px","stripedColor":"#dddddd","highlightColor":"#f0f0f0","cellPadding":5,"tableStyle":{"fontSize":14,"borderBottom":"3px solid #222222"},"headerStyle":{"borderWidth":"5px","paddingTop":"12px","verticalAlign":"bottom","textAlign":"bottom","background":"transparent","textTransform":"uppercase","borderColor":"#222222","color":"#000000","&:hover":{"background":"#dddddd"},"&[aria-sort='ascending'], &[aria-sort='descending']":{"background":"#5b5e5f","color":"#ffffff"},"borderColor.1":"#333","fontSize":12},"groupHeaderStyle":{"&:not(:empty)":{"paddingBottom":"3px","verticalAlign":"bottom","textAlign":"bottom","backgroundColor":"#ffffff","textTransform":"uppercase","fontSize":12,"color":"#222222"}},"rowSelectedStyle":{"backgroundColor":"#dddddd"},"inputStyle":{"backgroundColor":"#ffffff","color":"#222222"},"searchInputStyle":{"textTransform":"uppercase","color":"#222222","fontSize":"14px"},"paginationStyle":{"textTransform":"uppercase","fontSize":"14px"},"pageButtonStyle":{"textTransform":"uppercase","fontSize":"14px"}},"dataKey":"9a2d9edfcbd6ae91e9cd4ead281801e4"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-68d77afc216b7446d761" class="reactable html-widget " style="width:auto;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-68d77afc216b7446d761">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"Year":[2022,2021,2021],"Article":["<a href='https://doi.org/10.1088/2752-5309/ac9a65'>The Nonlinear \r Effects of Pollution on Crime: Evidence from Mexico City and New York","<a href='https://onlinelibrary.wiley.com/doi/full/10.1111/sjoe.12458'>Air Pollution and the Productivity of High-Skill Labor: Evidence from Court Hearings","<a href = 'https://www.sciencedirect.com/science/article/abs/pii/S1361920919307278'>The Effects of \rthe 2013 Floods on Germany's Road Freight Traffic"],"Journal":["Environmental Research - Health","Scandinavian Journal of Economics 124: 301-332.","Transportation Research Part D, S.1022774"],"Authors":["<span>&#8226;<\/span> Luis Sarmiento  <br>","<span>&#8226;<\/span> Luis Sarmiento  <br>","<span>&#8226;<\/span> Julio Fournier<br>\r\n<span>&#8226;<\/span> Luis Sarmiento  <br>\r\n"],"Affiliations":["<span>&#8226;<\/span>  RFF-CMCC","<span>&#8226;<\/span> RFF-CMCC","<span>&#8226;<\/span> DIW Berlin <br> \r\n<span>&#8226;<\/span> DIW Berlin <br>\r\n"]},"columns":[{"accessor":"Year","name":"Year","type":"numeric","html":true,"maxWidth":50,"align":"left","vAlign":"center","style":[{"background":"#0B263DFF","color":"white","fontSize":null,"fontWeight":"normal","transition":"background 1s ease"},{"background":"#BEBEBEFF","color":"black","fontSize":null,"fontWeight":"normal","transition":"background 1s ease"},{"background":"#BEBEBEFF","color":"black","fontSize":null,"fontWeight":"normal","transition":"background 1s ease"}]},{"accessor":"Article","name":"Article","type":"character","html":true,"maxWidth":600,"align":"left","vAlign":"center"},{"accessor":"Journal","name":"Journal","type":"character","html":true,"maxWidth":250,"align":"left","vAlign":"center"},{"accessor":"Authors","name":"Authors","type":"character","html":true,"maxWidth":150,"align":"left","vAlign":"center"},{"accessor":"Affiliations","name":"Affiliations","type":"character","html":true,"maxWidth":250,"align":"left","vAlign":"center"}],"defaultPageSize":10,"paginationType":"numbers","showPageInfo":true,"minRows":1,"theme":{"color":"#222222","backgroundColor":"transparent","borderColor":"black","borderWidth":"1.25px","stripedColor":"#dddddd","highlightColor":"#f0f0f0","cellPadding":5,"tableStyle":{"fontSize":12,"borderBottom":"3px solid #222222"},"headerStyle":{"borderWidth":"5px","paddingTop":"12px","verticalAlign":"bottom","textAlign":"bottom","background":"transparent","textTransform":"uppercase","borderColor":"#222222","color":"#000000","&:hover":{"background":"#dddddd"},"&[aria-sort='ascending'], &[aria-sort='descending']":{"background":"#5b5e5f","color":"#ffffff"},"borderColor.1":"#333","fontSize":12},"groupHeaderStyle":{"&:not(:empty)":{"paddingBottom":"3px","verticalAlign":"bottom","textAlign":"bottom","backgroundColor":"#ffffff","textTransform":"uppercase","fontSize":12,"color":"#222222"}},"rowSelectedStyle":{"backgroundColor":"#dddddd"},"inputStyle":{"backgroundColor":"#ffffff","color":"#222222"},"searchInputStyle":{"textTransform":"uppercase","color":"#222222","fontSize":"14px"},"paginationStyle":{"textTransform":"uppercase","fontSize":"14px"},"pageButtonStyle":{"textTransform":"uppercase","fontSize":"14px"}},"dataKey":"4ffa14c4dfdd08e8f00c81dfc097ac48"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+<p style="margin-bottom:1.5cm;">
+</p></section>
+<section id="fa-person-praying-under-review" class="level3">
+<h3 class="anchored" data-anchor-id="fa-person-praying-under-review"><i class="fa-solid fa-person-praying" aria-label="person-praying"></i> Under Review</h3>
+<div class="cell">
+<div class="cell-output-display">
+
+<div id="htmlwidget-7ad06e9c5cd88f8a2c56" class="reactable html-widget " style="width:auto;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-7ad06e9c5cd88f8a2c56">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"Start":[2021,2019,2018,2022],"Article":["The Air Quality Effects of Uber","Effectiveness, Spillovers, and Well-Being Effects of Driving Restriction Policies","Make Sure the Kids are OK: Indirect Effects of Air Pollution on Well-Being","Air Pollution and Court Decisions: Evidence from Ten Million Penal Cases in India"],"Journal":["Journal of Environmental Economics and Management","Journal of Public Economics","Nature Sustainability","Environmental and Resource Economics"],"Status":["Under Review","R&R","Under Review","R&R"],"Authors":["<span>&#8226;<\/span> Luis Sarmiento <br>\r\n<span>&#8226;<\/span> Yeong-Jae Kim","<span>&#8226;<\/span> Luis Sarmiento <br>\r\n<span>&#8226;<\/span> Nicole Wägner <br>\r\n<span>&#8226;<\/span> Aleksandar Zaklan <br>","<span>&#8226;<\/span> Luis Sarmiento <br>\r\n<span>&#8226;<\/span> Julia Rechlitz <br>\r\n<span>&#8226;<\/span> Nicole Wägner <br>\r\n<span>&#8226;<\/span> Aleksandar Zaklan <br>","<span>&#8226;<\/span> Luis Sarmiento <br>\r\n<span>&#8226;<\/span> Adam Nowakowski <br>"],"Affiliations":["<span>&#8226;<\/span> RFF-CMCC <br> \r\n<span>&#8226;<\/span> KDI School of Public Management <br>\r\n","<span>&#8226;<\/span> RFF-CMCC <br> \r\n<span>&#8226;<\/span> University of Bergen <br>\r\n<span>&#8226;<\/span> German Ministry for Economic Affairs","<span>&#8226;<\/span> RFF-CMCC <br> \r\n<span>&#8226;<\/span> DIW Berlin <br> \r\n<span>&#8226;<\/span> University of Bergen <br>\r\n<span>&#8226;<\/span> German Ministry for Economic Affairs","<span>&#8226;<\/span> RFF-CMCC <br> \r\n<span>&#8226;<\/span> Bocconi University <br>\r\n"]},"columns":[{"accessor":"Start","name":"Start","type":"numeric","html":true,"align":"left","vAlign":"center","maxWidth":50,"style":[{"background":"#374C5DFF","color":"white","fontSize":null,"fontWeight":"normal","transition":"background 1s ease"},{"background":"#91989DFF","color":"black","fontSize":null,"fontWeight":"normal","transition":"background 1s ease"},{"background":"#BEBEBEFF","color":"black","fontSize":null,"fontWeight":"normal","transition":"background 1s ease"},{"background":"#0B263DFF","color":"white","fontSize":null,"fontWeight":"normal","transition":"background 1s ease"}]},{"accessor":"Article","name":"Article","type":"character","html":true,"align":"left","vAlign":"center","maxWidth":350},{"accessor":"Journal","name":"Journal","type":"character","html":true,"align":"left","vAlign":"center","maxWidth":150},{"accessor":"Status","name":"Status","type":"character","html":true,"align":"left","vAlign":"center","maxWidth":70},{"accessor":"Authors","name":"Authors","type":"character","html":true,"align":"left","vAlign":"center","maxWidth":150},{"accessor":"Affiliations","name":"Affiliations","type":"character","html":true,"align":"left","vAlign":"center","maxWidth":250}],"defaultPageSize":10,"paginationType":"numbers","showPageInfo":true,"minRows":1,"theme":{"color":"#222222","backgroundColor":"transparent","borderColor":"black","borderWidth":"1.25px","stripedColor":"#dddddd","highlightColor":"#f0f0f0","cellPadding":5,"tableStyle":{"fontSize":12,"borderBottom":"3px solid #222222"},"headerStyle":{"borderWidth":"5px","paddingTop":"12px","verticalAlign":"bottom","textAlign":"bottom","background":"transparent","textTransform":"uppercase","borderColor":"#222222","color":"#000000","&:hover":{"background":"#dddddd"},"&[aria-sort='ascending'], &[aria-sort='descending']":{"background":"#5b5e5f","color":"#ffffff"},"borderColor.1":"#333","fontSize":12},"groupHeaderStyle":{"&:not(:empty)":{"paddingBottom":"3px","verticalAlign":"bottom","textAlign":"bottom","backgroundColor":"#ffffff","textTransform":"uppercase","fontSize":12,"color":"#222222"}},"rowSelectedStyle":{"backgroundColor":"#dddddd"},"inputStyle":{"backgroundColor":"#ffffff","color":"#222222"},"searchInputStyle":{"textTransform":"uppercase","color":"#222222","fontSize":"14px"},"paginationStyle":{"textTransform":"uppercase","fontSize":"14px"},"pageButtonStyle":{"textTransform":"uppercase","fontSize":"14px"}},"dataKey":"62588b501ea8c3ee491d971ced4d085e"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 </section>
@@ -278,8 +298,8 @@ Note
 <div class="cell">
 <div class="cell-output-display">
 
-<div id="htmlwidget-c427b5342431d7158b06" class="reactable html-widget" style="width:auto;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-c427b5342431d7158b06">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"Start":[2022,2021,2021,2020],"Article":["Air Pollution and Court Decisions: Evidence from Ten Million Penal Cases in India","The Unaccounted Consequences of Low Emission Zones: Evidence from Madrid Central","Air Pollution and Domestic Violence","Air Quality and School Abenteeism: Evidence from New York City"],"Expected":["Spring 2023","Winter 2022","Spring 2023","Spring 2022"],"Coauthors":["Adam Nowakowski","Adrian Santoja and Nicole Wägner","Ireri Hernandez",null],"Institutes":["European Institute on Economics and the Environment and Bocconi University","European Institute on Economics and the Environment, German\r Institute of Economic Research, and Leibniz Institute for Economic Research","European Institute on Economics and the Environment and Bocconi University","European Institute on Economics and the Environment"]},"columns":[{"accessor":"Start","name":"Start","type":"numeric","maxWidth":50,"align":"left","style":[{"background":"#0B263DFF","color":"white","fontSize":null,"fontWeight":"normal","transition":"background 1s ease"},{"background":"#64727DFF","color":"white","fontSize":null,"fontWeight":"normal","transition":"background 1s ease"},{"background":"#64727DFF","color":"white","fontSize":null,"fontWeight":"normal","transition":"background 1s ease"},{"background":"#BEBEBEFF","color":"black","fontSize":null,"fontWeight":"normal","transition":"background 1s ease"}]},{"accessor":"Article","name":"Article","type":"character","maxWidth":400,"align":"left"},{"accessor":"Expected","name":"Expected","type":"character","maxWidth":100,"align":"left"},{"accessor":"Coauthors","name":"Coauthors","type":"character","maxWidth":200,"align":"left"},{"accessor":"Institutes","name":"Institutes","type":"character","maxWidth":300,"align":"left"}],"defaultPageSize":10,"paginationType":"numbers","showPageInfo":true,"minRows":1,"theme":{"color":"#222222","backgroundColor":"transparent","borderColor":"black","borderWidth":"1.25px","stripedColor":"#dddddd","highlightColor":"#f0f0f0","cellPadding":5,"tableStyle":{"fontSize":14,"borderBottom":"3px solid #222222"},"headerStyle":{"borderWidth":"5px","paddingTop":"12px","verticalAlign":"bottom","textAlign":"bottom","background":"transparent","textTransform":"uppercase","borderColor":"#222222","color":"#000000","&:hover":{"background":"#dddddd"},"&[aria-sort='ascending'], &[aria-sort='descending']":{"background":"#5b5e5f","color":"#ffffff"},"borderColor.1":"#333","fontSize":12},"groupHeaderStyle":{"&:not(:empty)":{"paddingBottom":"3px","verticalAlign":"bottom","textAlign":"bottom","backgroundColor":"#ffffff","textTransform":"uppercase","fontSize":12,"color":"#222222"}},"rowSelectedStyle":{"backgroundColor":"#dddddd"},"inputStyle":{"backgroundColor":"#ffffff","color":"#222222"},"searchInputStyle":{"textTransform":"uppercase","color":"#222222","fontSize":"14px"},"paginationStyle":{"textTransform":"uppercase","fontSize":"14px"},"pageButtonStyle":{"textTransform":"uppercase","fontSize":"14px"}},"dataKey":"d9300ab52c9b96938af1507fc594a282"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-c07a42bd18a130dc116f" class="reactable html-widget " style="width:auto;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-c07a42bd18a130dc116f">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"Start":[2021,2021,2020,2022],"Article":["The Unaccounted Consequences of Low Emission Zones: Evidence from Madrid Central","Air Pollution and Domestic Violence","Air Quality and School Abenteeism: Evidence from New York City","The Effect of Air purifiers on children' health, attitudes, and performance: Evidence from an RCT in Milan"],"Expected":["Summer 2022","Winter 2023","Winter 2022","Spring 2024"],"Authors":["<span>&#8226;<\/span> Luis Sarmiento <br>\r\n<span>&#8226;<\/span> Nicole Wägner <br>\r\n<span>&#8226;<\/span> Adrian Santoja","<span>&#8226;<\/span> Luis Sarmiento <br>\r\n<span>&#8226;<\/span> Ireri Hernandez","<span>&#8226;<\/span> Luis Sarmiento <br>\r\n<span>&#8226;<\/span> Soheil Shayegh <br>\r\n<span>&#8226;<\/span> Evan Altman  <br>\r\n<span>&#8226;<\/span> Chiara Serra  <br>\r\n<span>&#8226;<\/span> Simone Ferro  <br>","<span>&#8226;<\/span> Jacopo Bonan <br>\r\n<span>&#8226;<\/span> Luis Sarmiento <br>\r\n<span>&#8226;<\/span> Francesco Granella  <br>\r\n<span>&#8226;<\/span> Stefania Renna  <br>"],"Affiliations":["<span>&#8226;<\/span> RFF-CMCC <br> \r\n<span>&#8226;<\/span> University of Bergen <br>\r\n<span>&#8226;<\/span> DIW Berlin","<span>&#8226;<\/span> RFF-CMCC <br> \r\n<span>&#8226;<\/span> Bocconi University <br>\r\n","<span>&#8226;<\/span> RFF-CMCC <br> \r\n<span>&#8226;<\/span> RFF-CMCC <br>\r\n<span>&#8226;<\/span> Emory University <br>\r\n<span>&#8226;<\/span> Bocconi University <br> \r\n<span>&#8226;<\/span> University of Milan <br>","<span>&#8226;<\/span> Politecnico di Milano <br> \r\n<span>&#8226;<\/span> RFF-CMCC <br> \r\n<span>&#8226;<\/span> RFF-CMCC <br> \r\n<span>&#8226;<\/span> Politecnico di Milano"]},"columns":[{"accessor":"Start","name":"Start","type":"numeric","html":true,"align":"left","vAlign":"center","maxWidth":75,"style":[{"background":"#64727DFF","color":"white","fontSize":null,"fontWeight":"normal","transition":"background 1s ease"},{"background":"#64727DFF","color":"white","fontSize":null,"fontWeight":"normal","transition":"background 1s ease"},{"background":"#BEBEBEFF","color":"black","fontSize":null,"fontWeight":"normal","transition":"background 1s ease"},{"background":"#0B263DFF","color":"white","fontSize":null,"fontWeight":"normal","transition":"background 1s ease"}]},{"accessor":"Article","name":"Article","type":"character","html":true,"align":"left","vAlign":"center","maxWidth":550},{"accessor":"Expected","name":"Expected","type":"character","html":true,"align":"left","vAlign":"center","maxWidth":100},{"accessor":"Authors","name":"Authors","type":"character","html":true,"align":"left","vAlign":"center","maxWidth":150},{"accessor":"Affiliations","name":"Affiliations","type":"character","html":true,"align":"left","vAlign":"center","maxWidth":250}],"defaultPageSize":5,"paginationType":"numbers","showPageInfo":true,"minRows":1,"theme":{"color":"#222222","backgroundColor":"transparent","borderColor":"black","borderWidth":"1.25px","stripedColor":"#dddddd","highlightColor":"#f0f0f0","cellPadding":5,"tableStyle":{"fontSize":12,"borderBottom":"3px solid #222222"},"headerStyle":{"borderWidth":"5px","paddingTop":"12px","verticalAlign":"bottom","textAlign":"bottom","background":"transparent","textTransform":"uppercase","borderColor":"#222222","color":"#000000","&:hover":{"background":"#dddddd"},"&[aria-sort='ascending'], &[aria-sort='descending']":{"background":"#5b5e5f","color":"#ffffff"},"borderColor.1":"#333","fontSize":12},"groupHeaderStyle":{"&:not(:empty)":{"paddingBottom":"3px","verticalAlign":"bottom","textAlign":"bottom","backgroundColor":"#ffffff","textTransform":"uppercase","fontSize":12,"color":"#222222"}},"rowSelectedStyle":{"backgroundColor":"#dddddd"},"inputStyle":{"backgroundColor":"#ffffff","color":"#222222"},"searchInputStyle":{"textTransform":"uppercase","color":"#222222","fontSize":"14px"},"paginationStyle":{"textTransform":"uppercase","fontSize":"14px"},"pageButtonStyle":{"textTransform":"uppercase","fontSize":"14px"}},"dataKey":"67d9a83c88f1774243fd6b8cfb4506e9"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 
@@ -314,9 +334,23 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     icon: icon
   };
   anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
   const clipboard = new window.ClipboardJS('.code-copy-button', {
-    target: function(trigger) {
-      return trigger.previousElementSibling;
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
     }
   });
   clipboard.on('success', function(e) {
@@ -381,6 +415,92 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       return note.innerHTML;
     });
   }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
   const findCites = (el) => {
     const parentEl = el.parentElement;
     if (parentEl) {
