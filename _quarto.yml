@@ -8,7 +8,6 @@ project:
     - EnergyMod.qmd
     - conferences.qmd
     - contact.qmd
-    - CommercialCV.qmd
 
 website:
   title: "Luis Sarmiento -- Economist"
