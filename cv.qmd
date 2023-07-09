@@ -1,5 +1,5 @@
 ---
-title: "{{< fa book-open-reader >}} Curriculum Vitae [{{< fa download >}}](https://www.dropbox.com/scl/fi/xnb82n6knjak9yfxhigmz/cv_gold.pdf?rlkey=60q5od6uxrfjgfr62tfo8kxtq&dl=0)"
+title: "{{< fa book-open-reader >}} Curriculum Vitae [{{< fa download >}}](https://www.dropbox.com/scl/fi/e0qf5sssrjhhxpg9mg0mg/cv_gold.pdf?rlkey=4gq4wxavl7umu4lk4qtcdoyua&dl=0)"
 format: 
   html:
     theme: [flatly, costum.scss]
