@@ -28,7 +28,7 @@ format:
 
 ### <i class="fa fa-user"></i> **About Me**
 
-I am an environmental economist focusing on **causal inference** and **energy modelling**
+I am an environmental economist focusing on **causal inference** and **energy modelling.** As an experienced professional, I have developed a strong expertise in applied econometrics, energy modeling, and agent-based models. My research focuses on critical issues such as the sub-clinical effects of air pollution (productivity, well-being), city policies to decrease environmental externalities, the energy transition, and climate change.
 
 ### <i class="fa fa-building-columns"></i> **Education**
 
