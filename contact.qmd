@@ -12,14 +12,14 @@ format:
 
 
 <p style="margin-bottom:-0.2cm;"> Luis **Sarmiento**</p>
-<p style="margin-bottom:1.0cm;"> Environmental Economist</p>
+<p style="margin-bottom:0.5cm;"> Environmental Economist</p>
 
-<p style="margin-bottom:-0.15cm;">`r fa("earth-americas")` [luissarmiento.com](luissarmiento.com)</p>
+<p style="margin-bottom:-0.15cm;"> {{< fa earth-americas >}} [luissarmiento.com](luissarmiento.com)</p>
 
-<p style="margin-bottom:-0.15cm;">`r fa("at")` <a href = "mailto: gsaabogado@gmail.com"> gsaabogado@gmail.com</a></p>
+<p style="margin-bottom:-0.15cm;">{{< fa at >}} <a href = "mailto: gsaabogado@gmail.com"> gsaabogado@gmail.com</a></p>
 
-<p style="margin-bottom:-0.15cm;">`r fa("linkedin")` [luis-sarmiento-eco](https://www.linkedin.com/in/luis-sarmiento-eco)</p>
+<p style="margin-bottom:-0.15cm;">{{< fa brands linkedin >}} [luis-sarmiento-eco](https://www.linkedin.com/in/luis-sarmiento-eco)</p>
 
-<p style="margin-bottom:-0.15cm;">`r fa("mobile-button")` +39 030 897890</p>
+<p style="margin-bottom:-0.15cm;"> {{< fa mobile-button >}} +39 030 897890 </p>
 
-<p style="margin-bottom:1.5cm;">`r fa("location-dot")` Via Bergognone, 34, 20144 Milan MI, Ital</p>
+<p style="margin-bottom:1 cm;">{{< fa location-dot >}} Via Bergognone, 34, 20144 Milan MI, Italy</p>

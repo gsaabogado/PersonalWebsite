@@ -2,7 +2,7 @@
 title: ""
 about: 
   id: hero-heading
-  image: gto_yo.JPG
+  image: pictures/sitting_bw.png
   links:
     - text: <i class="fa-brands fa-linkedin"></i>
       href: https://www.linkedin.com/in/luis-sarmiento-eco
@@ -13,7 +13,7 @@ about:
     - text: <i class="fa fa-at"></i>
       href: mailto:luis.sarmiento@eiee.org
   template: trestles
-  image-shape: round
+  image-shape: rectangle
   image-width: 30em
 format: 
   html:
@@ -33,22 +33,23 @@ I am an environmental economist focusing on **causal inference** and **energy mo
 ### <i class="fa fa-building-columns"></i> **Education**
 
 **Doctor in Economics (Summa cum Laude)** | 2017 - 2020<br>
-Berlin Institute of Technology | Berlin, Germany
+Berlin Institute of Technology (TU Berlin) | Berlin, Germany
 
 **Master of Science in Economics** | 2014 - 2016<br>
-Humboldt University of Berlin | Berlin, Germany
+Humboldt University of Berlin (HU) | Berlin, Germany
 
 
 ### <i class="fa fa-briefcase"></i> **Experience**
 **Environmental Scientist** | August 2022 - present<br>
-European Institute on Economics and the Environment 
+Euro-Mediterranean Center on Climate Change | Milan, IT
+
 
 
 **Post-Doc** | August 2020 - August 2022<br> 
-European Institute on Economics and the Environment
+Euro-Mediterranean Center on Climate Change | Milan, IT
 
 **Research Associate** | April 2017 - August 2020 <br>
-German Institute of Economic Research  
+German Institute of Economic Research | Berlin, DE
 
 
 :::

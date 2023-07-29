@@ -15,6 +15,7 @@ website:
     search: true
     pinned: true
     collapse: true
+    favicon: pictures/headshot.jpeg
     right:
       - text: Home
         href: index.qmd 
@@ -45,7 +46,6 @@ format:
   html:
     theme: 
       - flatly
-
       - costum.scss
     
 
