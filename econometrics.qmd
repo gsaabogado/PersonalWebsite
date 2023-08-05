@@ -87,7 +87,7 @@ fivethirtyeight <- function(font_size = 12,
 
 **I use state-of-the-art econometric techniques in three main topics:**
 
-<span style="color:red;">**The effects of Air Pollution on the Individual**</span>
+**The effects of Air Pollution on the Individual**
 
 - What are the effects of air pollution on productivity?
 - What are the effects of air pollution on criminality and Domestic Violence?
@@ -95,14 +95,14 @@ fivethirtyeight <- function(font_size = 12,
 - How do the indirect effects of air pollution on children affect the well-being of their parents?
 - How can we reduce children exposure to air pollution in Schools?
 
-<span style="color:red;">**Air Pollution Control Mechanisms at the City Level**</span>
+**Air Pollution Control Mechanisms at the City Level**
 
 - How efficient are current policies in reducing the use of internal combustion engines?
 - What are the equity consequences of urban air pollution control mechanisms?
 - What are the unexpected consequences of transit control policies?
 - What are the effects of air quality alerts on parents' avoidance behavior?
 
-<span style="color:red;">**Digitalization, Transport, and Air Pollution**</span>
+**Digitalization, Transport, and Air Pollution**
 
 - What is the effect of Ride-Hailing Technologies on Urban Air Pollution?
 
