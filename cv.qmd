@@ -31,7 +31,7 @@ fivethirtyeight <- function(font_size = 12,
                             cell_padding = 5,
                             centered = FALSE) {
   
-  if (!is.logical(centered)) {
+   if (!is.logical(centered)) {
     
     stop("`centered` must be TRUE or FALSE")
   }
