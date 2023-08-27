@@ -2,86 +2,101 @@
 title: "{{< fa person-chalkboard >}} Conferences"
 # uncomment this line to produce HTML and PDF in RStudio:
 #knit: pagedown::chrome_print
-format: html
-fontsize: "0.8em"
-toc: true
-always_allow_html: true
+format: 
+  html:
+    theme: [flatly, costum.scss]
+    fontsize: 0.85em
+    toc: true
+    always_allow_html: true
 ---
+```{r}
+#| echo: false 
+fivethirtyeight <- function(font_size = 12,
+                            font_color = "#222222",
+                            header_font_size = 12,
+                            header_font_color = "#000000",
+                            background_color = "transparent",
+                            cell_padding = 5,
+                            centered = FALSE) {
+  
+  if (!is.logical(centered)) {
+    
+    stop("`centered` must be TRUE or FALSE")
+  }
+  
+  if (centered == TRUE) {
+    
+    centered_content = list(display = "flex", flexDirection = "column", justifyContent = "center")
+    
+  } else { centered_content = NULL }
+  
+  reactableTheme(
+    cellStyle = centered_content,
+    color = font_color,
+    backgroundColor = background_color,
+    borderWidth = "1.25px",
+    borderColor = "black",
+    stripedColor = "#dddddd",
+    highlightColor = "#f0f0f0",
+    cellPadding = cell_padding,
+    tableStyle = list(
+      fontSize = font_size,
+      borderBottom = "3px solid #222222"
+    ),
+    headerStyle = list(
+      borderWidth = "5px",
+      paddingTop = "12px",
+      verticalAlign = "bottom",
+      textAlign = "bottom",
+      background = "transparent",
+      textTransform = "uppercase",
+      borderColor = "#222222",
+      color = header_font_color,
+      "&:hover" = list(background = "#dddddd"),
+      "&[aria-sort='ascending'], &[aria-sort='descending']" = list(background = "#5b5e5f", color = "#ffffff"),
+      borderColor = "#333",
+      fontSize = header_font_size
+    ),
+    groupHeaderStyle = list(
+      "&:not(:empty)" = list(
+        paddingBottom = "3px",
+        verticalAlign = "bottom",
+        textAlign = "bottom",
+        backgroundColor = "#ffffff",
+        textTransform = "uppercase",
+        fontSize = header_font_size,
+        color = font_color
+      )
+    ),
+    searchInputStyle = list(
+      textTransform = "uppercase",
+      color = "#222222",
+      fontSize = "14px"
+    ),
+    inputStyle = list(backgroundColor = "#ffffff", color = "#222222"),
+    rowSelectedStyle = list(backgroundColor = "#dddddd"),
+    pageButtonStyle = list(textTransform = "uppercase", fontSize = "14px"),
+    paginationStyle = list(textTransform = "uppercase", fontSize = "14px")
+  )
+}
+
+```
 
 ```{r}
 #| echo: false 
-conference <- c("EAERE Annual Conference", 
-                "Mannheim Conference on Energy and the Environment",
-                "BSE Workshop: The Distributional Consequences of Environmental Policies", 
-                "CMCC Annual Conference", 
-                "EAERE Annual Conference", 
-                "Verein für Socialpolitik", 
-                "EAERE Annual Conferece", 
-                "Seventh Latin-American Meeting of Energy Economics", 
-                "World Congress of Environmental and Resource Economists", 
-                "Meeting of the Latin-American and Caribbean Economic Association", 
-                "Essen Health Conference", 
-                "Mannheim Energy Conference", 
-                "European Conference of the International Association of Energy Economists")
+#| warning: false
+#### Load the data ####
+file = gsub("/02_cv", "", getwd())
+conf = read_excel(paste0(file, "/Codebook.xlsx"), sheet = "Conferences")
 
-
-presentation <- c("The Air Quality Effects of Uber", 
-                "The Unaccounted Effects of Low Emission Zones: Evidence from Madrid Central",
-                "The Air Quality Effects of Uber", 
-                "Towards the Debornization of the Transportation Sector", 
-                "The Nonlinear Effects of Pollution on Crime: Evidence from Mexico City and New York", 
-                "Make Sure the Kids are OK: Indirect Effects of Air Pollution on Well-Being", 
-                "Air Pollution and the Productivity of High-Skill Labor: Evidence from Court Hearings", 
-                "Analysing Scenarios for the Integration of Renewable Energy Sources in the Mexican Energy System", 
-                "External costs of electricity transmission infrastructure: evidence from well-being data", 
-                "Air Pollution and the Productivity of High-Skill Labor: Evidence from Court Hearings", 
-                "Make Sure the Kids are OK: Indirect Effects of Air Pollution on Well-Being", 
-                "External costs of electricity transmission infrastructure: evidence from well-being data", 
-                "External costs of electricity transmission infrastructure: evidence from well-being data")
-
-
-place = c("Rimini", 
-          "Mannheim",
-          "Berlin",
-          "Lecce", 
-          "Berlin", 
-          "Leipzig", 
-          "Manchester", 
-          "Buenos Aires", 
-          "Götheborg", 
-          "Guayaquil", 
-          "Essen", 
-          "Mannheim", 
-          "Vienna")
-
-year = c("2022", "2022", "2022", "2021", "2020", "2019", 
-         "2019", "2019", "2018", "2018", "2017", "2017", "2017")
-
-
-country = c("https://img.icons8.com/color/344/italy-circular.png", 
-            "https://img.icons8.com/color/344/germany-circular.png",
-            "https://img.icons8.com/color/344/germany-circular.png", 
-            "https://img.icons8.com/color/344/italy-circular.png", 
-            "https://img.icons8.com/color/344/germany-circular.png", 
-            "https://img.icons8.com/color/344/germany-circular.png", 
-            "https://img.icons8.com/fluency/344/england-circular.png",
-            "https://img.icons8.com/fluency/344/argentina-circular.png",
-            "https://img.icons8.com/color/344/sweden-circular.png",
-            "https://img.icons8.com/color/344/ecuador-circular.png",
-            "https://img.icons8.com/color/344/germany-circular.png",
-            "https://img.icons8.com/color/344/germany-circular.png",
-            "https://img.icons8.com/color/344/austria-circular.png")
-
-conf <- data.frame(conference, presentation,city = place,country, year) |> mutate(year = as.numeric(year))
-
-
+#### Construct the table ####
 reactable(
   conf, theme = fivethirtyeight(),
-  defaultColDef = colDef(align = "left", maxWidth = 200), 
-  columns = list(city = colDef(maxWidth = 100), 
-                 conference = colDef(maxWidth = 350), 
-                 presentation = colDef(maxWidth = 350),
-                 year = colDef(maxWidth = 50, style = color_scales(conf, colors = c("gray", "#0b263d"))), 
-                 country = colDef(cell = embed_img(height = "25", width = "25"), maxWidth = 100, align = "center"))
+  defaultColDef = colDef(align = "left"), 
+  columns = list(City = colDef(maxWidth = 100), 
+                 Conference = colDef(maxWidth = 400),
+                 Presentation = colDef(maxWidth = 400),
+                 Year = colDef(maxWidth = 50, style = color_scales(conf, colors = c("gray", "#0b263d"))), 
+                 Country = colDef(cell = embed_img(height = "25", width = "25"), maxWidth = 100, align = "center"))
   )
 ```

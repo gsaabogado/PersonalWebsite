@@ -1,7 +1,7 @@
 {
     "installOptions": {
         "installFromRepository": true,
-        "libraryPath": "C:/Users/Sarmiento/Dropbox (CMCC)/EIEE/Website/renv/library/R-4.2/x86_64-w64-mingw32",
+        "libraryPath": "C:/Users/Sarmiento/AppData/Local/R/win-library/4.2",
         "installDependencies": true
     }
 }

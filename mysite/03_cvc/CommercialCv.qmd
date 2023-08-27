@@ -1,0 +1,336 @@
+---
+title: "{{< fa book-open-reader >}} Curriculum Vitae [{{< fa download >}}](https://www.dropbox.com/scl/fi/xnb82n6knjak9yfxhigmz/cv_gold.pdf?rlkey=60q5od6uxrfjgfr62tfo8kxtq&dl=0)"
+format: 
+  html:
+    theme: [flatly, costum.scss]
+    fontsize: 0.85em
+    toc: true
+    always_allow_html: true
+---
+
+<p style="margin-bottom:-0.2cm;"> Luis **Sarmiento**</p>
+<p style="margin-bottom:0.5cm;"> Environmental Economist</p>
+
+<p style="margin-bottom:-0.15cm;">`r fa("earth-americas")` [luissarmiento.com](luissarmiento.com)</p>
+
+<p style="margin-bottom:-0.15cm;">`r fa("at")` <a href = "mailto: gsaabogado@gmail.com"> gsaabogado@gmail.com</a></p>
+
+<p style="margin-bottom:-0.15cm;">`r fa("linkedin")` [luis-sarmiento-eco](https://www.linkedin.com/in/luis-sarmiento-eco)</p>
+
+<p style="margin-bottom:-0.15cm;">`r fa("mobile-button")` +39 030 897890</p>
+
+<p style="margin-bottom:1 cm;">`r fa("location-dot")` Via Bergognone, 34, 20144 Milan MI, Ital</p>
+
+```{r}
+#| echo: false 
+fivethirtyeight <- function(font_size = 12,
+                            font_color = "#222222",
+                            header_font_size = 12,
+                            header_font_color = "#000000",
+                            background_color = "transparent",
+                            cell_padding = 5,
+                            centered = FALSE) {
+  
+  if (!is.logical(centered)) {
+    
+    stop("`centered` must be TRUE or FALSE")
+  }
+  
+  if (centered == TRUE) {
+    
+    centered_content = list(display = "flex", flexDirection = "column", justifyContent = "center")
+    
+  } else { centered_content = NULL }
+  
+  reactableTheme(
+    cellStyle = centered_content,
+    color = font_color,
+    backgroundColor = background_color,
+    borderWidth = "1.25px",
+    borderColor = "black",
+    stripedColor = "#dddddd",
+    highlightColor = "#f0f0f0",
+    cellPadding = cell_padding,
+    tableStyle = list(
+      fontSize = font_size,
+      borderBottom = "3px solid #222222"
+    ),
+    headerStyle = list(
+      borderWidth = "5px",
+      paddingTop = "12px",
+      verticalAlign = "bottom",
+      textAlign = "bottom",
+      background = "transparent",
+      textTransform = "uppercase",
+      borderColor = "#222222",
+      color = header_font_color,
+      "&:hover" = list(background = "#dddddd"),
+      "&[aria-sort='ascending'], &[aria-sort='descending']" = list(background = "#5b5e5f", color = "#ffffff"),
+      borderColor = "#333",
+      fontSize = header_font_size
+    ),
+    groupHeaderStyle = list(
+      "&:not(:empty)" = list(
+        paddingBottom = "3px",
+        verticalAlign = "bottom",
+        textAlign = "bottom",
+        backgroundColor = "#ffffff",
+        textTransform = "uppercase",
+        fontSize = header_font_size,
+        color = font_color
+      )
+    ),
+    searchInputStyle = list(
+      textTransform = "uppercase",
+      color = "#222222",
+      fontSize = "14px"
+    ),
+    inputStyle = list(backgroundColor = "#ffffff", color = "#222222"),
+    rowSelectedStyle = list(backgroundColor = "#dddddd"),
+    pageButtonStyle = list(textTransform = "uppercase", fontSize = "14px"),
+    paginationStyle = list(textTransform = "uppercase", fontSize = "14px")
+  )
+}
+
+```
+
+```{r}
+#| echo: false 
+fivethirtyeight2 <- function(font_size = 14,
+                            font_color = "#222222",
+                            header_font_size = 12,
+                            header_font_color = "#000000",
+                            background_color = "transparent",
+                            cell_padding = 5,
+                            centered = FALSE) {
+  
+  if (!is.logical(centered)) {
+    
+    stop("`centered` must be TRUE or FALSE")
+  }
+  
+  if (centered == TRUE) {
+    
+    centered_content = list(display = "flex", flexDirection = "column", justifyContent = "center")
+    
+  } else { centered_content = NULL }
+  
+  reactableTheme(
+    cellStyle = centered_content,
+    color = font_color,
+    backgroundColor = background_color,
+    borderWidth = "0 px",
+    borderColor = "transparent",
+    stripedColor = "#dddddd",
+    highlightColor = "#f0f0f0",
+    cellPadding = cell_padding,
+    tableStyle = list(
+      fontSize = font_size,
+      borderBottom = "0 px solid #transparent"
+    ),
+    headerStyle = list(
+      borderWidth = "0px",
+      paddingTop = "12px",
+      verticalAlign = "bottom",
+      textAlign = "bottom",
+      background = "transparent",
+      textTransform = "uppercase",
+      borderColor = "#222222",
+      color = header_font_color,
+      "&:hover" = list(background = "#dddddd"),
+      "&[aria-sort='ascending'], &[aria-sort='descending']" = list(background = "#5b5e5f", color = "#ffffff"),
+      borderColor = "transparent",
+      fontSize = header_font_size
+    ),
+    groupHeaderStyle = list(
+      "&:not(:empty)" = list(
+        paddingBottom = "0 px",
+        verticalAlign = "bottom",
+        textAlign = "bottom",
+        backgroundColor = "#ffffff",
+        textTransform = "uppercase",
+        fontSize = header_font_size,
+        color = font_color
+      )
+    ),
+    searchInputStyle = list(
+      textTransform = "uppercase",
+      color = "#222222",
+      fontSize = "14px"
+    ),
+    inputStyle = list(backgroundColor = "#ffffff", color = "#222222"),
+    rowSelectedStyle = list(backgroundColor = "#dddddd"),
+    pageButtonStyle = list(textTransform = "uppercase", fontSize = "14px"),
+    paginationStyle = list(textTransform = "uppercase", fontSize = "14px")
+  )
+}
+
+```
+
+### `r fa("briefcase")` Work  Experience
+
+------------------------------------------------------------------------
+```{r}
+#| echo: false 
+#| warning: false
+#### Load the excel file ####
+file = gsub("/03_cvc", "", getwd())
+prof = read_excel(paste0(file, "/Codebook.xlsx"), sheet = "Occupation")
+
+#### Create the link for the institute ####
+prof = mutate(prof, Institution = paste0(link, Institution)) |> 
+  select(-link)
+
+#### Construct the table ####
+reactable( prof, theme = fivethirtyeight(),
+  defaultColDef = colDef(align = "center", maxWidth = 200, vAlign = "center",
+                         cell = data_bars(fill_color = "red")), 
+  
+  columns = list(Dates = colDef(maxWidth = 70),
+                 
+                 Activities = colDef(maxWidth = 400, html = TRUE, align = "left"), 
+                 
+                 Position = colDef(maxWidth = 150,vAlign = "center"), 
+                 
+                 Institution = colDef(maxWidth = 250, html = TRUE, align = "center"),
+                 
+                                
+                 Country = colDef(cell = embed_img(height = "25", width = "25"), maxWidth = 75, align = "left")))
+
+
+```
+
+<p style="margin-bottom:1.5cm;">
+
+### `r fa("building-columns")` Education
+
+------------------------------------------------------------------------
+
+```{r}
+#| echo: false
+#| warning: false
+#| 
+#### Load the excel file ####
+file = gsub("/03_cvc", "", getwd())
+educ = read_excel(paste0(file, "/Codebook.xlsx"), sheet = "Education")
+
+
+#### Create the link for the institute ####
+educ = mutate(educ, Institution = paste0(link, Institution)) |> 
+  select(-link)
+
+#### Create the table ####
+reactable(educ, theme = fivethirtyeight(),
+  defaultColDef = colDef(align = "center", maxWidth = 400, vAlign = "center"), 
+  
+  columns = list(Dates = colDef(maxWidth = 70),
+                 
+                 Dissertation = colDef(maxWidth = 500), 
+                 
+                 Degree = colDef(maxWidth = 150, align = "center"),
+                 
+                 Institution = colDef(maxWidth = 250, html = TRUE, align = "center"),
+                 
+                 Country = colDef(cell = embed_img(height = "25", width = "25"), 
+                                  maxWidth = 75, align = "left")))
+```
+
+<p style="margin-bottom:1.5cm;">
+
+### `r fa("file-zipper")` Publications
+
+------------------------------------------------------------------------
+
+```{r}
+#| echo: false 
+#| warning: false
+#### Load the data ####
+file = gsub("/03_cvc", "", getwd())
+pub = read_excel(paste0(file, "/Codebook.xlsx"), sheet = "Publications")
+
+#### Add the link ###
+pub = mutate(pub, Article = paste0(link, Article)) |> 
+  select(-link)|> 
+  select(-Type, -Country)
+
+#### Create the table ####
+reactable(pub, theme = fivethirtyeight(),
+          defaultColDef = colDef(align = "left", maxWidth = 200, html = T, vAlign = "center"), 
+          
+          columns = list(Article = colDef(maxWidth = 550, html = T), 
+                         Journal = colDef(maxWidth = 200), 
+                         Authors = colDef(maxWidth = 150),
+                         Affiliations = colDef(maxWidth = 250),
+                         Year = colDef(maxWidth = 50, style = color_scales(pub, colors = c("gray", "#0b263d")))))
+
+```
+
+<p style="margin-bottom:1.5cm;">
+
+
+### `r fa("chalkboard-user")` Conference presentations
+
+------------------------------------------------------------------------
+```{r}
+#| echo: false 
+#| warning: false
+
+#### Load the data ####
+file = gsub("/03_cvc", "", getwd())
+conf = read_excel(paste0(file, "/Codebook.xlsx"), sheet = "Conferences")
+
+#### Construct the table ####
+reactable(
+  conf, theme = fivethirtyeight(),  defaultPageSize = 5,
+  defaultColDef = colDef(align = "left"), 
+  columns = list(City = colDef(maxWidth = 100), 
+                 Conference = colDef(maxWidth = 400),
+                 Presentation = colDef(maxWidth = 300),
+                 Year = colDef(maxWidth = 50, style = color_scales(conf, colors = c("gray", "#0b263d"))), 
+                 Country = colDef(cell = embed_img(height = "25", width = "25"), maxWidth = 150, align = "center"))
+  )
+```
+
+<p style="margin-bottom:1.5cm;">
+
+### `r fa("language")` Softwares and Lenguages
+
+```{r}
+#| echo: false 
+#| warning: false
+#| layout-ncol: 2
+#| layout-align: center
+
+
+#### Load the software excel file ####
+file = gsub("/03_cvc", "", getwd())
+soft = read_excel(paste0(file, "/Codebook.xlsx"), sheet = "Software")
+
+#### Make the table ####
+reactable(
+  soft,  theme = fivethirtyeight2(),
+  
+  defaultColDef = colDef(align = "left", maxWidth = 200), 
+  columns = list(
+    proficiency = colDef(cell = icon_assign(soft, icon = "github", fill_color = "#0b263d"), 
+                         name = "", sortable = TRUE), 
+    lenguage = colDef(name = ""))
+)
+
+
+#### Load the languages excel file ####
+file = gsub("/03_cvc", "", getwd())
+data = read_excel(paste0(file, "/Codebook.xlsx"), sheet = "Languages")
+
+#### Make the table ###
+reactable(data, theme = fivethirtyeight2(),
+          
+  defaultColDef = colDef(align = "left", maxWidth = 200),
+  
+  columns = list(proficiency = colDef(cell = icon_assign(data, icon = "earth-americas", fill_color = "#0b263d"), 
+                         name = "", sortable = T), 
+                 
+                 lenguage = colDef(name = "")))
+
+
+```

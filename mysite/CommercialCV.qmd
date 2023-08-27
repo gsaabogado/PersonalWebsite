@@ -1,0 +1,269 @@
+---
+title: ""
+format:
+  pdf:
+    css: custom.scss
+    include-in-header: 
+       text: |
+         \usepackage{multicol}
+         \usepackage{xcolor}
+         \definecolor{light}{HTML}{42647c}
+         \definecolor{highlight}{HTML}{800080}
+         \definecolor{dark}{HTML}{330033}
+         \usepackage{hyperref}
+         \hypersetup{colorlinks=true, urlcolor = light}
+    urlcolor:  light
+    geometry:
+      - top=20mm
+      - left=20mm
+      - left=20mm
+---
+
+
+\normalsize Dr. Luis <span style="color:red;">Sarmiento</span> \vspace{-0.2cm}
+
+\footnotesize Environmental Economist
+
+\scriptsize 
+
+`r fa("earth-americas")` **[luissarmiento.com](https://luissarmiento.com)** \vspace{-0.2cm}
+
+`r fa("linkedin")` **[luis-sarmiento-eco](https://www.linkedin.com/in/luis-sarmiento-eco)** \vspace{-0.2cm}
+
+`r fa("at")` **[gsaabogado\@gmail.com](gsaabogado\@gmail.com)** \vspace{-0.2cm}
+
+
+\vspace{0.25cm}
+
+\hrulefill
+
+\scriptsize As an experienced professional, I have developed a strong expertise in applied econometrics, energy modeling, and agent-based models. My research focuses on critical issues such as the sub-clinical effects of air pollution (productivity, well-being), city policies to decrease environmental externalities, the energy transition, and climate change.
+
+\vspace{-0.1cm}
+
+\hrulefill
+
+### `r fa("briefcase")` <span style="color:red;">Work Experience</span> \vspace{-0.4 cm}
+
+```{r}
+#| echo: false 
+#| warning: false
+
+#### Load the excel file ####
+file = gsub("/02_cv", "", getwd())
+prof = read_excel(paste0(file, "/Codebook.xlsx"), sheet = "Occupation")
+
+#### Exclude the link ####
+prof = select(prof, -link )
+
+#### Create the table ####
+table = reactable( prof, theme = fivethirtyeight(font_size = 13),
+  defaultColDef = colDef(align = "center", maxWidth = 200, vAlign = "center",
+                         cell = data_bars(fill_color = "red")), 
+  
+  columns = list(Dates = colDef(maxWidth = 70),
+                 
+                 Activities = colDef(maxWidth = 400, html = TRUE, align = "left"), 
+                 
+                 Position = colDef(maxWidth = 150,vAlign = "center"), 
+                 
+                 Institution = colDef(maxWidth = 200, html = TRUE, align = "center"),
+                 
+                                
+                 Country = colDef(cell = embed_img(height = "25", width = "25"), maxWidth = 75, align = "left")))
+
+
+#### Take an screen shot of the html output ####
+html = "table.html"
+htmlwidgets::saveWidget(table, html)
+webshot2::webshot(html, "table.png", cliprect = c(40, 30, 930, 370), delay = 0.5)
+
+
+```
+
+### `r fa("building-columns")` Education \vspace{-0.4 cm}
+
+```{r}
+#| echo: false
+#| fig-width: 10
+#| fig-height: 4
+#| warning: false
+
+
+#### Load the excel file ####
+file = gsub("/02_cv", "", getwd())
+educ = read_excel(paste0(file, "/Codebook.xlsx"), sheet = "Education")
+
+#### Take away variables that I do not use ####
+educ = select(educ, -link)
+
+#### Construct the table ####
+table = reactable(educ, theme = fivethirtyeight(font_size = 13),
+  defaultColDef = colDef(align = "center", maxWidth = 400, vAlign = "center"), 
+  
+  columns = list(Dates = colDef(maxWidth = 70),
+                 
+                 Dissertation = colDef(maxWidth = 400), 
+                 
+                 Degree = colDef(maxWidth = 150, align = "center"),
+                 
+                 Institution = colDef(maxWidth = 200, html = TRUE, align = "center"),
+                 
+                 Country = colDef(cell = embed_img(height = "25", width = "25"), 
+                                  maxWidth = 75, align = "left")))
+
+#### Save the table ####
+html = "table.html"
+htmlwidgets::saveWidget(table, html)
+webshot2::webshot(html, "table.png", cliprect = c(40, 35, 930, 190), zoom = 2)
+
+
+```
+
+### `r fa("person-chalkboard")` Teaching \vspace{-0.4 cm}
+
+```{r}
+#| echo: false
+#| fig-width: 10
+#| fig-height: 4
+#| warning: false
+
+#### Load the data ####
+file = gsub("/02_cv", "", getwd())
+conf = read_excel(paste0(file, "/Codebook.xlsx"), sheet = "Teaching")
+
+#### Construct the table ####
+table = reactable(
+  conf, theme = fivethirtyeight(font_size = 13),
+  defaultColDef = colDef(align = "center"), 
+  columns = list(Level = colDef(maxWidth = 100), 
+                 Institute = colDef(maxWidth = 600),
+                 Semester = colDef(maxWidth = 100),
+                 Lecture = colDef(maxWidth = 600),
+                 Year = colDef(maxWidth = 50, style = color_scales(conf, colors = c("gray", "#0b263d"))), 
+                 Country = colDef(cell = embed_img(height = "25", width = "25"), maxWidth = 100, align = "center"))
+  )
+
+#### Save the table ####
+html = "table.html"
+htmlwidgets::saveWidget(table, html)
+webshot2::webshot(html, "table.png", cliprect = c(40, 35, 930, 220))
+```
+
+### `r fa("file-zipper")` Publications \vspace{-0.4cm}
+
+```{r}
+#| echo: false 
+#| warning: false
+#| fig-width: 10
+#| fig-height: 4
+#### Load the data ####
+file = gsub("/02_cv", "", getwd())
+pub = read_excel(paste0(file, "/Codebook.xlsx"), sheet = "Publications")
+
+#### Exclude not-necessary columns ####
+pub = select(pub, -link, -Type, -Country)
+
+#### Construct the table ####
+table = reactable(pub, theme = fivethirtyeight(font_size = 13),
+          defaultColDef = colDef(align = "left", maxWidth = 200, html = T, vAlign = "center"), 
+          
+          columns = list(Article = colDef(maxWidth = 500, html = T), 
+                         Journal = colDef(maxWidth = 150), 
+                         Authors = colDef(maxWidth = 150),
+                         Affiliations = colDef(maxWidth = 250),
+                         Year = colDef(maxWidth = 50, style = color_scales(pub, colors = c("gray", "#0b263d"))), 
+                         Country = colDef(cell = embed_img(height = "25", width = "25"), maxWidth = 100, align = "center")))
+
+#### Take the screen shot ####
+html = "table.html"
+htmlwidgets::saveWidget(table, html)
+webshot2::webshot(html, "table.png", cliprect = c(40, 35, 930, 480))
+
+```
+
+
+### `r fa("person-chalkboard")` Latest Presentations \vspace{-0.4cm}
+
+```{r}
+#| echo: false 
+#| warning: false
+#| fig-width: 10
+#| fig-height: 4
+
+#### Load the data ####
+file = gsub("/02_cv", "", getwd())
+conf = read_excel(paste0(file, "/Codebook.xlsx"), sheet = "Conferences")
+
+
+### Only keep the last eight conferences ####
+conf = conf[1:5,]
+
+
+table = reactable(conf, theme = flatly(font_size = 13),
+                  
+  defaultColDef = colDef(align = "left", maxWidth = 200),
+  
+  columns = list(City = colDef(maxWidth = 100), 
+                 Conference = colDef(maxWidth = 350), 
+                 Presentation = colDef(maxWidth = 350),
+                 Year = colDef(maxWidth = 50, 
+                               style = color_scales(conf,  colors = c("gray", "#0b263d"))), 
+                 Country = colDef(cell = embed_img(height = "25", width = "25"), maxWidth = 100, align = "center")))
+  
+#### Screen-shot the languages table ####
+html = "table.html"
+htmlwidgets::saveWidget(table, html)
+webshot2::webshot(html, "table.png", cliprect = c(40, 35, 930, 270), zoom = 2)
+
+
+```
+
+### `r fa("language")` Softwares and Lenguages \vspace{-0.4cm}
+
+```{r}
+#| echo: false 
+#| warning: false
+#| fig-width: 10
+#| fig-height: 4
+#| layout-ncol: 2
+
+#### Load the software excel file ####
+file = gsub("/02_cv", "", getwd())
+soft = read_excel(paste0(file, "/Codebook.xlsx"), sheet = "Software")
+
+#### Create the Software Table ####
+table = reactable(theme = flatly(font_size = 13),
+                  soft, outlined = F, borderless = T, compact = T, bordered = F, 
+                  defaultColDef = colDef(align = "left", maxWidth = 200), 
+                  columns = list(
+                    proficiency = colDef(cell = icon_assign(soft, icon = "github", fill_color = "#0b263d"), 
+                                         name = "", sortable = TRUE), 
+                    
+                    lenguage = colDef(name = "")))
+
+#### Screen-shot the software table ####
+html = "table.html"
+htmlwidgets::saveWidget(table, html)
+webshot2::webshot(html, "table.png", cliprect = c(20, 35, 370, 200))
+
+
+#### Load the languages excel file ####
+file = gsub("/02_cv", "", getwd())
+data = read_excel(paste0(file, "/Codebook.xlsx"), sheet = "Languages")
+
+#### Create the Languages Table ####
+table = reactable(theme = flatly(font_size = 13),
+                  data, outlined = F, borderless = T, compact = T, bordered = F, 
+                  defaultColDef = colDef(align = "left", maxWidth = 200), 
+                  columns = list(
+                    proficiency = colDef(cell = icon_assign(data, icon = "earth-americas", fill_color = "#0b263d"), 
+                                         name = "", sortable = TRUE), lenguage = colDef(name = ""))
+)
+
+#### Screen-shot the languages table ####
+html = "table.html"
+htmlwidgets::saveWidget(table, html)
+webshot2::webshot(html, "table.png", cliprect = c(20, 35, 370, 200))
+
+```

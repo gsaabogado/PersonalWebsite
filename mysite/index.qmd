@@ -1,7 +1,56 @@
 ---
-title: "mysite"
+title: ""
+about: 
+  id: hero-heading
+  image: pictures/sitting_bw.png
+  links:
+    - text: <i class="fa-brands fa-linkedin"></i>
+      href: https://www.linkedin.com/in/luis-sarmiento-eco
+    - text: <i class="fa-brands fa-twitter"></i>
+      href: https://twitter.com/gsaabogado
+    - text: <i class="fa-brands fa-github"></i>
+      href: https://github.com/gsaabogado
+    - text: <i class="fa fa-at"></i>
+      href: mailto:luis.sarmiento@eiee.org
+  template: trestles
+  image-shape: rectangle
+  image-width: 30em
+format: 
+  html:
+    theme: [flatly, costum.scss]
+    fontsize: 0.85em
+    toc: true
+    always_allow_html: true
 ---
 
-This is a Quarto website.
 
-To learn more about Quarto websites visit <https://quarto.org/docs/websites>.
+:::{#hero-heading}
+
+### <i class="fa fa-user"></i> **About Me**
+
+I am an environmental economist focusing on **causal inference** and **energy modelling.** As an experienced professional, I have developed substantial expertise in applied econometrics, causal inference, integrated assessment, energy, and agent-based modeling. My research focuses on critical issues such as the energy transition, climate change, digitalization, environmental justice, and the study of policies to decrease environmental externalities in urban areas.
+
+### <i class="fa fa-building-columns"></i> **Education**
+
+**Doctor in Economics (Summa cum Laude)** | 2017 - 2020<br>
+Berlin Institute of Technology (TU Berlin) | Berlin, Germany
+
+**Master of Science in Economics** | 2014 - 2016<br>
+Humboldt University of Berlin (HU) | Berlin, Germany
+
+
+### <i class="fa fa-briefcase"></i> **Experience**
+**Environmental Scientist** | August 2022 - present<br>
+Euro-Mediterranean Center on Climate Change | Milan, IT
+
+
+
+**Post-Doc** | August 2020 - August 2022<br> 
+Euro-Mediterranean Center on Climate Change | Milan, IT
+
+**Research Associate** | April 2017 - August 2020 <br>
+German Institute of Economic Research | Berlin, DE
+
+
+:::
+

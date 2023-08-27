@@ -2,13 +2,86 @@
 title: "{{< fa solar-panel >}} Energy Modeling"
 # uncomment this line to produce HTML and PDF in RStudio:
 #knit: pagedown::chrome_print
-format: html
-fontsize: "0.8em"
-toc: true
-always_allow_html: true
+format: 
+  html:
+    theme: [flatly, costum.scss]
+    fontsize: 0.85em
+    toc: true
+    always_allow_html: true
 ---
+```{r}
+#| echo: false 
+#| 
+fivethirtyeight <- function(font_size = 12,
+                            font_color = "#222222",
+                            header_font_size = 12,
+                            header_font_color = "#000000",
+                            background_color = "transparent",
+                            cell_padding = 5,
+                            centered = FALSE) {
+  
+  if (!is.logical(centered)) {
+    
+    stop("`centered` must be TRUE or FALSE")
+  }
+  
+  if (centered == TRUE) {
+    
+    centered_content = list(display = "flex", flexDirection = "column", justifyContent = "center")
+    
+  } else { centered_content = NULL }
+  
+  reactableTheme(
+    cellStyle = centered_content,
+    color = font_color,
+    backgroundColor = background_color,
+    borderWidth = "1.25px",
+    borderColor = "black",
+    stripedColor = "#dddddd",
+    highlightColor = "#f0f0f0",
+    cellPadding = cell_padding,
+    tableStyle = list(
+      fontSize = font_size,
+      borderBottom = "3px solid #222222"
+    ),
+    headerStyle = list(
+      borderWidth = "5px",
+      paddingTop = "12px",
+      verticalAlign = "bottom",
+      textAlign = "bottom",
+      background = "transparent",
+      textTransform = "uppercase",
+      borderColor = "#222222",
+      color = header_font_color,
+      "&:hover" = list(background = "#dddddd"),
+      "&[aria-sort='ascending'], &[aria-sort='descending']" = list(background = "#5b5e5f", color = "#ffffff"),
+      borderColor = "#333",
+      fontSize = header_font_size
+    ),
+    groupHeaderStyle = list(
+      "&:not(:empty)" = list(
+        paddingBottom = "3px",
+        verticalAlign = "bottom",
+        textAlign = "bottom",
+        backgroundColor = "#ffffff",
+        textTransform = "uppercase",
+        fontSize = header_font_size,
+        color = font_color
+      )
+    ),
+    searchInputStyle = list(
+      textTransform = "uppercase",
+      color = "#222222",
+      fontSize = "14px"
+    ),
+    inputStyle = list(backgroundColor = "#ffffff", color = "#222222"),
+    rowSelectedStyle = list(backgroundColor = "#dddddd"),
+    pageButtonStyle = list(textTransform = "uppercase", fontSize = "14px"),
+    paginationStyle = list(textTransform = "uppercase", fontSize = "14px")
+  )
+}
 
-### {{< fa play >}} Introduction
+```
 
 I employ techno-economic bottom-up energy models to examine transition pathways of the North-American energy system.
 
@@ -24,86 +97,59 @@ Besides techno-economic models of the energy system, I am currently developing a
 
 I also contribute to the [37th Energy Modelling Forum](https://emf.stanford.edu/emf-37-deep-decarbonization-high-electrificatio-scenarios-north-america) on high electrification scenarios in North America.
 
-### {{< ai google-scholar >}} Accepted and Published Manuscripts
+### {{< ai google-scholar >}} Publications
 
 ```{r}
 #| echo: false 
-pub = data.frame(Year = c(2021, 2021, 2019), 
-                 
-                 
-                 
-                 Article = c( html("<a href='https://www.sciencedirect.com/science/article/abs/pii/S0301421521002482'>Mexico and US 
-                              Power Systems Under Variations in Natural Gas Prices</a>"), 
-                                   
-                              html("<a href='https://www.sciencedirect.com/science/article/abs/pii/S0301421521000288'>The Role of 
-                              Energy Storage in the Uptake of Renewable Energy: A Model Comparison Approach"),
-                          
-                             
-                              html("<a href= 'https://www.mdpi.com/1996-1073/12/17/3270'>Analysing Scenarios for the Integration of 
-                                   Renewable Energy Sources in the Mexican Energy System")), 
-                 
-                 Journal = c("Energy Policy, 151, 113378", 
-                              "Energy Policy 151, 112159", 
-                              "Energies, 12.17, 3270"), 
-                 
-                 Coauthors = c("Juan Rosellon, Sauleh Sidiqui, Max Brown, Avraam Charalampos, Anahi Molar, Baltazar Solano", 
-                                "Sara Giarola, Kathleen Vaillancourt, Max Brown, Anahi Molar, Ivan Garcia Kerdan", 
-                                "Thorstan Burandt, Konstantin Löffler, Pao-yu Oei"),
-                 
-                 Institute = c("RFF-CMCC: European Institute on Economics and the Environment and German
-                               Institute of Economic Research", 
-                               
-                               "RFF-CMCC: European Institute on Economics and the Environment and German
-                               Institute of Economic Research", 
-                               
-                               "RFF-CMCC: European Institute on Economics and the Environment and German
-                               Institute of Economic Research"),
-                 
-                 Country = c("https://img.icons8.com/color/344/italy-circular.png", 
-                             "https://img.icons8.com/color/344/italy-circular.png",
-                             "https://img.icons8.com/color/344/germany-circular.png"))
+#| warning: false
+#### Load the data ####
+file = gsub("/02_cv", "", getwd())
+pub = read_excel(paste0(file, "/Codebook.xlsx"), sheet = "Publications")
+
+#### Add the link and only keep econometrics ###
+pub = mutate(pub, Article = paste0(link, Article)) |> 
+  select(-link) %>% dplyr::filter(Type == "modeling") |> 
+  select(-Type, -Country)
 
 
-
-
-reactable(
-  pub, theme = fivethirtyeight(),
-  defaultColDef = colDef(align = "left", maxWidth = 200), 
-  columns = list(Article = colDef(maxWidth = 500, html = TRUE), 
-                 Journal = colDef(maxWidth = 150), 
-                 Year = colDef(maxWidth = 50, style = color_scales(pub, colors = c("gray", "#0b263d"))), 
-                 Country = colDef(cell = embed_img(height = "25", width = "25"), maxWidth = 100, align = "center"))
-  )
+#### Create the table ####
+reactable(pub, theme = fivethirtyeight(),
+          defaultColDef = colDef(align = "left", maxWidth = 200, html = T, vAlign = "center"), 
+          
+          columns = list(Article = colDef(maxWidth = 350, html = T), 
+                         Journal = colDef(maxWidth = 200), 
+                         Authors = colDef(maxWidth = 150),
+                         Affiliations = colDef(maxWidth = 250),
+                         Year = colDef(maxWidth = 50, style = color_scales(pub, colors = c("gray", "#0b263d")))))
 
 ```
 
-### {{< fa person-praying >}} Working Papers
+### {{< fa person-praying >}} Under Review
 
 ```{r}
 #| echo: false 
-pub = data.frame(Start = c(2021), 
-                 
-                 Article = c(html("<a href = 'https://www.rff.org/publications/working-papers/effect-of-changing-marginal-cost-to-physical-order-dispatch-in-the-power-sector/'>
-                                  The Effect of Changing Marginal Cost to Physical Order Dispatch in the Power Sector")),
-                 
-                 Status = c("Working Paper"),
-                 
-                 Journal = c(""), 
-                 
-                 Coauthors = c("Juan Rosellon and Raul Gutierrez"),
-                 
-                 Institutes = c("European Institute on Economics and the Environment University of Chicago, and CIDE Mexico"))
+#| warning: false
+#### Load the data ####
+file = gsub("/02_cv", "", getwd())
+pub = read_excel(paste0(file, "/Codebook.xlsx"), sheet = "WorkingPapers")
+
+#### Only keep econometric papers ####
+pub = dplyr::filter(pub, Type == "modeling", WorkingVersion == "Yes") |> 
+  select(-Type, -WorkingVersion) 
 
 
-
+#### Construct table ####
 reactable(
-  pub, theme = fivethirtyeight(),
-  defaultColDef = colDef(align = "left", maxWidth = 200), 
-  columns = list(Article = colDef(maxWidth = 400, html = TRUE), 
-                 Journal = colDef(maxWidth = 200), 
-                 Start = colDef(maxWidth = 50, style = color_scales(pub, colors = c("gray", "#0b263d"))), 
-                 Country = colDef(cell = embed_img(height = "25", width = "25"), maxWidth = 100, align = "center"))
-  )
+  pub, theme = fivethirtyeight(font_size = 12),
+  defaultColDef = colDef(align = "left", html = T, vAlign = "center"), 
+  columns = list(Article = colDef(maxWidth = 350), 
+                 Authors = colDef(maxWidth = 150, align = "left"),
+                 Journal = colDef(maxWidth = 150), 
+                 Status = colDef(maxWidth = 70),
+                 Affiliations = colDef(maxWidth = 250),
+                 Start = colDef(maxWidth = 50, style = color_scales(pub, colors = c("gray", "#0b263d")))))
+
+
 
 ```
 
@@ -111,30 +157,26 @@ reactable(
 
 ```{r}
 #| echo: false 
-pub = data.frame(Start = c(2021,2022), 
-                 
-                 Article = c("The Mexico-US Interconnection Under High Electrification Scenarios", 
-                             "Distributional and Equity Outcomes under EMF-37"), 
-                 
-                 Expected = c("summer 2023",
-                              "Autum 2023"),
-                 
-                 
-                 Coauthors = c( "Raul Gutierrez and Juan Rosellon",
-                                "John Bistline, Morgan Browning, Jim McFarland, Chikara Onda, Noah Sandoval, John Weyant"),
-                 
-                 Institutes = c("European Institute on Economics and the Environment, University of Chicago, and CIDE Mexico", 
-                                "European Institute on Economics and the Environment, EPRI, EPA, DOW, NREL, Standford University"))
+#| warning: false
 
 
+#### Load the data ####
+file = gsub("/02_cv", "", getwd())
+pub = read_excel(paste0(file, "/Codebook.xlsx"), sheet = "UnderwayResearch")
 
+#### Only keep econometric papers ####
+pub = dplyr::filter(pub, Type == "modeling") |> select(-Type)
+
+
+#### Present the table ####
 reactable(
-  pub, theme = fivethirtyeight(),
-  defaultColDef = colDef(align = "left", maxWidth = 200), 
-  columns = list(Article = colDef(maxWidth = 400), 
-                 Institutes = colDef(maxWidth = 300), 
-                 Expected = colDef(maxWidth = 100), 
-                 Start = colDef(maxWidth = 50, style = color_scales(pub, colors = c("gray", "#0b263d"))), 
+  pub, theme = fivethirtyeight(font_size = 12),  defaultPageSize = 5,
+  defaultColDef = colDef(align = "left", html = T, vAlign = "center"), 
+  columns = list(Article = colDef(maxWidth = 550), 
+                 Authors = colDef(maxWidth = 150, align = "left"),
+                 Affiliations = colDef(maxWidth = 250),
+                 Expected = colDef(maxWidth = 100),
+                 Start = colDef(maxWidth = 75, style = color_scales(pub, colors = c("gray", "#0b263d"))), 
                  Country = colDef(cell = embed_img(height = "25", width = "25"), maxWidth = 100, align = "center"))
   )
 
