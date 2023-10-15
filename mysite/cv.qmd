@@ -307,7 +307,7 @@ pub = read_excel(paste0(file, "/Codebook.xlsx"), sheet = "WorkingPapers") |>
   select(-Type)
 
 #### Only keep the articles with working paper versions ####
-pub = dplyr::filter(pub, WorkingVersion == "Yes") |> select(-WorkingVersion)
+pub = pub |> select(-WorkingVersion)
 
 #### Construct table ####
 reactable(

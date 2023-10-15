@@ -134,7 +134,7 @@ file = gsub("/02_cv", "", getwd())
 pub = read_excel(paste0(file, "/Codebook.xlsx"), sheet = "WorkingPapers")
 
 #### Only keep econometric papers ####
-pub = dplyr::filter(pub, Type == "modeling", WorkingVersion == "Yes") |> 
+pub = dplyr::filter(pub, Type == "modeling") |> 
   select(-Type, -WorkingVersion) 
 
 

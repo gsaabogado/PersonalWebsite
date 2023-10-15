@@ -149,8 +149,8 @@ file = gsub("/02_cv", "", getwd())
 pub = read_excel(paste0(file, "/Codebook.xlsx"), sheet = "WorkingPapers")
 
 #### Only keep econometric papers ####
-pub = dplyr::filter(pub, Type == "econometrics", WorkingVersion == "Yes") |> 
-  select(-Type, -WorkingVersion)
+pub = dplyr::filter(pub, Type == "econometrics") |> 
+  select(-Type, -WorkingVersion) |> arrange(desc(Start))
 
 
 #### Construct table ####
