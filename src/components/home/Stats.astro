@@ -1,0 +1,81 @@
+---
+import { getLangFromUrl, t } from "../../i18n/utils";
+
+const lang = getLangFromUrl(Astro.url);
+
+const stats = [
+  { value: "16", suffix: "+", label: t(lang, "stats.publications") },
+  { value: "23", suffix: "+", label: t(lang, "stats.conferences") },
+  { value: "10", suffix: "+", label: t(lang, "stats.yearsResearch") },
+  { value: "30", suffix: "+", label: t(lang, "stats.coAuthors") },
+];
+---
+
+<section class="relative py-20 px-4 overflow-hidden">
+  <!-- Background image -->
+  <div class="absolute inset-0">
+    <img
+      src="/images/backgrounds/power-lines.png"
+      alt=""
+      class="w-full h-full object-cover"
+    />
+    <div class="absolute inset-0 bg-slate-dark/85"></div>
+  </div>
+
+  <div class="relative z-10 max-w-7xl mx-auto">
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
+      {stats.map((stat) => (
+        <div class="text-center">
+          <div class="flex items-baseline justify-center gap-1">
+            <span
+              class="text-4xl sm:text-5xl font-heading font-bold text-white counter"
+              data-target={stat.value}
+            >
+              0
+            </span>
+            {stat.suffix && (
+              <span class="text-2xl sm:text-3xl font-heading text-cool-gray">{stat.suffix}</span>
+            )}
+          </div>
+          <p class="mt-2 text-sm font-body text-white/50">{stat.label}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<script>
+  const counters = document.querySelectorAll(".counter");
+
+  const animateCounter = (el: Element) => {
+    const target = parseInt(el.getAttribute("data-target") || "0", 10);
+    const duration = 2000;
+    const start = performance.now();
+
+    const update = (now: number) => {
+      const elapsed = now - start;
+      const progress = Math.min(elapsed / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      el.textContent = Math.floor(eased * target).toString();
+      if (progress < 1) requestAnimationFrame(update);
+    };
+
+    requestAnimationFrame(update);
+  };
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const countersInView = entry.target.querySelectorAll(".counter");
+          countersInView.forEach(animateCounter);
+          observer.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.3 }
+  );
+
+  const statsSection = document.querySelector(".counter")?.closest("section");
+  if (statsSection) observer.observe(statsSection);
+</script>

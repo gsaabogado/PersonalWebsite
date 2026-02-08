@@ -1,0 +1,26 @@
+---
+import PageLayout from "../../layouts/PageLayout.astro";
+import ResearchHero from "../../components/research/ResearchHero.astro";
+import ContactForm from "../../components/contact/ContactForm.astro";
+import ContactInfo from "../../components/contact/ContactInfo.astro";
+import { getLangFromUrl, t } from "../../i18n/utils";
+
+const lang = getLangFromUrl(Astro.url);
+---
+
+<PageLayout title={`${t(lang, "contact.heroTitle")} — Luis Sarmiento`}>
+  <ResearchHero
+    title={t(lang, "contact.heroTitle")}
+    description={t(lang, "contact.heroDesc")}
+    backgroundImage="/images/backgrounds/zurich.png"
+  />
+
+  <section class="py-20 px-4 bg-white">
+    <div class="max-w-6xl mx-auto">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
+        <ContactForm />
+        <ContactInfo />
+      </div>
+    </div>
+  </section>
+</PageLayout>

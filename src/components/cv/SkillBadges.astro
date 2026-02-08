@@ -1,0 +1,50 @@
+---
+import { getLangFromUrl, t } from "../../i18n/utils";
+
+interface SkillItem {
+  name: string;
+  level: number;
+}
+
+interface Props {
+  skills: SkillItem[];
+  type?: "skill" | "language";
+}
+
+const lang = getLangFromUrl(Astro.url);
+const { skills, type = "skill" } = Astro.props;
+
+function getLevelLabel(level: number): string {
+  if (type === "language") {
+    const labels = ["", t(lang, "lang.basic"), t(lang, "lang.elementary"), t(lang, "lang.intermediate"), t(lang, "lang.advanced"), t(lang, "lang.native")];
+    return labels[level] || "";
+  }
+  const labels = ["", t(lang, "skill.beginner"), t(lang, "skill.elementary"), t(lang, "skill.intermediate"), t(lang, "skill.advanced"), t(lang, "skill.expert")];
+  return labels[level] || "";
+}
+
+function getLevelColor(level: number): string {
+  if (level >= 5) return "bg-sky text-white";
+  if (level >= 4) return "bg-sky/80 text-white";
+  if (level >= 3) return "bg-sky/60 text-white";
+  return "bg-sky/30 text-slate-dark";
+}
+---
+
+<div class="flex flex-wrap gap-3">
+  {skills.map((skill, i) => (
+    <div
+      data-animate
+      data-delay={`${0.05 + i * 0.05}s`}
+      class="flex items-center gap-2 bg-white rounded-lg px-4 py-2.5 border border-cool-gray/50"
+    >
+      <span class="font-medium text-sm text-slate-dark">{skill.name}</span>
+      <span class:list={[
+        "text-xs px-2 py-0.5 rounded-full font-medium",
+        getLevelColor(skill.level),
+      ]}>
+        {getLevelLabel(skill.level)}
+      </span>
+    </div>
+  ))}
+</div>

@@ -1,0 +1,141 @@
+---
+import type { Publication } from "../../data/publications";
+import { getLangFromUrl, t } from "../../i18n/utils";
+
+interface Props {
+  publication: Publication;
+  index?: number;
+}
+
+const lang = getLangFromUrl(Astro.url);
+const { publication: pub, index = 0 } = Astro.props;
+const question = lang === "es" && pub.questionEs ? pub.questionEs : pub.question;
+const findings = lang === "es" && pub.findingsEs ? pub.findingsEs : pub.findings;
+const hasFindings = findings && findings.length > 0;
+const hasExpandable = question || hasFindings;
+---
+
+<div
+  data-animate
+  data-delay={`${0.05 + index * 0.05}s`}
+  class="group bg-white rounded-lg p-5 hover:shadow-md transition-all duration-300 border border-cool-gray/50"
+>
+  <div class="flex flex-col sm:flex-row sm:items-start gap-3">
+    <span class="shrink-0 text-xs font-medium text-sky bg-sky/10 px-2.5 py-1 rounded-full">
+      {pub.year}
+    </span>
+    <div class="flex-1 min-w-0">
+      <h4 class="text-base font-heading font-semibold text-slate-dark mb-1 leading-snug">
+        {pub.url ? (
+          <a href={pub.url} target="_blank" rel="noopener noreferrer" class="hover:text-sky transition-colors">
+            {pub.title}
+          </a>
+        ) : (
+          pub.title
+        )}
+      </h4>
+      <p class="text-sm text-charcoal/50 mb-0.5">{pub.authors}</p>
+      {pub.journal && (
+        <p class="text-sm text-charcoal/70 italic">{pub.journal}</p>
+      )}
+      {pub.doi && (
+        <p class="text-xs text-charcoal/40 mt-0.5">
+          <span>DOI: {pub.doi}</span>
+          <a
+            href={`https://doi.org/${pub.doi}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center ml-1 text-sky/50 hover:text-sky transition-colors"
+            aria-label="Open DOI link"
+          >
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+            </svg>
+          </a>
+        </p>
+      )}
+      {pub.workingPaper && (
+        <p class="text-xs text-charcoal/40 mt-0.5">
+          <span class="italic">{t(lang, "pub.workingPaper")}:</span>{" "}
+          <a
+            href={pub.workingPaper.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-sky/60 hover:text-sky transition-colors"
+          >
+            {pub.workingPaper.series}
+            {pub.workingPaper.doi && <span class="text-charcoal/40"> · DOI: {pub.workingPaper.doi}</span>}
+            <svg class="w-3 h-3 inline ml-0.5 -mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+            </svg>
+          </a>
+        </p>
+      )}
+    </div>
+    <div class="flex items-center gap-2 shrink-0">
+      {pub.url && (
+        <a
+          href={pub.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="text-sky/60 hover:text-sky transition-colors"
+          aria-label="Open paper"
+        >
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+          </svg>
+        </a>
+      )}
+      {hasExpandable && (
+        <button
+          data-expand-btn
+          class="text-charcoal/30 hover:text-sky transition-colors"
+          aria-label="Show details"
+        >
+          <svg data-expand-icon class="w-5 h-5 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+          </svg>
+        </button>
+      )}
+    </div>
+  </div>
+
+  {(question || hasFindings) && (
+    <div data-findings class="hidden mt-4 pt-4 border-t border-cool-gray/30">
+      {question && (
+        <div class="mb-4">
+          <p class="text-xs font-bold text-sky uppercase tracking-wide mb-1.5">{t(lang, "pub.researchQuestion")}</p>
+          <p class="text-[0.94rem] text-charcoal/90 font-medium italic leading-relaxed">{question}</p>
+        </div>
+      )}
+      {hasFindings && (
+        <>
+          <p class="text-xs font-medium text-sky uppercase tracking-wide mb-2">{t(lang, "pub.keyFindings")}</p>
+          <ul class="space-y-2">
+            {findings!.map((finding) => (
+              <li class="flex gap-2 text-sm text-charcoal/70 leading-relaxed">
+                <span class="shrink-0 mt-1.5 w-1.5 h-1.5 rounded-full bg-sky/40"></span>
+                <span>{finding}</span>
+              </li>
+            ))}
+          </ul>
+        </>
+      )}
+    </div>
+  )}
+</div>
+
+<script>
+  document.querySelectorAll("[data-expand-btn]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const card = btn.closest("[data-animate]");
+      if (!card) return;
+      const findings = card.querySelector("[data-findings]");
+      const icon = btn.querySelector("[data-expand-icon]");
+      if (!findings) return;
+      const isHidden = findings.classList.contains("hidden");
+      findings.classList.toggle("hidden", !isHidden);
+      icon?.classList.toggle("rotate-180", isHidden);
+    });
+  });
+</script>

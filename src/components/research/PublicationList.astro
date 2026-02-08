@@ -1,0 +1,43 @@
+---
+import type { Publication } from "../../data/publications";
+import PublicationCard from "./PublicationCard.astro";
+import { getLangFromUrl, t } from "../../i18n/utils";
+
+interface Props {
+  publications: Publication[];
+  id?: string;
+}
+
+const { publications, id } = Astro.props;
+const lang = getLangFromUrl(Astro.url);
+
+const published = publications.filter((p) => p.status === "published").sort((a, b) => b.year - a.year);
+const reviseResubmit = publications.filter((p) => p.status === "revise-resubmit").sort((a, b) => b.year - a.year);
+const underReview = publications.filter((p) => p.status === "under-review").sort((a, b) => b.year - a.year);
+const workingPapers = publications.filter((p) => p.status === "working-paper").sort((a, b) => b.year - a.year);
+
+const groups = [
+  { label: t(lang, "research.published"), items: published },
+  { label: t(lang, "research.reviseResubmit"), items: reviseResubmit },
+  { label: t(lang, "research.underReview"), items: underReview },
+  { label: t(lang, "research.workingPapers"), items: workingPapers },
+].filter((g) => g.items.length > 0);
+---
+
+<section id={id} class:list={["py-20 px-4 bg-warm-gray", id && "scroll-mt-36"]}>
+  <div class="max-w-4xl mx-auto">
+    {groups.map((group) => (
+      <div class="mb-12 last:mb-0">
+        <h3 data-animate class="text-xl font-heading font-bold text-slate-dark mb-6 flex items-center gap-3">
+          {group.label}
+          <span class="text-sm font-normal text-charcoal/40">({group.items.length})</span>
+        </h3>
+        <div class="space-y-3">
+          {group.items.map((pub, i) => (
+            <PublicationCard publication={pub} index={i} />
+          ))}
+        </div>
+      </div>
+    ))}
+  </div>
+</section>

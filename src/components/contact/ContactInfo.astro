@@ -1,0 +1,63 @@
+---
+import { getLangFromUrl, t } from "../../i18n/utils";
+import SocialLinks from "../SocialLinks.astro";
+
+const lang = getLangFromUrl(Astro.url);
+---
+
+<div data-animate data-delay="0.15s">
+  <h2 class="text-2xl font-heading font-bold text-slate-dark mb-2">
+    {t(lang, "contact.infoTitle")}
+  </h2>
+  <p class="text-charcoal/60 mb-8">
+    {t(lang, "contact.infoDesc")}
+  </p>
+
+  <div class="space-y-6">
+    <!-- Email -->
+    <div class="flex items-start gap-4">
+      <div class="w-10 h-10 bg-sky/10 rounded-lg flex items-center justify-center shrink-0">
+        <svg class="w-5 h-5 text-sky" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+        </svg>
+      </div>
+      <div>
+        <h3 class="text-sm font-semibold text-slate-dark">{t(lang, "contact.info.email")}</h3>
+        <a href="mailto:lsarmiento@ethz.ch" class="text-sm text-charcoal/60 hover:text-sky transition-colors block">
+          lsarmiento@ethz.ch
+        </a>
+        <a href="mailto:gsaabogado@gmail.com" class="text-sm text-charcoal/60 hover:text-sky transition-colors block">
+          gsaabogado@gmail.com
+        </a>
+      </div>
+    </div>
+
+    <!-- Location -->
+    <div class="flex items-start gap-4">
+      <div class="w-10 h-10 bg-sky/10 rounded-lg flex items-center justify-center shrink-0">
+        <svg class="w-5 h-5 text-sky" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+        </svg>
+      </div>
+      <div>
+        <h3 class="text-sm font-semibold text-slate-dark">{t(lang, "contact.info.location")}</h3>
+        <p class="text-sm text-charcoal/60">{t(lang, "contact.info.locationValue")}</p>
+        <p class="text-sm text-charcoal/40">D-MTEC — ETH Zurich</p>
+      </div>
+    </div>
+
+    <!-- Social -->
+    <div class="flex items-start gap-4">
+      <div class="w-10 h-10 bg-sky/10 rounded-lg flex items-center justify-center shrink-0">
+        <svg class="w-5 h-5 text-sky" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+        </svg>
+      </div>
+      <div>
+        <h3 class="text-sm font-semibold text-slate-dark mb-2">{t(lang, "contact.info.social")}</h3>
+        <SocialLinks class="text-charcoal/40" />
+      </div>
+    </div>
+  </div>
+</div>

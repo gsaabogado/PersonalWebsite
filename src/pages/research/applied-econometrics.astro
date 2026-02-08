@@ -1,0 +1,26 @@
+---
+import PageLayout from "../../layouts/PageLayout.astro";
+import ResearchHero from "../../components/research/ResearchHero.astro";
+import TopicGrid from "../../components/research/TopicGrid.astro";
+import PublicationList from "../../components/research/PublicationList.astro";
+import { getLangFromUrl, t } from "../../i18n/utils";
+import { getResearchArea } from "../../data/research";
+import { getPublicationsByArea } from "../../data/publications";
+
+const lang = getLangFromUrl(Astro.url);
+const area = getResearchArea("applied-econometrics")!;
+const pubs = getPublicationsByArea("econometrics");
+const researchPath = lang === "es" ? "/es/research/" : "/research/";
+---
+
+<PageLayout title={`${area.title} — Luis Sarmiento`}>
+  <ResearchHero
+    title={area.title}
+    description={area.longDescription}
+    backLink={researchPath}
+    backLabel={t(lang, "research.backToResearch")}
+    backgroundImage="/images/backgrounds/city-smog.png"
+  />
+  <TopicGrid topics={area.topics} />
+  <PublicationList publications={pubs} />
+</PageLayout>

@@ -1,0 +1,32 @@
+---
+import PageLayout from "../../../layouts/PageLayout.astro";
+import ResearchHero from "../../../components/research/ResearchHero.astro";
+import TopicGrid from "../../../components/research/TopicGrid.astro";
+import PublicationList from "../../../components/research/PublicationList.astro";
+import { getLangFromUrl, t } from "../../../i18n/utils";
+import { getResearchArea } from "../../../data/research";
+import { getPublicationsByArea } from "../../../data/publications";
+
+const lang = getLangFromUrl(Astro.url);
+const area = getResearchArea("energy-modeling")!;
+const pubs = getPublicationsByArea("energy-modeling");
+const title = area.titleEs || area.title;
+const description = area.longDescriptionEs || area.longDescription;
+const topics = area.topics.map((topic) => ({
+  ...topic,
+  title: topic.titleEs || topic.title,
+  description: topic.descriptionEs || topic.description,
+}));
+---
+
+<PageLayout title={`${title} — Luis Sarmiento`}>
+  <ResearchHero
+    title={title}
+    description={description}
+    backLink="/es/research/"
+    backLabel={t(lang, "research.backToResearch")}
+    backgroundImage="/images/backgrounds/solar-wind.png"
+  />
+  <TopicGrid topics={topics} />
+  <PublicationList publications={pubs} />
+</PageLayout>

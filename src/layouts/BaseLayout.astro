@@ -1,0 +1,58 @@
+---
+import "../styles/global.css";
+import { getLangFromUrl } from "../i18n/utils";
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const lang = getLangFromUrl(Astro.url);
+
+const {
+  title = lang === "en"
+    ? "Luis Sarmiento — Environmental Economist"
+    : "Luis Sarmiento — Economista Ambiental",
+  description = lang === "en"
+    ? "Environmental economist specializing in applied econometrics and energy modeling. Research on air pollution, causal inference, and energy policy."
+    : "Economista ambiental especializado en econometría aplicada y modelación energética. Investigación sobre contaminación del aire, inferencia causal y política energética.",
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang={lang} class="scroll-smooth">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <title>{title}</title>
+  </head>
+  <body class="bg-white text-charcoal antialiased font-body min-h-screen flex flex-col">
+    <slot />
+
+    <script>
+      // Scroll-triggered animations
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("is-visible");
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.15, rootMargin: "0px 0px -40px 0px" }
+      );
+
+      document.querySelectorAll("[data-animate]").forEach((el) => {
+        const delay = el.getAttribute("data-delay");
+        if (delay) {
+          (el as HTMLElement).style.transitionDelay = delay;
+        }
+        observer.observe(el);
+      });
+    </script>
+  </body>
+</html>

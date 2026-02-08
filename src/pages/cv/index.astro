@@ -1,0 +1,184 @@
+---
+import PageLayout from "../../layouts/PageLayout.astro";
+import ResearchHero from "../../components/research/ResearchHero.astro";
+import Timeline from "../../components/cv/Timeline.astro";
+import SkillBadges from "../../components/cv/SkillBadges.astro";
+import ConferenceTable from "../../components/cv/ConferenceTable.astro";
+import PublicationList from "../../components/research/PublicationList.astro";
+import { getLangFromUrl, t } from "../../i18n/utils";
+import { experience, education, teaching, visitingScholar, technicalSkills, languages } from "../../data/cv";
+import { publications } from "../../data/publications";
+
+const lang = getLangFromUrl(Astro.url);
+
+const experienceItems = experience.map((e) => ({
+  dates: e.dates,
+  title: e.position,
+  subtitle: e.institution,
+  country: e.country,
+  url: e.url,
+}));
+
+const educationItems = education.map((e) => ({
+  dates: e.dates,
+  title: e.degree,
+  subtitle: e.institution,
+  details: [t(lang, "cv.dissertation") + ": " + e.dissertation],
+  country: e.country,
+}));
+
+const teachingItems = teaching.map((item) => ({
+  dates: `${item.semester} ${item.year}`,
+  title: item.course,
+  subtitle: item.institution,
+  details: item.level ? [`${t(lang, "cv.level")}: ${item.level}`] : [],
+  country: item.country,
+}));
+
+const visitingItems = visitingScholar.map((v) => ({
+  dates: `${v.semester} ${v.year}`,
+  title: v.institution,
+  subtitle: v.topic,
+  details: [],
+  country: v.country,
+}));
+
+const sections = [
+  { id: "experience", label: t(lang, "cv.experience") },
+  { id: "education", label: t(lang, "cv.education") },
+  { id: "publications", label: t(lang, "cv.publications") },
+  { id: "teaching", label: t(lang, "cv.teaching") },
+  { id: "skills", label: t(lang, "cv.skillsAndLanguages") },
+  { id: "conferences", label: t(lang, "cv.conferences") },
+];
+---
+
+<PageLayout title={`${t(lang, "cv.heroTitle")} — Luis Sarmiento`}>
+  <ResearchHero
+    title={t(lang, "cv.heroTitle")}
+    description={t(lang, "cv.heroDesc")}
+    backgroundImage="/images/backgrounds/code-screen.png"
+    downloadLink="/cv/Luis_Sarmiento_CV.pdf"
+    downloadLabel={t(lang, "cv.download")}
+  />
+
+  <!-- Sticky Section Nav + Download -->
+  <nav id="cv-nav" class="sticky top-20 z-40 bg-white/95 backdrop-blur-sm border-b border-cool-gray/50 shadow-sm">
+    <div class="max-w-5xl mx-auto px-4">
+      <div class="flex items-center justify-center gap-2 py-3 overflow-x-auto scrollbar-hide">
+        {sections.map((s) => (
+          <a
+            href={`#${s.id}`}
+            data-nav-link={s.id}
+            class="cv-nav-link shrink-0 px-3 py-1.5 text-sm font-body text-charcoal/50 rounded-md hover:text-slate-dark hover:bg-warm-gray transition-all"
+          >
+            {s.label}
+          </a>
+        ))}
+      </div>
+    </div>
+  </nav>
+
+  <!-- Experience -->
+  <section id="experience" class="py-16 px-4 bg-warm-gray scroll-mt-36">
+    <div class="max-w-4xl mx-auto">
+      <h2 data-animate class="text-2xl font-heading font-bold text-slate-dark mb-8">
+        {t(lang, "cv.experience")}
+      </h2>
+      <Timeline items={experienceItems} />
+    </div>
+  </section>
+
+  <!-- Education -->
+  <section id="education" class="py-16 px-4 bg-white scroll-mt-36">
+    <div class="max-w-4xl mx-auto">
+      <h2 data-animate class="text-2xl font-heading font-bold text-slate-dark mb-8">
+        {t(lang, "cv.education")}
+      </h2>
+      <Timeline items={educationItems} />
+    </div>
+  </section>
+
+  <!-- Publications -->
+  <PublicationList publications={publications} id="publications" />
+
+  <!-- Teaching -->
+  <section id="teaching" class="py-16 px-4 bg-white scroll-mt-36">
+    <div class="max-w-4xl mx-auto">
+      <h2 data-animate class="text-2xl font-heading font-bold text-slate-dark mb-8">
+        {t(lang, "cv.teaching")}
+      </h2>
+      <Timeline items={teachingItems} />
+      <h3 data-animate class="text-lg font-heading font-semibold text-slate-dark/70 mt-10 mb-4">{t(lang, "cv.visitingLectures")}</h3>
+      <Timeline items={visitingItems} />
+    </div>
+  </section>
+
+  <!-- Skills & Languages -->
+  <section id="skills" class="py-16 px-4 bg-white scroll-mt-36">
+    <div class="max-w-4xl mx-auto">
+      <h2 data-animate class="text-2xl font-heading font-bold text-slate-dark mb-8">
+        {t(lang, "cv.skillsAndLanguages")}
+      </h2>
+      <h3 data-animate class="text-lg font-heading font-semibold text-slate-dark/70 mb-4">{t(lang, "cv.skills")}</h3>
+      <SkillBadges skills={technicalSkills} type="skill" />
+      <h3 data-animate class="text-lg font-heading font-semibold text-slate-dark/70 mt-10 mb-4">{t(lang, "cv.languages")}</h3>
+      <SkillBadges skills={languages} type="language" />
+    </div>
+  </section>
+
+  <!-- Conferences -->
+  <section id="conferences" class="py-16 px-4 bg-white scroll-mt-36">
+    <div class="max-w-4xl mx-auto">
+      <h2 data-animate class="text-2xl font-heading font-bold text-slate-dark mb-8">
+        {t(lang, "cv.conferences")}
+      </h2>
+      <ConferenceTable />
+    </div>
+  </section>
+</PageLayout>
+
+<style>
+  .scrollbar-hide::-webkit-scrollbar { display: none; }
+  .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+  .cv-nav-link.active {
+    color: var(--color-sky);
+    background-color: color-mix(in srgb, var(--color-sky) 10%, transparent);
+    font-weight: 500;
+  }
+</style>
+
+<script>
+  const navLinks = document.querySelectorAll<HTMLAnchorElement>(".cv-nav-link");
+  const sectionIds = Array.from(navLinks).map((link) => link.getAttribute("data-nav-link")!);
+  const sections = sectionIds.map((id) => document.getElementById(id)).filter(Boolean) as HTMLElement[];
+
+  function updateActive() {
+    let current = sectionIds[0];
+    for (const section of sections) {
+      const rect = section.getBoundingClientRect();
+      if (rect.top <= 150) {
+        current = section.id;
+      }
+    }
+    navLinks.forEach((link) => {
+      link.classList.toggle("active", link.getAttribute("data-nav-link") === current);
+    });
+  }
+
+  // Smooth scroll on click
+  navLinks.forEach((link) => {
+    link.addEventListener("click", (e) => {
+      e.preventDefault();
+      const id = link.getAttribute("data-nav-link")!;
+      const target = document.getElementById(id);
+      if (target) {
+        target.scrollIntoView({ behavior: "smooth" });
+        history.replaceState(null, "", `#${id}`);
+      }
+    });
+  });
+
+  window.addEventListener("scroll", updateActive, { passive: true });
+  updateActive();
+</script>

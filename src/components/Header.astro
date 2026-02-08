@@ -1,0 +1,178 @@
+---
+import { getNavigation } from "../i18n/navigation";
+import { getLangFromUrl, getAlternatePath, t } from "../i18n/utils";
+import { languages, type Lang } from "../i18n/ui";
+import SocialLinks from "./SocialLinks.astro";
+
+const lang = getLangFromUrl(Astro.url);
+const navigation = getNavigation(lang);
+const currentPath = Astro.url.pathname;
+const alternatePath = getAlternatePath(Astro.url);
+const alternateLang = lang === "en" ? "es" : "en";
+---
+
+<header class="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-cool-gray/50">
+  <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between h-20">
+
+      <!-- Logo (text) -->
+      <a href={lang === "es" ? "/es/" : "/"} class="flex items-center gap-2 shrink-0">
+        <span class="text-xl font-heading font-bold text-slate-dark">Luis Sarmiento</span>
+      </a>
+
+      <!-- Desktop Navigation -->
+      <div class="hidden lg:flex items-center gap-1">
+        {navigation.map((item) => (
+          <a
+            href={item.href}
+            class:list={[
+              "px-4 py-2 text-sm font-body font-medium rounded-md transition-colors",
+              currentPath === item.href
+                ? "text-sky bg-sky/5"
+                : "text-charcoal hover:text-sky hover:bg-sky/5",
+            ]}
+          >
+            {item.label}
+          </a>
+        ))}
+
+        <!-- Download CV Button -->
+        <a
+          href="/cv/Luis_Sarmiento_CV.pdf"
+          download
+          class="inline-flex items-center gap-1.5 ml-3 px-4 py-2 text-sm font-body font-medium text-white bg-sky rounded-lg hover:bg-sky-light transition-colors shadow-sm"
+        >
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+          </svg>
+          CV
+        </a>
+
+        <!-- Social Links -->
+        <div class="ml-3 pl-3 border-l border-cool-gray/50 text-charcoal/40">
+          <SocialLinks iconClass="w-4 h-4" />
+        </div>
+
+        <!-- Language Switcher -->
+        <a
+          href={alternatePath}
+          class="flex items-center gap-1.5 px-2 py-1.5 rounded-md hover:bg-sky/5 transition-colors ml-2"
+          title={lang === "en" ? "Cambiar a Español" : "Switch to English"}
+        >
+          {lang === "en" ? (
+            <!-- Spain flag — click to switch to Spanish -->
+            <svg class="w-6 h-4 rounded-sm shadow-sm" viewBox="0 0 60 40">
+              <rect width="60" height="40" fill="#c60b1e"/>
+              <rect y="10" width="60" height="20" fill="#ffc400"/>
+            </svg>
+            <span class="text-xs font-body font-medium text-charcoal/50 uppercase">ES</span>
+          ) : (
+            <!-- UK flag — click to switch to English -->
+            <svg class="w-6 h-4 rounded-sm shadow-sm" viewBox="0 0 60 40">
+              <rect width="60" height="40" fill="#012169"/>
+              <path d="M0,0 L60,40 M60,0 L0,40" stroke="#fff" stroke-width="6"/>
+              <path d="M0,0 L60,40 M60,0 L0,40" stroke="#C8102E" stroke-width="4" clip-path="polygon(30 0, 30 20, 60 0, 60 20, 30 20, 30 40, 0 40, 0 20, 30 20, 30 0)"/>
+              <path d="M30,0 V40 M0,20 H60" stroke="#fff" stroke-width="8"/>
+              <path d="M30,0 V40 M0,20 H60" stroke="#C8102E" stroke-width="4"/>
+            </svg>
+            <span class="text-xs font-body font-medium text-charcoal/50 uppercase">EN</span>
+          )}
+        </a>
+      </div>
+
+      <!-- Mobile Hamburger Button -->
+      <button
+        id="mobile-menu-btn"
+        class="lg:hidden p-2 text-charcoal hover:text-sky transition-colors"
+        aria-label="Open menu"
+        aria-expanded="false"
+      >
+        <svg id="hamburger-icon" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+        <svg id="close-icon" class="w-6 h-6 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile Menu Overlay -->
+  <div
+    id="mobile-menu"
+    class="lg:hidden fixed inset-0 top-20 bg-white z-40 transform translate-x-full transition-transform duration-300 ease-in-out overflow-y-auto"
+  >
+    <nav class="px-4 py-6 space-y-1">
+      {navigation.map((item) => (
+        <a
+          href={item.href}
+          class:list={[
+            "block px-4 py-3 text-base font-body font-medium rounded-md transition-colors",
+            currentPath === item.href
+              ? "text-sky bg-sky/5"
+              : "text-charcoal hover:text-sky hover:bg-sky/5",
+          ]}
+        >
+          {item.label}
+        </a>
+      ))}
+
+      <!-- Mobile Download CV -->
+      <a
+        href="/cv/Luis_Sarmiento_CV.pdf"
+        download
+        class="flex items-center gap-3 mx-4 mt-4 px-4 py-3 text-base font-body font-medium text-white bg-sky rounded-lg hover:bg-sky-light transition-colors justify-center shadow-sm"
+      >
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+        </svg>
+        CV
+      </a>
+
+      <!-- Mobile Social Links -->
+      <div class="flex justify-center mt-4 text-charcoal/40">
+        <SocialLinks iconClass="w-5 h-5" />
+      </div>
+
+      <!-- Mobile Language Switcher -->
+      <a
+        href={alternatePath}
+        class="flex items-center gap-3 px-4 py-3 text-base font-body font-medium text-charcoal/60 rounded-md hover:text-sky hover:bg-sky/5 transition-colors"
+      >
+        {lang === "en" ? (
+          <svg class="w-6 h-4 rounded-sm shadow-sm" viewBox="0 0 60 40">
+            <rect width="60" height="40" fill="#c60b1e"/>
+            <rect y="10" width="60" height="20" fill="#ffc400"/>
+          </svg>
+          <span>Español</span>
+        ) : (
+          <svg class="w-6 h-4 rounded-sm shadow-sm" viewBox="0 0 60 40">
+            <rect width="60" height="40" fill="#012169"/>
+            <path d="M0,0 L60,40 M60,0 L0,40" stroke="#fff" stroke-width="6"/>
+            <path d="M0,0 L60,40 M60,0 L0,40" stroke="#C8102E" stroke-width="4" clip-path="polygon(30 0, 30 20, 60 0, 60 20, 30 20, 30 40, 0 40, 0 20, 30 20, 30 0)"/>
+            <path d="M30,0 V40 M0,20 H60" stroke="#fff" stroke-width="8"/>
+            <path d="M30,0 V40 M0,20 H60" stroke="#C8102E" stroke-width="4"/>
+          </svg>
+          <span>English</span>
+        )}
+      </a>
+    </nav>
+  </div>
+</header>
+
+<script>
+  const menuBtn = document.getElementById("mobile-menu-btn");
+  const mobileMenu = document.getElementById("mobile-menu");
+  const hamburgerIcon = document.getElementById("hamburger-icon");
+  const closeIcon = document.getElementById("close-icon");
+
+  menuBtn?.addEventListener("click", () => {
+    const isOpen = !mobileMenu?.classList.contains("translate-x-full");
+    mobileMenu?.classList.toggle("translate-x-full", isOpen);
+    mobileMenu?.classList.toggle("translate-x-0", !isOpen);
+    hamburgerIcon?.classList.toggle("hidden", !isOpen);
+    closeIcon?.classList.toggle("hidden", isOpen);
+    menuBtn.setAttribute("aria-expanded", String(!isOpen));
+    document.body.style.overflow = isOpen ? "" : "hidden";
+  });
+</script>

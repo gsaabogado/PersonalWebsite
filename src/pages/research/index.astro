@@ -1,0 +1,55 @@
+---
+import PageLayout from "../../layouts/PageLayout.astro";
+import ResearchHero from "../../components/research/ResearchHero.astro";
+import { getLangFromUrl, t } from "../../i18n/utils";
+import { researchAreas } from "../../data/research";
+
+const lang = getLangFromUrl(Astro.url);
+const basePath = lang === "es" ? "/es/research" : "/research";
+---
+
+<PageLayout title={`${t(lang, "research.heroTitle")} — Luis Sarmiento`}>
+  <ResearchHero
+    title={t(lang, "research.heroTitle")}
+    description={t(lang, "research.heroDesc")}
+    backgroundImage="/images/backgrounds/world-lights.png"
+  />
+
+  <section class="py-24 px-4 bg-white">
+    <div class="max-w-7xl mx-auto">
+      <h2 data-animate class="text-2xl font-heading font-bold text-slate-dark mb-12 text-center">
+        {t(lang, "research.areas")}
+      </h2>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        {researchAreas.map((area, i) => (
+          <a
+            href={`${basePath}/${area.id}/`}
+            data-animate
+            data-delay={`${0.1 + i * 0.15}s`}
+            class="group bg-warm-gray rounded-xl p-8 hover:shadow-lg transition-all duration-300 border border-cool-gray/50 hover:border-sky/30"
+          >
+            <div class="w-14 h-14 bg-sky/10 rounded-xl flex items-center justify-center mb-6 group-hover:bg-sky/20 transition-colors">
+              <svg class="w-7 h-7 text-sky" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d={area.icon} />
+              </svg>
+            </div>
+
+            <h3 class="text-xl font-heading font-bold text-slate-dark mb-3">{area.title}</h3>
+            <p class="text-charcoal/60 leading-relaxed mb-6">{area.longDescription}</p>
+
+            <div class="flex items-center justify-between">
+              <span class="text-sm text-charcoal/40">{area.topics.length} {t(lang, "research.topics")}</span>
+              <span class="text-sm font-medium text-sky group-hover:translate-x-1 transition-transform inline-flex items-center gap-1">
+                {t(lang, "research.explore")}
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                </svg>
+              </span>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+</PageLayout>

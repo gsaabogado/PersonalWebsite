@@ -1,0 +1,61 @@
+---
+import { getConferencesByYear } from "../../data/conferences";
+import { getLangFromUrl } from "../../i18n/utils";
+
+const lang = getLangFromUrl(Astro.url);
+const grouped = getConferencesByYear();
+
+const cities: Record<string, string> = {
+  "Gothenburg": "Gotemburgo",
+  "Merida": "Mérida",
+  "Bogota": "Bogotá",
+  "Frankfurt": "Fráncfort",
+  "Leuven": "Lovaina",
+  "Hamburg": "Hamburgo",
+  "Medellin": "Medellín",
+  "Naples": "Nápoles",
+  "Mannheim": "Mannheim",
+  "Munich": "Múnich",
+  "Leipzig": "Leipzig",
+  "Manchester": "Mánchester",
+  "Vienna": "Viena",
+  "Guayaquil": "Guayaquil",
+};
+
+const countries: Record<string, string> = {
+  "Sweden": "Suecia",
+  "Mexico": "México",
+  "Colombia": "Colombia",
+  "Germany": "Alemania",
+  "Belgium": "Bélgica",
+  "Italy": "Italia",
+  "United Kingdom": "Reino Unido",
+  "Argentina": "Argentina",
+  "Ecuador": "Ecuador",
+  "Austria": "Austria",
+};
+
+const tr = (map: Record<string, string>, key: string) =>
+  lang === "es" ? (map[key] || key) : key;
+---
+
+<div class="space-y-8">
+  {[...grouped.entries()].map(([year, confs]) => (
+    <div data-animate>
+      <h4 class="text-lg font-heading font-semibold text-slate-dark mb-3 flex items-center gap-2">
+        {year}
+        <span class="text-sm font-normal text-charcoal/40">({confs.length})</span>
+      </h4>
+      <div class="space-y-2">
+        {confs.map((conf) => (
+          <div class="bg-white rounded-lg px-4 py-3 border border-cool-gray/50 text-sm">
+            <p class="font-medium text-slate-dark">{conf.title}</p>
+            <p class="text-charcoal/50">
+              {conf.event} · {tr(cities, conf.city)}, {tr(countries, conf.country)}
+            </p>
+          </div>
+        ))}
+      </div>
+    </div>
+  ))}
+</div>

@@ -1,0 +1,34 @@
+---
+import { getLangFromUrl, t } from "../../i18n/utils";
+import { getContactPath } from "../../i18n/navigation";
+
+const lang = getLangFromUrl(Astro.url);
+const contactPath = getContactPath(lang);
+---
+
+<section class="relative py-24 px-4 overflow-hidden">
+  <!-- Background image -->
+  <div class="absolute inset-0">
+    <img
+      src="/images/backgrounds/conference-hall.png"
+      alt=""
+      class="w-full h-full object-cover"
+    />
+    <div class="absolute inset-0 bg-slate-dark/75"></div>
+  </div>
+
+  <div data-animate class="relative z-10 max-w-4xl mx-auto text-center">
+    <h2 class="text-3xl sm:text-4xl font-heading font-bold text-white mb-4">
+      {t(lang, "cta.title")}
+    </h2>
+    <p class="text-lg text-white/60 font-body mb-10 max-w-2xl mx-auto">
+      {t(lang, "cta.subtitle")}
+    </p>
+    <a
+      href={contactPath}
+      class="inline-flex items-center justify-center font-body font-medium rounded-md px-8 py-4 text-lg bg-white text-slate-dark hover:bg-cool-gray transition-all duration-200"
+    >
+      {t(lang, "cta.button")}
+    </a>
+  </div>
+</section>

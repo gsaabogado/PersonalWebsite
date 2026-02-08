@@ -1,0 +1,73 @@
+---
+interface Props {
+  title: string;
+  description: string;
+  backLink?: string;
+  backLabel?: string;
+  backgroundImage?: string;
+  downloadLink?: string;
+  downloadLabel?: string;
+}
+
+const { title, description, backLink, backLabel, backgroundImage, downloadLink, downloadLabel } = Astro.props;
+---
+
+<section class="relative py-24 px-4 overflow-hidden">
+  <!-- Background -->
+  {backgroundImage ? (
+    <div class="absolute inset-0">
+      <img
+        src={backgroundImage}
+        alt=""
+        class="w-full h-full object-cover"
+      />
+      <div class="absolute inset-0 bg-slate-dark/80"></div>
+    </div>
+  ) : (
+    <div class="absolute inset-0 bg-gradient-to-br from-slate-dark via-slate to-slate-light"></div>
+  )}
+
+  <!-- Subtle pattern (only when no image) -->
+  {!backgroundImage && (
+    <div class="absolute inset-0 opacity-[0.04]">
+      <div class="absolute top-10 right-20 w-72 h-72 border border-white/30 rotate-45"></div>
+      <div class="absolute bottom-10 left-10 w-48 h-48 border border-white/20 rotate-12"></div>
+    </div>
+  )}
+
+  <div class="relative z-10 max-w-4xl mx-auto text-center">
+    {backLink && backLabel && (
+      <a
+        href={backLink}
+        data-animate
+        data-delay="0.1s"
+        class="inline-flex items-center gap-2 text-sm text-white/50 hover:text-white/80 transition-colors mb-8"
+      >
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+        </svg>
+        {backLabel}
+      </a>
+    )}
+    <h1 data-animate data-delay="0.15s" class="text-4xl sm:text-5xl font-heading font-bold text-white mb-6">
+      {title}
+    </h1>
+    <p data-animate data-delay="0.25s" class="text-lg text-white/60 leading-relaxed max-w-2xl mx-auto">
+      {description}
+    </p>
+    {downloadLink && downloadLabel && (
+      <a
+        href={downloadLink}
+        download
+        data-animate
+        data-delay="0.35s"
+        class="inline-flex items-center gap-2 mt-8 px-6 py-3 text-sm font-body font-medium text-white bg-sky rounded-lg hover:bg-sky-light transition-colors shadow-md"
+      >
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+        </svg>
+        {downloadLabel}
+      </a>
+    )}
+  </div>
+</section>
