@@ -1,0 +1,17 @@
+---
+import PageLayout from "../../../layouts/PageLayout.astro";
+import ResearchHero from "../../../components/research/ResearchHero.astro";
+import PublicationList from "../../../components/research/PublicationList.astro";
+import { getLangFromUrl, t } from "../../../i18n/utils";
+import { publications } from "../../../data/publications";
+
+const lang = getLangFromUrl(Astro.url);
+---
+
+<PageLayout title={`${t(lang, "publications.title")} — Luis Sarmiento`}>
+  <ResearchHero
+    title={t(lang, "publications.title")}
+    description={t(lang, "publications.description")}
+  />
+  <PublicationList publications={publications} />
+</PageLayout>

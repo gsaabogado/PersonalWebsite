@@ -104,6 +104,10 @@ export const ui = {
     "lang.elementary": "Elementary",
     "lang.basic": "Basic",
 
+    // Publications page
+    "publications.title": "Publications",
+    "publications.description": "A complete list of my published research, papers under review, and working papers.",
+
     // Contact page
     "contact.heroTitle": "Contact",
     "contact.heroDesc": "I'd love to hear from you — whether about research collaborations, speaking invitations, or general inquiries.",
@@ -223,6 +227,10 @@ export const ui = {
     "lang.intermediate": "Intermedio",
     "lang.elementary": "Elemental",
     "lang.basic": "Básico",
+
+    // Publications page
+    "publications.title": "Publicaciones",
+    "publications.description": "Una lista completa de mi investigación publicada, artículos en revisión y documentos de trabajo.",
 
     // Contact page
     "contact.heroTitle": "Contacto",

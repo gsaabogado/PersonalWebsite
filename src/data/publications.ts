@@ -47,8 +47,9 @@ export const publications: Publication[] = [
   {
     title: "The Air Quality Effects of Uber",
     authors: "Luis Sarmiento, Yeong-Jae Kim",
-    journal: "Journal of Urban Economics (Conditional Acceptance)",
+    journal: "Journal of Urban Economics",
     year: 2026,
+    url: "https://www.sciencedirect.com/science/article/pii/S0094119026000173",
     status: "published",
     area: "econometrics",
     question: "Does the entry of ride-sharing services like Uber causally improve urban air quality?",
@@ -67,9 +68,10 @@ export const publications: Publication[] = [
   {
     title: "Occupation and Temperature-Related Mortality in Mexico",
     authors: "R. Daniel Bressler, Andrew Papp, Luis Sarmiento, Jeffrey Shrader, Alyssa Wilson",
-    journal: "Journal of Human Resources (Advance online publication)",
+    journal: "Journal of Human Resources",
     year: 2026,
     doi: "10.3368/jhr.0325-14131R2",
+    url: "https://jhr.uwpress.org/content/early/2026/01/07/jhr.0325-14131R2",
     status: "published",
     area: "econometrics",
     question: "How does occupation shape vulnerability to temperature-related mortality in developing countries?",
