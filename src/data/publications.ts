@@ -419,6 +419,31 @@ export const publications: Publication[] = [
 
   // === Under Review ===
   {
+    title: "When the Boundary Layer Drops: Air Quality and Healthcare Use in Mexico",
+    authors: "Piero Basaglia, Luis Sarmiento",
+    journal: "Proceedings of the National Academy of Sciences (Under Review)",
+    year: 2024,
+    status: "under-review",
+    area: "econometrics",
+    workingPaper: {
+      series: "CESifo Working Paper No. 11901",
+      doi: "10.2139/ssrn.5263620",
+      url: "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=5263620",
+    },
+    question: "What is the causal impact of PM2.5 on emergency department demand across health conditions in a developing country?",
+    questionEs: "¿Cuál es el impacto causal del PM2.5 en la demanda de urgencias según las condiciones de salud en un país en desarrollo?",
+    findings: [
+      "A marginal increase in PM2.5 leads to a 2.3% rise in emergency department visit rates, using boundary layer height as a quasi-random instrument.",
+      "Effects vary significantly by age group and exposure levels, with most increases driven by respiratory conditions.",
+      "First nationwide assessment of air pollution-attributable ED demand in a developing country, covering the universe of public hospital triage visits in Mexico.",
+    ],
+    findingsEs: [
+      "Un aumento marginal en PM2.5 genera un incremento del 2.3% en las tasas de visitas a urgencias, utilizando la altura de la capa límite como instrumento cuasi-aleatorio.",
+      "Los efectos varían significativamente por grupo de edad y niveles de exposición, con la mayoría de los aumentos impulsados por condiciones respiratorias.",
+      "Primera evaluación a nivel nacional de la demanda de urgencias atribuible a la contaminación del aire en un país en desarrollo, cubriendo el universo de visitas de triaje en hospitales públicos de México.",
+    ],
+  },
+  {
     title: "Recycling in a Globalised Economy",
     authors: "Eugénie Joltreau, Luis Sarmiento",
     journal: "Empirical Economics (Revise and Resubmit)",
@@ -443,31 +468,6 @@ export const publications: Publication[] = [
     ],
   },
   // === Working Papers ===
-  {
-    title: "When the Boundary Layer Drops: Air Quality and Healthcare Use in Mexico",
-    authors: "Piero Basaglia, Luis Sarmiento",
-    journal: "",
-    year: 2024,
-    status: "working-paper",
-    area: "econometrics",
-    workingPaper: {
-      series: "CESifo Working Paper No. 11901",
-      doi: "10.2139/ssrn.5263620",
-      url: "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=5263620",
-    },
-    question: "What is the causal impact of PM2.5 on emergency department demand across health conditions in a developing country?",
-    questionEs: "¿Cuál es el impacto causal del PM2.5 en la demanda de urgencias según las condiciones de salud en un país en desarrollo?",
-    findings: [
-      "A marginal increase in PM2.5 leads to a 2.3% rise in emergency department visit rates, using boundary layer height as a quasi-random instrument.",
-      "Effects vary significantly by age group and exposure levels, with most increases driven by respiratory conditions.",
-      "First nationwide assessment of air pollution-attributable ED demand in a developing country, covering the universe of public hospital triage visits in Mexico.",
-    ],
-    findingsEs: [
-      "Un aumento marginal en PM2.5 genera un incremento del 2.3% en las tasas de visitas a urgencias, utilizando la altura de la capa límite como instrumento cuasi-aleatorio.",
-      "Los efectos varían significativamente por grupo de edad y niveles de exposición, con la mayoría de los aumentos impulsados por condiciones respiratorias.",
-      "Primera evaluación a nivel nacional de la demanda de urgencias atribuible a la contaminación del aire en un país en desarrollo, cubriendo el universo de visitas de triaje en hospitales públicos de México.",
-    ],
-  },
   {
     title: "The Unintended Consequences of Low Emission Zones: Evidence from Madrid Central",
     authors: "Adrián Santonja, Luis Sarmiento, Nicole Wägner",
