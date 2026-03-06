@@ -469,6 +469,30 @@ export const publications: Publication[] = [
   },
   // === Working Papers ===
   {
+    title: "The Convexity of Hurricane Damages",
+    authors: "François Cohen, Luis Sarmiento, Yannik Stuka",
+    journal: "",
+    year: 2026,
+    status: "working-paper",
+    area: "econometrics",
+    workingPaper: {
+      series: "INET Oxford Working Paper No. 2026-06",
+      url: "https://www.inet.ox.ac.uk/publications/the-convexity-of-hurricane-damages",
+    },
+    question: "How do hurricane damages scale with storm intensity, and what does this imply for climate change?",
+    questionEs: "¿Cómo escalan los daños de los huracanes con la intensidad de la tormenta, y qué implica esto para el cambio climático?",
+    findings: [
+      "Exploits spatial asymmetries in storm dynamics to causally identify how damages vary with hurricane intensity.",
+      "Uses two natural experiments: wind reinforcement on the right side of Northern Hemisphere storms and Bermuda High fluctuations affecting trajectories near the US coast.",
+      "Establishes a methodology for measuring exogenous intensity variation at the local level to estimate damage scaling as hurricanes intensify with climate change.",
+    ],
+    findingsEs: [
+      "Explota asimetrías espaciales en la dinámica de las tormentas para identificar causalmente cómo varían los daños con la intensidad de los huracanes.",
+      "Utiliza dos experimentos naturales: el refuerzo del viento en el lado derecho de las tormentas del hemisferio norte y las fluctuaciones del anticiclón de las Bermudas que afectan las trayectorias cerca de la costa de EE.UU.",
+      "Establece una metodología para medir la variación exógena de intensidad a nivel local y estimar cómo escalan los daños a medida que los huracanes se intensifican con el cambio climático.",
+    ],
+  },
+  {
     title: "The Unintended Consequences of Low Emission Zones: Evidence from Madrid Central",
     authors: "Adrián Santonja, Luis Sarmiento, Nicole Wägner",
     journal: "",
