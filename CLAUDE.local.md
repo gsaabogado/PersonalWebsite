@@ -2,10 +2,10 @@
 
 ## Current Status
 Live and current as of 2026-07-25. Publications match
-`~/projects/cv/data/publications.csv` exactly (33 entries: 18 published / 4 R&R /
-3 under review / 8 working papers). Conferences cover the 2026 season with an award
-badge. A Grants section and a top-level Grants tab are live, and the downloadable
-CV PDF has been refreshed. Site is 16 pages, up from 14.
+`~/projects/cv/data/publications.csv` exactly (**34 entries: 18 published / 4 R&R /
+2 under review / 10 working papers**). Conferences cover the 2026 season with an award
+badge; a Grants section and a top-level Grants tab are live; the downloadable CV PDF is
+current. Site is 16 pages on **Astro 7.1.3 with 0 vulnerabilities**, served by **Netlify**.
 
 ## Last Session: 2026-07-25
 Synced with the CV after a Google Scholar audit of published metadata. Driven from
