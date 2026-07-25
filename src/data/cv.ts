@@ -32,6 +32,15 @@ export interface VisitingScholar {
   country: string;
 }
 
+export interface Grant {
+  title: string;
+  funder: string;
+  role: string;
+  amount: string;
+  period: string;
+  country: string;
+}
+
 export interface Skill {
   name: string;
   level: number; // 1-5
@@ -147,7 +156,39 @@ export const education: Education[] = [
   },
 ];
 
+export const grants: Grant[] = [
+  {
+    title: "Evaluating Non-price and Economic Instruments for Demand Evening in Mobility and Transport (EVEN-DEMAND)",
+    funder: "Swiss Federal Office of Energy (SFOE)",
+    role: "Principal Investigator",
+    amount: "CHF 220,000",
+    period: "2027–2029",
+    country: "Switzerland",
+  },
+];
+
 export const teaching: Teaching[] = [
+  {
+    year: 2026,
+    semester: "Fall",
+    institution: "ETH Zurich",
+    course: "Designing Public Policy Research (Quasi-Experimental Methods)",
+    country: "Switzerland",
+  },
+  {
+    year: 2026,
+    semester: "Spring",
+    institution: "University of Bologna",
+    course: "Environmental Economics and Policy",
+    country: "Italy",
+  },
+  {
+    year: 2025,
+    semester: "Spring",
+    institution: "University of Bologna",
+    course: "Environmental Economics and Policy",
+    country: "Italy",
+  },
   {
     year: 2024,
     semester: "Winter",

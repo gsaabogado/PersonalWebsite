@@ -6,7 +6,7 @@ import SkillBadges from "../../../components/cv/SkillBadges.astro";
 import ConferenceTable from "../../../components/cv/ConferenceTable.astro";
 import PublicationList from "../../../components/research/PublicationList.astro";
 import { getLangFromUrl, t } from "../../../i18n/utils";
-import { experience, education, teaching, visitingScholar, technicalSkills, languages } from "../../../data/cv";
+import { experience, education, teaching, visitingScholar, technicalSkills, languages, grants } from "../../../data/cv";
 import { publications } from "../../../data/publications";
 
 const lang = getLangFromUrl(Astro.url);
@@ -114,6 +114,14 @@ const visitingUniversities: Record<string, string> = {
   "University of Verona": "Universidad de Verona",
 };
 
+const grantItems = grants.map((g) => ({
+  dates: g.period,
+  title: g.title,
+  subtitle: g.funder,
+  details: [g.role, g.amount],
+  country: g.country,
+}));
+
 const visitingItems = visitingScholar.map((v) => ({
   dates: `${semesters[v.semester] || v.semester} ${v.year}`,
   title: visitingUniversities[v.institution] || v.institution,
@@ -131,6 +139,7 @@ const sections = [
   { id: "experience", label: t(lang, "cv.experience") },
   { id: "education", label: t(lang, "cv.education") },
   { id: "publications", label: t(lang, "cv.publications") },
+  { id: "grants", label: t(lang, "cv.grants") },
   { id: "teaching", label: t(lang, "cv.teaching") },
   { id: "skills", label: t(lang, "cv.skillsAndLanguages") },
   { id: "conferences", label: t(lang, "cv.conferences") },
@@ -185,6 +194,18 @@ const sections = [
 
   <!-- Publications -->
   <PublicationList publications={publications} id="publications" />
+
+  <!-- Grants -->
+  {grantItems.length > 0 && (
+    <section id="grants" class="py-16 px-4 bg-warm-gray scroll-mt-36">
+      <div class="max-w-4xl mx-auto">
+        <h2 data-animate class="text-2xl font-heading font-bold text-slate-dark mb-8">
+          {t(lang, "cv.grants")}
+        </h2>
+        <Timeline items={grantItems} />
+      </div>
+    </section>
+  )}
 
   <!-- Teaching -->
   <section id="teaching" class="py-16 px-4 bg-white scroll-mt-36">
