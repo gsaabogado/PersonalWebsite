@@ -40,4 +40,17 @@ public/             # Static assets (images, CV PDF, favicon)
 - **Nav highlighting:** Active tab determined by current URL path matching nav `href`.
 
 ## Deployment
-Pushes to `main` trigger deployment automatically.
+**luissarmiento.com is served by Netlify**, which builds from `main` on push.
+The repo also contains `.github/workflows/deploy.yml` ("Deploy to GitHub Pages"),
+which deploys a SEPARATE Pages site that the domain does not use — a green
+Actions run says nothing about the live site.
+
+- **Both build environments need Node 22** (Astro 7 requires `>=22.12.0`):
+  `netlify.toml` sets `NODE_VERSION = "22"`; the workflow passes
+  `node-version: 22` to `withastro/action@v3`. Miss either and that pipeline
+  fails silently.
+- **Verify a deploy against something unique to the NEW build.** Grepping for
+  content that was already live passes on a stale cache and proves nothing.
+  Check the `age:` header too — a large value means you are reading cache.
+- Identify the host with:
+  `curl -sS -D - -o /dev/null https://luissarmiento.com/ | grep -i '^server:'`

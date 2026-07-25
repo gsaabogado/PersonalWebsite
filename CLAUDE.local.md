@@ -70,6 +70,14 @@ the CV side; see `~/projects/cv/CLAUDE.local.md` for the full account.
 - [ ] Confirm AEA P&P stage; currently `under-review` with journal "AEA Papers and Proceedings (Invited)"
 - [ ] `CLAUDE.md` and `CLAUDE.local.md` are untracked in git — decide whether to commit or ignore
 
+## Hosting (discovered 2026-07-25)
+- **Netlify serves luissarmiento.com**, not GitHub Pages. The Pages workflow deploys an
+  unused site; `gh run list` being green is not evidence the domain updated.
+- Astro 7 broke the Netlify build for ~70 min (same Node <22.12 cause as Actions) while
+  Pages reported success. Fixed by adding `netlify.toml` with `NODE_VERSION = "22"` (`e6f3f13`).
+- [ ] Decide whether to delete `.github/workflows/deploy.yml` — it builds and deploys a
+  Pages site nobody visits, and its failures are noise.
+
 ## Astro 7 notes (upgraded 2026-07-25)
 - **CI needs Node 22.** Astro 7 requires `node >=22.12.0`; `withastro/action@v3`
   defaults to Node 20 and the deploy failed with "Node.js v20.20.2 is not supported
