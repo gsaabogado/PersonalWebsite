@@ -60,14 +60,12 @@ const alternateLang = lang === "en" ? "es" : "en";
           title={lang === "en" ? "Cambiar a Español" : "Switch to English"}
         >
           {lang === "en" ? (
-            <!-- Spain flag — click to switch to Spanish -->
             <svg class="w-6 h-4 rounded-sm shadow-sm" viewBox="0 0 60 40">
               <rect width="60" height="40" fill="#c60b1e"/>
               <rect y="10" width="60" height="20" fill="#ffc400"/>
             </svg>
             <span class="text-xs font-body font-medium text-charcoal/50 uppercase">ES</span>
           ) : (
-            <!-- UK flag — click to switch to English -->
             <svg class="w-6 h-4 rounded-sm shadow-sm" viewBox="0 0 60 40">
               <rect width="60" height="40" fill="#012169"/>
               <path d="M0,0 L60,40 M60,0 L0,40" stroke="#fff" stroke-width="6"/>
