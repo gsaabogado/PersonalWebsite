@@ -66,9 +66,9 @@ the CV side; see `~/projects/cv/CLAUDE.local.md` for the full account.
 - [x] Vulnerabilities cleared 2026-07-25: `npm audit` 12 → 0, in two steps — `c0ba1c8` (lockfile-only, 12→3) then `e6e2d75` (Astro 5.18.2 → 7.1.3, 3→0) + `37f7ff0` (CI Node 22 — e6e2d75's deploy failed)
 - [x] `cv.ts` English-only on `/es/` — DECIDED 2026-07-25: leave as is. Course and institution names read as proper nouns. Deliberate, not an oversight — do not add `courseEs`/`roleEs`.
 - [x] Grants page single entry — DECIDED 2026-07-25: awarded grants only, deliberately. Do not add pending proposals.
-- [ ] Tassinari chapter and Global Burden lack `question`/`findings` — add if Luis supplies text
-- [ ] Confirm AEA P&P stage; currently `under-review` with journal "AEA Papers and Proceedings (Invited)"
-- [ ] `CLAUDE.md` and `CLAUDE.local.md` are untracked in git — decide whether to commit or ignore
+- [x] Tassinari chapter + Global Burden question/findings — DECIDED 2026-07-25: skip. Both stay listed as bibliographic-only entries (no expandable panel). No abstract exists publicly or locally for either. Do not remove the entries.
+- [x] AEA P&P resolved 2026-07-25: invited but not yet submitted → moved to working papers, venue text removed.
+- [x] CLAUDE.md + CLAUDE.local.md committed 2026-07-25 (`b4b0a53`).
 
 ## Hosting (discovered 2026-07-25)
 - **Netlify serves luissarmiento.com**, not GitHub Pages. The Pages workflow deploys an
