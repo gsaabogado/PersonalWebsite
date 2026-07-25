@@ -4,6 +4,8 @@ export interface Conference {
   city: string;
   country: string;
   year: number;
+  award?: string;
+  awardEs?: string;
 }
 
 export const conferences: Conference[] = [
@@ -34,6 +36,8 @@ export const conferences: Conference[] = [
     city: "Essen",
     country: "Germany",
     year: 2026,
+    award: "Best Paper Award, 3rd Place",
+    awardEs: "Premio al Mejor Artículo, 3er Lugar",
   },
   {
     title: "The Transnational Effect of Temperatures on Remittances",
