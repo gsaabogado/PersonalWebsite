@@ -11,6 +11,7 @@ export function getNavigation(lang: Lang): NavItem[] {
       { label: "Inicio", href: "/es/" },
       { label: "Investigación", href: "/es/research/" },
       { label: "Publicaciones", href: "/es/publications/" },
+      { label: "Financiamiento", href: "/es/grants/" },
       { label: "Curriculum", href: "/es/cv/" },
       { label: "Contacto", href: "/es/contact/" },
     ];
@@ -20,6 +21,7 @@ export function getNavigation(lang: Lang): NavItem[] {
     { label: "Home", href: "/" },
     { label: "Research", href: "/research/" },
     { label: "Publications", href: "/publications/" },
+    { label: "Grants", href: "/grants/" },
     { label: "Curriculum", href: "/cv/" },
     { label: "Contact", href: "/contact/" },
   ];

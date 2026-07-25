@@ -108,6 +108,8 @@ export const ui = {
     // Publications page
     "publications.title": "Publications",
     "publications.description": "A complete list of my published research, papers under review, and working papers.",
+    "grants.title": "Grants and Funding",
+    "grants.description": "Competitive research funding awarded as principal or co-investigator.",
 
     // Contact page
     "contact.heroTitle": "Contact",
@@ -233,6 +235,8 @@ export const ui = {
     // Publications page
     "publications.title": "Publicaciones",
     "publications.description": "Una lista completa de mi investigación publicada, artículos en revisión y documentos de trabajo.",
+    "grants.title": "Financiamiento",
+    "grants.description": "Financiamiento competitivo para investigación obtenido como investigador principal o coinvestigador.",
 
     // Contact page
     "contact.heroTitle": "Contacto",
