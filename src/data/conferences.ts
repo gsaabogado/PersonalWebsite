@@ -8,10 +8,31 @@ export interface Conference {
 
 export const conferences: Conference[] = [
   {
+    title: "Racial Inequalities in Regional Air Pollution Exposure in Mexico",
+    event: "World Congress of Environmental and Resource Economists",
+    city: "Lisbon",
+    country: "Portugal",
+    year: 2026,
+  },
+  {
     title: "The Transnational Effect of Temperatures on Remittances",
     event: "Gothenburg Environmental Economics Workshop",
     city: "Gothenburg",
     country: "Sweden",
+    year: 2026,
+  },
+  {
+    title: "Racial Inequalities in Regional Air Pollution Exposure in Mexico",
+    event: "Mannheim Energy Conference",
+    city: "Mannheim",
+    country: "Germany",
+    year: 2026,
+  },
+  {
+    title: "When the Boundary Layer Drops: Air Quality and Healthcare Use in Mexico",
+    event: "Essen Health Conference",
+    city: "Essen",
+    country: "Germany",
     year: 2026,
   },
   {
