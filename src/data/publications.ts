@@ -499,9 +499,9 @@ export const publications: Publication[] = [
   {
     title: "Migrant Networks as Climate Insurance",
     authors: "Gonzalo Ares de Parga Regalado, Daniel Osuna-Gomez, Luis Sarmiento",
-    journal: "AEA Papers and Proceedings (Invited)",
+    journal: "",
     year: 2026,
-    status: "under-review",
+    status: "working-paper",
     area: "econometrics",
     question: "Do remittances from migrant networks act as informal insurance against temperature shocks in communities of origin?",
     questionEs: "¿Actúan las remesas de las redes migrantes como un seguro informal frente a los choques de temperatura en las comunidades de origen?",
