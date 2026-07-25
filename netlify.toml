@@ -1,0 +1,6 @@
+# Netlify serves luissarmiento.com (the GitHub Pages workflow deploys a
+# separate, unused Pages site). Astro 7 requires Node >=22.12.0; without
+# this pin Netlify builds on an older default Node and fails with
+# "Node.js vXX is not supported by Astro!".
+[build.environment]
+  NODE_VERSION = "22"
