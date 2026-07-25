@@ -516,6 +516,14 @@ export const publications: Publication[] = [
       "Las temperaturas extremas reducen la probabilidad de trabajar en un día dado, consistente con remesas que suavizan el consumo tras choques negativos de ingreso.",
     ],
   },
+  {
+    title: "Low Emission Zones and Fossil Fleet Renewal in Spain",
+    authors: "Luis Sarmiento, Merce Amich",
+    journal: "",
+    year: 2026,
+    status: "working-paper",
+    area: "econometrics",
+  },
   // === Working Papers ===
   {
     title: "The Convexity of Hurricane Damages",
