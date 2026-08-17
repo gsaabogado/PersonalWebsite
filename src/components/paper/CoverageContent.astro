@@ -21,6 +21,7 @@ import ModuleRail from "./ModuleRail.astro";
 import DataDownload from "./DataDownload.astro";
 import geo from "../../data/paper/m6_map_geometry.json";
 import coverageByYear from "../../data/paper/m6_coverage_by_year.json";
+import tempByMun from "../../data/paper/m6_temperature_by_mun.json";
 import { scaleLinear, scaleBand, niceTicks, type Lang } from "./chart-utils";
 import { MODULES, SECTION_BASE, modulePath } from "../../data/outreach";
 
@@ -55,25 +56,24 @@ const rates = reporting
 const qAt = (p: number) => rates[Math.min(rates.length - 1, Math.floor(p * rates.length))];
 const RATE_BREAKS = [0.2, 0.4, 0.6, 0.8].map(qAt);
 
-/* Sequential neutral ramps. The cold/hot palette belongs to temperature and is
-   not used anywhere on this page. */
+/* Ramps. Neutral for anything that is not temperature; the cold/hot palette is
+   reserved for temperature, and the temperature layers are where it belongs. */
 const RATE_RAMP = ["#e4e9f0", "#bcc8d8", "#8fa1b9", "#5f7391", "#33455e"];
 const YEAR_RAMP = ["#e8edf3", "#c3cfdd", "#93a5bc", "#5d7290", "#2b3d55"];
+const TEMP_RAMP = ["#0369a1", "#86b4cf", "#e9e6e1", "#d69c88", "#b23a1e"];
+const COLD_RAMP = ["#eaf1f6", "#c6dcea", "#93bfd8", "#4e90b8", "#0369a1"];
+const HOT_RAMP = ["#f7ece8", "#eed3c9", "#dfa998", "#c9705a", "#b23a1e"];
 const NO_DATA = "#f4f2ef";
 
-const rateBucket = (v: number) => {
-  let i = 0;
-  while (i < RATE_BREAKS.length && v >= RATE_BREAKS[i]) i++;
-  return i;
-};
-/* Explicit bands. Most reporting municipalities report the whole period (see
-   `fullPeriod` below), so a quantile scale would collapse into a single class. */
+/* Temperature is observed everywhere; ED reporting is not. */
+const temps = new Map(
+  (tempByMun as Array<Record<string, number | string>>).map((t) => [
+    String(t.agem),
+    t as unknown as { mean_temp: number; share_cold: number; share_hot: number },
+  ])
+);
+
 const YEAR_BANDS = [3, 7, 11, 13];
-const yearBucket = (y: number) => {
-  let i = 0;
-  while (i < YEAR_BANDS.length && y > YEAR_BANDS[i]) i++;
-  return i;
-};
 const yearBandLabel = (i: number) => {
   const lo = i === 0 ? 1 : YEAR_BANDS[i - 1] + 1;
   const hi = i < YEAR_BANDS.length ? YEAR_BANDS[i] : nMax;
@@ -81,13 +81,88 @@ const yearBandLabel = (i: number) => {
 };
 const fullPeriod = reporting.filter((m) => m.years_reporting === nMax).length;
 
-const LAYERS = [
-  { key: "coverage", ramp: YEAR_RAMP },
-  { key: "rate", ramp: RATE_RAMP },
-] as const;
+const bucketOf = (v: number, breaks: number[]) => {
+  let i = 0;
+  while (i < breaks.length && v >= breaks[i]) i++;
+  return i;
+};
+
+interface LayerSpec {
+  key: string;
+  en: string;
+  es: string;
+  ramp: string[];
+  breaks: number[];
+  /** null means the municipality has no value for this layer. */
+  value: (m: Mun) => number | null;
+  label: (v: number) => string;
+  /** Legend text for bucket i. */
+  legend: (i: number) => string;
+}
+
+const pct1 = (v: number) => `${v.toFixed(1)}%`;
+const deg = (v: number) => `${v.toFixed(1)} °C`;
+
+const LAYERS: LayerSpec[] = [
+  {
+    key: "coverage",
+    en: "Years reporting",
+    es: "Años reportando",
+    ramp: YEAR_RAMP,
+    breaks: YEAR_BANDS,
+    value: (m) => (m.reports ? m.years_reporting : null),
+    label: (v) => `${v}`,
+    legend: yearBandLabel,
+  },
+  {
+    key: "rate",
+    en: "Visits per 100,000, where treated",
+    es: "Visitas por 100,000, donde se atiende",
+    ramp: RATE_RAMP,
+    breaks: [],
+    value: (m) => (m.reports ? (m.mean_rate as number) : null),
+    label: (v) => fmtInt(Math.round(v)),
+    legend: () => "",
+  },
+  {
+    key: "meantemp",
+    en: "Mean daily temperature",
+    es: "Temperatura media diaria",
+    ramp: TEMP_RAMP,
+    breaks: [15, 18, 21, 24],
+    value: (m) => temps.get(m.agem)?.mean_temp ?? null,
+    label: deg,
+    legend: (i) => (i === 0 ? "<15" : `${[15, 18, 21, 24][i - 1]}+`),
+  },
+  {
+    key: "colddays",
+    en: "Days at or below 10 °C",
+    es: "Días de 10 °C o menos",
+    ramp: COLD_RAMP,
+    breaks: [0.5, 2, 5, 10],
+    value: (m) => temps.get(m.agem)?.share_cold ?? null,
+    label: pct1,
+    legend: (i) => (i === 0 ? "<0.5%" : `${[0.5, 2, 5, 10][i - 1]}%+`),
+  },
+  {
+    key: "hotdays",
+    en: "Days above 30 °C",
+    es: "Días de más de 30 °C",
+    ramp: HOT_RAMP,
+    breaks: [0.5, 2, 5, 10],
+    value: (m) => temps.get(m.agem)?.share_hot ?? null,
+    label: pct1,
+    legend: (i) => (i === 0 ? "<0.5%" : `${[0.5, 2, 5, 10][i - 1]}%+`),
+  },
+];
 const DEFAULT_LAYER = "coverage";
 
 const fmtInt = (v: number) => v.toLocaleString(lang === "es" ? "es-MX" : "en-US");
+
+/* The facility-side rate is extremely skewed, so its classes are quantiles. */
+LAYERS.find((l) => l.key === "rate")!.breaks = RATE_BREAKS;
+LAYERS.find((l) => l.key === "rate")!.legend = (i: number) =>
+  i === 0 ? `<${fmtInt(Math.round(RATE_BREAKS[0]))}` : `${fmtInt(Math.round(RATE_BREAKS[i - 1]))}+`;
 
 /* Coverage-over-time chart. */
 const CW = 780;
@@ -99,6 +174,39 @@ const cBand = scaleBand(cov.length, [CM.left, CM.left + cPlotW], 0.32);
 const cMax = Math.max(...cov.map((d) => d.municipalities));
 const cy = scaleLinear([0, cMax * 1.1], [CM.top + cPlotH, CM.top]);
 const cTicks = niceTicks(0, cMax * 1.1, 4);
+
+/* Geometry is rendered ONCE. Each municipality carries one class per layer
+   naming its colour bucket, and the active layer on the container decides which
+   of those classes actually paints. Rendering all five layers as separate path
+   sets would have duplicated ~900 KB of geometry five times over. */
+const NO_BUCKET = 9;
+const buckets = muns.map((m) =>
+  LAYERS.map((l) => {
+    const v = l.value(m);
+    return v === null ? NO_BUCKET : bucketOf(v, l.breaks);
+  })
+);
+const layerHasGaps = LAYERS.map((l) => muns.some((m) => l.value(m) === null));
+
+const fillRules = LAYERS.flatMap((l, li) => {
+  const rules = l.ramp.map(
+    (c, bi) => `[data-layer="${l.key}"] .mL${li}-${bi}{fill:${c}}`
+  );
+  rules.push(`[data-layer="${l.key}"] .mL${li}-${NO_BUCKET}{fill:${NO_DATA}}`);
+  return rules;
+}).join("");
+
+/* One hover readout covering every layer, since a single <title> cannot change
+   with the selection. */
+const titleFor = (m: Mun, i: number) =>
+  [
+    m.name,
+    ...LAYERS.map((l) => {
+      const v = l.value(m);
+      const short = lang === "es" ? l.es : l.en;
+      return `${short}: ${v === null ? (lang === "es" ? "sin dato" : "no data") : l.label(v)}`;
+    }),
+  ].join(" · ");
 
 const self = MODULES.find((m) => m.id === "geography")!;
 const next = MODULES.find((m) => m.id === "method")!;
@@ -202,7 +310,7 @@ const strings = {
               aria-pressed={l.key === DEFAULT_LAYER ? "true" : "false"}
               class="map-btn"
             >
-              {l.key === "coverage" ? strings.coverage : strings.rate}
+              {lang === "es" ? l.es : l.en}
             </button>
           ))
         }
@@ -214,30 +322,17 @@ const strings = {
         role="img"
         aria-label={strings.mapTitle}
       >
+        <style is:inline set:html={fillRules}></style>
         {
-          LAYERS.map((l) => (
-            <g class:list={["map-layer", { "is-active": l.key === DEFAULT_LAYER }]}
-              data-layer={l.key}>
-              {muns.map((m) => {
-                let fill = NO_DATA;
-                if (m.reports) {
-                  fill =
-                    l.key === "coverage"
-                      ? YEAR_RAMP[yearBucket(m.years_reporting)]
-                      : RATE_RAMP[rateBucket(m.mean_rate as number)];
-                }
-                const detail = m.reports
-                  ? l.key === "coverage"
-                    ? `${m.years_reporting} ${strings.years} (${m.first_year} – ${m.last_year})`
-                    : `${fmtInt(Math.round(m.mean_rate as number))} / 100,000`
-                  : strings.noData;
-                return (
-                  <path d={m.d} fill={fill} stroke="#fff" stroke-width="0.25">
-                    <title>{`${m.name}: ${detail}`}</title>
-                  </path>
-                );
-              })}
-            </g>
+          muns.map((m, i) => (
+            <path
+              class={buckets[i].map((b, li) => `mL${li}-${b}`).join(" ")}
+              d={m.d}
+              stroke="#fff"
+              stroke-width="0.25"
+            >
+              <title>{titleFor(m, i)}</title>
+            </path>
           ))
         }
         {/* State outlines last, so they read on top of the fills. */}
@@ -250,33 +345,29 @@ const strings = {
 
       {/* Legend, per layer */}
       {
-        LAYERS.map((l) => (
-          <div class:list={["map-legend", { "is-active": l.key === DEFAULT_LAYER }]}
-            data-layer={l.key}>
+        LAYERS.map((l, li) => (
+          <div
+            class:list={["map-legend", { "is-active": l.key === DEFAULT_LAYER }]}
+            data-layer={l.key}
+          >
             <div class="mt-4 flex flex-wrap items-center gap-x-5 gap-y-2 text-[12.5px] text-slate-light">
-              <span class="tnum">
-                {l.key === "coverage" ? strings.coverage : strings.rate}
-              </span>
+              <span>{lang === "es" ? l.es : l.en}</span>
               <span class="flex items-center gap-1">
                 {l.ramp.map((c, i) => (
                   <span class="inline-flex flex-col items-center">
-                    <span class="block h-3 w-9" style={`background:${c}`}></span>
-                    <span class="tnum mt-1 text-[10.5px]">
-                      {l.key === "coverage"
-                        ? yearBandLabel(i)
-                        : i === 0
-                          ? `<${fmtInt(Math.round(RATE_BREAKS[0]))}`
-                          : `${fmtInt(Math.round(RATE_BREAKS[i - 1]))}+`}
-                    </span>
+                    <span class="block h-3 w-11" style={`background:${c}`}></span>
+                    <span class="tnum mt-1 text-[10.5px]">{l.legend(i)}</span>
                   </span>
                 ))}
               </span>
-              <span class="flex items-center gap-2">
-                <span
-                  class="inline-block h-3 w-9 border border-rule"
-                  style={`background:${NO_DATA}`}></span>
-                {strings.noData}
-              </span>
+              {layerHasGaps[li] && (
+                <span class="flex items-center gap-2">
+                  <span
+                    class="inline-block h-3 w-9 border border-rule"
+                    style={`background:${NO_DATA}`}></span>
+                  {strings.noData}
+                </span>
+              )}
             </div>
           </div>
         ))
