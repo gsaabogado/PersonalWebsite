@@ -109,7 +109,7 @@ export const MODULES: OutreachModule[] = [
       en: "The design, the robustness checks, and the data and code behind every number.",
       es: "El diseño, las pruebas de robustez, y los datos y el código detrás de cada número.",
     },
-    status: "soon",
+    status: "live",
   },
 ];
 
