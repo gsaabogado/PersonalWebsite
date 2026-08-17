@@ -22,6 +22,7 @@ import DataDownload from "./DataDownload.astro";
 import geo from "../../data/paper/m6_map_geometry.json";
 import coverageByYear from "../../data/paper/m6_coverage_by_year.json";
 import tempByMun from "../../data/paper/m6_temperature_by_mun.json";
+import originCap from "../../data/paper/m6_origin_and_capacity.json";
 import { scaleLinear, scaleBand, niceTicks, type Lang } from "./chart-utils";
 import { MODULES, SECTION_BASE, modulePath } from "../../data/outreach";
 
@@ -65,6 +66,26 @@ const COLD_RAMP = ["#eaf1f6", "#c6dcea", "#93bfd8", "#4e90b8", "#0369a1"];
 const HOT_RAMP = ["#f7ece8", "#eed3c9", "#dfa998", "#c9705a", "#b23a1e"];
 const NO_DATA = "#f4f2ef";
 
+const oc = new Map(
+  (originCap as Array<Record<string, number | string | null>>).map((r) => [
+    String(r.agem),
+    r as unknown as { origin_rate: number | null; beds_per_100k: number | null },
+  ])
+);
+const originVals = (originCap as Array<{ origin_rate: number | null }>)
+  .map((r) => r.origin_rate)
+  .filter((v): v is number => typeof v === "number")
+  .sort((a, b) => a - b);
+const oq = (pp: number) => originVals[Math.min(originVals.length - 1, Math.floor(pp * originVals.length))];
+const ORIGIN_BREAKS = [0.2, 0.4, 0.6, 0.8].map(oq);
+
+const bedVals = (originCap as Array<{ beds_per_100k: number | null }>)
+  .map((r) => r.beds_per_100k)
+  .filter((v): v is number => typeof v === "number" && v > 0)
+  .sort((a, b) => a - b);
+const bq = (pp: number) => bedVals[Math.min(bedVals.length - 1, Math.floor(pp * bedVals.length))];
+const BED_BREAKS = [0.2, 0.4, 0.6, 0.8].map(bq);
+
 /* Temperature is observed everywhere; ED reporting is not. */
 const temps = new Map(
   (tempByMun as Array<Record<string, number | string>>).map((t) => [
@@ -80,6 +101,9 @@ const yearBandLabel = (i: number) => {
   return lo === hi ? `${lo}` : `${lo}\u2013${hi}`;
 };
 const fullPeriod = reporting.filter((m) => m.years_reporting === nMax).length;
+const withOrigin = muns.filter(
+  (m) => typeof oc.get(m.agem)?.origin_rate === "number"
+).length;
 
 const bucketOf = (v: number, breaks: number[]) => {
   let i = 0;
@@ -89,6 +113,8 @@ const bucketOf = (v: number, breaks: number[]) => {
 
 interface LayerSpec {
   key: string;
+  /** Buttons are grouped so seven layers do not read as one undifferentiated row. */
+  group: "system" | "temp";
   en: string;
   es: string;
   ramp: string[];
@@ -106,6 +132,7 @@ const deg = (v: number) => `${v.toFixed(1)} °C`;
 const LAYERS: LayerSpec[] = [
   {
     key: "coverage",
+    group: "system",
     en: "Years reporting",
     es: "Años reportando",
     ramp: YEAR_RAMP,
@@ -116,6 +143,7 @@ const LAYERS: LayerSpec[] = [
   },
   {
     key: "rate",
+    group: "system",
     en: "Visits per 100,000, where treated",
     es: "Visitas por 100,000, donde se atiende",
     ramp: RATE_RAMP,
@@ -125,7 +153,32 @@ const LAYERS: LayerSpec[] = [
     legend: () => "",
   },
   {
+    key: "origin",
+    group: "system",
+    en: "Visits per 100,000, where patients live",
+    es: "Visitas por 100,000, donde viven los pacientes",
+    ramp: RATE_RAMP,
+    breaks: ORIGIN_BREAKS,
+    value: (m) => oc.get(m.agem)?.origin_rate ?? null,
+    label: (v) => fmtInt(Math.round(v)),
+    legend: (i) =>
+      i === 0 ? `<${fmtInt(Math.round(ORIGIN_BREAKS[0]))}` : `${fmtInt(Math.round(ORIGIN_BREAKS[i - 1]))}+`,
+  },
+  {
+    key: "beds",
+    group: "system",
+    en: "Hospital beds per 100,000",
+    es: "Camas de hospital por 100,000",
+    ramp: YEAR_RAMP,
+    breaks: BED_BREAKS,
+    value: (m) => oc.get(m.agem)?.beds_per_100k ?? null,
+    label: (v) => fmtInt(Math.round(v)),
+    legend: (i) =>
+      i === 0 ? `<${fmtInt(Math.round(BED_BREAKS[0]))}` : `${fmtInt(Math.round(BED_BREAKS[i - 1]))}+`,
+  },
+  {
     key: "meantemp",
+    group: "temp",
     en: "Mean daily temperature",
     es: "Temperatura media diaria",
     ramp: TEMP_RAMP,
@@ -136,6 +189,7 @@ const LAYERS: LayerSpec[] = [
   },
   {
     key: "colddays",
+    group: "temp",
     en: "Days at or below 10 °C",
     es: "Días de 10 °C o menos",
     ramp: COLD_RAMP,
@@ -146,6 +200,7 @@ const LAYERS: LayerSpec[] = [
   },
   {
     key: "hotdays",
+    group: "temp",
     en: "Days above 30 °C",
     es: "Días de más de 30 °C",
     ramp: HOT_RAMP,
@@ -155,7 +210,7 @@ const LAYERS: LayerSpec[] = [
     legend: (i) => (i === 0 ? "<0.5%" : `${[0.5, 2, 5, 10][i - 1]}%+`),
   },
 ];
-const DEFAULT_LAYER = "coverage";
+const DEFAULT_LAYER = "origin";
 
 const fmtInt = (v: number) => v.toLocaleString(lang === "es" ? "es-MX" : "en-US");
 
@@ -215,23 +270,25 @@ const strings = {
   en: {
     eyebrow: self.short.en,
     h1: self.question.en,
-    standfirst: `The panel covers ${fmtInt(reporting.length)} of Mexico's ${fmtInt(muns.length)} municipalities. The rest never report an emergency department visit in the records, so they are outside the estimates entirely. Reporting improves over the sample rather than decaying: ${fmtInt(cov[0].municipalities)} municipalities in ${cov[0].year}, rising to ${fmtInt(cov[cov.length - 1].municipalities)} by ${cov[cov.length - 1].year}. Of the ${fmtInt(reporting.length)} that ever report, ${fmtInt(fullPeriod)} report in every year.`,
+    standfirst: `Only ${fmtInt(reporting.length)} of Mexico's ${fmtInt(muns.length)} municipalities host a hospital that reports emergency department visits, and reporting improves over the sample rather than decaying, from ${fmtInt(cov[0].municipalities)} municipalities in ${cov[0].year} to ${fmtInt(cov[cov.length - 1].municipalities)} by ${cov[cov.length - 1].year}. Counted by where patients actually live, though, the records reach ${fmtInt(withOrigin)} municipalities, because residents of the other ${fmtInt(withOrigin - reporting.length)} travel to a hospital somewhere else.`,
     descriptive: "Descriptive only",
     descriptiveNote:
       "Nothing on this page is an estimate. The paper's effects are national, and it produces no municipality-level result, so no map here can be read as a local effect of temperature. These layers describe which places appear in the data and how much they report.",
-    layer: "Layer:",
+    groupSystem: "Health system:",
+    groupTemp: "Temperature:",
     coverage: "Years reporting",
     rate: "Visits per 100,000",
     mapTitle: "Which municipalities appear in the data",
     noData: "never reports",
     years: "years",
     covTitle: "Municipalities reporting, by year",
-    catchTitle: "Read the rate layer with care",
-    catch: `A municipality's rate divides the visits recorded there by its own population, while a hospital draws patients from well beyond its own boundary. The darkest municipalities are therefore where regional hospitals sit, not where residents are sickest. The median is ${fmtInt(Math.round(qAt(0.5)))} visits per 100,000 a year; the top of the distribution reaches ${fmtInt(Math.round(rates[rates.length - 1]))}, which is a statement about catchment areas rather than about health.`,
+    catchTitle: "Two ways to count a visit",
+    catch: `The two rate layers count the same visits against different denominators, and the difference is instructive. "Where treated" divides visits recorded in a municipality by that municipality's own population, so a small town hosting a regional hospital reads as extraordinary: the median is ${fmtInt(Math.round(qAt(0.5)))} per 100,000 a year but the top reaches ${fmtInt(Math.round(rates[rates.length - 1]))}, which describes catchment areas rather than health. "Where patients live" uses the patient's own municipality of residence, so numerator and denominator finally describe the same people, and the distribution is far better behaved with a median of ${fmtInt(Math.round(oq(0.5)))}. Prefer the residence layer for anything about people, and the treatment layer for anything about facilities.`,
     notesTitle: "How these layers were built",
     notes: [
       "Both layers aggregate the deposited municipality-day panel: visits are summed by municipality and year, annualised to account for partly reported years, and divided by municipal population from the same archive.",
       "Geometry is the 2012 INEGI municipality boundary file, projected to EPSG:6372 and simplified. Projection and simplification happen in the export script, not in the browser.",
+      "The residence layer covers 2012 and 2014 to 2021. Residence is absent from the 2008 to 2011 files, and the 2013 file records the state code in place of the municipality, so it is excluded. Between 5 and 10 percent of visits carry no usable residence and are dropped, 25 percent in 2012, which makes residence rates a slight undercount.",
       "The rate layer uses quantile breaks, so each shade holds a comparable number of municipalities rather than an equal slice of a very skewed range. The coverage layer uses year bands instead, because most reporting municipalities report the whole period and quantiles would collapse into a single class.",
     ],
     nextLabel: "Next",
@@ -241,23 +298,25 @@ const strings = {
   es: {
     eyebrow: self.short.es,
     h1: self.question.es,
-    standfirst: `El panel cubre ${fmtInt(reporting.length)} de los ${fmtInt(muns.length)} municipios de México. Los demás nunca reportan una visita a urgencias en los registros, así que quedan por completo fuera de las estimaciones. El reporte mejora a lo largo de la muestra en vez de decaer: ${fmtInt(cov[0].municipalities)} municipios en ${cov[0].year}, subiendo a ${fmtInt(cov[cov.length - 1].municipalities)} para ${cov[cov.length - 1].year}. De los ${fmtInt(reporting.length)} que alguna vez reportan, ${fmtInt(fullPeriod)} reportan todos los años.`,
+    standfirst: `Solo ${fmtInt(reporting.length)} de los ${fmtInt(muns.length)} municipios de México albergan un hospital que reporte visitas a urgencias, y el reporte mejora a lo largo de la muestra en vez de decaer, de ${fmtInt(cov[0].municipalities)} municipios en ${cov[0].year} a ${fmtInt(cov[cov.length - 1].municipalities)} para ${cov[cov.length - 1].year}. Contando por donde viven realmente los pacientes, en cambio, los registros alcanzan ${fmtInt(withOrigin)} municipios, porque los residentes de los otros ${fmtInt(withOrigin - reporting.length)} viajan a un hospital en otro lugar.`,
     descriptive: "Solo descriptivo",
     descriptiveNote:
       "Nada en esta página es una estimación. Los efectos del artículo son nacionales y no produce ningún resultado a nivel municipio, así que ningún mapa de aquí puede leerse como un efecto local de la temperatura. Estas capas describen qué lugares aparecen en los datos y cuánto reportan.",
-    layer: "Capa:",
+    groupSystem: "Sistema de salud:",
+    groupTemp: "Temperatura:",
     coverage: "Años reportando",
     rate: "Visitas por 100,000",
     mapTitle: "Qué municipios aparecen en los datos",
     noData: "nunca reporta",
     years: "años",
     covTitle: "Municipios que reportan, por año",
-    catchTitle: "Lee la capa de tasas con cuidado",
-    catch: `La tasa de un municipio divide las visitas registradas ahí entre su propia población, mientras que un hospital atrae pacientes de mucho más allá de su límite. Los municipios más oscuros son entonces donde están los hospitales regionales, no donde los residentes están más enfermos. La mediana es de ${fmtInt(Math.round(qAt(0.5)))} visitas por 100,000 al año; el extremo de la distribución llega a ${fmtInt(Math.round(rates[rates.length - 1]))}, que es una afirmación sobre áreas de influencia y no sobre salud.`,
+    catchTitle: "Dos maneras de contar una visita",
+    catch: `Las dos capas de tasas cuentan las mismas visitas contra denominadores distintos, y la diferencia es instructiva. "Donde se atiende" divide las visitas registradas en un municipio entre su propia población, así que un pueblo pequeño con un hospital regional se ve extraordinario: la mediana es de ${fmtInt(Math.round(qAt(0.5)))} por 100,000 al año pero el extremo llega a ${fmtInt(Math.round(rates[rates.length - 1]))}, que describe áreas de influencia y no salud. "Donde viven los pacientes" usa el municipio de residencia del paciente, así que numerador y denominador por fin describen a las mismas personas, y la distribución se comporta mucho mejor, con una mediana de ${fmtInt(Math.round(oq(0.5)))}. Para lo relativo a personas conviene la capa de residencia; para lo relativo a instalaciones, la de atención.`,
     notesTitle: "Cómo se construyeron estas capas",
     notes: [
       "Ambas capas agregan el panel municipio-día depositado: las visitas se suman por municipio y año, se anualizan para tener en cuenta los años parcialmente reportados, y se dividen entre la población municipal del mismo archivo.",
       "La geometría es el archivo de límites municipales INEGI 2012, proyectado a EPSG:6372 y simplificado. La proyección y la simplificación ocurren en el script de exportación, no en el navegador.",
+      "La capa de residencia cubre 2012 y de 2014 a 2021. La residencia no está en los archivos de 2008 a 2011, y el archivo de 2013 registra el código de estado en lugar del de municipio, así que se excluye. Entre 5 y 10 por ciento de las visitas no tienen residencia utilizable y se descartan, 25 por ciento en 2012, lo que hace de las tasas de residencia un ligero subconteo.",
       "La capa de tasas usa cortes por cuantiles, así que cada tono contiene un número comparable de municipios y no una porción igual de un rango muy sesgado. La capa de cobertura usa bandas de años, porque la mayoría de los municipios que reportan lo hacen todo el periodo y los cuantiles se colapsarían en una sola clase.",
     ],
     nextLabel: "Siguiente",
@@ -300,18 +359,24 @@ const strings = {
     </h2>
 
     <figure class="not-prose mt-6" data-chart="coverage-map" data-layer={DEFAULT_LAYER}>
-      <div class="mb-4 flex flex-wrap items-center gap-2">
-        <span class="mr-1 text-[13px] text-slate-light">{strings.layer}</span>
+      <div class="mb-4 flex flex-col gap-2">
         {
-          LAYERS.map((l) => (
-            <button
-              type="button"
-              data-map-layer={l.key}
-              aria-pressed={l.key === DEFAULT_LAYER ? "true" : "false"}
-              class="map-btn"
-            >
-              {lang === "es" ? l.es : l.en}
-            </button>
+          (["system", "temp"] as const).map((g) => (
+            <div class="flex flex-wrap items-center gap-2">
+              <span class="mr-1 w-[7.5rem] shrink-0 text-[13px] text-slate-light">
+                {g === "system" ? strings.groupSystem : strings.groupTemp}
+              </span>
+              {LAYERS.filter((l) => l.group === g).map((l) => (
+                <button
+                  type="button"
+                  data-map-layer={l.key}
+                  aria-pressed={l.key === DEFAULT_LAYER ? "true" : "false"}
+                  class="map-btn"
+                >
+                  {lang === "es" ? l.es : l.en}
+                </button>
+              ))}
+            </div>
           ))
         }
       </div>
