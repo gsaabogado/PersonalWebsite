@@ -11,8 +11,8 @@ const lang = getLangFromUrl(Astro.url);
 
 const {
   title = lang === "en"
-    ? "Luis Sarmiento — Environmental Economist"
-    : "Luis Sarmiento — Economista Ambiental",
+    ? "Luis Sarmiento · Environmental Economist"
+    : "Luis Sarmiento · Economista Ambiental",
   description = lang === "en"
     ? "Environmental economist specializing in applied econometrics and energy modeling. Research on air pollution, causal inference, and energy policy."
     : "Economista ambiental especializado en econometría aplicada y modelación energética. Investigación sobre contaminación del aire, inferencia causal y política energética.",
@@ -28,6 +28,23 @@ const {
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
     <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+    {/* Self-hosted variable fonts. Only the latin subsets are preloaded; the
+        latin-ext and symbol subsets load on demand via unicode-range. */}
+    <link
+      rel="preload"
+      href="/fonts/source-serif-4-latin.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/fonts/inter-latin.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
 
     <title>{title}</title>
   </head>

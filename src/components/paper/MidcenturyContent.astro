@@ -1,0 +1,221 @@
+---
+import ModuleRail from "./ModuleRail.astro";
+import DecadeRange from "./DecadeRange.astro";
+import AgeBreakdown from "./AgeBreakdown.astro";
+import DataDownload from "./DataDownload.astro";
+import rangeData from "../../data/paper/m5_projections_range.json";
+import ageData from "../../data/paper/m5_projections_by_age.json";
+import sevData from "../../data/paper/m5_projections_severity.json";
+import type { Lang } from "./chart-utils";
+import { MODULES, SECTION_BASE, modulePath } from "../../data/outreach";
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+
+const range = rangeData as Array<{
+  decade: string;
+  effect: string;
+  expenditures_annual_mean: number;
+  difference_mean: number;
+}>;
+const byAge = ageData as Array<{
+  effect: string;
+  decade: string;
+  spec: string;
+  difference: number;
+}>;
+const sev = sevData as Array<{
+  effect: string;
+  decade: string;
+  share_hospitalized: number;
+  outcome: string;
+  difference: number;
+}>;
+
+const decades = [...new Set(range.map((r) => r.decade))].sort();
+const last = decades[decades.length - 1];
+const first = decades[0];
+
+const totalFor = (d: string) => ({
+  cost: range
+    .filter((r) => r.decade === d)
+    .reduce((s, r) => s + r.expenditures_annual_mean, 0),
+  visits: range.filter((r) => r.decade === d).reduce((s, r) => s + r.difference_mean, 0),
+});
+const t0 = totalFor(first);
+const tN = totalFor(last);
+
+const kidsHeat = byAge.find(
+  (r) => r.effect === "Hot" && r.decade === last && r.spec === "< 12"
+)!;
+const coldShare = sev.find(
+  (r) => r.effect === "Cold" && r.decade === last && r.outcome === "Hospitalized"
+)!;
+const hotShare = sev.find(
+  (r) => r.effect === "Hot" && r.decade === last && r.outcome === "Hospitalized"
+)!;
+
+const fmtDec = (d: string) => d.replace(" - ", "–");
+const n = {
+  firstDecade: fmtDec(first),
+  lastDecade: fmtDec(last),
+  firstCost: (t0.cost / 1e6).toFixed(1),
+  lastCost: (tN.cost / 1e6).toFixed(1),
+  firstVisits: Math.round(t0.visits / 1000).toString(),
+  lastVisits: Math.round(tN.visits / 1000).toString(),
+  kidsHeat: Math.abs(kidsHeat.difference / 1000).toFixed(1),
+  coldShare: (coldShare.share_hospitalized * 100).toFixed(0),
+  hotShare: (hotShare.share_hospitalized * 100).toFixed(0),
+};
+
+const self = MODULES.find((m) => m.id === "projections")!;
+const next = MODULES.find((m) => m.id === "geography")!;
+
+const strings = {
+  en: {
+    eyebrow: self.short.en,
+    h1: self.question.en,
+    caveatTitle: "These are illustrative, and they assume nobody adapts",
+    caveat:
+      "The projections below apply today's estimated temperature responses to tomorrow's temperatures, holding behaviour, institutions, medical technology and infrastructure fixed. Nothing in them models air conditioning, changed hospital capacity, or public health response. They are an upper-bound illustration of what continued warming would do to a system that does not react, not a forecast of what will happen. Read them as a planning prompt, not a prediction.",
+    standfirst: `Under that assumption, additional emergency department visits rise from roughly ${n.firstVisits} thousand per decade in ${n.firstDecade} to ${n.lastVisits} thousand in ${n.lastDecade}, and the associated public cost from ${n.firstCost} to ${n.lastCost} million USD per decade. The paper summarises midcentury as about a 0.35 percent increase in annual visits, or roughly 8.5 million USD a year.`,
+    fig1: "By decade, split into cold-driven and heat-driven",
+    fig2: "By age group",
+    readTitle: "What to read here",
+    read: [
+      `Cold drives most of it, which is the counterintuitive part. Warming does not only add hot days, it removes cold ones, and since cold days suppress visits, removing them raises the total. In the earliest decade cold-driven visits dominate the increase.`,
+      `Heat catches up but does not overtake. The heat-driven share grows across the decades while the cold-driven component stays larger throughout, so planning that attends only to heatwaves would miss the bigger channel.`,
+      `Children move the other way for heat. In ${n.lastDecade} heat-driven visits for the under-12 group fall by ${n.kidsHeat} thousand, which the paper attributes to fewer cases of the common cold as temperatures rise.`,
+    ],
+    severityTitle: "Severity differs by channel",
+    severity: `By ${n.lastDecade}, about ${n.hotShare} percent of the extra heat-driven visits are severe enough to require hospitalisation, against about ${n.coldShare} percent of the cold-driven ones. The historical rate across all visits is 13 percent. Heat therefore produces a disproportionate share of severe cases, while the cold channel is concentrated in lower-severity visits, so the two channels are not interchangeable for capacity planning even where the visit counts look similar.`,
+    modelTitle: "Where the spread comes from",
+    notes: [
+      "Temperature changes come from five CMIP6 global climate models, comparing a 1991–2010 baseline with future decades, aggregated to municipalities using population weights. The bars in the first chart span the lowest and highest model, so they describe model disagreement rather than statistical uncertainty.",
+      "Visit changes are converted to absolute numbers using SSP2 population projections by age group, adjusted for temperature-related mortality. Costs use official 2024 Mexican unit costs of 207 USD per visit and 691 USD per admission leading to hospitalisation.",
+      "Decade figures are totals for the whole decade. The paper's annual figure is the 2041–2060 decade average divided by ten.",
+    ],
+    nextLabel: "Next",
+    backLabel: "All questions",
+    soon: "in progress",
+  },
+  es: {
+    eyebrow: self.short.es,
+    h1: self.question.es,
+    caveatTitle: "Son ilustrativas y suponen que nadie se adapta",
+    caveat:
+      "Las proyecciones de abajo aplican las respuestas a la temperatura estimadas hoy a las temperaturas de mañana, manteniendo fijos el comportamiento, las instituciones, la tecnología médica y la infraestructura. No modelan aire acondicionado, ni cambios en la capacidad hospitalaria, ni respuesta de salud pública. Son una ilustración de cota superior de lo que el calentamiento continuo le haría a un sistema que no reacciona, no un pronóstico de lo que va a pasar. Léanse como un insumo de planeación, no como una predicción.",
+    standfirst: `Bajo ese supuesto, las visitas adicionales a urgencias pasan de cerca de ${n.firstVisits} mil por década en ${n.firstDecade} a ${n.lastVisits} mil en ${n.lastDecade}, y el costo público asociado de ${n.firstCost} a ${n.lastCost} millones de USD por década. El artículo resume mediados de siglo como un aumento cercano a 0.35 por ciento en las visitas anuales, o unos 8.5 millones de USD al año.`,
+    fig1: "Por década, separado en frío y calor",
+    fig2: "Por grupo de edad",
+    readTitle: "Qué leer aquí",
+    read: [
+      `El frío explica la mayor parte, y ahí está lo contraintuitivo. El calentamiento no solo añade días calurosos, también quita días fríos, y como los días fríos deprimen las visitas, quitarlos eleva el total. En la primera década las visitas por frío dominan el aumento.`,
+      `El calor se acerca pero no rebasa. La parte atribuible al calor crece a lo largo de las décadas mientras el componente de frío sigue siendo mayor en todo el periodo, así que una planeación atenta solo a las olas de calor pasaría por alto el canal más grande.`,
+      `Los niños se mueven en sentido contrario con el calor. En ${n.lastDecade} las visitas por calor del grupo de menores de 12 años caen ${n.kidsHeat} mil, lo que el artículo atribuye a menos casos de resfriado común al subir la temperatura.`,
+    ],
+    severityTitle: "La gravedad difiere según el canal",
+    severity: `Para ${n.lastDecade}, cerca de ${n.hotShare} por ciento de las visitas adicionales por calor son lo bastante graves para requerir hospitalización, frente a cerca de ${n.coldShare} por ciento de las de frío. La tasa histórica en todas las visitas es de 13 por ciento. El calor produce entonces una proporción desproporcionada de casos graves, mientras que el canal del frío se concentra en visitas de menor gravedad, así que los dos canales no son intercambiables para planear capacidad aunque los conteos de visitas se parezcan.`,
+    modelTitle: "De dónde viene el rango",
+    notes: [
+      "Los cambios de temperatura provienen de cinco modelos climáticos globales CMIP6, comparando una línea base de 1991–2010 con décadas futuras, agregados a municipios con ponderación por población. Las barras de la primera gráfica abarcan el modelo más bajo y el más alto, así que describen desacuerdo entre modelos y no incertidumbre estadística.",
+      "Los cambios en visitas se convierten a números absolutos con proyecciones de población SSP2 por grupo de edad, ajustadas por mortalidad relacionada con la temperatura. Los costos usan costos unitarios oficiales mexicanos de 2024 de 207 USD por visita y 691 USD por ingreso que deriva en hospitalización.",
+      "Las cifras por década son totales de toda la década. La cifra anual del artículo es el promedio de las décadas 2041–2060 dividido entre diez.",
+    ],
+    nextLabel: "Siguiente",
+    backLabel: "Todas las preguntas",
+    soon: "en preparación",
+  },
+}[lang];
+---
+
+<ModuleRail lang={lang} current="projections" />
+
+<div class="mx-auto max-w-6xl px-6">
+  <header class="max-w-3xl border-b border-rule py-12 sm:py-16">
+    <p class="text-[13px] text-slate-light">{strings.eyebrow}</p>
+    <h1
+      class="mt-3 font-display text-[1.9rem] leading-[1.18] font-semibold text-charcoal sm:text-[2.5rem]"
+    >
+      {strings.h1}
+    </h1>
+    <p class="mt-5 text-[1.0625rem] leading-relaxed text-slate-light">
+      {strings.standfirst}
+    </p>
+  </header>
+
+  {/* The caveat sits ABOVE the charts, not in a footnote below them. The
+      no-adaptation reading is what gets screenshotted and misquoted. */}
+  <section class="py-8">
+    <div class="max-w-3xl border-l-4 border-temp-hot bg-warm-gray px-5 py-4">
+      <h2 class="font-display text-[1.15rem] font-semibold text-charcoal">
+        {strings.caveatTitle}
+      </h2>
+      <p class="mt-2 text-[14.5px] leading-relaxed text-slate">{strings.caveat}</p>
+    </div>
+  </section>
+
+  <section class="py-8 sm:py-10">
+    <h2 class="font-display text-[1.3rem] leading-snug font-semibold text-charcoal">
+      {strings.fig1}
+    </h2>
+    <div class="mt-6">
+      <DecadeRange lang={lang} />
+    </div>
+    <DataDownload lang={lang} files={["m5_projections_range"]} />
+  </section>
+
+  <section class="grid gap-10 border-t border-rule py-12 lg:grid-cols-3 sm:py-14">
+    {
+      strings.read.map((para) => (
+        <p class="border-l-2 border-rule pl-4 text-[14.5px] leading-relaxed text-slate">
+          {para}
+        </p>
+      ))
+    }
+  </section>
+
+  <section class="border-t border-rule py-10 sm:py-14">
+    <h2 class="font-display text-[1.3rem] leading-snug font-semibold text-charcoal">
+      {strings.fig2}
+    </h2>
+    <div class="mt-6">
+      <AgeBreakdown lang={lang} />
+    </div>
+    <DataDownload lang={lang} files={["m5_projections_by_age", "m5_population"]} />
+  </section>
+
+  <section class="border-t border-rule py-10 sm:py-14">
+    <h2 class="font-display text-[1.15rem] font-semibold text-charcoal">
+      {strings.severityTitle}
+    </h2>
+    <p class="mt-3 max-w-3xl text-[14.5px] leading-relaxed text-slate-light">
+      {strings.severity}
+    </p>
+    <div class="mt-4">
+      <DataDownload lang={lang} files={["m5_projections_severity"]} />
+    </div>
+  </section>
+
+  <section class="border-t border-rule py-12 sm:py-16">
+    <h2 class="text-[13px] font-medium text-slate-light">{strings.modelTitle}</h2>
+    <div class="mt-4 grid max-w-5xl gap-6 sm:grid-cols-3">
+      {
+        strings.notes.map((para) => (
+          <p class="text-[13.5px] leading-relaxed text-slate-light">{para}</p>
+        ))
+      }
+    </div>
+  </section>
+
+  <nav class="flex flex-wrap items-baseline justify-between gap-4 border-t border-rule py-8">
+    <a href={SECTION_BASE[lang]} class="text-[14px] text-sky underline underline-offset-4">
+      ← {strings.backLabel}
+    </a>
+    <span class="text-[14px] text-rule-strong">
+      {strings.nextLabel}: {next.question[lang]} ({strings.soon})
+    </span>
+  </nav>
+</div>

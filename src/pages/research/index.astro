@@ -8,7 +8,7 @@ const lang = getLangFromUrl(Astro.url);
 const basePath = lang === "es" ? "/es/research" : "/research";
 ---
 
-<PageLayout title={`${t(lang, "research.heroTitle")} — Luis Sarmiento`}>
+<PageLayout title={`${t(lang, "research.heroTitle")} · Luis Sarmiento`}>
   <ResearchHero
     title={t(lang, "research.heroTitle")}
     description={t(lang, "research.heroDesc")}

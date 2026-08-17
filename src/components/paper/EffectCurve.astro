@@ -1,0 +1,338 @@
+---
+/**
+ * The temperature-response curve: percent change in emergency department visits
+ * by temperature interval, for the same day and cumulated over 30 days.
+ *
+ * Dots with confidence whiskers rather than bars — these are point estimates
+ * with uncertainty, not quantities, and bars would imply an area that has no
+ * meaning. Both horizons are drawn by default because the comparison between
+ * them IS the finding; the buttons isolate one when the reader wants to.
+ */
+import curveData from "../../data/paper/m1_curve.json";
+import {
+  scaleLinear,
+  scaleBand,
+  niceTicks,
+  fmtPct,
+  binLabel,
+  SIDE_COLOR,
+  SIDE_CI_COLOR,
+  type Estimate,
+  type Lang,
+} from "./chart-utils";
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+
+const rows = curveData as Estimate[];
+const bins = [...new Set(rows.map((r) => r.bin))].sort(
+  (a, b) =>
+    rows.find((r) => r.bin === a)!.bin_order - rows.find((r) => r.bin === b)!.bin_order
+);
+
+const at = (bin: string, horizon: number) =>
+  rows.find((r) => r.bin === bin && r.horizon === horizon)!;
+
+// --- geometry ---------------------------------------------------------------
+const W = 780;
+const H = 430;
+const M = { top: 30, right: 30, bottom: 66, left: 62 };
+const plotW = W - M.left - M.right;
+const plotH = H - M.top - M.bottom;
+
+const lows = rows.map((r) => r.ci_low);
+const highs = rows.map((r) => r.ci_high);
+const yMin = Math.min(...lows, 0);
+const yMax = Math.max(...highs, 0);
+const pad = (yMax - yMin) * 0.08;
+const y = scaleLinear([yMin - pad, yMax + pad], [M.top + plotH, M.top]);
+const ticks = niceTicks(yMin - pad, yMax + pad, 6);
+const band = scaleBand(bins.length, [M.left, M.left + plotW], 0.3);
+
+// Horizontal offset so the two horizons sit side by side within a bin.
+const OFF = 9;
+const zeroY = y(0);
+
+const strings = {
+  en: {
+    yAxis: "Change in ED visits (%)",
+    xAxis: "Daily mean temperature",
+    reference: "reference",
+    both: "Both",
+    sameDay: "Same day",
+    cumulative: "Over 30 days",
+    sameDayKey: "same day",
+    cumulativeKey: "cumulated over 30 days",
+    caption:
+      "Point estimates with 95% confidence intervals. The 20–25 °C interval is the omitted reference category, so every effect is measured against a day in that range.",
+  },
+  es: {
+    yAxis: "Cambio en visitas a urgencias (%)",
+    xAxis: "Temperatura media diaria",
+    reference: "referencia",
+    both: "Ambos",
+    sameDay: "Mismo día",
+    cumulative: "En 30 días",
+    sameDayKey: "mismo día",
+    cumulativeKey: "acumulado en 30 días",
+    caption:
+      "Estimaciones puntuales con intervalos de confianza del 95%. El intervalo de 20–25 °C es la categoría de referencia omitida, así que cada efecto se mide contra un día en ese rango.",
+  },
+}[lang];
+---
+
+<figure class="not-prose" data-chart="effect-curve" data-show="both">
+  {/* --- controls: state, not scroll, drives this chart ------------------- */}
+  <div class="mb-5 flex flex-wrap items-center gap-2">
+    <span class="mr-1 text-[13px] text-slate-light">
+      {lang === "es" ? "Mostrar:" : "Show:"}
+    </span>
+    <button type="button" data-show-btn="both" aria-pressed="true" class="curve-btn">
+      {strings.both}
+    </button>
+    <button type="button" data-show-btn="d0" aria-pressed="false" class="curve-btn">
+      {strings.sameDay}
+    </button>
+    <button type="button" data-show-btn="d30" aria-pressed="false" class="curve-btn">
+      {strings.cumulative}
+    </button>
+  </div>
+
+  <svg
+    viewBox={`0 0 ${W} ${H}`}
+    class="h-auto w-full overflow-visible"
+    role="img"
+    aria-label={strings.yAxis}
+  >
+    {/* y grid and ticks */}
+    {
+      ticks.map((tv) => (
+        <g>
+          <line
+            x1={M.left}
+            x2={M.left + plotW}
+            y1={y(tv)}
+            y2={y(tv)}
+            stroke={tv === 0 ? "var(--color-rule-strong)" : "var(--color-rule)"}
+            stroke-width={tv === 0 ? 1.25 : 1}
+            stroke-dasharray={tv === 0 ? "none" : "2 4"}
+          />
+          <text
+            x={M.left - 10}
+            y={y(tv) + 4}
+            text-anchor="end"
+            class="tnum fill-slate-light text-[12px]"
+          >
+            {tv > 0 ? `+${tv}` : tv}
+          </text>
+        </g>
+      ))
+    }
+
+    <text
+      x={M.left - 46}
+      y={M.top + plotH / 2}
+      text-anchor="middle"
+      transform={`rotate(-90 ${M.left - 46} ${M.top + plotH / 2})`}
+      class="fill-annotation text-[12.5px]"
+    >
+      {strings.yAxis}
+    </text>
+
+    {/* one group per bin */}
+    {
+      bins.map((bin, i) => {
+        const cx = band.centre(i);
+        const d0 = at(bin, 0);
+        const d30 = at(bin, 30);
+        const isRef = d0.reference === true;
+        const colour = SIDE_COLOR[d0.side];
+        const ciColour = SIDE_CI_COLOR[d0.side];
+
+        return (
+          <g>
+            {/* x label */}
+            <text
+              x={cx}
+              y={M.top + plotH + 24}
+              text-anchor="middle"
+              class="tnum fill-charcoal text-[12.5px]"
+            >
+              {binLabel(d0, lang)}
+            </text>
+
+            {isRef ? (
+              <g>
+                <circle
+                  cx={cx}
+                  cy={zeroY}
+                  r="5"
+                  fill="white"
+                  stroke="var(--color-temp-reference)"
+                  stroke-width="1.75"
+                />
+                <text
+                  x={cx}
+                  y={M.top + plotH + 41}
+                  text-anchor="middle"
+                  class="fill-temp-reference text-[11px] italic"
+                >
+                  {strings.reference}
+                </text>
+              </g>
+            ) : (
+              <g>
+                {/* 30-day cumulative — drawn first so the same-day dot sits on top */}
+                <g class="series-d30">
+                  <line
+                    x1={cx + OFF}
+                    x2={cx + OFF}
+                    y1={y(d30.ci_low)}
+                    y2={y(d30.ci_high)}
+                    stroke={ciColour}
+                    stroke-width="7"
+                    stroke-linecap="round"
+                  />
+                  <circle
+                    cx={cx + OFF}
+                    cy={y(d30.pct)}
+                    r="5.5"
+                    fill="white"
+                    stroke={colour}
+                    stroke-width="2.25"
+                  />
+                  <text
+                    x={cx + OFF}
+                    y={d30.pct < 0 ? y(d30.ci_low) + 17 : y(d30.ci_high) - 9}
+                    text-anchor="middle"
+                    class="tnum text-[12px] font-medium"
+                    fill={colour}
+                  >
+                    {fmtPct(d30.pct)}
+                  </text>
+                </g>
+
+                {/* same day */}
+                <g class="series-d0">
+                  <line
+                    x1={cx - OFF}
+                    x2={cx - OFF}
+                    y1={y(d0.ci_low)}
+                    y2={y(d0.ci_high)}
+                    stroke={ciColour}
+                    stroke-width="7"
+                    stroke-linecap="round"
+                  />
+                  <circle cx={cx - OFF} cy={y(d0.pct)} r="5" fill={colour} />
+                  <text
+                    x={cx - OFF}
+                    y={d0.pct < 0 ? y(d0.ci_low) + 17 : y(d0.ci_high) - 9}
+                    text-anchor="middle"
+                    class="tnum text-[12px] font-medium"
+                    fill={colour}
+                  >
+                    {fmtPct(d0.pct)}
+                  </text>
+                </g>
+              </g>
+            )}
+          </g>
+        );
+      })
+    }
+
+    <text
+      x={M.left + plotW / 2}
+      y={H - 8}
+      text-anchor="middle"
+      class="fill-annotation text-[12.5px]"
+    >
+      {strings.xAxis}
+    </text>
+  </svg>
+
+  {/* Direct key rather than a floating legend: the marks are described where
+      the reader meets them. */}
+  <div class="mt-3 flex flex-wrap items-center gap-x-6 gap-y-2 text-[13px] text-slate-light">
+    <span class="inline-flex items-center gap-2">
+      <svg width="16" height="16" aria-hidden="true"
+        ><circle cx="8" cy="8" r="5" fill="var(--color-charcoal)"></circle></svg
+      >
+      {strings.sameDayKey}
+    </span>
+    <span class="inline-flex items-center gap-2">
+      <svg width="16" height="16" aria-hidden="true"
+        ><circle
+          cx="8"
+          cy="8"
+          r="5.5"
+          fill="white"
+          stroke="var(--color-charcoal)"
+          stroke-width="2.25"></circle></svg
+      >
+      {strings.cumulativeKey}
+    </span>
+  </div>
+
+  <figcaption class="mt-4 max-w-2xl text-[13.5px] leading-relaxed text-slate-light">
+    {strings.caption}
+  </figcaption>
+</figure>
+
+<style>
+  .curve-btn {
+    border: 1px solid var(--color-rule);
+    border-radius: 3px;
+    padding: 0.3rem 0.7rem;
+    font-size: 13px;
+    color: var(--color-slate-light);
+    background: white;
+    transition:
+      background-color 140ms cubic-bezier(0.32, 0.72, 0, 1),
+      border-color 140ms cubic-bezier(0.32, 0.72, 0, 1),
+      color 140ms cubic-bezier(0.32, 0.72, 0, 1);
+  }
+  .curve-btn:hover {
+    border-color: var(--color-rule-strong);
+    color: var(--color-charcoal);
+  }
+  .curve-btn[aria-pressed="true"] {
+    background: var(--color-slate);
+    border-color: var(--color-slate);
+    color: white;
+  }
+  .curve-btn:focus-visible {
+    outline: 2px solid var(--color-sky);
+    outline-offset: 2px;
+  }
+
+  /* State toggling. Only the series groups move; nothing else animates. */
+  [data-chart="effect-curve"] .series-d0,
+  [data-chart="effect-curve"] .series-d30 {
+    transition: opacity 160ms cubic-bezier(0.32, 0.72, 0, 1);
+  }
+  [data-chart="effect-curve"][data-show="d0"] .series-d30,
+  [data-chart="effect-curve"][data-show="d30"] .series-d0 {
+    opacity: 0;
+    pointer-events: none;
+  }
+</style>
+
+<script>
+  // Scoped to this chart's own attribute so the handler cannot collide with
+  // another control group that happens to share a class name.
+  document.querySelectorAll<HTMLElement>('[data-chart="effect-curve"]').forEach((fig) => {
+    const buttons = fig.querySelectorAll<HTMLButtonElement>("[data-show-btn]");
+    buttons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const next = btn.dataset.showBtn!;
+        fig.dataset.show = next;
+        buttons.forEach((b) =>
+          b.setAttribute("aria-pressed", String(b.dataset.showBtn === next))
+        );
+      });
+    });
+  });
+</script>

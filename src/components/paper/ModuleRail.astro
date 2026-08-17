@@ -1,0 +1,95 @@
+---
+/**
+ * The persistent rail. Every module is one click away from every other module,
+ * which is the whole reason this section is not a scrolling story.
+ *
+ * Deliberately not a numbered 1-2-3 sequence and not a grid of icon cards:
+ * one layout primitive, repeated, with the current item marked by weight and a
+ * rule rather than by a coloured pill.
+ */
+import { MODULES, SECTION_BASE, modulePath, type Lang } from "../../data/outreach";
+
+interface Props {
+  lang: Lang;
+  /** Module id of the current page, or "hub". */
+  current: string;
+}
+const { lang, current } = Astro.props;
+
+const strings = {
+  en: { overview: "Overview", soon: "in progress" },
+  es: { overview: "Panorama", soon: "en preparación" },
+}[lang];
+---
+
+<nav
+  class="sticky top-0 z-20 border-b border-rule bg-white/95 backdrop-blur-sm"
+  aria-label={strings.overview}
+>
+  <div class="mx-auto max-w-6xl px-6">
+    <ul class="flex list-none items-stretch gap-1 overflow-x-auto py-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+      <li class="shrink-0">
+        <a
+          href={SECTION_BASE[lang]}
+          class:list={["rail-item", { "is-current": current === "hub" }]}
+          aria-current={current === "hub" ? "page" : undefined}
+        >
+          {strings.overview}
+        </a>
+      </li>
+      {
+        MODULES.map((m) =>
+          m.status === "live" ? (
+            <li class="shrink-0">
+              <a
+                href={modulePath(m, lang)}
+                class:list={["rail-item", { "is-current": current === m.id }]}
+                aria-current={current === m.id ? "page" : undefined}
+              >
+                {m.short[lang]}
+              </a>
+            </li>
+          ) : (
+            <li class="shrink-0">
+              <span class="rail-item is-soon" title={strings.soon}>
+                {m.short[lang]}
+              </span>
+            </li>
+          )
+        )
+      }
+    </ul>
+  </div>
+</nav>
+
+<style>
+  .rail-item {
+    display: block;
+    padding: 0.7rem 0.75rem 0.55rem;
+    font-size: 13.5px;
+    line-height: 1.2;
+    white-space: nowrap;
+    color: var(--color-slate-light);
+    border-bottom: 2px solid transparent;
+    transition:
+      color 140ms cubic-bezier(0.32, 0.72, 0, 1),
+      border-color 140ms cubic-bezier(0.32, 0.72, 0, 1);
+  }
+  a.rail-item:hover {
+    color: var(--color-charcoal);
+    border-bottom-color: var(--color-rule-strong);
+  }
+  a.rail-item:focus-visible {
+    outline: 2px solid var(--color-sky);
+    outline-offset: -2px;
+  }
+  .rail-item.is-current {
+    color: var(--color-charcoal);
+    font-weight: 500;
+    border-bottom-color: var(--color-slate);
+  }
+  .rail-item.is-soon {
+    color: var(--color-rule-strong);
+    cursor: default;
+  }
+</style>

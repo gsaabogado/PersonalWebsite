@@ -1,0 +1,75 @@
+---
+/**
+ * The repeated affordance under every figure: the exact point estimates that
+ * produced it, and where to get everything else.
+ *
+ * This is deliberately the same component everywhere. A reader who learns it
+ * once under the first chart knows what to expect under all of them.
+ */
+import { PAPER, type Lang } from "../../data/outreach";
+
+interface Props {
+  lang: Lang;
+  /** Basenames in /public/data/temperature-and-emergency-visits, no extension. */
+  files: string[];
+}
+const { lang, files } = Astro.props;
+
+const strings = {
+  en: {
+    label: files.length > 1 ? "Estimates behind these figures" : "Estimates behind this figure",
+    full: "Full data",
+    code: "Code",
+    csv: "CSV",
+  },
+  es: {
+    label:
+      files.length > 1
+        ? "Estimaciones detrás de estas figuras"
+        : "Estimaciones detrás de esta figura",
+    full: "Datos completos",
+    code: "Código",
+    csv: "CSV",
+  },
+}[lang];
+---
+
+<div
+  class="mt-6 flex flex-col gap-3 border-t border-rule pt-4 text-[13px] sm:flex-row sm:items-baseline sm:justify-between"
+>
+  <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+    <span class="text-slate-light">{strings.label}:</span>
+    {
+      files.map((f) => (
+        <a
+          href={`/data/temperature-and-emergency-visits/${f}.csv`}
+          download
+          class="dl-link tnum"
+        >
+          {f}.csv
+        </a>
+      ))
+    }
+  </div>
+  <div class="flex flex-wrap items-baseline gap-x-4 gap-y-1 text-slate-light">
+    <a href={PAPER.dataUrl} class="dl-link">{strings.full}</a>
+    <a href={PAPER.codeUrl} class="dl-link">{strings.code}</a>
+  </div>
+</div>
+
+<style>
+  .dl-link {
+    color: var(--color-sky);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+    transition: color 140ms cubic-bezier(0.32, 0.72, 0, 1);
+  }
+  .dl-link:hover {
+    color: var(--color-slate);
+  }
+  .dl-link:focus-visible {
+    outline: 2px solid var(--color-sky);
+    outline-offset: 2px;
+  }
+</style>

@@ -1,0 +1,237 @@
+---
+/**
+ * Why cold is the surprise: emergency department visits and deaths, on one axis.
+ *
+ * The two outcomes are both Poisson semi-elasticities in percent, so they belong
+ * on a SHARED vertical axis. A second y-axis would let the two curves be slid
+ * against each other until they told whatever story the author wanted; a shared
+ * axis makes both the opposite signs and the very different magnitudes visible at
+ * once, which is the honest presentation.
+ */
+import ModuleRail from "./ModuleRail.astro";
+import GroupCurves from "./GroupCurves.astro";
+import DataDownload from "./DataDownload.astro";
+import edData from "../../data/paper/m1_curve.json";
+import mortData from "../../data/paper/m2_mortality.json";
+import { fmtMag, fmtPct, type Estimate, type Lang } from "./chart-utils";
+import { MODULES, SECTION_BASE, modulePath } from "../../data/outreach";
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+
+type MortRow = Estimate & {
+  spec: string;
+  spec_label_en: string;
+  spec_label_es: string;
+};
+const ed = edData as Estimate[];
+const mort = mortData as MortRow[];
+
+/* Series definitions. ED first so it is the darkest mark and the anchor of the
+   comparison; the three mortality series follow in a lighter neutral family.
+   Neither family may use the cold/hot palette, which belongs to temperature. */
+const SERIES = [
+  { key: "ed", order: 1, en: "ED visits", es: "Visitas a urgencias" },
+  { key: "circ", order: 2, en: "Deaths, circulatory", es: "Muertes, circulatorias" },
+  {
+    key: "non_circ",
+    order: 3,
+    en: "Deaths, non-circulatory",
+    es: "Muertes, no circulatorias",
+  },
+  {
+    key: "other_icd",
+    order: 4,
+    en: "Deaths, other or unknown cause",
+    es: "Muertes, otra causa o no especificada",
+  },
+] as const;
+const RAMP = ["#111c2b", "#5a6b82", "#8e9cb0", "#b9c3d1"];
+
+/* Reshape both sources into the one row schema GroupCurves consumes. Only the
+   two horizons it draws are kept. */
+const meta = (key: string) => SERIES.find((x) => x.key === key)!;
+const combined = [
+  ...ed
+    .filter((r) => !r.reference && (r.horizon === 0 || r.horizon === 30))
+    .map((r) => ({ ...r, spec: "ed" })),
+  ...mort.filter((r) => r.horizon === 0 || r.horizon === 30),
+].map((r) => {
+  const m = meta((r as { spec: string }).spec);
+  return {
+    ...r,
+    group_order: m.order,
+    group_label_en: m.en,
+    group_label_es: m.es,
+  };
+});
+
+/* Headline numbers, read from the data. */
+const pick = (rows: Estimate[], spec: string, bin: string, h: number) =>
+  (rows as Array<Estimate & { spec?: string }>).find(
+    (r) => (spec === "ed" ? true : r.spec === spec) && r.bin === bin && r.horizon === h
+  )!;
+
+const edColdCum = pick(ed, "ed", "-15_10", 30);
+const edHotCum = pick(ed, "ed", "30_45", 30);
+const circColdCum = pick(mort, "circ", "-15_10", 30);
+const circColdDay = pick(mort, "circ", "-15_10", 0);
+const circHotCum = pick(mort, "circ", "30_45", 30);
+const nonCircColdCum = pick(mort, "non_circ", "-15_10", 30);
+
+const n = {
+  edColdCum: fmtMag(edColdCum.pct),
+  edHotCum: fmtMag(edHotCum.pct),
+  circColdCum: fmtMag(circColdCum.pct),
+  circColdDay: fmtPct(circColdDay.pct),
+  circHotCum: fmtMag(circHotCum.pct),
+  nonCircColdCum: fmtMag(nonCircColdCum.pct),
+  ratio: (Math.abs(circColdCum.pct) / Math.abs(edColdCum.pct)).toFixed(1),
+};
+
+const self = MODULES.find((m) => m.id === "cold")!;
+const next = MODULES.find((m) => m.id === "who")!;
+
+const strings = {
+  en: {
+    eyebrow: self.short.en,
+    h1: self.question.en,
+    standfirst: `A cold day pushes emergency department visits down by ${n.edColdCum} over the following month and pushes circulatory deaths up by ${n.circColdCum} over the same month. Same day, same weather, opposite signs. Fewer people arriving at the emergency room on cold days is not a sign that fewer people are being harmed.`,
+    yAxis: "Change over the following 30 days (%)",
+    figTitle: "Visits and deaths, measured the same way, on the same axis",
+    readTitle: "What to read here",
+    read: [
+      `The signs are opposite. Across the whole cold range, visits fall and deaths rise. Warm temperatures move both in the same direction, up, so it is specifically the cold end where the two outcomes disagree.`,
+      `Deaths respond to cold only with a delay. On the day itself the effect on circulatory deaths is ${n.circColdDay} and not statistically distinguishable from zero. It reaches ${n.circColdCum} once the following 30 days are counted, so a same-day analysis would have found almost nothing.`,
+      `The magnitudes are not comparable in the way the signs are. The cumulative cold effect on circulatory deaths is about ${n.ratio} times the size of the effect on visits. Both are drawn on one axis so that difference stays visible rather than being hidden by a second scale.`,
+    ],
+    whyTitle: "Why this matters for planning",
+    why: `Emergency department volume is a measure of demand, not of health. On cold days demand falls while mortality rises, which means the two cannot be used as proxies for each other. A cold snap that empties waiting rooms is the moment when the underlying harm is greatest and the least of it is presenting for care. Any surveillance system that watches arrivals alone will read that period as quiet.`,
+    linearTitle: "The shape, not just the level",
+    linear: `Mortality traces the U shape familiar from the temperature and health literature: deaths rise at both ends of the distribution. Visits do not. They rise as temperature rises, across the whole range, which is why the paper describes the demand for emergency care as responding to temperature roughly linearly.`,
+    notesTitle: "What is being estimated",
+    notes: [
+      "Both outcomes come from Poisson distributed lag models with 30 lags, measured against a day between 20 and 25 °C, with the same weather controls and fixed effects. Visits are municipality by age group by day; deaths are municipality by day.",
+      "Percentages are 100 times the estimated coefficient in both cases, which is what makes a shared axis meaningful.",
+      "The three mortality series are mutually exclusive: circulatory, remaining named causes, and other or unspecified cause. Confidence intervals are 95% and clustered at the municipality level.",
+    ],
+    nextLabel: "Next",
+    backLabel: "All questions",
+  },
+  es: {
+    eyebrow: self.short.es,
+    h1: self.question.es,
+    standfirst: `Un día frío baja las visitas a urgencias ${n.edColdCum} durante el mes siguiente y sube las muertes circulatorias ${n.circColdCum} en ese mismo mes. El mismo día, el mismo clima, signos opuestos. Que lleguen menos personas a urgencias en los días fríos no indica que se esté dañando a menos personas.`,
+    yAxis: "Cambio durante los 30 días siguientes (%)",
+    figTitle: "Visitas y muertes, medidas igual, en el mismo eje",
+    readTitle: "Qué leer aquí",
+    read: [
+      `Los signos son opuestos. En todo el rango de frío, las visitas bajan y las muertes suben. Las temperaturas cálidas mueven ambas en la misma dirección, hacia arriba, así que es específicamente en el extremo frío donde los dos resultados discrepan.`,
+      `Las muertes responden al frío solo con retraso. El mismo día el efecto sobre las muertes circulatorias es de ${n.circColdDay} y no se distingue estadísticamente de cero. Llega a ${n.circColdCum} al contar los 30 días siguientes, así que un análisis del mismo día casi no habría encontrado nada.`,
+      `Las magnitudes no son comparables del modo en que sí lo son los signos. El efecto acumulado del frío sobre las muertes circulatorias es cerca de ${n.ratio} veces el efecto sobre las visitas. Ambos se dibujan en un solo eje para que esa diferencia siga visible en vez de quedar oculta tras una segunda escala.`,
+    ],
+    whyTitle: "Por qué importa para la planeación",
+    why: `El volumen de urgencias mide demanda, no salud. En los días fríos la demanda cae mientras la mortalidad sube, lo que significa que una no puede usarse como proxy de la otra. Una racha de frío que vacía las salas de espera es justo el momento en que el daño subyacente es mayor y en que menos de ese daño se presenta a atención. Cualquier sistema de vigilancia que observe solo las llegadas leerá ese periodo como tranquilo.`,
+    linearTitle: "La forma, no solo el nivel",
+    linear: `La mortalidad traza la forma de U conocida en la literatura de temperatura y salud: las muertes suben en los dos extremos de la distribución. Las visitas no. Suben conforme sube la temperatura, en todo el rango, y por eso el artículo describe la demanda de atención de urgencias como una respuesta a la temperatura aproximadamente lineal.`,
+    notesTitle: "Qué se está estimando",
+    notes: [
+      "Ambos resultados provienen de modelos Poisson de rezagos distribuidos con 30 rezagos, medidos contra un día de entre 20 y 25 °C, con los mismos controles de clima y efectos fijos. Las visitas son municipio por grupo de edad por día; las muertes son municipio por día.",
+      "Los porcentajes son 100 veces el coeficiente estimado en los dos casos, que es lo que hace significativo un eje compartido.",
+      "Las tres series de mortalidad son mutuamente excluyentes: circulatorias, el resto de causas con nombre, y otra causa o no especificada. Los intervalos de confianza son del 95% y se agrupan a nivel municipio.",
+    ],
+    nextLabel: "Siguiente",
+    backLabel: "Todas las preguntas",
+  },
+}[lang];
+---
+
+<ModuleRail lang={lang} current="cold" />
+
+<div class="mx-auto max-w-6xl px-6">
+  <header class="max-w-3xl border-b border-rule py-12 sm:py-16">
+    <p class="text-[13px] text-slate-light">{strings.eyebrow}</p>
+    <h1
+      class="mt-3 font-display text-[1.9rem] leading-[1.18] font-semibold text-charcoal sm:text-[2.5rem]"
+    >
+      {strings.h1}
+    </h1>
+    <p class="mt-5 text-[1.0625rem] leading-relaxed text-slate-light">
+      {strings.standfirst}
+    </p>
+  </header>
+
+  <section class="py-12 sm:py-16">
+    <h2 class="font-display text-[1.3rem] leading-snug font-semibold text-charcoal">
+      {strings.figTitle}
+    </h2>
+    <div class="mt-6">
+      <GroupCurves
+        lang={lang}
+        rows={combined}
+        ramp={RAMP}
+        chartId="cold"
+        defaultOn={["ed", "circ"]}
+        defaultHorizon={30}
+        yAxisLabel={strings.yAxis}
+        height={500}
+      />
+    </div>
+    <DataDownload lang={lang} files={["m1_curve", "m2_mortality"]} />
+
+    <h3 class="mt-12 text-[13px] font-medium text-slate-light">{strings.readTitle}</h3>
+    <ol class="mt-4 grid list-none gap-8 lg:grid-cols-3">
+      {
+        strings.read.map((para) => (
+          <li class="border-l-2 border-rule pl-4 text-[14.5px] leading-relaxed text-slate">
+            {para}
+          </li>
+        ))
+      }
+    </ol>
+  </section>
+
+  {/* The operational consequence, given its own weight. */}
+  <section class="border-t border-rule py-10 sm:py-12">
+    <div class="max-w-3xl border-l-4 border-temp-cold bg-warm-gray px-5 py-4">
+      <h2 class="font-display text-[1.15rem] font-semibold text-charcoal">
+        {strings.whyTitle}
+      </h2>
+      <p class="mt-2 text-[14.5px] leading-relaxed text-slate">{strings.why}</p>
+    </div>
+  </section>
+
+  <section class="border-t border-rule py-10 sm:py-12">
+    <h2 class="font-display text-[1.15rem] font-semibold text-charcoal">
+      {strings.linearTitle}
+    </h2>
+    <p class="mt-3 max-w-3xl text-[14.5px] leading-relaxed text-slate-light">
+      {strings.linear}
+    </p>
+  </section>
+
+  <section class="border-t border-rule py-12 sm:py-16">
+    <h2 class="text-[13px] font-medium text-slate-light">{strings.notesTitle}</h2>
+    <div class="mt-4 grid max-w-5xl gap-6 sm:grid-cols-3">
+      {
+        strings.notes.map((para) => (
+          <p class="text-[13.5px] leading-relaxed text-slate-light">{para}</p>
+        ))
+      }
+    </div>
+  </section>
+
+  <nav class="flex flex-wrap items-baseline justify-between gap-4 border-t border-rule py-8">
+    <a href={SECTION_BASE[lang]} class="text-[14px] text-sky underline underline-offset-4">
+      ← {strings.backLabel}
+    </a>
+    <a
+      href={modulePath(next, lang)}
+      class="text-[14px] text-sky underline underline-offset-4"
+    >
+      {strings.nextLabel}: {next.question[lang]} →
+    </a>
+  </nav>
+</div>

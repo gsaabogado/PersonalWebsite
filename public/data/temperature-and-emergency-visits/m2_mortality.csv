@@ -1,0 +1,466 @@
+bin,bin_order,bin_label_en,bin_label_es,side,horizon,spec,spec_label_en,spec_label_es,nobs,estimate,se,p,pct,ci_low,ci_high,stars
+-15_10,1,≤10 °C,≤10 °C,cold,0,circ,Circulatory,Circulatorias,12187862,0.00254659,0.0054575,0.641,0.254659,-0.815012,1.32433,
+-15_10,1,≤10 °C,≤10 °C,cold,0,non_circ,Non-circulatory,No circulatorias,15588381,-0.0319373,0.00492745,9.08e-11,-3.19373,-4.15951,-2.22795,***
+-15_10,1,≤10 °C,≤10 °C,cold,0,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,-0.00475315,0.011591,0.682,-0.475315,-2.74716,1.79653,
+-15_10,1,≤10 °C,≤10 °C,cold,1,circ,Circulatory,Circulatorias,12187862,0.0674616,0.00695608,3.07e-22,6.74616,5.38276,8.10955,***
+-15_10,1,≤10 °C,≤10 °C,cold,1,non_circ,Non-circulatory,No circulatorias,15588381,0.0188778,0.00599201,0.00163,1.88778,0.71335,3.06222,***
+-15_10,1,≤10 °C,≤10 °C,cold,1,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.0665631,0.0136759,1.13e-6,6.65631,3.97584,9.33678,***
+-15_10,1,≤10 °C,≤10 °C,cold,2,circ,Circulatory,Circulatorias,12187862,0.129953,0.008492,7.3e-53,12.9953,11.3309,14.6597,***
+-15_10,1,≤10 °C,≤10 °C,cold,2,non_circ,Non-circulatory,No circulatorias,15588381,0.0779041,0.00661302,4.93e-32,7.79041,6.49426,9.08656,***
+-15_10,1,≤10 °C,≤10 °C,cold,2,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.104668,0.0181257,7.71e-9,10.4668,6.91419,14.0195,***
+-15_10,1,≤10 °C,≤10 °C,cold,3,circ,Circulatory,Circulatorias,12187862,0.191281,0.00977154,2.5099999999999995e-85,19.1281,17.2129,21.0433,***
+-15_10,1,≤10 °C,≤10 °C,cold,3,non_circ,Non-circulatory,No circulatorias,15588381,0.126007,0.00781941,2.01e-58,12.6007,11.0681,14.1333,***
+-15_10,1,≤10 °C,≤10 °C,cold,3,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.132307,0.0197964,2.33e-11,13.2307,9.35059,17.1108,***
+-15_10,1,≤10 °C,≤10 °C,cold,4,circ,Circulatory,Circulatorias,12187862,0.25115,0.0103633,9.589999999999997e-130,25.115,23.0838,27.1462,***
+-15_10,1,≤10 °C,≤10 °C,cold,4,non_circ,Non-circulatory,No circulatorias,15588381,0.157996,0.00860077,2.28e-75,15.7996,14.1139,17.4854,***
+-15_10,1,≤10 °C,≤10 °C,cold,4,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.154931,0.0204906,4e-14,15.4931,11.4769,19.5092,***
+-15_10,1,≤10 °C,≤10 °C,cold,5,circ,Circulatory,Circulatorias,12187862,0.2878,0.0119372,1.9899999999999993e-128,28.78,26.4403,31.1197,***
+-15_10,1,≤10 °C,≤10 °C,cold,5,non_circ,Non-circulatory,No circulatorias,15588381,0.193312,0.00932371,1.7299999999999996e-95,19.3312,17.5037,21.1586,***
+-15_10,1,≤10 °C,≤10 °C,cold,5,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.157493,0.0235024,2.07e-11,15.7493,11.1428,20.3557,***
+-15_10,1,≤10 °C,≤10 °C,cold,6,circ,Circulatory,Circulatorias,12187862,0.326245,0.0116075,8.169999999999998e-174,32.6245,30.3494,34.8996,***
+-15_10,1,≤10 °C,≤10 °C,cold,6,non_circ,Non-circulatory,No circulatorias,15588381,0.225689,0.0104515,2.0499999999999995e-103,22.5689,20.5204,24.6173,***
+-15_10,1,≤10 °C,≤10 °C,cold,6,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.162288,0.026161,5.52e-10,16.2288,11.1012,21.3563,***
+-15_10,1,≤10 °C,≤10 °C,cold,7,circ,Circulatory,Circulatorias,12187862,0.36361,0.0131554,3.729999999999999e-168,36.361,33.7826,38.9395,***
+-15_10,1,≤10 °C,≤10 °C,cold,7,non_circ,Non-circulatory,No circulatorias,15588381,0.244716,0.0113183,1.1299999999999998e-103,24.4716,22.2532,26.69,***
+-15_10,1,≤10 °C,≤10 °C,cold,7,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.157123,0.0276265,1.29e-8,15.7123,10.2975,21.1271,***
+-15_10,1,≤10 °C,≤10 °C,cold,8,circ,Circulatory,Circulatorias,12187862,0.395227,0.013887,3.649999999999999e-178,39.5227,36.8008,42.2445,***
+-15_10,1,≤10 °C,≤10 °C,cold,8,non_circ,Non-circulatory,No circulatorias,15588381,0.259246,0.0116209,3.0499999999999994e-110,25.9246,23.6469,28.2023,***
+-15_10,1,≤10 °C,≤10 °C,cold,8,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.173374,0.0296274,4.86e-9,17.3374,11.5304,23.1444,***
+-15_10,1,≤10 °C,≤10 °C,cold,9,circ,Circulatory,Circulatorias,12187862,0.419997,0.0148904,4.959999999999998e-175,41.9997,39.0812,44.9182,***
+-15_10,1,≤10 °C,≤10 °C,cold,9,non_circ,Non-circulatory,No circulatorias,15588381,0.28191,0.0120836,2.2099999999999997e-120,28.191,25.8226,30.5593,***
+-15_10,1,≤10 °C,≤10 °C,cold,9,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.171791,0.031471,4.8e-8,17.1791,11.0107,23.3474,***
+-15_10,1,≤10 °C,≤10 °C,cold,10,circ,Circulatory,Circulatorias,12187862,0.436728,0.0147849,9.179999999999995e-192,43.6728,40.7749,46.5706,***
+-15_10,1,≤10 °C,≤10 °C,cold,10,non_circ,Non-circulatory,No circulatorias,15588381,0.296639,0.0119561,6.8699999999999986e-136,29.6639,27.3205,32.0072,***
+-15_10,1,≤10 °C,≤10 °C,cold,10,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.187222,0.0356276,1.48e-7,18.7222,11.7392,25.7052,***
+-15_10,1,≤10 °C,≤10 °C,cold,11,circ,Circulatory,Circulatorias,12187862,0.454913,0.0147745,3.5299999999999985e-208,45.4913,42.5955,48.3871,***
+-15_10,1,≤10 °C,≤10 °C,cold,11,non_circ,Non-circulatory,No circulatorias,15588381,0.309344,0.0125307,1.4799999999999996e-134,30.9344,28.4784,33.3905,***
+-15_10,1,≤10 °C,≤10 °C,cold,11,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.189849,0.0372279,3.4e-7,18.9849,11.6882,26.2816,***
+-15_10,1,≤10 °C,≤10 °C,cold,12,circ,Circulatory,Circulatorias,12187862,0.473307,0.0154097,3.589999999999998e-207,47.3307,44.3105,50.351,***
+-15_10,1,≤10 °C,≤10 °C,cold,12,non_circ,Non-circulatory,No circulatorias,15588381,0.317791,0.0128486,4.659999999999999e-135,31.7791,29.2608,34.2974,***
+-15_10,1,≤10 °C,≤10 °C,cold,12,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.191981,0.0369306,2.01e-7,19.1981,11.9597,26.4365,***
+-15_10,1,≤10 °C,≤10 °C,cold,13,circ,Circulatory,Circulatorias,12187862,0.484839,0.0157086,3.5699999999999983e-209,48.4839,45.405,51.5628,***
+-15_10,1,≤10 °C,≤10 °C,cold,13,non_circ,Non-circulatory,No circulatorias,15588381,0.332445,0.0129633,4.799999999999998e-145,33.2445,30.7036,35.7853,***
+-15_10,1,≤10 °C,≤10 °C,cold,13,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.195378,0.0363301,7.54e-8,19.5378,12.4171,26.6585,***
+-15_10,1,≤10 °C,≤10 °C,cold,14,circ,Circulatory,Circulatorias,12187862,0.509814,0.0164847,5.269999999999998e-210,50.9814,47.7504,54.2124,***
+-15_10,1,≤10 °C,≤10 °C,cold,14,non_circ,Non-circulatory,No circulatorias,15588381,0.344414,0.0138871,8.759999999999998e-136,34.4414,31.7195,37.1633,***
+-15_10,1,≤10 °C,≤10 °C,cold,14,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.235914,0.0388266,1.23e-9,23.5914,15.9814,31.2014,***
+-15_10,1,≤10 °C,≤10 °C,cold,15,circ,Circulatory,Circulatorias,12187862,0.525606,0.0177808,4.8499999999999976e-192,52.5606,49.0755,56.0456,***
+-15_10,1,≤10 °C,≤10 °C,cold,15,non_circ,Non-circulatory,No circulatorias,15588381,0.347857,0.0148327,1.2599999999999996e-121,34.7857,31.8785,37.6929,***
+-15_10,1,≤10 °C,≤10 °C,cold,15,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.237595,0.0384953,6.74e-10,23.7595,16.2145,31.3046,***
+-15_10,1,≤10 °C,≤10 °C,cold,16,circ,Circulatory,Circulatorias,12187862,0.534539,0.0173579,3.039999999999999e-208,53.4539,50.0517,56.856,***
+-15_10,1,≤10 °C,≤10 °C,cold,16,non_circ,Non-circulatory,No circulatorias,15588381,0.356476,0.0149688,2.3599999999999996e-125,35.6476,32.7137,38.5815,***
+-15_10,1,≤10 °C,≤10 °C,cold,16,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.275356,0.0427765,1.22e-10,27.5356,19.1514,35.9198,***
+-15_10,1,≤10 °C,≤10 °C,cold,17,circ,Circulatory,Circulatorias,12187862,0.557528,0.0184227,3.509999999999999e-201,55.7528,52.142,59.3637,***
+-15_10,1,≤10 °C,≤10 °C,cold,17,non_circ,Non-circulatory,No circulatorias,15588381,0.366047,0.0164385,7.599999999999998e-110,36.6047,33.3827,39.8266,***
+-15_10,1,≤10 °C,≤10 °C,cold,17,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.303982,0.0428891,1.36e-12,30.3982,21.9919,38.8045,***
+-15_10,1,≤10 °C,≤10 °C,cold,18,circ,Circulatory,Circulatorias,12187862,0.568407,0.0195943,5.0999999999999984e-185,56.8407,53.0002,60.6812,***
+-15_10,1,≤10 °C,≤10 °C,cold,18,non_circ,Non-circulatory,No circulatorias,15588381,0.379884,0.0164723,1.1099999999999998e-117,37.9884,34.7598,41.2169,***
+-15_10,1,≤10 °C,≤10 °C,cold,18,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.314437,0.0469441,2.11e-11,31.4437,22.2427,40.6448,***
+-15_10,1,≤10 °C,≤10 °C,cold,19,circ,Circulatory,Circulatorias,12187862,0.580386,0.0196603,1.5599999999999992e-191,58.0386,54.1852,61.892,***
+-15_10,1,≤10 °C,≤10 °C,cold,19,non_circ,Non-circulatory,No circulatorias,15588381,0.383114,0.016639,2.6199999999999997e-117,38.3114,35.0501,41.5726,***
+-15_10,1,≤10 °C,≤10 °C,cold,19,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.357861,0.0489547,2.67e-13,35.7861,26.1909,45.3812,***
+-15_10,1,≤10 °C,≤10 °C,cold,20,circ,Circulatory,Circulatorias,12187862,0.59397,0.0202228,1.2799999999999994e-189,59.397,55.4333,63.3607,***
+-15_10,1,≤10 °C,≤10 °C,cold,20,non_circ,Non-circulatory,No circulatorias,15588381,0.397629,0.017269,2.5799999999999996e-117,39.7629,36.3782,43.1477,***
+-15_10,1,≤10 °C,≤10 °C,cold,20,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.364909,0.0506317,5.71e-13,36.4909,26.5671,46.4147,***
+-15_10,1,≤10 °C,≤10 °C,cold,21,circ,Circulatory,Circulatorias,12187862,0.606923,0.020515,2.379999999999999e-192,60.6923,56.6714,64.7133,***
+-15_10,1,≤10 °C,≤10 °C,cold,21,non_circ,Non-circulatory,No circulatorias,15588381,0.400385,0.0184413,1.5999999999999996e-104,40.0385,36.424,43.653,***
+-15_10,1,≤10 °C,≤10 °C,cold,21,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.425845,0.0536689,2.11e-15,42.5845,32.0654,53.1036,***
+-15_10,1,≤10 °C,≤10 °C,cold,22,circ,Circulatory,Circulatorias,12187862,0.608855,0.0213443,5.6599999999999986e-179,60.8855,56.7021,65.069,***
+-15_10,1,≤10 °C,≤10 °C,cold,22,non_circ,Non-circulatory,No circulatorias,15588381,0.41209,0.0182948,2.3599999999999994e-112,41.209,37.6232,44.7948,***
+-15_10,1,≤10 °C,≤10 °C,cold,22,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.462318,0.054439,2.02e-17,46.2318,35.5617,56.9018,***
+-15_10,1,≤10 °C,≤10 °C,cold,23,circ,Circulatory,Circulatorias,12187862,0.628592,0.0212877,1.2399999999999994e-191,62.8592,58.6868,67.0316,***
+-15_10,1,≤10 °C,≤10 °C,cold,23,non_circ,Non-circulatory,No circulatorias,15588381,0.424682,0.017687,2.1299999999999993e-127,42.4682,39.0016,45.9348,***
+-15_10,1,≤10 °C,≤10 °C,cold,23,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.512879,0.0565813,1.25e-19,51.2879,40.1979,62.3778,***
+-15_10,1,≤10 °C,≤10 °C,cold,24,circ,Circulatory,Circulatorias,12187862,0.632497,0.0224417,9.169999999999997e-175,63.2497,58.8511,67.6483,***
+-15_10,1,≤10 °C,≤10 °C,cold,24,non_circ,Non-circulatory,No circulatorias,15588381,0.426626,0.0190671,6.909999999999999e-111,42.6626,38.9254,46.3997,***
+-15_10,1,≤10 °C,≤10 °C,cold,24,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.536236,0.0596713,2.55e-19,53.6236,41.928,65.3191,***
+-15_10,1,≤10 °C,≤10 °C,cold,25,circ,Circulatory,Circulatorias,12187862,0.63542,0.0234159,3.679999999999999e-162,63.542,58.9525,68.1315,***
+-15_10,1,≤10 °C,≤10 °C,cold,25,non_circ,Non-circulatory,No circulatorias,15588381,0.43752,0.019464,6.759999999999998e-112,43.752,39.937,47.5669,***
+-15_10,1,≤10 °C,≤10 °C,cold,25,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.56212,0.0625179,2.44e-19,56.212,43.9585,68.4655,***
+-15_10,1,≤10 °C,≤10 °C,cold,26,circ,Circulatory,Circulatorias,12187862,0.647808,0.0231304,1.3399999999999997e-172,64.7808,60.2473,69.3144,***
+-15_10,1,≤10 °C,≤10 °C,cold,26,non_circ,Non-circulatory,No circulatorias,15588381,0.441753,0.0205563,1.9399999999999998e-102,44.1753,40.1462,48.2043,***
+-15_10,1,≤10 °C,≤10 °C,cold,26,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.575431,0.0619726,1.61e-20,57.5431,45.3965,69.6897,***
+-15_10,1,≤10 °C,≤10 °C,cold,27,circ,Circulatory,Circulatorias,12187862,0.653811,0.0230123,1.4599999999999996e-177,65.3811,60.8707,69.8915,***
+-15_10,1,≤10 °C,≤10 °C,cold,27,non_circ,Non-circulatory,No circulatorias,15588381,0.44576,0.0201471,1.7999999999999997e-108,44.576,40.6271,48.5248,***
+-15_10,1,≤10 °C,≤10 °C,cold,27,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.604289,0.0671635,2.31e-19,60.4289,47.2649,73.5929,***
+-15_10,1,≤10 °C,≤10 °C,cold,28,circ,Circulatory,Circulatorias,12187862,0.660227,0.0237044,9.999999999999996e-171,66.0227,61.3767,70.6688,***
+-15_10,1,≤10 °C,≤10 °C,cold,28,non_circ,Non-circulatory,No circulatorias,15588381,0.448531,0.0205049,4.569999999999999e-106,44.8531,40.8341,48.8721,***
+-15_10,1,≤10 °C,≤10 °C,cold,28,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.601063,0.0689639,2.89e-18,60.1063,46.5894,73.6232,***
+-15_10,1,≤10 °C,≤10 °C,cold,29,circ,Circulatory,Circulatorias,12187862,0.658514,0.0225559,2.2599999999999995e-187,65.8514,61.4304,70.2723,***
+-15_10,1,≤10 °C,≤10 °C,cold,29,non_circ,Non-circulatory,No circulatorias,15588381,0.456984,0.0211264,9.199999999999997e-104,45.6984,41.5576,49.8392,***
+-15_10,1,≤10 °C,≤10 °C,cold,29,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.593577,0.0696093,1.5e-17,59.3577,45.7143,73.0011,***
+-15_10,1,≤10 °C,≤10 °C,cold,30,circ,Circulatory,Circulatorias,12187862,0.66744,0.0235918,4.429999999999998e-176,66.744,62.12,71.368,***
+-15_10,1,≤10 °C,≤10 °C,cold,30,non_circ,Non-circulatory,No circulatorias,15588381,0.458716,0.0215555,1.7099999999999998e-100,45.8716,41.6467,50.0965,***
+-15_10,1,≤10 °C,≤10 °C,cold,30,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.604919,0.0729844,1.15e-16,60.4919,46.187,74.7969,***
+10_15,2,10–15 °C,10–15 °C,cold,0,circ,Circulatory,Circulatorias,12187862,-0.0137722,0.00364034,1.55e-4,-1.3772200000000001,-2.09073,-0.663718,***
+10_15,2,10–15 °C,10–15 °C,cold,0,non_circ,Non-circulatory,No circulatorias,15588381,-0.0359749,0.00346606,3.08e-25,-3.59749,-4.27684,-2.91815,***
+10_15,2,10–15 °C,10–15 °C,cold,0,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,-0.00893399,0.00770155,0.246,-0.893399,-2.4029,0.616104,
+10_15,2,10–15 °C,10–15 °C,cold,1,circ,Circulatory,Circulatorias,12187862,0.00949391,0.00448383,0.0342,0.949391,0.0705603,1.82822,**
+10_15,2,10–15 °C,10–15 °C,cold,1,non_circ,Non-circulatory,No circulatorias,15588381,-0.015036,0.00382547,8.48e-5,-1.5036,-2.2534,-0.753813,***
+10_15,2,10–15 °C,10–15 °C,cold,1,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.0140589,0.0082207100000000009,0.0872,1.40589,-0.205366,3.01715,*
+10_15,2,10–15 °C,10–15 °C,cold,2,circ,Circulatory,Circulatorias,12187862,0.0460949,0.00582209,2.43e-15,4.60949,3.46836,5.75061,***
+10_15,2,10–15 °C,10–15 °C,cold,2,non_circ,Non-circulatory,No circulatorias,15588381,0.0181155,0.00368663,8.93e-7,1.81155,1.08897,2.53413,***
+10_15,2,10–15 °C,10–15 °C,cold,2,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.0213503,0.00971144,0.0279,2.13503,0.231583,4.03847,**
+10_15,2,10–15 °C,10–15 °C,cold,3,circ,Circulatory,Circulatorias,12187862,0.0800266,0.00642727,1.3799999999999998e-35,8.00266,6.74292,9.26241,***
+10_15,2,10–15 °C,10–15 °C,cold,3,non_circ,Non-circulatory,No circulatorias,15588381,0.0405411,0.00455705,5.77e-19,4.05411,3.16093,4.94729,***
+10_15,2,10–15 °C,10–15 °C,cold,3,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.0356331,0.0107594,9.27e-4,3.56331,1.45447,5.67215,***
+10_15,2,10–15 °C,10–15 °C,cold,4,circ,Circulatory,Circulatorias,12187862,0.116026,0.00710134,5.25e-60,11.6026,10.2107,12.9944,***
+10_15,2,10–15 °C,10–15 °C,cold,4,non_circ,Non-circulatory,No circulatorias,15588381,0.0594265,0.00451679,1.55e-39,5.94265,5.05736,6.82794,***
+10_15,2,10–15 °C,10–15 °C,cold,4,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.0531227,0.0136894,1.04e-4,5.31227,2.62915,7.99539,***
+10_15,2,10–15 °C,10–15 °C,cold,5,circ,Circulatory,Circulatorias,12187862,0.134313,0.00792321,1.8599999999999997e-64,13.4313,11.8784,14.9843,***
+10_15,2,10–15 °C,10–15 °C,cold,5,non_circ,Non-circulatory,No circulatorias,15588381,0.076105,0.00484135,1.1099999999999997e-55,7.6105,6.66159,8.5594,***
+10_15,2,10–15 °C,10–15 °C,cold,5,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.0401106,0.0150872,0.00785,4.01106,1.05396,6.96815,***
+10_15,2,10–15 °C,10–15 °C,cold,6,circ,Circulatory,Circulatorias,12187862,0.155475,0.00761889,1.4599999999999998e-92,15.5475,14.0542,17.0408,***
+10_15,2,10–15 °C,10–15 °C,cold,6,non_circ,Non-circulatory,No circulatorias,15588381,0.0949281,0.00542659,1.6199999999999996e-68,9.49281,8.4292,10.5564,***
+10_15,2,10–15 °C,10–15 °C,cold,6,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.0492795,0.0168951,0.00354,4.92795,1.61651,8.23938,***
+10_15,2,10–15 °C,10–15 °C,cold,7,circ,Circulatory,Circulatorias,12187862,0.17766,0.00835316,2.2199999999999996e-100,17.766,16.1288,19.4032,***
+10_15,2,10–15 °C,10–15 °C,cold,7,non_circ,Non-circulatory,No circulatorias,15588381,0.10538,0.005556,3.1999999999999995e-80,10.538,9.44906,11.627,***
+10_15,2,10–15 °C,10–15 °C,cold,7,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.0457547,0.0173647,0.00842,4.57547,1.17199,7.97894,***
+10_15,2,10–15 °C,10–15 °C,cold,8,circ,Circulatory,Circulatorias,12187862,0.195133,0.00886303,1.9999999999999997e-107,19.5133,17.7762,21.2505,***
+10_15,2,10–15 °C,10–15 °C,cold,8,non_circ,Non-circulatory,No circulatorias,15588381,0.114465,0.00638689,7.969999999999998e-72,11.4465,10.1946,12.6983,***
+10_15,2,10–15 °C,10–15 °C,cold,8,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.0492667,0.0188548,0.00898,4.92667,1.23113,8.62222,***
+10_15,2,10–15 °C,10–15 °C,cold,9,circ,Circulatory,Circulatorias,12187862,0.210463,0.00909863,2.2399999999999995e-118,21.0463,19.263,22.8296,***
+10_15,2,10–15 °C,10–15 °C,cold,9,non_circ,Non-circulatory,No circulatorias,15588381,0.126441,0.00651574,6.939999999999999e-84,12.6441,11.367,13.9212,***
+10_15,2,10–15 °C,10–15 °C,cold,9,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.0447379,0.0221564,0.0435,4.47379,0.131133,8.81645,**
+10_15,2,10–15 °C,10–15 °C,cold,10,circ,Circulatory,Circulatorias,12187862,0.223259,0.00913441,6.189999999999998e-132,22.3259,20.5356,24.1163,***
+10_15,2,10–15 °C,10–15 °C,cold,10,non_circ,Non-circulatory,No circulatorias,15588381,0.137055,0.00656382,8.079999999999999e-97,13.7055,12.4189,14.992,***
+10_15,2,10–15 °C,10–15 °C,cold,10,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.0671392,0.0209686,0.00137,6.71392,2.60407,10.8238,***
+10_15,2,10–15 °C,10–15 °C,cold,11,circ,Circulatory,Circulatorias,12187862,0.236896,0.00999585,3.659999999999999e-124,23.6896,21.7304,25.6488,***
+10_15,2,10–15 °C,10–15 °C,cold,11,non_circ,Non-circulatory,No circulatorias,15588381,0.143155,0.00677307,3.719999999999999e-99,14.3155,12.988,15.6431,***
+10_15,2,10–15 °C,10–15 °C,cold,11,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.0655903,0.0236229,0.00549,6.55903,1.92894,11.1891,***
+10_15,2,10–15 °C,10–15 °C,cold,12,circ,Circulatory,Circulatorias,12187862,0.254987,0.00928767,6.159999999999998e-166,25.4987,23.6784,27.3191,***
+10_15,2,10–15 °C,10–15 °C,cold,12,non_circ,Non-circulatory,No circulatorias,15588381,0.151591,0.00728142,2.909999999999999e-96,15.1591,13.732,16.5863,***
+10_15,2,10–15 °C,10–15 °C,cold,12,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.0795308,0.0248045,0.00134,7.95308,3.0914,12.8148,***
+10_15,2,10–15 °C,10–15 °C,cold,13,circ,Circulatory,Circulatorias,12187862,0.257997,0.00957561,6.869999999999997e-160,25.7997,23.9229,27.6765,***
+10_15,2,10–15 °C,10–15 °C,cold,13,non_circ,Non-circulatory,No circulatorias,15588381,0.15866,0.00734371,1.6099999999999996e-103,15.866,14.4267,17.3054,***
+10_15,2,10–15 °C,10–15 °C,cold,13,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.0853486,0.0253278,7.52e-4,8.53486,3.57062,13.4991,***
+10_15,2,10–15 °C,10–15 °C,cold,14,circ,Circulatory,Circulatorias,12187862,0.277432,0.00981574,9.579999999999997e-176,27.7432,25.8193,29.6671,***
+10_15,2,10–15 °C,10–15 °C,cold,14,non_circ,Non-circulatory,No circulatorias,15588381,0.169685,0.00760224,2.3399999999999996e-110,16.9685,15.4785,18.4586,***
+10_15,2,10–15 °C,10–15 °C,cold,14,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.107718,0.0284144,1.5e-4,10.7718,5.20257,16.341,***
+10_15,2,10–15 °C,10–15 °C,cold,15,circ,Circulatory,Circulatorias,12187862,0.287212,0.010789,3.8899999999999987e-156,28.7212,26.6065,30.8358,***
+10_15,2,10–15 °C,10–15 °C,cold,15,non_circ,Non-circulatory,No circulatorias,15588381,0.171658,0.0083073,7.379999999999998e-95,17.1658,15.5376,18.794,***
+10_15,2,10–15 °C,10–15 °C,cold,15,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.122377,0.0290685,2.55e-5,12.2377,6.54027,17.9351,***
+10_15,2,10–15 °C,10–15 °C,cold,16,circ,Circulatory,Circulatorias,12187862,0.297595,0.0106883,1.3099999999999995e-170,29.7595,27.6645,31.8544,***
+10_15,2,10–15 °C,10–15 °C,cold,16,non_circ,Non-circulatory,No circulatorias,15588381,0.177311,0.00824635,1.4999999999999998e-102,17.7311,16.1149,19.3474,***
+10_15,2,10–15 °C,10–15 °C,cold,16,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.153002,0.030918,7.47e-7,15.3002,9.24028,21.3601,***
+10_15,2,10–15 °C,10–15 °C,cold,17,circ,Circulatory,Circulatorias,12187862,0.312139,0.0114623,2.729999999999999e-163,31.2139,28.9673,33.4605,***
+10_15,2,10–15 °C,10–15 °C,cold,17,non_circ,Non-circulatory,No circulatorias,15588381,0.18242,0.00875053,1.6299999999999996e-96,18.242,16.5269,19.9571,***
+10_15,2,10–15 °C,10–15 °C,cold,17,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.18168,0.0327574,2.92e-8,18.168,11.7475,24.5884,***
+10_15,2,10–15 °C,10–15 °C,cold,18,circ,Circulatory,Circulatorias,12187862,0.323414,0.0114018,5.449999999999998e-177,32.3414,30.1067,34.5762,***
+10_15,2,10–15 °C,10–15 °C,cold,18,non_circ,Non-circulatory,No circulatorias,15588381,0.191277,0.00917885,1.9199999999999996e-96,19.1277,17.3287,20.9268,***
+10_15,2,10–15 °C,10–15 °C,cold,18,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.20155,0.0332525,1.35e-9,20.155,13.6375,26.6725,***
+10_15,2,10–15 °C,10–15 °C,cold,19,circ,Circulatory,Circulatorias,12187862,0.327188,0.0119493,4.589999999999999e-165,32.7188,30.3767,35.0609,***
+10_15,2,10–15 °C,10–15 °C,cold,19,non_circ,Non-circulatory,No circulatorias,15588381,0.193682,0.00926129,4.0799999999999997e-97,19.3682,17.5529,21.1834,***
+10_15,2,10–15 °C,10–15 °C,cold,19,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.225099,0.0360121,4.09e-10,22.5099,15.4515,29.5683,***
+10_15,2,10–15 °C,10–15 °C,cold,20,circ,Circulatory,Circulatorias,12187862,0.33405,0.0124636,3.069999999999999e-158,33.405,30.9621,35.8478,***
+10_15,2,10–15 °C,10–15 °C,cold,20,non_circ,Non-circulatory,No circulatorias,15588381,0.201767,0.00935802,4.189999999999999e-103,20.1767,18.3425,22.0108,***
+10_15,2,10–15 °C,10–15 °C,cold,20,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.243584,0.0375803,9.07e-11,24.3584,16.9926,31.7241,***
+10_15,2,10–15 °C,10–15 °C,cold,21,circ,Circulatory,Circulatorias,12187862,0.344888,0.0122927,3.339999999999999e-173,34.4888,32.0794,36.8982,***
+10_15,2,10–15 °C,10–15 °C,cold,21,non_circ,Non-circulatory,No circulatorias,15588381,0.203692,0.0101332,7.169999999999999e-90,20.3692,18.3831,22.3553,***
+10_15,2,10–15 °C,10–15 °C,cold,21,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.280325,0.0397992,1.87e-12,28.0325,20.2319,35.8332,***
+10_15,2,10–15 °C,10–15 °C,cold,22,circ,Circulatory,Circulatorias,12187862,0.34357,0.0126903,2.0299999999999994e-161,34.357,31.8697,36.8443,***
+10_15,2,10–15 °C,10–15 °C,cold,22,non_circ,Non-circulatory,No circulatorias,15588381,0.214237,0.0100588,1.17e-100,21.4237,19.4522,23.3953,***
+10_15,2,10–15 °C,10–15 °C,cold,22,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.322291,0.0421309,2.01e-14,32.2291,23.9715,40.4868,***
+10_15,2,10–15 °C,10–15 °C,cold,23,circ,Circulatory,Circulatorias,12187862,0.354658,0.0131425,2.1799999999999994e-160,35.4658,32.8898,38.0417,***
+10_15,2,10–15 °C,10–15 °C,cold,23,non_circ,Non-circulatory,No circulatorias,15588381,0.21568,0.0106955,1.9699999999999996e-90,21.568,19.4717,23.6643,***
+10_15,2,10–15 °C,10–15 °C,cold,23,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.345637,0.0435774,2.16e-15,34.5637,26.0226,43.1049,***
+10_15,2,10–15 °C,10–15 °C,cold,24,circ,Circulatory,Circulatorias,12187862,0.359045,0.0127991,3.749999999999999e-173,35.9045,33.3959,38.4132,***
+10_15,2,10–15 °C,10–15 °C,cold,24,non_circ,Non-circulatory,No circulatorias,15588381,0.218348,0.010675,5.519999999999999e-93,21.8348,19.7425,23.9271,***
+10_15,2,10–15 °C,10–15 °C,cold,24,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.373224,0.0450162,1.12e-16,37.3224,28.4992,46.1455,***
+10_15,2,10–15 °C,10–15 °C,cold,25,circ,Circulatory,Circulatorias,12187862,0.358261,0.0135879,3.349999999999999e-153,35.8261,33.1629,38.4894,***
+10_15,2,10–15 °C,10–15 °C,cold,25,non_circ,Non-circulatory,No circulatorias,15588381,0.227698,0.0108433,6.699999999999999e-98,22.7698,20.6445,24.8951,***
+10_15,2,10–15 °C,10–15 °C,cold,25,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.396021,0.0465833,1.87e-17,39.6021,30.471800000000002,48.7324,***
+10_15,2,10–15 °C,10–15 °C,cold,26,circ,Circulatory,Circulatorias,12187862,0.368444,0.0132217,6.789999999999998e-171,36.8444,34.2529,39.4359,***
+10_15,2,10–15 °C,10–15 °C,cold,26,non_circ,Non-circulatory,No circulatorias,15588381,0.22803,0.0111988,3.629999999999999e-92,22.803,20.608,24.998,***
+10_15,2,10–15 °C,10–15 °C,cold,26,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.408471,0.0471482,4.57e-18,40.8471,31.606,50.0881,***
+10_15,2,10–15 °C,10–15 °C,cold,27,circ,Circulatory,Circulatorias,12187862,0.371363,0.0138565,3.169999999999999e-158,37.1363,34.4204,39.8521,***
+10_15,2,10–15 °C,10–15 °C,cold,27,non_circ,Non-circulatory,No circulatorias,15588381,0.229937,0.0111674,3.369999999999999e-94,22.9937,20.8049,25.1825,***
+10_15,2,10–15 °C,10–15 °C,cold,27,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.439875,0.0500591,1.53e-18,43.9875,34.1759,53.799,***
+10_15,2,10–15 °C,10–15 °C,cold,28,circ,Circulatory,Circulatorias,12187862,0.374542,0.0147032,3.879999999999999e-143,37.4542,34.5724,40.336,***
+10_15,2,10–15 °C,10–15 °C,cold,28,non_circ,Non-circulatory,No circulatorias,15588381,0.230296,0.0116383,3.789999999999999e-87,23.0296,20.7485,25.3107,***
+10_15,2,10–15 °C,10–15 °C,cold,28,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.449808,0.0522513,7.4e-18,44.9808,34.7396,55.2221,***
+10_15,2,10–15 °C,10–15 °C,cold,29,circ,Circulatory,Circulatorias,12187862,0.376591,0.01444,6.209999999999998e-150,37.6591,34.8288,40.4893,***
+10_15,2,10–15 °C,10–15 °C,cold,29,non_circ,Non-circulatory,No circulatorias,15588381,0.233046,0.0119057,2.5599999999999995e-85,23.3046,20.9711,25.6382,***
+10_15,2,10–15 °C,10–15 °C,cold,29,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.458604,0.053202,6.69e-18,45.8604,35.4328,56.288,***
+10_15,2,10–15 °C,10–15 °C,cold,30,circ,Circulatory,Circulatorias,12187862,0.378746,0.0149844,5.859999999999998e-141,37.8746,34.9377,40.8116,***
+10_15,2,10–15 °C,10–15 °C,cold,30,non_circ,Non-circulatory,No circulatorias,15588381,0.23375,0.0120716,1.5699999999999997e-83,23.375,21.0089,25.741,***
+10_15,2,10–15 °C,10–15 °C,cold,30,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.465587,0.0566548,2.07e-16,46.5587,35.4544,57.6631,***
+15_20,3,15–20 °C,15–20 °C,cold,0,circ,Circulatory,Circulatorias,12187862,-0.0118522,0.00286455,3.51e-5,-1.18522,-1.74668,-0.623772,***
+15_20,3,15–20 °C,15–20 °C,cold,0,non_circ,Non-circulatory,No circulatorias,15588381,-0.0237606,0.00257257,2.55e-20,-2.37606,-2.88029,-1.87184,***
+15_20,3,15–20 °C,15–20 °C,cold,0,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,-0.0091822,0.00570007,0.107,-0.91822,-2.03543,0.198993,
+15_20,3,15–20 °C,15–20 °C,cold,1,circ,Circulatory,Circulatorias,12187862,-0.00637044,0.00344633,0.0645,-0.637044,-1.31253,0.0384372,*
+15_20,3,15–20 °C,15–20 °C,cold,1,non_circ,Non-circulatory,No circulatorias,15588381,-0.0167614,0.00263361,1.96e-10,-1.67614,-2.19233,-1.15996,***
+15_20,3,15–20 °C,15–20 °C,cold,1,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,-4.03913e-4,0.00717922,0.955,-0.0403913,-1.44752,1.36674,
+15_20,3,15–20 °C,15–20 °C,cold,2,circ,Circulatory,Circulatorias,12187862,0.0122191,0.00438369,0.00531,1.22191,0.362703,2.08111,***
+15_20,3,15–20 °C,15–20 °C,cold,2,non_circ,Non-circulatory,No circulatorias,15588381,4.24184e-4,0.0026645,0.874,0.0424184,-0.479824,0.56466,
+15_20,3,15–20 °C,15–20 °C,cold,2,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.0062812,0.0078641,0.424,0.62812,-0.913243,2.16948,
+15_20,3,15–20 °C,15–20 °C,cold,3,circ,Circulatory,Circulatorias,12187862,0.0292468,0.00513671,1.24e-8,2.92468,1.91789,3.93148,***
+15_20,3,15–20 °C,15–20 °C,cold,3,non_circ,Non-circulatory,No circulatorias,15588381,0.0090045,0.00317143,0.00452,0.90045,0.278849,1.52205,***
+15_20,3,15–20 °C,15–20 °C,cold,3,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.0191884,0.00855447,0.0249,1.91884,0.242167,3.59552,**
+15_20,3,15–20 °C,15–20 °C,cold,4,circ,Circulatory,Circulatorias,12187862,0.0451918,0.00559009,6.25e-16,4.51918,3.42352,5.61483,***
+15_20,3,15–20 °C,15–20 °C,cold,4,non_circ,Non-circulatory,No circulatorias,15588381,0.0150356,0.00338837,9.1e-6,1.50356,0.839437,2.16768,***
+15_20,3,15–20 °C,15–20 °C,cold,4,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.0215611,0.0103245,0.0368,2.15611,0.132495,4.17972,**
+15_20,3,15–20 °C,15–20 °C,cold,5,circ,Circulatory,Circulatorias,12187862,0.0504293,0.00638557,2.85e-15,5.04293,3.79136,6.2945,***
+15_20,3,15–20 °C,15–20 °C,cold,5,non_circ,Non-circulatory,No circulatorias,15588381,0.0218966,0.00368951,2.94e-9,2.18966,1.46651,2.9128,***
+15_20,3,15–20 °C,15–20 °C,cold,5,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.0101695,0.0115727,0.38,1.01695,-1.25129,3.2852,
+15_20,3,15–20 °C,15–20 °C,cold,6,circ,Circulatory,Circulatorias,12187862,0.0618624,0.00567026,1.0300000000000001e-27,6.18624,5.07487,7.29761,***
+15_20,3,15–20 °C,15–20 °C,cold,6,non_circ,Non-circulatory,No circulatorias,15588381,0.031369,0.00398278,3.38e-15,3.1369,2.35627,3.91752,***
+15_20,3,15–20 °C,15–20 °C,cold,6,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.0190843,0.0133586,0.153,1.90843,-0.709848,4.52671,
+15_20,3,15–20 °C,15–20 °C,cold,7,circ,Circulatory,Circulatorias,12187862,0.0688881,0.00620821,1.31e-28,6.88881,5.672,8.10562,***
+15_20,3,15–20 °C,15–20 °C,cold,7,non_circ,Non-circulatory,No circulatorias,15588381,0.0355546,0.00386003,3.23e-20,3.55546,2.7989,4.31203,***
+15_20,3,15–20 °C,15–20 °C,cold,7,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.0123563,0.0138513,0.372,1.23563,-1.47923,3.95049,
+15_20,3,15–20 °C,15–20 °C,cold,8,circ,Circulatory,Circulatorias,12187862,0.0763708,0.00701573,1.3500000000000001e-27,7.63708,6.26199,9.01216,***
+15_20,3,15–20 °C,15–20 °C,cold,8,non_circ,Non-circulatory,No circulatorias,15588381,0.037895,0.00421424,2.42e-19,3.7895,2.96351,4.6155,***
+15_20,3,15–20 °C,15–20 °C,cold,8,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.0147047,0.0143314,0.305,1.47047,-1.33849,4.27944,
+15_20,3,15–20 °C,15–20 °C,cold,9,circ,Circulatory,Circulatorias,12187862,0.0856298,0.00702762,3.7499999999999998e-34,8.56298,7.18556,9.94039,***
+15_20,3,15–20 °C,15–20 °C,cold,9,non_circ,Non-circulatory,No circulatorias,15588381,0.0438008,0.00433088,4.81e-24,4.38008,3.53123,5.22894,***
+15_20,3,15–20 °C,15–20 °C,cold,9,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.013043,0.0157805,0.409,1.3043,-1.78868,4.39729,
+15_20,3,15–20 °C,15–20 °C,cold,10,circ,Circulatory,Circulatorias,12187862,0.0902945,0.00732878,7.019999999999999e-35,9.02945,7.59301,10.4659,***
+15_20,3,15–20 °C,15–20 °C,cold,10,non_circ,Non-circulatory,No circulatorias,15588381,0.0489461,0.00438992,7.19e-29,4.89461,4.03419,5.75504,***
+15_20,3,15–20 °C,15–20 °C,cold,10,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.0182671,0.016307,0.263,1.82671,-1.36946,5.02287,
+15_20,3,15–20 °C,15–20 °C,cold,11,circ,Circulatory,Circulatorias,12187862,0.096399,0.00757372,4.1299999999999996e-37,9.6399,8.15545,11.1243,***
+15_20,3,15–20 °C,15–20 °C,cold,11,non_circ,Non-circulatory,No circulatorias,15588381,0.0511056,0.00463456,2.83e-28,5.11056,4.20218,6.01893,***
+15_20,3,15–20 °C,15–20 °C,cold,11,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.0126973,0.0180218,0.481,1.26973,-2.26254,4.802,
+15_20,3,15–20 °C,15–20 °C,cold,12,circ,Circulatory,Circulatorias,12187862,0.103152,0.00729662,2.25e-45,10.3152,8.88503,11.7453,***
+15_20,3,15–20 °C,15–20 °C,cold,12,non_circ,Non-circulatory,No circulatorias,15588381,0.0543691,0.00481413,1.41e-29,5.43691,4.49334,6.38048,***
+15_20,3,15–20 °C,15–20 °C,cold,12,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.018862,0.0193437,0.33,1.8862,-1.90517,5.67757,
+15_20,3,15–20 °C,15–20 °C,cold,13,circ,Circulatory,Circulatorias,12187862,0.102352,0.00764171,6.57e-41,10.2352,8.7374,11.733,***
+15_20,3,15–20 °C,15–20 °C,cold,13,non_circ,Non-circulatory,No circulatorias,15588381,0.0573436,0.00486159,4.13e-32,5.73436,4.78149,6.68724,***
+15_20,3,15–20 °C,15–20 °C,cold,13,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.0168957,0.0196757,0.39,1.68957,-2.16686,5.54601,
+15_20,3,15–20 °C,15–20 °C,cold,14,circ,Circulatory,Circulatorias,12187862,0.109339,0.00748773,2.7099999999999998e-48,10.9339,9.46632,12.4015,***
+15_20,3,15–20 °C,15–20 °C,cold,14,non_circ,Non-circulatory,No circulatorias,15588381,0.0630467,0.00504502,7.77e-36,6.30467,5.31585,7.2935,***
+15_20,3,15–20 °C,15–20 °C,cold,14,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.0231775,0.0210937,0.272,2.31775,-1.81661,6.4521,
+15_20,3,15–20 °C,15–20 °C,cold,15,circ,Circulatory,Circulatorias,12187862,0.115444,0.0080725,2.16e-46,11.5444,9.96219,13.1266,***
+15_20,3,15–20 °C,15–20 °C,cold,15,non_circ,Non-circulatory,No circulatorias,15588381,0.0634917,0.00565104,2.73e-29,6.34917,5.24156,7.45677,***
+15_20,3,15–20 °C,15–20 °C,cold,15,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.0281819,0.0212283,0.184,2.81819,-1.34256,6.97894,
+15_20,3,15–20 °C,15–20 °C,cold,16,circ,Circulatory,Circulatorias,12187862,0.123084,0.00867964,1.21e-45,12.3084,10.6072,14.0096,***
+15_20,3,15–20 °C,15–20 °C,cold,16,non_circ,Non-circulatory,No circulatorias,15588381,0.065896,0.00531908,3.0099999999999996e-35,6.5896,5.54706,7.63214,***
+15_20,3,15–20 °C,15–20 °C,cold,16,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.0407547,0.0219851,0.0638,4.07547,-0.23362,8.38456,*
+15_20,3,15–20 °C,15–20 °C,cold,17,circ,Circulatory,Circulatorias,12187862,0.127905,0.00899736,7.309999999999999e-46,12.7905,11.027,14.554,***
+15_20,3,15–20 °C,15–20 °C,cold,17,non_circ,Non-circulatory,No circulatorias,15588381,0.0686712,0.00566533,8.149999999999999e-34,6.86712,5.75672,7.97753,***
+15_20,3,15–20 °C,15–20 °C,cold,17,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.0557878,0.022371,0.0126,5.57878,1.19406,9.96349,**
+15_20,3,15–20 °C,15–20 °C,cold,18,circ,Circulatory,Circulatorias,12187862,0.134651,0.00908248,1e-49,13.4651,11.685,15.2453,***
+15_20,3,15–20 °C,15–20 °C,cold,18,non_circ,Non-circulatory,No circulatorias,15588381,0.0698589,0.00571938,2.6e-34,6.98589,5.86489,8.10688,***
+15_20,3,15–20 °C,15–20 °C,cold,18,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.0593497,0.0235981,0.0119,5.93497,1.30974,10.5602,**
+15_20,3,15–20 °C,15–20 °C,cold,19,circ,Circulatory,Circulatorias,12187862,0.136414,0.00936812,4.9399999999999995e-48,13.6414,11.8052,15.4775,***
+15_20,3,15–20 °C,15–20 °C,cold,19,non_circ,Non-circulatory,No circulatorias,15588381,0.0703648,0.00591327,1.19e-32,7.03648,5.87748,8.19548,***
+15_20,3,15–20 °C,15–20 °C,cold,19,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.0696753,0.0260321,0.0074400000000000004,6.96753,1.86524,12.0698,***
+15_20,3,15–20 °C,15–20 °C,cold,20,circ,Circulatory,Circulatorias,12187862,0.137297,0.00961799,3.13e-46,13.7297,11.8446,15.6149,***
+15_20,3,15–20 °C,15–20 °C,cold,20,non_circ,Non-circulatory,No circulatorias,15588381,0.0760405,0.00600235,8.84e-37,7.60405,6.42759,8.78051,***
+15_20,3,15–20 °C,15–20 °C,cold,20,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.0708955,0.0267932,0.00814,7.08955,1.83808,12.341,***
+15_20,3,15–20 °C,15–20 °C,cold,21,circ,Circulatory,Circulatorias,12187862,0.145375,0.00974445,2.49e-50,14.5375,12.6276,16.4475,***
+15_20,3,15–20 °C,15–20 °C,cold,21,non_circ,Non-circulatory,No circulatorias,15588381,0.074803,0.00633435,3.5e-32,7.4803,6.23876,8.72183,***
+15_20,3,15–20 °C,15–20 °C,cold,21,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.0797516,0.0290707,0.00608,7.97516,2.27731,13.673,***
+15_20,3,15–20 °C,15–20 °C,cold,22,circ,Circulatory,Circulatorias,12187862,0.14183,0.0099624,5.4399999999999995e-46,14.183,12.2303,16.1356,***
+15_20,3,15–20 °C,15–20 °C,cold,22,non_circ,Non-circulatory,No circulatorias,15588381,0.0802319,0.0064176,7.29e-36,8.02319,6.76534,9.28104,***
+15_20,3,15–20 °C,15–20 °C,cold,22,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.0963477,0.0297859,0.00122,9.63477,3.79673,15.4728,***
+15_20,3,15–20 °C,15–20 °C,cold,23,circ,Circulatory,Circulatorias,12187862,0.145862,0.0106563,1.1999999999999999e-42,14.5862,12.4975,16.6748,***
+15_20,3,15–20 °C,15–20 °C,cold,23,non_circ,Non-circulatory,No circulatorias,15588381,0.0798724,0.0065051,1.18e-34,7.98724,6.71224,9.26224,***
+15_20,3,15–20 °C,15–20 °C,cold,23,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.103469,0.0320282,0.00124,10.3469,4.06933,16.6244,***
+15_20,3,15–20 °C,15–20 °C,cold,24,circ,Circulatory,Circulatorias,12187862,0.147357,0.0105034,1.03e-44,14.7357,12.6771,16.7944,***
+15_20,3,15–20 °C,15–20 °C,cold,24,non_circ,Non-circulatory,No circulatorias,15588381,0.0806047,0.00661239,3.52e-34,8.06047,6.76444,9.3565,***
+15_20,3,15–20 °C,15–20 °C,cold,24,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.106939,0.0328835,0.00115,10.6939,4.24874,17.1391,***
+15_20,3,15–20 °C,15–20 °C,cold,25,circ,Circulatory,Circulatorias,12187862,0.14441,0.0110989,1.06e-38,14.441,12.2656,16.6164,***
+15_20,3,15–20 °C,15–20 °C,cold,25,non_circ,Non-circulatory,No circulatorias,15588381,0.0845432,0.00671379,2.32e-36,8.45432,7.13841,9.77022,***
+15_20,3,15–20 °C,15–20 °C,cold,25,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.119747,0.0338168,3.99e-4,11.9747,5.3466,18.6028,***
+15_20,3,15–20 °C,15–20 °C,cold,26,circ,Circulatory,Circulatorias,12187862,0.155989,0.0108085,3.2499999999999997e-47,15.5989,13.4804,17.7173,***
+15_20,3,15–20 °C,15–20 °C,cold,26,non_circ,Non-circulatory,No circulatorias,15588381,0.0847991,0.007076,4.31e-33,8.47991,7.09301,9.8668,***
+15_20,3,15–20 °C,15–20 °C,cold,26,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.119894,0.0332627,3.13e-4,11.9894,5.46987,18.5088,***
+15_20,3,15–20 °C,15–20 °C,cold,27,circ,Circulatory,Circulatorias,12187862,0.158101,0.0111756,1.95e-45,15.8101,13.6197,18.0005,***
+15_20,3,15–20 °C,15–20 °C,cold,27,non_circ,Non-circulatory,No circulatorias,15588381,0.0879026,0.00708465,2.38e-35,8.79026,7.40167,10.1788,***
+15_20,3,15–20 °C,15–20 °C,cold,27,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.129054,0.0359681,3.33e-4,12.9054,5.85561,19.9551,***
+15_20,3,15–20 °C,15–20 °C,cold,28,circ,Circulatory,Circulatorias,12187862,0.158821,0.011538,4.1399999999999995e-43,15.8821,13.6207,18.1436,***
+15_20,3,15–20 °C,15–20 °C,cold,28,non_circ,Non-circulatory,No circulatorias,15588381,0.0877692,0.0072417,8.28e-34,8.77692,7.35755,10.1963,***
+15_20,3,15–20 °C,15–20 °C,cold,28,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.131747,0.0378181,4.95e-4,13.1747,5.7623,20.587,***
+15_20,3,15–20 °C,15–20 °C,cold,29,circ,Circulatory,Circulatorias,12187862,0.156489,0.0118046,4.13e-40,15.6489,13.3352,17.9626,***
+15_20,3,15–20 °C,15–20 °C,cold,29,non_circ,Non-circulatory,No circulatorias,15588381,0.0874957,0.00735805,1.3199999999999998e-32,8.74957,7.30739,10.1917,***
+15_20,3,15–20 °C,15–20 °C,cold,29,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.131746,0.0371415,3.89e-4,13.1746,5.89486,20.4543,***
+15_20,3,15–20 °C,15–20 °C,cold,30,circ,Circulatory,Circulatorias,12187862,0.160056,0.0123176,1.32e-38,16.0056,13.5913,18.4198,***
+15_20,3,15–20 °C,15–20 °C,cold,30,non_circ,Non-circulatory,No circulatorias,15588381,0.0878867,0.00753673,2.01e-31,8.78867,7.31147,10.2659,***
+15_20,3,15–20 °C,15–20 °C,cold,30,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.13066,0.040447,0.00124,13.066,5.13834,20.9936,***
+25_30,5,25–30 °C,25–30 °C,hot,0,circ,Circulatory,Circulatorias,12187862,0.0446928,0.00393097,5.9399999999999995e-30,4.46928,3.69881,5.23975,***
+25_30,5,25–30 °C,25–30 °C,hot,0,non_circ,Non-circulatory,No circulatorias,15588381,0.0429069,0.00267872,9.610000000000001e-58,4.29069,3.76567,4.81572,***
+25_30,5,25–30 °C,25–30 °C,hot,0,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.054672,0.00815604,2.04e-11,5.4672,3.86861,7.06578,***
+25_30,5,25–30 °C,25–30 °C,hot,1,circ,Circulatory,Circulatorias,12187862,0.0472157,0.00553828,1.52e-17,4.72157,3.63607,5.80707,***
+25_30,5,25–30 °C,25–30 °C,hot,1,non_circ,Non-circulatory,No circulatorias,15588381,0.0376434,0.00283985,4.1999999999999995e-40,3.76434,3.20773,4.32095,***
+25_30,5,25–30 °C,25–30 °C,hot,1,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.0730522,0.00977043,7.61e-14,7.30522,5.39021,9.22022,***
+25_30,5,25–30 °C,25–30 °C,hot,2,circ,Circulatory,Circulatorias,12187862,0.0420109,0.00571791,2.02e-13,4.20109,3.08038,5.32181,***
+25_30,5,25–30 °C,25–30 °C,hot,2,non_circ,Non-circulatory,No circulatorias,15588381,0.0341854,0.00348333,9.8e-23,3.41854,2.73581,4.10127,***
+25_30,5,25–30 °C,25–30 °C,hot,2,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.075572,0.0110914,9.52e-12,7.5572,5.3833,9.73111,***
+25_30,5,25–30 °C,25–30 °C,hot,3,circ,Circulatory,Circulatorias,12187862,0.032422,0.00667903,1.21e-6,3.2422,1.93311,4.55129,***
+25_30,5,25–30 °C,25–30 °C,hot,3,non_circ,Non-circulatory,No circulatorias,15588381,0.0257716,0.00361187,9.66e-13,2.57716,1.86923,3.28509,***
+25_30,5,25–30 °C,25–30 °C,hot,3,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.0804705,0.012638,1.92e-10,8.04705,5.57001,10.5241,***
+25_30,5,25–30 °C,25–30 °C,hot,4,circ,Circulatory,Circulatorias,12187862,0.0290632,0.00794489,2.54e-4,2.90632,1.34912,4.46352,***
+25_30,5,25–30 °C,25–30 °C,hot,4,non_circ,Non-circulatory,No circulatorias,15588381,0.0214628,0.00360372,2.59e-9,2.14628,1.43996,2.85261,***
+25_30,5,25–30 °C,25–30 °C,hot,4,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.0953662,0.0134773,1.48e-12,9.53662,6.89508,12.1782,***
+25_30,5,25–30 °C,25–30 °C,hot,5,circ,Circulatory,Circulatorias,12187862,0.0312371,0.00870051,3.3e-4,3.12371,1.41842,4.82901,***
+25_30,5,25–30 °C,25–30 °C,hot,5,non_circ,Non-circulatory,No circulatorias,15588381,0.0191875,0.00411666,3.15e-6,1.91875,1.11189,2.72562,***
+25_30,5,25–30 °C,25–30 °C,hot,5,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.0942249,0.0167445,1.83e-8,9.42249,6.14057,12.7044,***
+25_30,5,25–30 °C,25–30 °C,hot,6,circ,Circulatory,Circulatorias,12187862,0.0286479,0.00833938,5.92e-4,2.86479,1.23027,4.49931,***
+25_30,5,25–30 °C,25–30 °C,hot,6,non_circ,Non-circulatory,No circulatorias,15588381,0.0201067,0.00443285,5.74e-6,2.01067,1.14183,2.87951,***
+25_30,5,25–30 °C,25–30 °C,hot,6,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.102139,0.0182037,2.01e-8,10.2139,6.64594,13.7818,***
+25_30,5,25–30 °C,25–30 °C,hot,7,circ,Circulatory,Circulatorias,12187862,0.0194799,0.0089114,0.0288,1.94799,0.201352,3.69462,**
+25_30,5,25–30 °C,25–30 °C,hot,7,non_circ,Non-circulatory,No circulatorias,15588381,0.0141363,0.0046615,0.00242,1.41363,0.499973,2.32728,***
+25_30,5,25–30 °C,25–30 °C,hot,7,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.106643,0.0223988,1.93e-6,10.6643,6.27414,15.0545,***
+25_30,5,25–30 °C,25–30 °C,hot,8,circ,Circulatory,Circulatorias,12187862,0.0217673,0.00865583,0.0119,2.17673,0.480183,3.87327,**
+25_30,5,25–30 °C,25–30 °C,hot,8,non_circ,Non-circulatory,No circulatorias,15588381,0.0123287,0.00517587,0.0172,1.23287,0.218403,2.24734,**
+25_30,5,25–30 °C,25–30 °C,hot,8,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.111626,0.0251264,8.89e-6,11.1626,6.23786,16.0874,***
+25_30,5,25–30 °C,25–30 °C,hot,9,circ,Circulatory,Circulatorias,12187862,0.0121514,0.0100922,0.229,1.21514,-0.762925,3.1932,
+25_30,5,25–30 °C,25–30 °C,hot,9,non_circ,Non-circulatory,No circulatorias,15588381,0.0117096,0.0052973,0.0271,1.17096,0.132691,2.20923,**
+25_30,5,25–30 °C,25–30 °C,hot,9,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.115449,0.0253159,5.11e-6,11.5449,6.58299,16.5068,***
+25_30,5,25–30 °C,25–30 °C,hot,10,circ,Circulatory,Circulatorias,12187862,0.0141065,0.00962171,0.143,1.41065,-0.475201,3.29651,
+25_30,5,25–30 °C,25–30 °C,hot,10,non_circ,Non-circulatory,No circulatorias,15588381,0.00748277,0.00489851,0.127,0.748277,-0.211832,1.70839,
+25_30,5,25–30 °C,25–30 °C,hot,10,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.110853,0.0279198,7.17e-5,11.0853,5.61303,16.5576,***
+25_30,5,25–30 °C,25–30 °C,hot,11,circ,Circulatory,Circulatorias,12187862,0.0179213,0.0104606,0.0867,1.79213,-0.258143,3.84241,*
+25_30,5,25–30 °C,25–30 °C,hot,11,non_circ,Non-circulatory,No circulatorias,15588381,0.00574065,0.00481573,0.233,0.574065,-0.369818,1.51795,
+25_30,5,25–30 °C,25–30 °C,hot,11,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.113013,0.0303419,1.96e-4,11.3013,5.35434,17.2484,***
+25_30,5,25–30 °C,25–30 °C,hot,12,circ,Circulatory,Circulatorias,12187862,0.011433,0.0107484,0.287,1.1433,-0.963383,3.24998,
+25_30,5,25–30 °C,25–30 °C,hot,12,non_circ,Non-circulatory,No circulatorias,15588381,0.00512373,0.00504114,0.309,0.512373,-0.47569,1.50044,
+25_30,5,25–30 °C,25–30 °C,hot,12,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.113072,0.0318939,3.92e-4,11.3072,5.05596,17.5584,***
+25_30,5,25–30 °C,25–30 °C,hot,13,circ,Circulatory,Circulatorias,12187862,0.0129221,0.0108795,0.235,1.29221,-0.840163,3.42459,
+25_30,5,25–30 °C,25–30 °C,hot,13,non_circ,Non-circulatory,No circulatorias,15588381,0.00532278,0.00516305,0.303,0.532278,-0.47968,1.54424,
+25_30,5,25–30 °C,25–30 °C,hot,13,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.112344,0.0329144,6.42e-4,11.2344,4.78313,17.6856,***
+25_30,5,25–30 °C,25–30 °C,hot,14,circ,Circulatory,Circulatorias,12187862,0.0104797,0.00977668,0.284,1.04797,-0.868259,2.9642,
+25_30,5,25–30 °C,25–30 °C,hot,14,non_circ,Non-circulatory,No circulatorias,15588381,0.00373401,0.00548573,0.496,0.373401,-0.701803,1.44861,
+25_30,5,25–30 °C,25–30 °C,hot,14,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.113623,0.0352277,0.00126,11.3623,4.45764,18.2669,***
+25_30,5,25–30 °C,25–30 °C,hot,15,circ,Circulatory,Circulatorias,12187862,0.00671287,0.0104141,0.519,0.671287,-1.36987,2.71244,
+25_30,5,25–30 °C,25–30 °C,hot,15,non_circ,Non-circulatory,No circulatorias,15588381,0.00528656,0.00576142,0.359,0.528656,-0.600581,1.65789,
+25_30,5,25–30 °C,25–30 °C,hot,15,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.113456,0.0364944,0.00188,11.3456,4.19272,18.4985,***
+25_30,5,25–30 °C,25–30 °C,hot,16,circ,Circulatory,Circulatorias,12187862,0.00523406,0.010821,0.629,0.523406,-1.59751,2.64432,
+25_30,5,25–30 °C,25–30 °C,hot,16,non_circ,Non-circulatory,No circulatorias,15588381,0.00511177,0.00573665,0.373,0.511177,-0.613207,1.63556,
+25_30,5,25–30 °C,25–30 °C,hot,16,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.117873,0.0377457,0.00179,11.7873,4.38917,19.1855,***
+25_30,5,25–30 °C,25–30 °C,hot,17,circ,Circulatory,Circulatorias,12187862,0.00110053,0.0106119,0.917,0.110053,-1.96987,2.18998,
+25_30,5,25–30 °C,25–30 °C,hot,17,non_circ,Non-circulatory,No circulatorias,15588381,0.00921783,0.00557292,0.0981,0.921783,-0.170509,2.01408,*
+25_30,5,25–30 °C,25–30 °C,hot,17,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.113212,0.0385847,0.00334,11.3212,3.75863,18.8838,***
+25_30,5,25–30 °C,25–30 °C,hot,18,circ,Circulatory,Circulatorias,12187862,0.00604491,0.0109345,0.58,0.604491,-1.53867,2.74765,
+25_30,5,25–30 °C,25–30 °C,hot,18,non_circ,Non-circulatory,No circulatorias,15588381,0.00737101,0.00619262,0.234,0.737101,-0.476653,1.95085,
+25_30,5,25–30 °C,25–30 °C,hot,18,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.112199,0.0383078,0.0034,11.2199,3.71157,18.7282,***
+25_30,5,25–30 °C,25–30 °C,hot,19,circ,Circulatory,Circulatorias,12187862,0.00128751,0.0110292,0.907,0.128751,-2.03297,2.29047,
+25_30,5,25–30 °C,25–30 °C,hot,19,non_circ,Non-circulatory,No circulatorias,15588381,0.00297476,0.00613104,0.628,0.297476,-0.904208,1.49916,
+25_30,5,25–30 °C,25–30 °C,hot,19,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.125685,0.0406895,0.00201,12.5685,4.59332,20.5436,***
+25_30,5,25–30 °C,25–30 °C,hot,20,circ,Circulatory,Circulatorias,12187862,7.28543e-5,0.0115768,0.995,0.00728543,-2.26176,2.27633,
+25_30,5,25–30 °C,25–30 °C,hot,20,non_circ,Non-circulatory,No circulatorias,15588381,0.00169917,0.00626271,0.786,0.169917,-1.05757,1.39741,
+25_30,5,25–30 °C,25–30 °C,hot,20,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.131254,0.0425174,0.00202,13.1254,4.79194,21.4588,***
+25_30,5,25–30 °C,25–30 °C,hot,21,circ,Circulatory,Circulatorias,12187862,-0.00635619,0.0104307,0.542,-0.635619,-2.68003,1.40879,
+25_30,5,25–30 °C,25–30 °C,hot,21,non_circ,Non-circulatory,No circulatorias,15588381,0.00150151,0.00634228,0.813,0.150151,-1.09294,1.39324,
+25_30,5,25–30 °C,25–30 °C,hot,21,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.129151,0.0426912,0.00248,12.9151,4.54764,21.2826,***
+25_30,5,25–30 °C,25–30 °C,hot,22,circ,Circulatory,Circulatorias,12187862,-0.00287789,0.0109417,0.793,-0.287789,-2.43237,1.85679,
+25_30,5,25–30 °C,25–30 °C,hot,22,non_circ,Non-circulatory,No circulatorias,15588381,-0.00353628,0.00637543,0.579,-0.353628,-1.60321,0.895957,
+25_30,5,25–30 °C,25–30 °C,hot,22,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.13445,0.0432289,0.00187,13.445,4.97212,21.9178,***
+25_30,5,25–30 °C,25–30 °C,hot,23,circ,Circulatory,Circulatorias,12187862,-0.0102828,0.0103726,0.322,-1.02828,-3.06132,1.00476,
+25_30,5,25–30 °C,25–30 °C,hot,23,non_circ,Non-circulatory,No circulatorias,15588381,-0.00326244,0.00668467,0.626,-0.326244,-1.63644,0.983951,
+25_30,5,25–30 °C,25–30 °C,hot,23,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.143052,0.0449238,0.00145,14.3052,5.50015,23.1103,***
+25_30,5,25–30 °C,25–30 °C,hot,24,circ,Circulatory,Circulatorias,12187862,-0.00787297,0.0106755,0.461,-0.787297,-2.87969,1.3051,
+25_30,5,25–30 °C,25–30 °C,hot,24,non_circ,Non-circulatory,No circulatorias,15588381,-0.00180441,0.0064103,0.778,-0.180441,-1.43686,1.07598,
+25_30,5,25–30 °C,25–30 °C,hot,24,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.144217,0.0459057,0.00168,14.4217,5.4242,23.4192,***
+25_30,5,25–30 °C,25–30 °C,hot,25,circ,Circulatory,Circulatorias,12187862,-0.0131798,0.0105802,0.213,-1.31798,-3.3917,0.755752,
+25_30,5,25–30 °C,25–30 °C,hot,25,non_circ,Non-circulatory,No circulatorias,15588381,-0.00800003,0.0068929,0.246,-0.800003,-2.15101,0.551005,
+25_30,5,25–30 °C,25–30 °C,hot,25,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.152813,0.0455888,8.02e-4,15.2813,6.34594,24.2167,***
+25_30,5,25–30 °C,25–30 °C,hot,26,circ,Circulatory,Circulatorias,12187862,-0.0140634,0.010449,0.178,-1.40634,-3.45435,0.641667,
+25_30,5,25–30 °C,25–30 °C,hot,26,non_circ,Non-circulatory,No circulatorias,15588381,-0.00902389,0.00664262,0.174,-0.902389,-2.20434,0.399564,
+25_30,5,25–30 °C,25–30 °C,hot,26,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.139137,0.0492534,0.00473,13.9137,4.26007,23.5674,***
+25_30,5,25–30 °C,25–30 °C,hot,27,circ,Circulatory,Circulatorias,12187862,-0.0203307,0.0110113,0.0648,-2.03307,-4.19128,0.125136,*
+25_30,5,25–30 °C,25–30 °C,hot,27,non_circ,Non-circulatory,No circulatorias,15588381,-0.0105408,0.00709333,0.137,-1.05408,-2.44437,0.336217,
+25_30,5,25–30 °C,25–30 °C,hot,27,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.130121,0.0503178,0.00971,13.0121,3.14983,22.8744,***
+25_30,5,25–30 °C,25–30 °C,hot,28,circ,Circulatory,Circulatorias,12187862,-0.0252826,0.0114082,0.0267,-2.52826,-4.76428,-0.292248,**
+25_30,5,25–30 °C,25–30 °C,hot,28,non_circ,Non-circulatory,No circulatorias,15588381,-0.00920172,0.00691228,0.183,-0.920172,-2.27498,0.434635,
+25_30,5,25–30 °C,25–30 °C,hot,28,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.131535,0.0529733,0.013,13.1535,2.77069,23.5362,**
+25_30,5,25–30 °C,25–30 °C,hot,29,circ,Circulatory,Circulatorias,12187862,-0.0177632,0.0112396,0.114,-1.77632,-3.97928,0.426645,
+25_30,5,25–30 °C,25–30 °C,hot,29,non_circ,Non-circulatory,No circulatorias,15588381,-0.0125605,0.00702217,0.0737,-1.2560500000000001,-2.6324,0.120292,*
+25_30,5,25–30 °C,25–30 °C,hot,29,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.139682,0.0522612,0.00752,13.9682,3.72499,24.2114,***
+25_30,5,25–30 °C,25–30 °C,hot,30,circ,Circulatory,Circulatorias,12187862,-0.0282556,0.011767,0.0163,-2.82556,-5.13189,-0.519239,**
+25_30,5,25–30 °C,25–30 °C,hot,30,non_circ,Non-circulatory,No circulatorias,15588381,-0.0177831,0.00748134,0.0175,-1.77831,-3.24466,-0.311971,**
+25_30,5,25–30 °C,25–30 °C,hot,30,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.143272,0.0547274,0.00885,14.3272,3.60059,25.0537,***
+30_45,6,>30 °C,>30 °C,hot,0,circ,Circulatory,Circulatorias,12187862,0.11889,0.00931888,2.8199999999999997e-37,11.889,10.0625,13.7155,***
+30_45,6,>30 °C,>30 °C,hot,0,non_circ,Non-circulatory,No circulatorias,15588381,0.092137,0.0061395,6.58e-51,9.2137,8.01036,10.417,***
+30_45,6,>30 °C,>30 °C,hot,0,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.116824,0.0147693,2.58e-15,11.6824,8.7876,14.5772,***
+30_45,6,>30 °C,>30 °C,hot,1,circ,Circulatory,Circulatorias,12187862,0.157349,0.0124145,8.17e-37,15.7349,13.3017,18.1681,***
+30_45,6,>30 °C,>30 °C,hot,1,non_circ,Non-circulatory,No circulatorias,15588381,0.098575,0.00723595,2.92e-42,9.8575,8.43926,11.2757,***
+30_45,6,>30 °C,>30 °C,hot,1,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.15151,0.0194951,7.75e-15,15.151,11.3299,18.972,***
+30_45,6,>30 °C,>30 °C,hot,2,circ,Circulatory,Circulatorias,12187862,0.160648,0.0147427,1.1900000000000001e-27,16.0648,13.1752,18.9544,***
+30_45,6,>30 °C,>30 °C,hot,2,non_circ,Non-circulatory,No circulatorias,15588381,0.106123,0.0081665,1.31e-38,10.6123,9.01162,12.2129,***
+30_45,6,>30 °C,>30 °C,hot,2,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.165393,0.0203869,4.95e-16,16.5393,12.5434,20.5351,***
+30_45,6,>30 °C,>30 °C,hot,3,circ,Circulatory,Circulatorias,12187862,0.182437,0.0155834,1.1699999999999998e-31,18.2437,15.1894,21.2981,***
+30_45,6,>30 °C,>30 °C,hot,3,non_circ,Non-circulatory,No circulatorias,15588381,0.0955989,0.00878413,1.39e-27,9.55989,7.8382,11.2816,***
+30_45,6,>30 °C,>30 °C,hot,3,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.184557,0.0230103,1.05e-15,18.4557,13.9457,22.9657,***
+30_45,6,>30 °C,>30 °C,hot,4,circ,Circulatory,Circulatorias,12187862,0.168365,0.0184313,6.56e-20,16.8365,13.2239,20.449,***
+30_45,6,>30 °C,>30 °C,hot,4,non_circ,Non-circulatory,No circulatorias,15588381,0.0883371,0.00918386,6.67e-22,8.83371,7.03367,10.6337,***
+30_45,6,>30 °C,>30 °C,hot,4,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.21338,0.0325351,5.44e-11,21.338,14.9611,27.7148,***
+30_45,6,>30 °C,>30 °C,hot,5,circ,Circulatory,Circulatorias,12187862,0.183424,0.0186059,6.31e-23,18.3424,14.6956,21.9891,***
+30_45,6,>30 °C,>30 °C,hot,5,non_circ,Non-circulatory,No circulatorias,15588381,0.0919379,0.0101912,1.86e-19,9.19379,7.19631,11.1913,***
+30_45,6,>30 °C,>30 °C,hot,5,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.211723,0.0398507,1.08e-7,21.1723,13.3616,28.983,***
+30_45,6,>30 °C,>30 °C,hot,6,circ,Circulatory,Circulatorias,12187862,0.182104,0.0205016,6.54e-19,18.2104,14.1921,22.2288,***
+30_45,6,>30 °C,>30 °C,hot,6,non_circ,Non-circulatory,No circulatorias,15588381,0.0922671,0.0107358,8.37e-18,9.22671,7.1225,11.3309,***
+30_45,6,>30 °C,>30 °C,hot,6,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.233587,0.0434033,7.38e-8,23.3587,14.8517,31.8657,***
+30_45,6,>30 °C,>30 °C,hot,7,circ,Circulatory,Circulatorias,12187862,0.177932,0.0211118,3.51e-17,17.7932,13.6552,21.9311,***
+30_45,6,>30 °C,>30 °C,hot,7,non_circ,Non-circulatory,No circulatorias,15588381,0.0952886,0.0116722,3.25e-16,9.52886,7.24111,11.8166,***
+30_45,6,>30 °C,>30 °C,hot,7,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.254919,0.0474568,7.8e-8,25.4919,16.1903,34.7934,***
+30_45,6,>30 °C,>30 °C,hot,8,circ,Circulatory,Circulatorias,12187862,0.183537,0.0210005,2.34e-18,18.3537,14.2376,22.4698,***
+30_45,6,>30 °C,>30 °C,hot,8,non_circ,Non-circulatory,No circulatorias,15588381,0.0864738,0.0122776,1.88e-12,8.64738,6.24096,11.0538,***
+30_45,6,>30 °C,>30 °C,hot,8,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.282925,0.0519653,5.2e-8,28.2925,18.1073,38.4777,***
+30_45,6,>30 °C,>30 °C,hot,9,circ,Circulatory,Circulatorias,12187862,0.176634,0.022651,6.29e-15,17.6634,13.2238,22.103,***
+30_45,6,>30 °C,>30 °C,hot,9,non_circ,Non-circulatory,No circulatorias,15588381,0.0916379,0.0116663,4e-15,9.16379,6.8772,11.4504,***
+30_45,6,>30 °C,>30 °C,hot,9,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.291144,0.053066,4.1e-8,29.1144,18.7134,39.5153,***
+30_45,6,>30 °C,>30 °C,hot,10,circ,Circulatory,Circulatorias,12187862,0.187708,0.022169,2.51e-17,18.7708,14.4257,23.1159,***
+30_45,6,>30 °C,>30 °C,hot,10,non_circ,Non-circulatory,No circulatorias,15588381,0.0937352,0.0122275,1.78e-14,9.37352,6.97694,11.7701,***
+30_45,6,>30 °C,>30 °C,hot,10,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.299594,0.057049,1.51e-7,29.9594,18.7778,41.141,***
+30_45,6,>30 °C,>30 °C,hot,11,circ,Circulatory,Circulatorias,12187862,0.183066,0.0244437,6.92e-14,18.3066,13.5157,23.0976,***
+30_45,6,>30 °C,>30 °C,hot,11,non_circ,Non-circulatory,No circulatorias,15588381,0.0947184,0.0121451,6.24e-15,9.47184,7.09141,11.8523,***
+30_45,6,>30 °C,>30 °C,hot,11,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.27676,0.0660309,2.77e-5,27.676,14.734,40.6181,***
+30_45,6,>30 °C,>30 °C,hot,12,circ,Circulatory,Circulatorias,12187862,0.168073,0.0228369,1.84e-13,16.8073,12.3313,21.2833,***
+30_45,6,>30 °C,>30 °C,hot,12,non_circ,Non-circulatory,No circulatorias,15588381,0.0856809,0.012279,3e-12,8.56809,6.1614,10.9748,***
+30_45,6,>30 °C,>30 °C,hot,12,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.290109,0.0683417,2.19e-5,29.0109,15.616,42.4059,***
+30_45,6,>30 °C,>30 °C,hot,13,circ,Circulatory,Circulatorias,12187862,0.179382,0.0234232,1.88e-14,17.9382,13.3473,22.5292,***
+30_45,6,>30 °C,>30 °C,hot,13,non_circ,Non-circulatory,No circulatorias,15588381,0.0878864,0.0127235,4.94e-12,8.78864,6.29484,11.2824,***
+30_45,6,>30 °C,>30 °C,hot,13,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.286973,0.0714641,5.93e-5,28.6973,14.6903,42.7043,***
+30_45,6,>30 °C,>30 °C,hot,14,circ,Circulatory,Circulatorias,12187862,0.159793,0.0229639,3.44e-12,15.9793,11.4784,20.4802,***
+30_45,6,>30 °C,>30 °C,hot,14,non_circ,Non-circulatory,No circulatorias,15588381,0.0771788,0.0128955,2.16e-9,7.71788,5.19035,10.2454,***
+30_45,6,>30 °C,>30 °C,hot,14,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.266079,0.0696099,1.32e-4,26.6079,12.9643,40.2514,***
+30_45,6,>30 °C,>30 °C,hot,15,circ,Circulatory,Circulatorias,12187862,0.157118,0.0237552,3.74e-11,15.7118,11.0558,20.3678,***
+30_45,6,>30 °C,>30 °C,hot,15,non_circ,Non-circulatory,No circulatorias,15588381,0.0879975,0.0129297,1e-11,8.79975,6.26553,11.334,***
+30_45,6,>30 °C,>30 °C,hot,15,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.288561,0.0744987,1.07e-4,28.8561,14.2543,43.4578,***
+30_45,6,>30 °C,>30 °C,hot,16,circ,Circulatory,Circulatorias,12187862,0.152769,0.0242746,3.11e-10,15.2769,10.519,20.0347,***
+30_45,6,>30 °C,>30 °C,hot,16,non_circ,Non-circulatory,No circulatorias,15588381,0.0797263,0.0130888,1.12e-9,7.97263,5.40723,10.538,***
+30_45,6,>30 °C,>30 °C,hot,16,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.28675,0.0738373,1.03e-4,28.675,14.2029,43.1471,***
+30_45,6,>30 °C,>30 °C,hot,17,circ,Circulatory,Circulatorias,12187862,0.136994,0.024076,1.27e-8,13.6994,8.98046,18.4182,***
+30_45,6,>30 °C,>30 °C,hot,17,non_circ,Non-circulatory,No circulatorias,15588381,0.0835561,0.0123014,1.1e-11,8.35561,5.94453,10.7667,***
+30_45,6,>30 °C,>30 °C,hot,17,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.286342,0.0718515,6.74e-5,28.6342,14.5513,42.7171,***
+30_45,6,>30 °C,>30 °C,hot,18,circ,Circulatory,Circulatorias,12187862,0.153554,0.0254805,1.68e-9,15.3554,10.3612,20.3495,***
+30_45,6,>30 °C,>30 °C,hot,18,non_circ,Non-circulatory,No circulatorias,15588381,0.0849925,0.0123792,6.62e-12,8.49925,6.07292,10.9256,***
+30_45,6,>30 °C,>30 °C,hot,18,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.277014,0.0784958,4.17e-4,27.7014,12.3162,43.0866,***
+30_45,6,>30 °C,>30 °C,hot,19,circ,Circulatory,Circulatorias,12187862,0.141228,0.0247366,1.13e-8,14.1228,9.27439,18.9711,***
+30_45,6,>30 °C,>30 °C,hot,19,non_circ,Non-circulatory,No circulatorias,15588381,0.082216,0.0133972,8.42e-10,8.2216,5.59574,10.8475,***
+30_45,6,>30 °C,>30 °C,hot,19,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.267962,0.0782513,6.16e-4,26.7962,11.4589,42.1335,***
+30_45,6,>30 °C,>30 °C,hot,20,circ,Circulatory,Circulatorias,12187862,0.145833,0.0260743,2.23e-8,14.5833,9.4727,19.6938,***
+30_45,6,>30 °C,>30 °C,hot,20,non_circ,Non-circulatory,No circulatorias,15588381,0.0797322,0.0124737,1.64e-10,7.97322,5.52836,10.4181,***
+30_45,6,>30 °C,>30 °C,hot,20,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.282619,0.079641,3.87e-4,28.2619,12.6523,43.8715,***
+30_45,6,>30 °C,>30 °C,hot,21,circ,Circulatory,Circulatorias,12187862,0.132959,0.0260717,3.4e-7,13.2959,8.18588,18.406,***
+30_45,6,>30 °C,>30 °C,hot,21,non_circ,Non-circulatory,No circulatorias,15588381,0.0774595,0.0137169,1.63e-8,7.74595,5.05744,10.4345,***
+30_45,6,>30 °C,>30 °C,hot,21,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.268207,0.0819872,0.00107,26.8207,10.7512,42.8902,***
+30_45,6,>30 °C,>30 °C,hot,22,circ,Circulatory,Circulatorias,12187862,0.129432,0.0260403,6.68e-7,12.9432,7.8393,18.0471,***
+30_45,6,>30 °C,>30 °C,hot,22,non_circ,Non-circulatory,No circulatorias,15588381,0.064934,0.0141305,4.32e-6,6.4934,3.72381,9.26298,***
+30_45,6,>30 °C,>30 °C,hot,22,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.249532,0.0816338,0.00224,24.9532,8.95297,40.9534,***
+30_45,6,>30 °C,>30 °C,hot,23,circ,Circulatory,Circulatorias,12187862,0.118339,0.0249807,2.17e-6,11.8339,6.93771,16.7301,***
+30_45,6,>30 °C,>30 °C,hot,23,non_circ,Non-circulatory,No circulatorias,15588381,0.0782929,0.0128363,1.06e-9,7.82929,5.31338,10.3452,***
+30_45,6,>30 °C,>30 °C,hot,23,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.285046,0.0834069,6.32e-4,28.5046,12.1568,44.8523,***
+30_45,6,>30 °C,>30 °C,hot,24,circ,Circulatory,Circulatorias,12187862,0.121485,0.0259783,2.92e-6,12.1485,7.0568,17.2403,***
+30_45,6,>30 °C,>30 °C,hot,24,non_circ,Non-circulatory,No circulatorias,15588381,0.0758236,0.0141325,8.09e-8,7.58236,4.8124,10.3523,***
+30_45,6,>30 °C,>30 °C,hot,24,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.25492,0.0863813,0.00317,25.492,8.56128,42.4228,***
+30_45,6,>30 °C,>30 °C,hot,25,circ,Circulatory,Circulatorias,12187862,0.110762,0.0257699,1.72e-5,11.0762,6.02532,16.1271,***
+30_45,6,>30 °C,>30 °C,hot,25,non_circ,Non-circulatory,No circulatorias,15588381,0.0692968,0.0155238,8.05e-6,6.92968,3.88701,9.97235,***
+30_45,6,>30 °C,>30 °C,hot,25,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.256769,0.0930551,0.00579,25.6769,7.43807,43.9157,***
+30_45,6,>30 °C,>30 °C,hot,26,circ,Circulatory,Circulatorias,12187862,0.110966,0.0246581,6.79e-6,11.0966,6.26365,15.9296,***
+30_45,6,>30 °C,>30 °C,hot,26,non_circ,Non-circulatory,No circulatorias,15588381,0.0775234,0.0141971,4.75e-8,7.75234,4.96972,10.535,***
+30_45,6,>30 °C,>30 °C,hot,26,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.247466,0.0928294,0.00768,24.7466,6.55206,42.9412,***
+30_45,6,>30 °C,>30 °C,hot,27,circ,Circulatory,Circulatorias,12187862,0.112942,0.0259903,1.39e-5,11.2942,6.20008,16.3883,***
+30_45,6,>30 °C,>30 °C,hot,27,non_circ,Non-circulatory,No circulatorias,15588381,0.0648999,0.0155132,2.87e-5,6.48999,3.4494,9.53059,***
+30_45,6,>30 °C,>30 °C,hot,27,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.232914,0.0978134,0.0173,23.2914,4.11995,42.4628,**
+30_45,6,>30 °C,>30 °C,hot,28,circ,Circulatory,Circulatorias,12187862,0.102694,0.0257944,6.86e-5,10.2694,5.21372,15.3251,***
+30_45,6,>30 °C,>30 °C,hot,28,non_circ,Non-circulatory,No circulatorias,15588381,0.0616195,0.0161267,1.33e-4,6.16195,3.00112,9.32279,***
+30_45,6,>30 °C,>30 °C,hot,28,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.194291,0.0959951,0.043,19.4291,0.614071,38.2441,**
+30_45,6,>30 °C,>30 °C,hot,29,circ,Circulatory,Circulatorias,12187862,0.0978883,0.0270339,2.94e-4,9.78883,4.49019,15.0875,***
+30_45,6,>30 °C,>30 °C,hot,29,non_circ,Non-circulatory,No circulatorias,15588381,0.0609477,0.0154404,7.9e-5,6.09477,3.06846,9.12109,***
+30_45,6,>30 °C,>30 °C,hot,29,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.222705,0.0981793,0.0233,22.2705,3.02735,41.5136,**
+30_45,6,>30 °C,>30 °C,hot,30,circ,Circulatory,Circulatorias,12187862,0.094404,0.0274068,5.72e-4,9.4404,4.06866,14.8121,***
+30_45,6,>30 °C,>30 °C,hot,30,non_circ,Non-circulatory,No circulatorias,15588381,0.0577987,0.0172331,7.97e-4,5.77987,2.40217,9.15756,***
+30_45,6,>30 °C,>30 °C,hot,30,other_icd,Other or unknown cause,Otra causa o no especificada,6576306,0.209103,0.100662,0.0378,20.9103,1.18057,40.64,**

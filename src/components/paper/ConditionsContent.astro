@@ -1,0 +1,164 @@
+---
+import ModuleRail from "./ModuleRail.astro";
+import RankedChapters from "./RankedChapters.astro";
+import DataDownload from "./DataDownload.astro";
+import chapterData from "../../data/paper/m4_chapters.json";
+import { fmtMag, fmtPct, type Estimate, type Lang } from "./chart-utils";
+import { MODULES, SECTION_BASE, modulePath } from "../../data/outreach";
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+
+type Row = Estimate & {
+  chapter: string;
+  chapter_label_en: string;
+  chapter_label_es: string;
+  baseline_mean: number;
+};
+const rows = chapterData as Row[];
+const lab = (r: Row) => (lang === "es" ? r.chapter_label_es : r.chapter_label_en);
+
+/* Cold, cumulated over 30 days: the state the chart opens on. */
+const coldCum = rows
+  .filter((r) => r.bin === "-15_10" && r.horizon === 30)
+  .sort((a, b) => a.pct - b.pct);
+
+const mostDown = coldCum[0];
+const mostUp = coldCum[coldCum.length - 1];
+const respiratory = coldCum.find((r) => r.chapter === "respiratory")!;
+const rising = coldCum.filter((r) => r.pct > 0);
+const busiest = [...coldCum].sort((a, b) => b.baseline_mean - a.baseline_mean)[0];
+
+const n = {
+  mostDownLabel: lab(mostDown).toLowerCase(),
+  mostDown: fmtMag(mostDown.pct),
+  mostUpLabel: lab(mostUp).toLowerCase(),
+  mostUp: fmtMag(mostUp.pct),
+  respiratory: fmtPct(respiratory.pct),
+  respiratoryBase: respiratory.baseline_mean.toFixed(1),
+  risingCount: String(rising.length),
+  totalCount: String(coldCum.length),
+  busiestLabel: lab(busiest).toLowerCase(),
+  busiestBase: busiest.baseline_mean.toFixed(1),
+};
+
+const self = MODULES.find((m) => m.id === "conditions")!;
+const next = MODULES.find((m) => m.id === "projections")!;
+
+const strings = {
+  en: {
+    eyebrow: self.short.en,
+    h1: self.question.en,
+    standfirst: `The fall in total visits on cold days is a net figure, and the net hides two opposite movements. Over 30 days after a day below 10 °C, ${n.mostDownLabel} visits fall by ${n.mostDown} while respiratory visits rise by ${n.respiratory}.`,
+    fig1: "Every diagnostic chapter, at the interval and horizon you choose",
+    readTitle: "What to read here",
+    read: [
+      `The aggregate is not the operational picture. ${n.risingCount} of ${n.totalCount} chapters move up on cold days over 30 days, even though the total moves down. Planning from the headline number alone would point a service in the wrong direction.`,
+      `Respiratory is the chapter that rises, and it is a high-volume one: ${n.respiratory} over 30 days on a baseline of ${n.respiratoryBase} visits per 100,000. A percentage on a common condition is a larger absolute load than the same percentage on a rare one, which is why baseline volume sits next to every label.`,
+      `The largest percentage belongs to ${n.mostDownLabel}, at ${n.mostDown}. That is consistent with the paper's suggestive evidence on ecosystem dynamics, since pathogen transmission itself varies with temperature.`,
+    ],
+    caveatTitle: "Read percentages against volume",
+    caveat: `${n.busiestLabel} carries the largest baseline volume at ${n.busiestBase} visits per 100,000, so even a modest percentage there moves more people than a dramatic percentage on a rare chapter. Use the bars beside the labels.`,
+    notesTitle: "What is being estimated",
+    notes: [
+      "Each chapter is a separate Poisson distributed lag model with 30 lags, fitted to visits assigned to that ICD-10 chapter, and measured against a day between 20 and 25 °C.",
+      "Row order is fixed by the cumulative effect of a day below 10 °C and does not change with the controls, so a condition can be followed across states.",
+      "Baseline volume is the mean outcome reported in the paper, in visits per 100,000 people. Whiskers are 95% confidence intervals, clustered at the municipality level.",
+    ],
+    nextLabel: "Next",
+    backLabel: "All questions",
+  },
+  es: {
+    eyebrow: self.short.es,
+    h1: self.question.es,
+    standfirst: `La caída de visitas totales en los días fríos es una cifra neta, y lo neto esconde dos movimientos opuestos. En los 30 días posteriores a un día por debajo de 10 °C, las visitas por ${n.mostDownLabel} caen ${n.mostDown} mientras que las respiratorias suben ${n.respiratory}.`,
+    fig1: "Todos los capítulos diagnósticos, en el intervalo y horizonte que elijas",
+    readTitle: "Qué leer aquí",
+    read: [
+      `El agregado no es el panorama operativo. ${n.risingCount} de ${n.totalCount} capítulos suben en los días fríos a 30 días, aunque el total baje. Planear solo con la cifra principal apuntaría a un servicio en la dirección equivocada.`,
+      `El capítulo que sube es el respiratorio, y es de alto volumen: ${n.respiratory} en 30 días sobre una base de ${n.respiratoryBase} visitas por 100,000. Un porcentaje sobre un padecimiento común implica una carga absoluta mayor que el mismo porcentaje sobre uno raro, y por eso el volumen base aparece junto a cada etiqueta.`,
+      `El mayor porcentaje corresponde a ${n.mostDownLabel}, con ${n.mostDown}. Es consistente con la evidencia sugestiva del artículo sobre dinámicas de ecosistemas, ya que la transmisión de patógenos varía con la temperatura.`,
+    ],
+    caveatTitle: "Lee los porcentajes contra el volumen",
+    caveat: `El capítulo de ${n.busiestLabel} tiene el mayor volumen base, con ${n.busiestBase} visitas por 100,000, así que incluso un porcentaje modesto ahí mueve a más personas que un porcentaje dramático en un capítulo raro. Usa las barras junto a las etiquetas.`,
+    notesTitle: "Qué se está estimando",
+    notes: [
+      "Cada capítulo es un modelo Poisson de rezagos distribuidos con 30 rezagos, ajustado a las visitas asignadas a ese capítulo de la CIE-10, y medido contra un día de entre 20 y 25 °C.",
+      "El orden de las filas está fijado por el efecto acumulado de un día por debajo de 10 °C y no cambia con los controles, de modo que se puede seguir un padecimiento entre estados.",
+      "El volumen base es la media del resultado reportada en el artículo, en visitas por 100,000 personas. Los bigotes son intervalos de confianza del 95%, agrupados a nivel municipio.",
+    ],
+    nextLabel: "Siguiente",
+    backLabel: "Todas las preguntas",
+  },
+}[lang];
+---
+
+<ModuleRail lang={lang} current="conditions" />
+
+<div class="mx-auto max-w-6xl px-6">
+  <header class="max-w-3xl border-b border-rule py-12 sm:py-16">
+    <p class="text-[13px] text-slate-light">{strings.eyebrow}</p>
+    <h1
+      class="mt-3 font-display text-[1.9rem] leading-[1.18] font-semibold text-charcoal sm:text-[2.5rem]"
+    >
+      {strings.h1}
+    </h1>
+    <p class="mt-5 text-[1.0625rem] leading-relaxed text-slate-light">
+      {strings.standfirst}
+    </p>
+  </header>
+
+  <section class="py-12 sm:py-16">
+    <h2 class="font-display text-[1.3rem] leading-snug font-semibold text-charcoal">
+      {strings.fig1}
+    </h2>
+    <div class="mt-6">
+      <RankedChapters lang={lang} />
+    </div>
+    <DataDownload lang={lang} files={["m4_chapters"]} />
+  </section>
+
+  <section class="grid gap-10 border-t border-rule py-12 lg:grid-cols-3 sm:py-16">
+    {
+      strings.read.map((para) => (
+        <p class="border-l-2 border-rule pl-4 text-[14.5px] leading-relaxed text-slate">
+          {para}
+        </p>
+      ))
+    }
+  </section>
+
+  <section class="border-t border-rule py-10">
+    <h2 class="font-display text-[1.15rem] font-semibold text-charcoal">
+      {strings.caveatTitle}
+    </h2>
+    <p class="mt-3 max-w-3xl text-[14.5px] leading-relaxed text-slate-light">
+      {strings.caveat}
+    </p>
+  </section>
+
+  <section class="border-t border-rule py-12 sm:py-16">
+    <h2 class="text-[13px] font-medium text-slate-light">{strings.notesTitle}</h2>
+    <div class="mt-4 grid max-w-5xl gap-6 sm:grid-cols-3">
+      {
+        strings.notes.map((para) => (
+          <p class="text-[13.5px] leading-relaxed text-slate-light">{para}</p>
+        ))
+      }
+    </div>
+  </section>
+
+  <nav class="flex flex-wrap items-baseline justify-between gap-4 border-t border-rule py-8">
+    <a href={SECTION_BASE[lang]} class="text-[14px] text-sky underline underline-offset-4">
+      ← {strings.backLabel}
+    </a>
+    <a
+      href={modulePath(next, lang)}
+      class="text-[14px] text-sky underline underline-offset-4"
+    >
+      {strings.nextLabel}: {next.question[lang]} →
+    </a>
+  </nav>
+</div>

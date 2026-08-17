@@ -25,9 +25,9 @@ export const researchAreas: ResearchArea[] = [
     shortDescription: "Using econometric methods for causal inference to study the effects of environmental phenomena on human welfare.",
     shortDescriptionEs: "Uso de métodos econométricos de inferencia causal para estudiar los efectos de los fenómenos ambientales en el bienestar humano.",
     longDescription:
-      "My applied econometrics research focuses on using causal inference methods to understand the relationship between environmental quality and socioeconomic outcomes. I study how air pollution affects productivity, health, well-being, and behavior — from court decisions in India to crime rates in Mexico City. My work also evaluates the effectiveness of environmental policies such as Low Emission Zones in European cities.",
+      "My applied econometrics research focuses on using causal inference methods to understand the relationship between environmental quality and socioeconomic outcomes. I study how air pollution affects productivity, health, well-being, and behavior, from court decisions in India to crime rates in Mexico City. My work also evaluates the effectiveness of environmental policies such as Low Emission Zones in European cities.",
     longDescriptionEs:
-      "Mi investigación en econometría aplicada se centra en el uso de métodos de inferencia causal para comprender la relación entre la calidad ambiental y los resultados socioeconómicos. Estudio cómo la contaminación del aire afecta la productividad, la salud, el bienestar y el comportamiento — desde decisiones judiciales en India hasta tasas de criminalidad en la Ciudad de México. Mi trabajo también evalúa la efectividad de políticas ambientales como las Zonas de Bajas Emisiones en ciudades europeas.",
+      "Mi investigación en econometría aplicada se centra en el uso de métodos de inferencia causal para comprender la relación entre la calidad ambiental y los resultados socioeconómicos. Estudio cómo la contaminación del aire afecta la productividad, la salud, el bienestar y el comportamiento, desde decisiones judiciales en India hasta tasas de criminalidad en la Ciudad de México. Mi trabajo también evalúa la efectividad de políticas ambientales como las Zonas de Bajas Emisiones en ciudades europeas.",
     topics: [
       {
         title: "Air Pollution & Productivity",

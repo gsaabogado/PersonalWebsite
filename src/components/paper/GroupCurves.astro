@@ -1,0 +1,631 @@
+---
+/**
+ * Estimates and error bars, side by side, with the reader choosing which groups
+ * appear. No connecting lines: the temperature intervals are categories, and a
+ * line between them implies a continuous path through values never estimated.
+ *
+ * Groups are SHOWN OR HIDDEN, never dimmed. Each group also keeps a FIXED SLOT
+ * inside every interval, so its horizontal position never moves as other groups
+ * are added or removed and one group can be tracked across the chart. Hidden
+ * groups leave their slot empty, which is the price of that stability.
+ *
+ * Numbers are not scattered through the plot area, where thirty labels collided
+ * however they were staggered or haloed. They sit in a VALUE STRIP inside the same
+ * SVG, one row per group with cells aligned to the interval columns, so overlap is
+ * impossible by construction and the whole thing stays one shareable graphic.
+ * An equivalent HTML table is kept visually hidden for screen readers, print and
+ * copy-paste.
+ *
+ * The vertical scale is computed over every group, not the selected ones, so the
+ * axis never moves as the selection changes.
+ *
+ * Groups are identified by SHAPE as well as colour, and the same shape appears on
+ * the selector button. Colour alone fails for colourblind readers, in print, and
+ * in a compressed screenshot.
+ *
+ * Colour note: the cold/hot palette is reserved for temperature everywhere on
+ * this site, so groups CANNOT use it without making the encoding ambiguous.
+ * Groups get a neutral ramp ordered youngest to oldest, and temperature keeps its
+ * semantics on the axis, where the tick labels are tinted cold and hot.
+ *
+ * Scales differ between the two horizons on purpose. A shared scale would have to
+ * accommodate the 30-day confidence intervals, which squashes the same-day view
+ * into a band a few pixels tall. The axis is labelled on every state.
+ */
+import {
+  scaleLinear,
+  scaleBand,
+  niceTicks,
+  fmtPct,
+  markKind,
+  markPath,
+  type Estimate,
+  type Lang,
+} from "./chart-utils";
+
+interface Props {
+  lang: Lang;
+  rows: Estimate[];
+  /** Sequential ramp, light to dark, in group order. */
+  ramp: string[];
+  /** Unique id, so two instances on a page keep independent state. */
+  chartId: string;
+  height?: number;
+  /** Groups selected on load. Defaults to the first group alone. */
+  defaultOn?: string[];
+  /** Horizon selected on load. */
+  defaultHorizon?: 0 | 30;
+  /** Override the y-axis title when the series are not one outcome. */
+  yAxisLabel?: string;
+}
+const {
+  lang,
+  rows,
+  ramp,
+  chartId,
+  height = 470,
+  defaultOn,
+  defaultHorizon,
+  yAxisLabel,
+} = Astro.props;
+
+type Row = Estimate & {
+  spec: string;
+  group_order: number;
+  group_label_en: string;
+  group_label_es: string;
+};
+const all = rows as Row[];
+
+const HORIZONS = [0, 30] as const;
+const DEFAULT_HORIZON = defaultHorizon ?? 0;
+
+const BINS = [
+  { bin: "-15_10", short: "≤10", side: "cold" },
+  { bin: "10_15", short: "10–15", side: "cold" },
+  { bin: "15_20", short: "15–20", side: "cold" },
+  { bin: "20_25", short: "20–25", side: "reference" },
+  { bin: "25_30", short: "25–30", side: "hot" },
+  { bin: "30_45", short: ">30", side: "hot" },
+] as const;
+
+const groups = [...new Set(all.map((r) => r.spec))]
+  .map((spec) => {
+    const rs = all.filter((r) => r.spec === spec);
+    return {
+      spec,
+      order: rs[0].group_order,
+      label: lang === "es" ? rs[0].group_label_es : rs[0].group_label_en,
+    };
+  })
+  .sort((a, b) => a.order - b.order);
+
+const DEFAULT_ON = defaultOn?.length ? defaultOn : [groups[0].spec];
+const isOn = (spec: string) => DEFAULT_ON.includes(spec);
+const colourOf = (i: number) => ramp[Math.min(i, ramp.length - 1)];
+
+// --- geometry ---------------------------------------------------------------
+const W = 780;
+const M = { top: 30, right: 30, bottom: 86, left: 62 };
+const plotW = W - M.left - M.right;
+const plotH = height - M.top - M.bottom;
+/* Everything below the plot is placed relative to THIS, not to the total SVG
+   height. Deriving the axis title from total height put it on top of the value
+   strip as soon as the strip was added. */
+const plotBottom = M.top + plotH;
+const yTicks = plotBottom + 28;
+const yRefNote = plotBottom + 44;
+const yAxisTitle = plotBottom + 68;
+
+/* Value strip: one row per group, cells aligned to the interval columns. Rows
+   keep a fixed y whether or not the group is shown, for the same reason the
+   marks keep a fixed slot. */
+
+const band = scaleBand(BINS.length, [M.left, M.left + plotW], 0.12);
+
+/* One fixed slot per group inside every interval. Offsets come from the TOTAL
+   number of groups, never the selected count, so positions stay stable. */
+const nGroups = [...new Set(all.map((r) => r.spec))].length;
+const slotStep = band.width / nGroups;
+const slotDx = (i: number) => (i - (nGroups - 1) / 2) * slotStep;
+
+/* Value strip: one row per group, cells aligned to the interval columns. Rows
+   keep a fixed y whether or not the group is shown, for the same reason the marks
+   keep a fixed slot. */
+const STRIP_ROW_H = 18;
+const yStripRule = plotBottom + 88;
+const yStripHead = plotBottom + 106;
+const stripTop = plotBottom + 114;
+const H = stripTop + nGroups * STRIP_ROW_H + 10;
+
+/* Compact form: no percent sign, because the strip header states the unit once.
+   Keeps a cell inside its column at 9px. */
+const num = (v: number) => `${v > 0 ? "+" : "−"}${Math.abs(v).toFixed(1)}`;
+
+const at = (spec: string, bin: string, h: number) =>
+  all.find((r) => r.spec === spec && r.bin === bin && r.horizon === h);
+
+const sideColour = {
+  cold: "var(--color-temp-cold)",
+  reference: "var(--color-temp-reference)",
+  hot: "var(--color-temp-hot)",
+};
+
+const strings = {
+  en: {
+    horizon: "Effect:",
+    sameDay: "Same day",
+    cumulative: "Cumulated over 30 days",
+    group: "Groups:",
+    yAxis: "Change in ED visits (%)",
+    xAxis: "Daily mean temperature, against a day between 20 and 25 °C",
+    caption:
+      "Estimates with 95% confidence intervals, against a day between 20 and 25 °C. Add groups to compare them; each keeps its own slot and row, so a hidden group leaves a gap and nothing shifts. The vertical scale is fixed across selections and differs between the two horizons, since the 30-day intervals are about twice as wide.",
+    reference: "reference",
+    all: "All",
+    groupCol: "Group",
+    stripHead: "Change in ED visits, % (95% interval in brackets)",
+    ciNote: "estimate, with the 95% interval beneath",
+    to: "to",
+  },
+  es: {
+    horizon: "Efecto:",
+    sameDay: "Mismo día",
+    cumulative: "Acumulado en 30 días",
+    group: "Grupos:",
+    yAxis: "Cambio en visitas a urgencias (%)",
+    xAxis: "Temperatura media diaria, contra un día de entre 20 y 25 °C",
+    caption:
+      "Estimaciones con intervalos de confianza del 95%, contra un día de entre 20 y 25 °C. Agrega grupos para compararlos; cada uno conserva su posición y su fila, así que un grupo oculto deja un hueco y nada se desplaza. La escala vertical es fija entre selecciones y difiere entre los dos horizontes, porque los intervalos a 30 días son cerca del doble de anchos.",
+    reference: "referencia",
+    all: "Todos",
+    groupCol: "Grupo",
+    stripHead: "Cambio en visitas a urgencias, % (intervalo del 95% en paréntesis)",
+    ciNote: "estimación, con el intervalo del 95% debajo",
+    to: "a",
+  },
+}[lang];
+---
+
+<figure
+  class="not-prose"
+  data-chart="group-curves"
+  data-gc={chartId}
+  data-horizon={DEFAULT_HORIZON}
+  data-group={DEFAULT_ON.join(",")}
+>
+  <div class="mb-4 flex flex-col gap-3">
+    <div class="flex flex-wrap items-center gap-2">
+      <span class="mr-1 text-[13px] text-slate-light">{strings.horizon}</span>
+      {
+        HORIZONS.map((h) => (
+          <button
+            type="button"
+            data-gc-horizon={h}
+            aria-pressed={h === DEFAULT_HORIZON ? "true" : "false"}
+            class="gc-btn"
+          >
+            {h === 0 ? strings.sameDay : strings.cumulative}
+          </button>
+        ))
+      }
+    </div>
+    <div class="flex flex-wrap items-center gap-2">
+      <span class="mr-1 text-[13px] text-slate-light">{strings.group}</span>
+      {
+        groups.map((g, i) => (
+          <button
+            type="button"
+            data-gc-group={g.spec}
+            aria-pressed={isOn(g.spec) ? "true" : "false"}
+            class="gc-btn tnum"
+          >
+            <svg
+              class="gc-dot mr-1.5 align-middle"
+              width="11"
+              height="11"
+              viewBox="0 0 11 11"
+              aria-hidden="true"
+            >
+              <path d={markPath(markKind(i), 5.5, 5.5, 4.2)} fill={colourOf(i)} />
+            </svg>
+            {g.label}
+          </button>
+        ))
+      }
+      <button type="button" data-gc-all class="gc-btn gc-all">{strings.all}</button>
+    </div>
+  </div>
+
+  <svg viewBox={`0 0 ${W} ${H}`} class="h-auto w-full" role="img" aria-label={yAxisLabel ?? strings.yAxis}>
+    {
+      HORIZONS.map((h) => {
+        const vals = all.filter((r) => r.horizon === h);
+        const lo = Math.min(...vals.map((r) => r.ci_low), 0);
+        const hi = Math.max(...vals.map((r) => r.ci_high), 0);
+        const pad = (hi - lo) * 0.06;
+        const y = scaleLinear([lo - pad, hi + pad], [M.top + plotH, M.top]);
+        const ticks = niceTicks(lo - pad, hi + pad, 6);
+
+        return (
+          <g
+            class:list={["gc-h", { "is-active": h === DEFAULT_HORIZON }]}
+            data-horizon={h}
+          >
+            {ticks.map((tv) => (
+              <g>
+                <line
+                  x1={M.left}
+                  x2={M.left + plotW}
+                  y1={y(tv)}
+                  y2={y(tv)}
+                  stroke={tv === 0 ? "var(--color-rule-strong)" : "var(--color-rule)"}
+                  stroke-width={tv === 0 ? 1.25 : 1}
+                  stroke-dasharray={tv === 0 ? "none" : "2 4"}
+                />
+                <text
+                  x={M.left - 10}
+                  y={y(tv) + 4}
+                  text-anchor="end"
+                  class="tnum fill-slate-light text-[12px]"
+                >
+                  {tv > 0 ? `+${tv}` : tv}
+                </text>
+              </g>
+            ))}
+            <text
+              x={M.left - 46}
+              y={M.top + plotH / 2}
+              text-anchor="middle"
+              transform={`rotate(-90 ${M.left - 46} ${M.top + plotH / 2})`}
+              class="fill-annotation text-[12.5px]"
+            >
+              {yAxisLabel ?? strings.yAxis}
+            </text>
+
+            {/* x labels, tinted by temperature so the palette keeps its meaning */}
+            {BINS.map((b, bi) => (
+              <g>
+                <text
+                  x={band.centre(bi)}
+                  y={yTicks}
+                  text-anchor="middle"
+                  class="tnum text-[12.5px]"
+                  fill={sideColour[b.side]}
+                >
+                  {b.short} °C
+                </text>
+                {b.side === "reference" && (
+                  <text
+                    x={band.centre(bi)}
+                    y={yRefNote}
+                    text-anchor="middle"
+                    class="fill-temp-reference text-[11px] italic"
+                  >
+                    {strings.reference}
+                  </text>
+                )}
+              </g>
+            ))}
+            <text
+              x={M.left + plotW / 2}
+              y={yAxisTitle}
+              text-anchor="middle"
+              class="fill-annotation text-[12.5px]"
+            >
+              {strings.xAxis}
+            </text>
+
+            {groups.map((g, gi) => {
+              const colour = colourOf(gi);
+              const pts = BINS.map((b, bi) => {
+                const d = at(g.spec, b.bin, h);
+                return {
+                  x: band.centre(bi) + slotDx(gi),
+                  d,
+                  yv: y(d ? d.pct : 0),
+                  isRef: !d,
+                };
+              });
+
+              return (
+                <g
+                  class:list={["gc-group", { "is-on": isOn(g.spec) }]}
+                  data-group={g.spec}
+                >
+                  {/* error bars for every selected group: the side-by-side
+                      slots keep them from overlapping */}
+                  <g class="gc-ci">
+                    {pts.map((p) =>
+                      p.d ? (
+                        <line
+                          x1={p.x}
+                          x2={p.x}
+                          y1={y(p.d.ci_low)}
+                          y2={y(p.d.ci_high)}
+                          stroke={colour}
+                          stroke-width={Math.min(5, slotStep * 0.55)}
+                          stroke-linecap="round"
+                          opacity="0.4"
+                        />
+                      ) : null
+                    )}
+                  </g>
+
+                  {pts.map((p, pi) =>
+                    p.isRef ? (
+                      <path
+                        d={markPath(markKind(gi), p.x, p.yv, 3.5)}
+                        fill="white"
+                        stroke={colour}
+                        stroke-width="1.5"
+                      />
+                    ) : (
+                      /* A plain SVG title gives a hover readout at every
+                         selection count, with no script and no layout cost. */
+                      <g>
+                        <title>
+                          {`${g.label} · ${BINS[pi].short} °C: ${fmtPct(p.d!.pct)} (${fmtPct(
+                            p.d!.ci_low
+                          )} ${strings.to} ${fmtPct(p.d!.ci_high)})`}
+                        </title>
+                        <path d={markPath(markKind(gi), p.x, p.yv, 3.9)} fill={colour} />
+                      </g>
+                    )
+                  )}
+
+
+                  {/* value at every interval, focus only */}
+
+                </g>
+              );
+            })}
+
+            {/* --- value strip ------------------------------------------- */}
+            <line
+              x1={0}
+              x2={W}
+              y1={yStripRule}
+              y2={yStripRule}
+              stroke="var(--color-rule)"
+              stroke-width="1"
+            />
+            <text x={0} y={yStripHead} class="fill-annotation text-[10.5px]">
+              {strings.stripHead}
+            </text>
+            {groups.map((g, gi) => {
+              const ry = stripTop + gi * STRIP_ROW_H + 11;
+              return (
+                <g class:list={["gc-row-svg", { "is-on": isOn(g.spec) }]}
+                  data-group={g.spec}>
+                  <path
+                    d={markPath(markKind(gi), 6, ry - 3.5, 3.6)}
+                    fill={colourOf(gi)}
+                  />
+                  <text x={15} y={ry} class="tnum fill-charcoal text-[9.5px]">
+                    {g.label}
+                  </text>
+                  {BINS.map((b, bi) => {
+                    const d = at(g.spec, b.bin, h);
+                    return (
+                      <text
+                        x={band.centre(bi)}
+                        y={ry}
+                        text-anchor="middle"
+                        class="tnum text-[9px]"
+                        fill={d ? "var(--color-charcoal)" : "var(--color-temp-reference)"}
+                      >
+                        {d ? (
+                          <>
+                            <tspan class="font-semibold">{num(d.pct)}</tspan>
+                            <tspan fill="var(--color-annotation)">
+                              {` (${num(d.ci_low)}, ${num(d.ci_high)})`}
+                            </tspan>
+                          </>
+                        ) : (
+                          strings.reference
+                        )}
+                      </text>
+                    );
+                  })}
+                </g>
+              );
+            })}
+          </g>
+        );
+      })
+    }
+  </svg>
+
+  {
+    HORIZONS.map((h) => (
+      <div
+        class:list={["gc-table", { "is-active": h === DEFAULT_HORIZON }]}
+        data-horizon={h}
+      >
+        <p class="mt-6 text-[12px] text-slate-light">{strings.ciNote}</p>
+        <div class="mt-2 overflow-x-auto">
+          <table class="w-full border-collapse text-left text-[12.5px]">
+            <thead>
+              <tr class="border-b border-rule">
+                <th scope="col" class="py-2 pr-3 font-medium text-slate-light">
+                  {strings.groupCol}
+                </th>
+                {BINS.map((b) => (
+                  <th
+                    scope="col"
+                    class="tnum py-2 pr-3 text-right font-medium"
+                    style={`color:${sideColour[b.side]}`}
+                  >
+                    {b.short} °C
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {groups.map((g, gi) => (
+                <tr
+                  class:list={["gc-row", { "is-on": isOn(g.spec) }]}
+                  data-group={g.spec}
+                >
+                  <th scope="row" class="whitespace-nowrap py-2.5 pr-3 font-normal">
+                    <svg
+                      class="mr-1.5 align-middle"
+                      width="11"
+                      height="11"
+                      viewBox="0 0 11 11"
+                      aria-hidden="true"
+                    >
+                      <path d={markPath(markKind(gi), 5.5, 5.5, 4.2)} fill={colourOf(gi)} />
+                    </svg>
+                    <span class="tnum align-middle">{g.label}</span>
+                  </th>
+                  {BINS.map((b) => {
+                    const d = at(g.spec, b.bin, h);
+                    return (
+                      <td class="tnum py-2.5 pr-3 text-right align-top">
+                        {d ? (
+                          <span>
+                            <span class="font-medium text-charcoal">{fmtPct(d.pct)}</span>
+                            <span class="block text-[11px] text-slate-light">
+                              {fmtPct(d.ci_low)} {strings.to} {fmtPct(d.ci_high)}
+                            </span>
+                          </span>
+                        ) : (
+                          <span class="text-temp-reference italic">{strings.reference}</span>
+                        )}
+                      </td>
+                    );
+                  })}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    ))
+  }
+
+  <figcaption class="mt-4 max-w-3xl text-[13.5px] leading-relaxed text-slate-light">
+    {strings.caption}
+  </figcaption>
+</figure>
+
+<style>
+  .gc-btn {
+    display: inline-flex;
+    align-items: center;
+    border: 1px solid var(--color-rule);
+    border-radius: 3px;
+    padding: 0.3rem 0.65rem;
+    font-size: 12.5px;
+    color: var(--color-slate-light);
+    background: white;
+    transition:
+      background-color 140ms cubic-bezier(0.32, 0.72, 0, 1),
+      border-color 140ms cubic-bezier(0.32, 0.72, 0, 1),
+      color 140ms cubic-bezier(0.32, 0.72, 0, 1);
+  }
+  .gc-btn:hover {
+    border-color: var(--color-rule-strong);
+    color: var(--color-charcoal);
+  }
+  .gc-btn[aria-pressed="true"] {
+    background: var(--color-slate);
+    border-color: var(--color-slate);
+    color: white;
+  }
+  .gc-btn:focus-visible {
+    outline: 2px solid var(--color-sky);
+    outline-offset: 2px;
+  }
+
+  .gc-h {
+    display: none;
+  }
+  .gc-h.is-active {
+    display: inline;
+  }
+
+  /* Unselected groups are removed, not faded. Fading six lines reads as clutter
+     and makes the selection hard to find. */
+  .gc-group {
+    display: none;
+  }
+  .gc-group.is-on {
+    display: inline;
+  }
+  .gc-row-svg {
+    display: none;
+  }
+  .gc-row-svg.is-on {
+    display: inline;
+  }
+
+  /* The HTML table carries the same numbers for screen readers, print and
+     copy-paste. It is not shown, because the strip above already shows them. */
+  .gc-table {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .gc-btn[aria-pressed="false"] .gc-dot {
+    opacity: 0.45;
+  }
+  .gc-all {
+    color: var(--color-slate-light);
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-chart="group-curves"]').forEach((fig) => {
+    const horBtns = fig.querySelectorAll<HTMLButtonElement>("[data-gc-horizon]");
+    const grpBtns = fig.querySelectorAll<HTMLButtonElement>("[data-gc-group]");
+    const allBtn = fig.querySelector<HTMLButtonElement>("[data-gc-all]");
+
+    const selected = () =>
+      [...grpBtns]
+        .filter((b) => b.getAttribute("aria-pressed") === "true")
+        .map((b) => b.dataset.gcGroup!);
+
+    const apply = () => {
+      const on = selected();
+      fig.dataset.group = on.join(",");
+      fig
+        .querySelectorAll<HTMLElement>(".gc-group, .gc-row, .gc-row-svg")
+        .forEach((el) => el.classList.toggle("is-on", on.includes(el.dataset.group!)));
+    };
+
+    horBtns.forEach((btn) =>
+      btn.addEventListener("click", () => {
+        const h = btn.dataset.gcHorizon!;
+        fig.dataset.horizon = h;
+        fig
+          .querySelectorAll<HTMLElement>(".gc-h, .gc-table")
+          .forEach((g) => g.classList.toggle("is-active", g.dataset.horizon === h));
+        horBtns.forEach((b) =>
+          b.setAttribute("aria-pressed", String(b.dataset.gcHorizon === h))
+        );
+      })
+    );
+
+    grpBtns.forEach((btn) =>
+      btn.addEventListener("click", () => {
+        const isOn = btn.getAttribute("aria-pressed") === "true";
+        // Never leave the chart empty: the last selected group stays put.
+        if (isOn && selected().length === 1) return;
+        btn.setAttribute("aria-pressed", String(!isOn));
+        apply();
+      })
+    );
+
+    allBtn?.addEventListener("click", () => {
+      grpBtns.forEach((b) => b.setAttribute("aria-pressed", "true"));
+      apply();
+    });
+  });
+</script>

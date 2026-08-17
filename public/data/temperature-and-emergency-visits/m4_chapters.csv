@@ -1,0 +1,151 @@
+bin,bin_order,bin_label_en,bin_label_es,side,horizon,chapter,chapter_label_paper,chapter_label_en,chapter_label_es,baseline_mean,nobs,estimate,se,p,pct,ci_low,ci_high,stars
+-15_10,1,≤10 °C,≤10 °C,cold,0,blood_and_inmune,Blood and Immune,Blood and immune,Sangre e inmunidad,0.215,1976283,-0.0868576,0.027813,0.00179,-8.68576,-14.1371,-3.23442,***
+-15_10,1,≤10 °C,≤10 °C,cold,0,circulatory,Circulatory,Circulatory,Circulatorias,1.744,2511929,-0.0589657,0.00857185,6.03e-12,-5.89657,-7.57665,-4.21649,***
+-15_10,1,≤10 °C,≤10 °C,cold,0,digestive,Digestive,Digestive,Digestivas,3.969,2554873,-0.0708417,0.00710389,2.0199999999999997e-23,-7.08417,-8.47653,-5.69181,***
+-15_10,1,≤10 °C,≤10 °C,cold,0,endocrine_metabolic,Endoc./Metabolic,Endocrine and metabolic,Endocrinas y metabólicas,1.581,2501785,-0.145715,0.0100443,1.0899999999999999e-47,-14.5715,-16.5402,-12.6028,***
+-15_10,1,≤10 °C,≤10 °C,cold,0,external_causes,External Causes,External causes,Causas externas,8.052,2595686,-0.140415,0.00713939,4.089999999999999e-86,-14.0415,-15.4408,-12.6422,***
+-15_10,1,≤10 °C,≤10 °C,cold,0,eye_ear,Eye and Ear,Eye and ear,Ojos y oídos,0.897,2356368,-0.0601162,0.0117465,3.09e-7,-6.01162,-8.31393,-3.70931,***
+-15_10,1,≤10 °C,≤10 °C,cold,0,genitourinary,Genitourinary,Genitourinary,Genitourinarias,3.107,2543332,-0.0865573,0.00856772,5.37e-24,-8.65573,-10.335,-6.97646,***
+-15_10,1,≤10 °C,≤10 °C,cold,0,infectious_parasatic,Inf. and Parasitic,Infectious and parasitic,Infecciosas y parasitarias,3.954,2533607,-0.169932,0.00893256,1.0799999999999998e-80,-16.9932,-18.744,-15.2424,***
+-15_10,1,≤10 °C,≤10 °C,cold,0,mental,Mental,Mental health,Salud mental,0.705,2397262,-0.140384,0.017536,1.19e-15,-14.0384,-17.4754,-10.6013,***
+-15_10,1,≤10 °C,≤10 °C,cold,0,neoplasms,Neoplasms,Neoplasms,Neoplasias,0.275,2012485,-0.0606114,0.0171662,4.14e-4,-6.06114,-9.42571,-2.69657,***
+-15_10,1,≤10 °C,≤10 °C,cold,0,nervous_system,Nervous System,Nervous system,Sistema nervioso,0.608,2364478,-0.125539,0.0132123,2.0600000000000002e-21,-12.5539,-15.1436,-9.96434,***
+-15_10,1,≤10 °C,≤10 °C,cold,0,obstetric,Obstetric,Obstetric,Obstétricas,4.641,2528395,-0.0469244,0.00982006,1.77e-6,-4.69244,-6.61717,-2.76771,***
+-15_10,1,≤10 °C,≤10 °C,cold,0,other,Other,Other,Otras,10.707,2594995,-0.0740252,0.0078005,2.3100000000000003e-21,-7.40252,-8.93141,-5.87362,***
+-15_10,1,≤10 °C,≤10 °C,cold,0,respiratory,Respiratory,Respiratory,Respiratorias,9.15,2550299,-0.0732205,0.00551716,3.39e-40,-7.32205,-8.40342,-6.24069,***
+-15_10,1,≤10 °C,≤10 °C,cold,0,skin_muscoloskeletal,Skin/Musc.,Skin and musculoskeletal,Piel y musculoesqueléticas,2.449,2498247,-0.109739,0.0078348,1.4200000000000001e-44,-10.9739,-12.5095,-9.43828,***
+-15_10,1,≤10 °C,≤10 °C,cold,30,blood_and_inmune,Blood and Immune,Blood and immune,Sangre e inmunidad,0.215,1976283,-0.363681,0.120178,0.00248,-36.3681,-59.9229,-12.8133,***
+-15_10,1,≤10 °C,≤10 °C,cold,30,circulatory,Circulatory,Circulatory,Circulatorias,1.744,2511929,0.0247048,0.0362538,0.496,2.47048,-4.63526,9.57623,
+-15_10,1,≤10 °C,≤10 °C,cold,30,digestive,Digestive,Digestive,Digestivas,3.969,2554873,-0.296073,0.0306713,4.77e-22,-29.6073,-35.6189,-23.5957,***
+-15_10,1,≤10 °C,≤10 °C,cold,30,endocrine_metabolic,Endoc./Metabolic,Endocrine and metabolic,Endocrinas y metabólicas,1.581,2501785,-0.11188,0.0402058,0.00539,-11.188,-19.0683,-3.30763,***
+-15_10,1,≤10 °C,≤10 °C,cold,30,external_causes,External Causes,External causes,Causas externas,8.052,2595686,-0.348449,0.0233373,2.07e-50,-34.8449,-39.419,-30.2708,***
+-15_10,1,≤10 °C,≤10 °C,cold,30,eye_ear,Eye and Ear,Eye and ear,Ojos y oídos,0.897,2356368,0.021647,0.0600541,0.719,2.1647,-9.60591,13.9353,
+-15_10,1,≤10 °C,≤10 °C,cold,30,genitourinary,Genitourinary,Genitourinary,Genitourinarias,3.107,2543332,-0.2956,0.0348572,2.25e-17,-29.56,-36.392,-22.7279,***
+-15_10,1,≤10 °C,≤10 °C,cold,30,infectious_parasatic,Inf. and Parasitic,Infectious and parasitic,Infecciosas y parasitarias,3.954,2533607,-0.825267,0.0501764,8.77e-61,-82.5267,-92.3612,-72.6921,***
+-15_10,1,≤10 °C,≤10 °C,cold,30,mental,Mental,Mental health,Salud mental,0.705,2397262,-0.24888,0.06269,7.19e-5,-24.888,-37.1752,-12.6007,***
+-15_10,1,≤10 °C,≤10 °C,cold,30,neoplasms,Neoplasms,Neoplasms,Neoplasias,0.275,2012485,-0.322249,0.0720875,7.81e-6,-32.2249,-46.354,-18.0957,***
+-15_10,1,≤10 °C,≤10 °C,cold,30,nervous_system,Nervous System,Nervous system,Sistema nervioso,0.608,2364478,-0.200111,0.0623396,0.00133,-20.0111,-32.2297,-7.79259,***
+-15_10,1,≤10 °C,≤10 °C,cold,30,obstetric,Obstetric,Obstetric,Obstétricas,4.641,2528395,-0.130059,0.0448688,0.00375,-13.0059,-21.8002,-4.21161,***
+-15_10,1,≤10 °C,≤10 °C,cold,30,other,Other,Other,Otras,10.707,2594995,-0.211924,0.0285573,1.16e-13,-21.1924,-26.7897,-15.5952,***
+-15_10,1,≤10 °C,≤10 °C,cold,30,respiratory,Respiratory,Respiratory,Respiratorias,9.15,2550299,0.336309,0.0292336,1.2599999999999999e-30,33.6309,27.9011,39.3607,***
+-15_10,1,≤10 °C,≤10 °C,cold,30,skin_muscoloskeletal,Skin/Musc.,Skin and musculoskeletal,Piel y musculoesqueléticas,2.449,2498247,-0.280104,0.0313636,4.23e-19,-28.0104,-34.1577,-21.8632,***
+10_15,2,10–15 °C,10–15 °C,cold,0,blood_and_inmune,Blood and Immune,Blood and immune,Sangre e inmunidad,0.215,1976283,-0.0566567,0.0119428,2.1e-6,-5.66567,-8.00646,-3.32489,***
+10_15,2,10–15 °C,10–15 °C,cold,0,circulatory,Circulatory,Circulatory,Circulatorias,1.744,2511929,-0.0150985,0.0050626000000000004,0.00286,-1.50985,-2.50212,-0.517578,***
+10_15,2,10–15 °C,10–15 °C,cold,0,digestive,Digestive,Digestive,Digestivas,3.969,2554873,-0.0354485,0.0037926,9.04e-21,-3.54485,-4.2882,-2.8015,***
+10_15,2,10–15 °C,10–15 °C,cold,0,endocrine_metabolic,Endoc./Metabolic,Endocrine and metabolic,Endocrinas y metabólicas,1.581,2501785,-0.0904298,0.00643277,6.91e-45,-9.04298,-10.3038,-7.78215,***
+10_15,2,10–15 °C,10–15 °C,cold,0,external_causes,External Causes,External causes,Causas externas,8.052,2595686,-0.084246,0.00449193,1.7599999999999997e-78,-8.4246,-9.30502,-7.54418,***
+10_15,2,10–15 °C,10–15 °C,cold,0,eye_ear,Eye and Ear,Eye and ear,Ojos y oídos,0.897,2356368,-0.0200588,0.0072045,0.00537,-2.00588,-3.41796,-0.593795,***
+10_15,2,10–15 °C,10–15 °C,cold,0,genitourinary,Genitourinary,Genitourinary,Genitourinarias,3.107,2543332,-0.0492946,0.00394371,7.510000000000001e-36,-4.92946,-5.70242,-4.15649,***
+10_15,2,10–15 °C,10–15 °C,cold,0,infectious_parasatic,Inf. and Parasitic,Infectious and parasitic,Infecciosas y parasitarias,3.954,2533607,-0.0994618,0.00553386,3.149999999999999e-72,-9.94618,-11.0308,-8.86154,***
+10_15,2,10–15 °C,10–15 °C,cold,0,mental,Mental,Mental health,Salud mental,0.705,2397262,-0.0857915,0.00806176,1.9e-26,-8.57915,-10.1593,-6.99904,***
+10_15,2,10–15 °C,10–15 °C,cold,0,neoplasms,Neoplasms,Neoplasms,Neoplasias,0.275,2012485,-0.0322528,0.0106477,0.00245,-3.22528,-5.31222,-1.13834,***
+10_15,2,10–15 °C,10–15 °C,cold,0,nervous_system,Nervous System,Nervous system,Sistema nervioso,0.608,2364478,-0.0641331,0.00774932,1.27e-16,-6.41331,-7.93218,-4.89444,***
+10_15,2,10–15 °C,10–15 °C,cold,0,obstetric,Obstetric,Obstetric,Obstétricas,4.641,2528395,-0.0317911,0.003555,3.8e-19,-3.17911,-3.87589,-2.48233,***
+10_15,2,10–15 °C,10–15 °C,cold,0,other,Other,Other,Otras,10.707,2594995,-0.0508117,0.00311544,8.43e-60,-5.08117,-5.69179,-4.47054,***
+10_15,2,10–15 °C,10–15 °C,cold,0,respiratory,Respiratory,Respiratory,Respiratorias,9.15,2550299,-0.0371882,0.00329934,1.8200000000000002e-29,-3.71882,-4.36549,-3.07215,***
+10_15,2,10–15 °C,10–15 °C,cold,0,skin_muscoloskeletal,Skin/Musc.,Skin and musculoskeletal,Piel y musculoesqueléticas,2.449,2498247,-0.0561014,0.00524547,1.07e-26,-5.61014,-6.63825,-4.58203,***
+10_15,2,10–15 °C,10–15 °C,cold,30,blood_and_inmune,Blood and Immune,Blood and immune,Sangre e inmunidad,0.215,1976283,-0.245018,0.0497016,8.23e-7,-24.5018,-34.2433,-14.7603,***
+10_15,2,10–15 °C,10–15 °C,cold,30,circulatory,Circulatory,Circulatory,Circulatorias,1.744,2511929,-4.36473e-4,0.021621,0.984,-0.0436473,-4.28135,4.19406,
+10_15,2,10–15 °C,10–15 °C,cold,30,digestive,Digestive,Digestive,Digestivas,3.969,2554873,-0.20664,0.0161455,1.67e-37,-20.664,-23.8286,-17.4995,***
+10_15,2,10–15 °C,10–15 °C,cold,30,endocrine_metabolic,Endoc./Metabolic,Endocrine and metabolic,Endocrinas y metabólicas,1.581,2501785,-0.101043,0.0217392,3.35e-6,-10.1043,-14.3651,-5.84337,***
+10_15,2,10–15 °C,10–15 °C,cold,30,external_causes,External Causes,External causes,Causas externas,8.052,2595686,-0.23957,0.015357,7.269999999999999e-55,-23.957,-26.9669,-20.947,***
+10_15,2,10–15 °C,10–15 °C,cold,30,eye_ear,Eye and Ear,Eye and ear,Ojos y oídos,0.897,2356368,0.0326011,0.0258567,0.207,3.26011,-1.8078,8.32803,
+10_15,2,10–15 °C,10–15 °C,cold,30,genitourinary,Genitourinary,Genitourinary,Genitourinarias,3.107,2543332,-0.248622,0.0167936,1.37e-49,-24.8622,-28.1538,-21.5707,***
+10_15,2,10–15 °C,10–15 °C,cold,30,infectious_parasatic,Inf. and Parasitic,Infectious and parasitic,Infecciosas y parasitarias,3.954,2533607,-0.494593,0.0260566,2.43e-80,-49.4593,-54.5664,-44.3522,***
+10_15,2,10–15 °C,10–15 °C,cold,30,mental,Mental,Mental health,Salud mental,0.705,2397262,-0.161922,0.0274591,3.71e-9,-16.1922,-21.5742,-10.8102,***
+10_15,2,10–15 °C,10–15 °C,cold,30,neoplasms,Neoplasms,Neoplasms,Neoplasias,0.275,2012485,-0.165982,0.0391541,2.24e-5,-16.5982,-24.2724,-8.92402,***
+10_15,2,10–15 °C,10–15 °C,cold,30,nervous_system,Nervous System,Nervous system,Sistema nervioso,0.608,2364478,-0.0875361,0.026316,8.8e-4,-8.75361,-13.9116,-3.59567,***
+10_15,2,10–15 °C,10–15 °C,cold,30,obstetric,Obstetric,Obstetric,Obstétricas,4.641,2528395,-0.0738352,0.0227697,0.00118,-7.38352,-11.8464,-2.92066,***
+10_15,2,10–15 °C,10–15 °C,cold,30,other,Other,Other,Otras,10.707,2594995,-0.174501,0.0144157,9.94e-34,-17.4501,-20.2756,-14.6247,***
+10_15,2,10–15 °C,10–15 °C,cold,30,respiratory,Respiratory,Respiratory,Respiratorias,9.15,2550299,0.257753,0.0182238,2.04e-45,25.7753,22.2034,29.3472,***
+10_15,2,10–15 °C,10–15 °C,cold,30,skin_muscoloskeletal,Skin/Musc.,Skin and musculoskeletal,Piel y musculoesqueléticas,2.449,2498247,-0.213802,0.0179288,8.76e-33,-21.3802,-24.8942,-17.8661,***
+15_20,3,15–20 °C,15–20 °C,cold,0,blood_and_inmune,Blood and Immune,Blood and immune,Sangre e inmunidad,0.215,1976283,-0.0328691,0.00951773,5.53e-4,-3.28691,-5.15238,-1.42143,***
+15_20,3,15–20 °C,15–20 °C,cold,0,circulatory,Circulatory,Circulatory,Circulatorias,1.744,2511929,-0.00598731,0.00356132,0.0927,-0.598731,-1.29675,0.0992873,*
+15_20,3,15–20 °C,15–20 °C,cold,0,digestive,Digestive,Digestive,Digestivas,3.969,2554873,-0.0172145,0.00246994,3.18e-12,-1.72145,-2.20555,-1.23734,***
+15_20,3,15–20 °C,15–20 °C,cold,0,endocrine_metabolic,Endoc./Metabolic,Endocrine and metabolic,Endocrinas y metabólicas,1.581,2501785,-0.0465621,0.00415767,4.1200000000000003e-29,-4.65621,-5.47111,-3.8413,***
+15_20,3,15–20 °C,15–20 °C,cold,0,external_causes,External Causes,External causes,Causas externas,8.052,2595686,-0.0419022,0.00293628,3.34e-46,-4.19022,-4.76573,-3.6147,***
+15_20,3,15–20 °C,15–20 °C,cold,0,eye_ear,Eye and Ear,Eye and ear,Ojos y oídos,0.897,2356368,-0.00580169,0.00529511,0.273,-0.580169,-1.61801,0.457673,
+15_20,3,15–20 °C,15–20 °C,cold,0,genitourinary,Genitourinary,Genitourinary,Genitourinarias,3.107,2543332,-0.0279439,0.0029371,1.8300000000000003e-21,-2.79439,-3.37007,-2.21872,***
+15_20,3,15–20 °C,15–20 °C,cold,0,infectious_parasatic,Inf. and Parasitic,Infectious and parasitic,Infecciosas y parasitarias,3.954,2533607,-0.0504747,0.00348952,2.0299999999999998e-47,-5.04747,-5.73141,-4.36352,***
+15_20,3,15–20 °C,15–20 °C,cold,0,mental,Mental,Mental health,Salud mental,0.705,2397262,-0.0444375,0.00532973,7.58e-17,-4.44375,-5.48838,-3.39912,***
+15_20,3,15–20 °C,15–20 °C,cold,0,neoplasms,Neoplasms,Neoplasms,Neoplasias,0.275,2012485,-0.0148693,0.00755626,0.0491,-1.48693,-2.96795,-0.00590131,**
+15_20,3,15–20 °C,15–20 °C,cold,0,nervous_system,Nervous System,Nervous system,Sistema nervioso,0.608,2364478,-0.0275033,0.0050617,5.52e-8,-2.75033,-3.74243,-1.75824,***
+15_20,3,15–20 °C,15–20 °C,cold,0,obstetric,Obstetric,Obstetric,Obstétricas,4.641,2528395,-0.0184304,0.002767,2.72e-11,-1.84304,-2.38537,-1.30071,***
+15_20,3,15–20 °C,15–20 °C,cold,0,other,Other,Other,Otras,10.707,2594995,-0.025884,0.00213308,6.929999999999999e-34,-2.5884,-3.00648,-2.17031,***
+15_20,3,15–20 °C,15–20 °C,cold,0,respiratory,Respiratory,Respiratory,Respiratorias,9.15,2550299,-0.0165261,0.00258599,1.65e-10,-1.65261,-2.15947,-1.14576,***
+15_20,3,15–20 °C,15–20 °C,cold,0,skin_muscoloskeletal,Skin/Musc.,Skin and musculoskeletal,Piel y musculoesqueléticas,2.449,2498247,-0.0256172,0.00341873,6.72e-14,-2.56172,-3.23179,-1.89165,***
+15_20,3,15–20 °C,15–20 °C,cold,30,blood_and_inmune,Blood and Immune,Blood and immune,Sangre e inmunidad,0.215,1976283,-0.175108,0.0318832,3.97e-8,-17.5108,-23.76,-11.2617,***
+15_20,3,15–20 °C,15–20 °C,cold,30,circulatory,Circulatory,Circulatory,Circulatorias,1.744,2511929,-0.00146683,0.0150761,0.922,-0.146683,-3.10161,2.80824,
+15_20,3,15–20 °C,15–20 °C,cold,30,digestive,Digestive,Digestive,Digestivas,3.969,2554873,-0.0741238,0.011368,7.01e-11,-7.41238,-9.64051,-5.18425,***
+15_20,3,15–20 °C,15–20 °C,cold,30,endocrine_metabolic,Endoc./Metabolic,Endocrine and metabolic,Endocrinas y metabólicas,1.581,2501785,-0.042654,0.014571,0.00342,-4.2654,-7.12131,-1.40948,***
+15_20,3,15–20 °C,15–20 °C,cold,30,external_causes,External Causes,External causes,Causas externas,8.052,2595686,-0.121841,0.00860831,1.7699999999999998e-45,-12.1841,-13.8713,-10.4968,***
+15_20,3,15–20 °C,15–20 °C,cold,30,eye_ear,Eye and Ear,Eye and ear,Ojos y oídos,0.897,2356368,0.0131114,0.0195531,0.503,1.31114,-2.52127,5.14355,
+15_20,3,15–20 °C,15–20 °C,cold,30,genitourinary,Genitourinary,Genitourinary,Genitourinarias,3.107,2543332,-0.113825,0.0114974,4.1599999999999994e-23,-11.3825,-13.636,-9.12903,***
+15_20,3,15–20 °C,15–20 °C,cold,30,infectious_parasatic,Inf. and Parasitic,Infectious and parasitic,Infecciosas y parasitarias,3.954,2533607,-0.190355,0.0189726,1.0899999999999999e-23,-19.0355,-22.7542,-15.3169,***
+15_20,3,15–20 °C,15–20 °C,cold,30,mental,Mental,Mental health,Salud mental,0.705,2397262,-0.0673748,0.0204192,9.68e-4,-6.73748,-10.7396,-2.73532,***
+15_20,3,15–20 °C,15–20 °C,cold,30,neoplasms,Neoplasms,Neoplasms,Neoplasias,0.275,2012485,-0.0458779,0.0259987,0.0776,-4.58779,-9.68354,0.507962,*
+15_20,3,15–20 °C,15–20 °C,cold,30,nervous_system,Nervous System,Nervous system,Sistema nervioso,0.608,2364478,-0.0411301,0.0199152,0.0389,-4.11301,-8.01639,-0.209643,**
+15_20,3,15–20 °C,15–20 °C,cold,30,obstetric,Obstetric,Obstetric,Obstétricas,4.641,2528395,-0.0270984,0.0150368,0.0715,-2.70984,-5.65705,0.237363,*
+15_20,3,15–20 °C,15–20 °C,cold,30,other,Other,Other,Otras,10.707,2594995,-0.0814965,0.00978667,8.27e-17,-8.14965,-10.0678,-6.23146,***
+15_20,3,15–20 °C,15–20 °C,cold,30,respiratory,Respiratory,Respiratory,Respiratorias,9.15,2550299,0.132103,0.01314,8.87e-24,13.2103,10.6348,15.7857,***
+15_20,3,15–20 °C,15–20 °C,cold,30,skin_muscoloskeletal,Skin/Musc.,Skin and musculoskeletal,Piel y musculoesqueléticas,2.449,2498247,-0.0882439,0.0113838,9.07e-15,-8.82439,-11.0556,-6.59316,***
+25_30,5,25–30 °C,25–30 °C,hot,0,blood_and_inmune,Blood and Immune,Blood and immune,Sangre e inmunidad,0.215,1976283,0.00897833,0.0111054,0.419,0.897833,-1.27883,3.0745,
+25_30,5,25–30 °C,25–30 °C,hot,0,circulatory,Circulatory,Circulatory,Circulatorias,1.744,2511929,-0.00671592,0.00428768,0.117,-0.671592,-1.51198,0.168792,
+25_30,5,25–30 °C,25–30 °C,hot,0,digestive,Digestive,Digestive,Digestivas,3.969,2554873,0.00140827,0.00302862,0.642,0.140827,-0.452783,0.734437,
+25_30,5,25–30 °C,25–30 °C,hot,0,endocrine_metabolic,Endoc./Metabolic,Endocrine and metabolic,Endocrinas y metabólicas,1.581,2501785,0.0434237,0.00460703,4.28e-21,4.34237,3.4394,5.24535,***
+25_30,5,25–30 °C,25–30 °C,hot,0,external_causes,External Causes,External causes,Causas externas,8.052,2595686,0.0430015,0.00324995,5.78e-40,4.30015,3.66316,4.93714,***
+25_30,5,25–30 °C,25–30 °C,hot,0,eye_ear,Eye and Ear,Eye and ear,Ojos y oídos,0.897,2356368,0.0173252,0.00559924,0.00197,1.73252,0.635065,2.82997,***
+25_30,5,25–30 °C,25–30 °C,hot,0,genitourinary,Genitourinary,Genitourinary,Genitourinarias,3.107,2543332,0.0261635,0.00352758,1.2e-13,2.61635,1.92495,3.30776,***
+25_30,5,25–30 °C,25–30 °C,hot,0,infectious_parasatic,Inf. and Parasitic,Infectious and parasitic,Infecciosas y parasitarias,3.954,2533607,0.0499806,0.00399456,6.41e-36,4.99806,4.21513,5.78099,***
+25_30,5,25–30 °C,25–30 °C,hot,0,mental,Mental,Mental health,Salud mental,0.705,2397262,0.0479332,0.00620843,1.16e-14,4.79332,3.57647,6.01018,***
+25_30,5,25–30 °C,25–30 °C,hot,0,neoplasms,Neoplasms,Neoplasms,Neoplasias,0.275,2012485,-0.0036097,0.00921943,0.695,-0.36097,-2.16798,1.44604,
+25_30,5,25–30 °C,25–30 °C,hot,0,nervous_system,Nervous System,Nervous system,Sistema nervioso,0.608,2364478,0.0175369,0.00677149,0.0096,1.75369,0.426476,3.0809,***
+25_30,5,25–30 °C,25–30 °C,hot,0,obstetric,Obstetric,Obstetric,Obstétricas,4.641,2528395,0.0193834,0.00272531,1.14e-12,1.93834,1.40418,2.4725,***
+25_30,5,25–30 °C,25–30 °C,hot,0,other,Other,Other,Otras,10.707,2594995,0.0285801,0.00264699,3.55e-27,2.85801,2.3392,3.37682,***
+25_30,5,25–30 °C,25–30 °C,hot,0,respiratory,Respiratory,Respiratory,Respiratorias,9.15,2550299,0.00725553,0.00332036,0.0289,0.725553,0.0747615,1.37634,**
+25_30,5,25–30 °C,25–30 °C,hot,0,skin_muscoloskeletal,Skin/Musc.,Skin and musculoskeletal,Piel y musculoesqueléticas,2.449,2498247,0.0185053,0.00389936,2.08e-6,1.85053,1.08626,2.61481,***
+25_30,5,25–30 °C,25–30 °C,hot,30,blood_and_inmune,Blood and Immune,Blood and immune,Sangre e inmunidad,0.215,1976283,0.10506,0.0366312,0.00413,10.506,3.3263,17.6857,***
+25_30,5,25–30 °C,25–30 °C,hot,30,circulatory,Circulatory,Circulatory,Circulatorias,1.744,2511929,-0.0394337,0.0177781,0.0265,-3.94337,-7.42788,-0.458853,**
+25_30,5,25–30 °C,25–30 °C,hot,30,digestive,Digestive,Digestive,Digestivas,3.969,2554873,0.0311686,0.0117356,0.00791,3.11686,0.816683,5.41704,***
+25_30,5,25–30 °C,25–30 °C,hot,30,endocrine_metabolic,Endoc./Metabolic,Endocrine and metabolic,Endocrinas y metabólicas,1.581,2501785,0.0533754,0.0180913,0.00317,5.33754,1.79165,8.88344,***
+25_30,5,25–30 °C,25–30 °C,hot,30,external_causes,External Causes,External causes,Causas externas,8.052,2595686,0.0967851,0.010968,1.1e-18,9.67851,7.52878,11.8282,***
+25_30,5,25–30 °C,25–30 °C,hot,30,eye_ear,Eye and Ear,Eye and ear,Ojos y oídos,0.897,2356368,0.0581598,0.0243421,0.0169,5.81598,1.04493,10.587,**
+25_30,5,25–30 °C,25–30 °C,hot,30,genitourinary,Genitourinary,Genitourinary,Genitourinarias,3.107,2543332,0.122742,0.013878,9.21e-19,12.2742,9.5541,14.9943,***
+25_30,5,25–30 °C,25–30 °C,hot,30,infectious_parasatic,Inf. and Parasitic,Infectious and parasitic,Infecciosas y parasitarias,3.954,2533607,0.0640007,0.0209952,0.0023,6.40007,2.28501,10.5151,***
+25_30,5,25–30 °C,25–30 °C,hot,30,mental,Mental,Mental health,Salud mental,0.705,2397262,0.0405269,0.0253943,0.111,4.05269,-0.924596,9.02998,
+25_30,5,25–30 °C,25–30 °C,hot,30,neoplasms,Neoplasms,Neoplasms,Neoplasias,0.275,2012485,0.031368,0.033087,0.343,3.1368,-3.34825,9.62185,
+25_30,5,25–30 °C,25–30 °C,hot,30,nervous_system,Nervous System,Nervous system,Sistema nervioso,0.608,2364478,0.0437757,0.0229016,0.0559,4.37757,-0.111157,8.86629,*
+25_30,5,25–30 °C,25–30 °C,hot,30,obstetric,Obstetric,Obstetric,Obstétricas,4.641,2528395,0.0745174,0.0137378,5.82e-8,7.45174,4.75912,10.1444,***
+25_30,5,25–30 °C,25–30 °C,hot,30,other,Other,Other,Otras,10.707,2594995,0.0830738,0.0127957,8.45e-11,8.30738,5.79942,10.8153,***
+25_30,5,25–30 °C,25–30 °C,hot,30,respiratory,Respiratory,Respiratory,Respiratorias,9.15,2550299,-0.112549,0.0138938,5.47e-16,-11.2549,-13.9781,-8.53169,***
+25_30,5,25–30 °C,25–30 °C,hot,30,skin_muscoloskeletal,Skin/Musc.,Skin and musculoskeletal,Piel y musculoesqueléticas,2.449,2498247,0.0818584,0.013654,2.03e-9,8.18584,5.50966,10.862,***
+30_45,6,>30 °C,>30 °C,hot,0,blood_and_inmune,Blood and Immune,Blood and immune,Sangre e inmunidad,0.215,1976283,0.016327,0.0248627,0.511,1.6327,-3.2404,6.50579,
+30_45,6,>30 °C,>30 °C,hot,0,circulatory,Circulatory,Circulatory,Circulatorias,1.744,2511929,-0.0324154,0.00907696,3.55e-4,-3.24154,-5.02063,-1.46246,***
+30_45,6,>30 °C,>30 °C,hot,0,digestive,Digestive,Digestive,Digestivas,3.969,2554873,-5.7188e-4,0.00541192,0.916,-0.057188,-1.11792,1.00355,
+30_45,6,>30 °C,>30 °C,hot,0,endocrine_metabolic,Endoc./Metabolic,Endocrine and metabolic,Endocrinas y metabólicas,1.581,2501785,0.103061,0.0106304,3.17e-22,10.3061,8.22251,12.3896,***
+30_45,6,>30 °C,>30 °C,hot,0,external_causes,External Causes,External causes,Causas externas,8.052,2595686,0.0567277,0.00626154,1.31e-19,5.67277,4.44551,6.90003,***
+30_45,6,>30 °C,>30 °C,hot,0,eye_ear,Eye and Ear,Eye and ear,Ojos y oídos,0.897,2356368,0.0190406,0.0128492,0.138,1.90406,-0.614386,4.42251,
+30_45,6,>30 °C,>30 °C,hot,0,genitourinary,Genitourinary,Genitourinary,Genitourinarias,3.107,2543332,0.0475135,0.00645021,1.76e-13,4.75135,3.4871,6.01559,***
+30_45,6,>30 °C,>30 °C,hot,0,infectious_parasatic,Inf. and Parasitic,Infectious and parasitic,Infecciosas y parasitarias,3.954,2533607,0.0859366,0.00805271,1.38e-26,8.59366,7.01533,10.172,***
+30_45,6,>30 °C,>30 °C,hot,0,mental,Mental,Mental health,Salud mental,0.705,2397262,0.0893125,0.0125699,1.2e-12,8.93125,6.46754,11.395,***
+30_45,6,>30 °C,>30 °C,hot,0,neoplasms,Neoplasms,Neoplasms,Neoplasias,0.275,2012485,-0.0259946,0.0177086,0.142,-2.59946,-6.07034,0.871415,
+30_45,6,>30 °C,>30 °C,hot,0,nervous_system,Nervous System,Nervous system,Sistema nervioso,0.608,2364478,0.00239445,0.0129231,0.853,0.239445,-2.29347,2.77236,
+30_45,6,>30 °C,>30 °C,hot,0,obstetric,Obstetric,Obstetric,Obstétricas,4.641,2528395,0.0404672,0.00575864,2.11e-12,4.04672,2.91803,5.17542,***
+30_45,6,>30 °C,>30 °C,hot,0,other,Other,Other,Otras,10.707,2594995,0.0413407,0.0066929,6.54e-10,4.13407,2.82226,5.44587,***
+30_45,6,>30 °C,>30 °C,hot,0,respiratory,Respiratory,Respiratory,Respiratorias,9.15,2550299,0.0109489,0.00603361,0.0696,1.09489,-0.0876952,2.27748,*
+30_45,6,>30 °C,>30 °C,hot,0,skin_muscoloskeletal,Skin/Musc.,Skin and musculoskeletal,Piel y musculoesqueléticas,2.449,2498247,0.0147518,0.00717742,0.0398,1.47518,0.0684028,2.88195,**
+30_45,6,>30 °C,>30 °C,hot,30,blood_and_inmune,Blood and Immune,Blood and immune,Sangre e inmunidad,0.215,1976283,0.22325,0.0671707,8.89e-4,22.325,9.1595,35.4904,***
+30_45,6,>30 °C,>30 °C,hot,30,circulatory,Circulatory,Circulatory,Circulatorias,1.744,2511929,-0.0637886,0.0233199,0.00623,-6.37886,-10.9496,-1.80816,***
+30_45,6,>30 °C,>30 °C,hot,30,digestive,Digestive,Digestive,Digestivas,3.969,2554873,0.0430297,0.0183996,0.0194,4.30297,0.69664,7.9093,**
+30_45,6,>30 °C,>30 °C,hot,30,endocrine_metabolic,Endoc./Metabolic,Endocrine and metabolic,Endocrinas y metabólicas,1.581,2501785,0.195693,0.0318443,7.98e-10,19.5693,13.3278,25.8108,***
+30_45,6,>30 °C,>30 °C,hot,30,external_causes,External Causes,External causes,Causas externas,8.052,2595686,0.126277,0.0195666,1.09e-10,12.6277,8.7926,16.4627,***
+30_45,6,>30 °C,>30 °C,hot,30,eye_ear,Eye and Ear,Eye and ear,Ojos y oídos,0.897,2356368,0.0958812,0.0391576,0.0143,9.58812,1.91324,17.263,**
+30_45,6,>30 °C,>30 °C,hot,30,genitourinary,Genitourinary,Genitourinary,Genitourinarias,3.107,2543332,0.209765,0.0258397,4.74e-16,20.9765,15.912,26.0411,***
+30_45,6,>30 °C,>30 °C,hot,30,infectious_parasatic,Inf. and Parasitic,Infectious and parasitic,Infecciosas y parasitarias,3.954,2533607,-0.0742646,0.0302332,0.014,-7.42646,-13.3522,-1.50076,**
+30_45,6,>30 °C,>30 °C,hot,30,mental,Mental,Mental health,Salud mental,0.705,2397262,0.0611247,0.0406351,0.133,6.11247,-1.85201,14.077,
+30_45,6,>30 °C,>30 °C,hot,30,neoplasms,Neoplasms,Neoplasms,Neoplasias,0.275,2012485,-6.0509e-4,0.0445269,0.989,-0.060509,-8.78778,8.66676,
+30_45,6,>30 °C,>30 °C,hot,30,nervous_system,Nervous System,Nervous system,Sistema nervioso,0.608,2364478,0.0654199,0.0383755,0.0882,6.54199,-0.9796,14.0636,*
+30_45,6,>30 °C,>30 °C,hot,30,obstetric,Obstetric,Obstetric,Obstétricas,4.641,2528395,0.0766667,0.0298933,0.0103,7.66667,1.80759,13.5258,**
+30_45,6,>30 °C,>30 °C,hot,30,other,Other,Other,Otras,10.707,2594995,0.0716134,0.0205994,5.08e-4,7.16134,3.12387,11.1988,***
+30_45,6,>30 °C,>30 °C,hot,30,respiratory,Respiratory,Respiratory,Respiratorias,9.15,2550299,-0.311834,0.0259777,3.39e-33,-31.1834,-36.275,-26.0917,***
+30_45,6,>30 °C,>30 °C,hot,30,skin_muscoloskeletal,Skin/Musc.,Skin and musculoskeletal,Piel y musculoesqueléticas,2.449,2498247,0.157307,0.0270502,6.05e-9,15.7307,10.4289,21.0325,***
