@@ -1,0 +1,433 @@
+---
+/**
+ * What the data covers: a descriptive map, and nothing else.
+ *
+ * Every layer here is an average over the deposited panel. There is no estimate
+ * on this page and no coefficient anywhere near the map, because the paper has no
+ * municipality-level effects and a choropleth sitting beside one would imply that
+ * it does.
+ *
+ * Geometry arrives pre-projected. `outreach/02_export_map_data.R` transforms to
+ * EPSG:6372, simplifies, and emits SVG path strings already scaled to the
+ * viewBox, so there is no projection code in the browser.
+ *
+ * The coverage layer uses explicit year bands and the visit-rate layer uses
+ * QUANTILE breaks. Its distribution runs from 2 to
+ * 327,786 per 100,000, because the denominator is a municipality's own population
+ * while its hospital serves a wider catchment. A linear ramp would paint the
+ * country one flat colour and a handful of regional hospitals bright.
+ */
+import ModuleRail from "./ModuleRail.astro";
+import DataDownload from "./DataDownload.astro";
+import geo from "../../data/paper/m6_map_geometry.json";
+import coverageByYear from "../../data/paper/m6_coverage_by_year.json";
+import { scaleLinear, scaleBand, niceTicks, type Lang } from "./chart-utils";
+import { MODULES, SECTION_BASE, modulePath } from "../../data/outreach";
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+
+interface Mun {
+  agem: string;
+  name: string;
+  d: string;
+  reports: boolean;
+  years_reporting: number;
+  first_year: number | null;
+  last_year: number | null;
+  mean_rate: number | null;
+}
+const [MW, MH] = geo.viewBox as [number, number];
+const muns = geo.municipalities as Mun[];
+const states = geo.states as string[];
+const cov = coverageByYear as Array<{ year: number; municipalities: number }>;
+
+const reporting = muns.filter((m) => m.reports);
+const nMax = Math.max(...reporting.map((m) => m.years_reporting));
+
+/* Quantile breaks over reporting municipalities only. */
+const rates = reporting
+  .map((m) => m.mean_rate as number)
+  .filter((v) => Number.isFinite(v))
+  .sort((a, b) => a - b);
+const qAt = (p: number) => rates[Math.min(rates.length - 1, Math.floor(p * rates.length))];
+const RATE_BREAKS = [0.2, 0.4, 0.6, 0.8].map(qAt);
+
+/* Sequential neutral ramps. The cold/hot palette belongs to temperature and is
+   not used anywhere on this page. */
+const RATE_RAMP = ["#e4e9f0", "#bcc8d8", "#8fa1b9", "#5f7391", "#33455e"];
+const YEAR_RAMP = ["#e8edf3", "#c3cfdd", "#93a5bc", "#5d7290", "#2b3d55"];
+const NO_DATA = "#f4f2ef";
+
+const rateBucket = (v: number) => {
+  let i = 0;
+  while (i < RATE_BREAKS.length && v >= RATE_BREAKS[i]) i++;
+  return i;
+};
+/* Explicit bands. Most reporting municipalities report the whole period (see
+   `fullPeriod` below), so a quantile scale would collapse into a single class. */
+const YEAR_BANDS = [3, 7, 11, 13];
+const yearBucket = (y: number) => {
+  let i = 0;
+  while (i < YEAR_BANDS.length && y > YEAR_BANDS[i]) i++;
+  return i;
+};
+const yearBandLabel = (i: number) => {
+  const lo = i === 0 ? 1 : YEAR_BANDS[i - 1] + 1;
+  const hi = i < YEAR_BANDS.length ? YEAR_BANDS[i] : nMax;
+  return lo === hi ? `${lo}` : `${lo}\u2013${hi}`;
+};
+const fullPeriod = reporting.filter((m) => m.years_reporting === nMax).length;
+
+const LAYERS = [
+  { key: "coverage", ramp: YEAR_RAMP },
+  { key: "rate", ramp: RATE_RAMP },
+] as const;
+const DEFAULT_LAYER = "coverage";
+
+const fmtInt = (v: number) => v.toLocaleString(lang === "es" ? "es-MX" : "en-US");
+
+/* Coverage-over-time chart. */
+const CW = 780;
+const CH = 220;
+const CM = { top: 22, right: 20, bottom: 40, left: 54 };
+const cPlotW = CW - CM.left - CM.right;
+const cPlotH = CH - CM.top - CM.bottom;
+const cBand = scaleBand(cov.length, [CM.left, CM.left + cPlotW], 0.32);
+const cMax = Math.max(...cov.map((d) => d.municipalities));
+const cy = scaleLinear([0, cMax * 1.1], [CM.top + cPlotH, CM.top]);
+const cTicks = niceTicks(0, cMax * 1.1, 4);
+
+const self = MODULES.find((m) => m.id === "geography")!;
+const next = MODULES.find((m) => m.id === "method")!;
+
+const strings = {
+  en: {
+    eyebrow: self.short.en,
+    h1: self.question.en,
+    standfirst: `The panel covers ${fmtInt(reporting.length)} of Mexico's ${fmtInt(muns.length)} municipalities. The rest never report an emergency department visit in the records, so they are outside the estimates entirely. Reporting improves over the sample rather than decaying: ${fmtInt(cov[0].municipalities)} municipalities in ${cov[0].year}, rising to ${fmtInt(cov[cov.length - 1].municipalities)} by ${cov[cov.length - 1].year}. Of the ${fmtInt(reporting.length)} that ever report, ${fmtInt(fullPeriod)} report in every year.`,
+    descriptive: "Descriptive only",
+    descriptiveNote:
+      "Nothing on this page is an estimate. The paper's effects are national, and it produces no municipality-level result, so no map here can be read as a local effect of temperature. These layers describe which places appear in the data and how much they report.",
+    layer: "Layer:",
+    coverage: "Years reporting",
+    rate: "Visits per 100,000",
+    mapTitle: "Which municipalities appear in the data",
+    noData: "never reports",
+    years: "years",
+    covTitle: "Municipalities reporting, by year",
+    catchTitle: "Read the rate layer with care",
+    catch: `A municipality's rate divides the visits recorded there by its own population, while a hospital draws patients from well beyond its own boundary. The darkest municipalities are therefore where regional hospitals sit, not where residents are sickest. The median is ${fmtInt(Math.round(qAt(0.5)))} visits per 100,000 a year; the top of the distribution reaches ${fmtInt(Math.round(rates[rates.length - 1]))}, which is a statement about catchment areas rather than about health.`,
+    notesTitle: "How these layers were built",
+    notes: [
+      "Both layers aggregate the deposited municipality-day panel: visits are summed by municipality and year, annualised to account for partly reported years, and divided by municipal population from the same archive.",
+      "Geometry is the 2012 INEGI municipality boundary file, projected to EPSG:6372 and simplified. Projection and simplification happen in the export script, not in the browser.",
+      "The rate layer uses quantile breaks, so each shade holds a comparable number of municipalities rather than an equal slice of a very skewed range. The coverage layer uses year bands instead, because most reporting municipalities report the whole period and quantiles would collapse into a single class.",
+    ],
+    nextLabel: "Next",
+    backLabel: "All questions",
+    soon: "in progress",
+  },
+  es: {
+    eyebrow: self.short.es,
+    h1: self.question.es,
+    standfirst: `El panel cubre ${fmtInt(reporting.length)} de los ${fmtInt(muns.length)} municipios de México. Los demás nunca reportan una visita a urgencias en los registros, así que quedan por completo fuera de las estimaciones. El reporte mejora a lo largo de la muestra en vez de decaer: ${fmtInt(cov[0].municipalities)} municipios en ${cov[0].year}, subiendo a ${fmtInt(cov[cov.length - 1].municipalities)} para ${cov[cov.length - 1].year}. De los ${fmtInt(reporting.length)} que alguna vez reportan, ${fmtInt(fullPeriod)} reportan todos los años.`,
+    descriptive: "Solo descriptivo",
+    descriptiveNote:
+      "Nada en esta página es una estimación. Los efectos del artículo son nacionales y no produce ningún resultado a nivel municipio, así que ningún mapa de aquí puede leerse como un efecto local de la temperatura. Estas capas describen qué lugares aparecen en los datos y cuánto reportan.",
+    layer: "Capa:",
+    coverage: "Años reportando",
+    rate: "Visitas por 100,000",
+    mapTitle: "Qué municipios aparecen en los datos",
+    noData: "nunca reporta",
+    years: "años",
+    covTitle: "Municipios que reportan, por año",
+    catchTitle: "Lee la capa de tasas con cuidado",
+    catch: `La tasa de un municipio divide las visitas registradas ahí entre su propia población, mientras que un hospital atrae pacientes de mucho más allá de su límite. Los municipios más oscuros son entonces donde están los hospitales regionales, no donde los residentes están más enfermos. La mediana es de ${fmtInt(Math.round(qAt(0.5)))} visitas por 100,000 al año; el extremo de la distribución llega a ${fmtInt(Math.round(rates[rates.length - 1]))}, que es una afirmación sobre áreas de influencia y no sobre salud.`,
+    notesTitle: "Cómo se construyeron estas capas",
+    notes: [
+      "Ambas capas agregan el panel municipio-día depositado: las visitas se suman por municipio y año, se anualizan para tener en cuenta los años parcialmente reportados, y se dividen entre la población municipal del mismo archivo.",
+      "La geometría es el archivo de límites municipales INEGI 2012, proyectado a EPSG:6372 y simplificado. La proyección y la simplificación ocurren en el script de exportación, no en el navegador.",
+      "La capa de tasas usa cortes por cuantiles, así que cada tono contiene un número comparable de municipios y no una porción igual de un rango muy sesgado. La capa de cobertura usa bandas de años, porque la mayoría de los municipios que reportan lo hacen todo el periodo y los cuantiles se colapsarían en una sola clase.",
+    ],
+    nextLabel: "Siguiente",
+    backLabel: "Todas las preguntas",
+    soon: "en preparación",
+  },
+}[lang];
+---
+
+<ModuleRail lang={lang} current="geography" />
+
+<div class="mx-auto max-w-6xl px-6">
+  <header class="max-w-3xl border-b border-rule py-12 sm:py-16">
+    <p class="text-[13px] text-slate-light">{strings.eyebrow}</p>
+    <h1
+      class="mt-3 font-display text-[1.9rem] leading-[1.18] font-semibold text-charcoal sm:text-[2.5rem]"
+    >
+      {strings.h1}
+    </h1>
+    <p class="mt-5 text-[1.0625rem] leading-relaxed text-slate-light">
+      {strings.standfirst}
+    </p>
+  </header>
+
+  {/* The descriptive-only statement sits above the map, not under it. */}
+  <section class="py-8">
+    <div class="max-w-3xl border-l-4 border-rule-strong bg-warm-gray px-5 py-4">
+      <h2 class="font-display text-[1.15rem] font-semibold text-charcoal">
+        {strings.descriptive}
+      </h2>
+      <p class="mt-2 text-[14.5px] leading-relaxed text-slate">
+        {strings.descriptiveNote}
+      </p>
+    </div>
+  </section>
+
+  <section class="py-6 sm:py-10">
+    <h2 class="font-display text-[1.3rem] leading-snug font-semibold text-charcoal">
+      {strings.mapTitle}
+    </h2>
+
+    <figure class="not-prose mt-6" data-chart="coverage-map" data-layer={DEFAULT_LAYER}>
+      <div class="mb-4 flex flex-wrap items-center gap-2">
+        <span class="mr-1 text-[13px] text-slate-light">{strings.layer}</span>
+        {
+          LAYERS.map((l) => (
+            <button
+              type="button"
+              data-map-layer={l.key}
+              aria-pressed={l.key === DEFAULT_LAYER ? "true" : "false"}
+              class="map-btn"
+            >
+              {l.key === "coverage" ? strings.coverage : strings.rate}
+            </button>
+          ))
+        }
+      </div>
+
+      <svg
+        viewBox={`0 0 ${MW} ${MH}`}
+        class="h-auto w-full"
+        role="img"
+        aria-label={strings.mapTitle}
+      >
+        {
+          LAYERS.map((l) => (
+            <g class:list={["map-layer", { "is-active": l.key === DEFAULT_LAYER }]}
+              data-layer={l.key}>
+              {muns.map((m) => {
+                let fill = NO_DATA;
+                if (m.reports) {
+                  fill =
+                    l.key === "coverage"
+                      ? YEAR_RAMP[yearBucket(m.years_reporting)]
+                      : RATE_RAMP[rateBucket(m.mean_rate as number)];
+                }
+                const detail = m.reports
+                  ? l.key === "coverage"
+                    ? `${m.years_reporting} ${strings.years} (${m.first_year} – ${m.last_year})`
+                    : `${fmtInt(Math.round(m.mean_rate as number))} / 100,000`
+                  : strings.noData;
+                return (
+                  <path d={m.d} fill={fill} stroke="#fff" stroke-width="0.25">
+                    <title>{`${m.name}: ${detail}`}</title>
+                  </path>
+                );
+              })}
+            </g>
+          ))
+        }
+        {/* State outlines last, so they read on top of the fills. */}
+        {
+          states.map((d) => (
+            <path d={d} fill="none" stroke="var(--color-rule-strong)" stroke-width="0.7" />
+          ))
+        }
+      </svg>
+
+      {/* Legend, per layer */}
+      {
+        LAYERS.map((l) => (
+          <div class:list={["map-legend", { "is-active": l.key === DEFAULT_LAYER }]}
+            data-layer={l.key}>
+            <div class="mt-4 flex flex-wrap items-center gap-x-5 gap-y-2 text-[12.5px] text-slate-light">
+              <span class="tnum">
+                {l.key === "coverage" ? strings.coverage : strings.rate}
+              </span>
+              <span class="flex items-center gap-1">
+                {l.ramp.map((c, i) => (
+                  <span class="inline-flex flex-col items-center">
+                    <span class="block h-3 w-9" style={`background:${c}`}></span>
+                    <span class="tnum mt-1 text-[10.5px]">
+                      {l.key === "coverage"
+                        ? yearBandLabel(i)
+                        : i === 0
+                          ? `<${fmtInt(Math.round(RATE_BREAKS[0]))}`
+                          : `${fmtInt(Math.round(RATE_BREAKS[i - 1]))}+`}
+                    </span>
+                  </span>
+                ))}
+              </span>
+              <span class="flex items-center gap-2">
+                <span
+                  class="inline-block h-3 w-9 border border-rule"
+                  style={`background:${NO_DATA}`}></span>
+                {strings.noData}
+              </span>
+            </div>
+          </div>
+        ))
+      }
+    </figure>
+
+    <DataDownload lang={lang} files={["m6_municipality_descriptives", "m6_coverage_by_year"]} />
+  </section>
+
+  {/* Coverage over time */}
+  <section class="border-t border-rule py-10 sm:py-14">
+    <h2 class="font-display text-[1.3rem] leading-snug font-semibold text-charcoal">
+      {strings.covTitle}
+    </h2>
+    <figure class="not-prose mt-6">
+      <svg viewBox={`0 0 ${CW} ${CH}`} class="h-auto w-full" role="img" aria-label={strings.covTitle}>
+        {
+          cTicks.map((tv) => (
+            <g>
+              <line
+                x1={CM.left}
+                x2={CM.left + cPlotW}
+                y1={cy(tv)}
+                y2={cy(tv)}
+                stroke={tv === 0 ? "var(--color-rule-strong)" : "var(--color-rule)"}
+                stroke-dasharray={tv === 0 ? "none" : "2 4"}
+                stroke-width="1"
+              />
+              <text
+                x={CM.left - 9}
+                y={cy(tv) + 4}
+                text-anchor="end"
+                class="tnum fill-slate-light text-[11.5px]">{tv}</text
+              >
+            </g>
+          ))
+        }
+        {
+          cov.map((d, i) => (
+            <g>
+              <rect
+                x={cBand.centre(i) - cBand.width / 2}
+                y={cy(d.municipalities)}
+                width={cBand.width}
+                height={cy(0) - cy(d.municipalities)}
+                fill="var(--color-slate-light)"
+              >
+                <title>{`${d.year}: ${fmtInt(d.municipalities)}`}</title>
+              </rect>
+              <text
+                x={cBand.centre(i)}
+                y={cy(d.municipalities) - 6}
+                text-anchor="middle"
+                class="tnum fill-charcoal text-[10.5px]">{d.municipalities}</text
+              >
+              <text
+                x={cBand.centre(i)}
+                y={CM.top + cPlotH + 18}
+                text-anchor="middle"
+                class="tnum fill-slate-light text-[11px]">{d.year}</text
+              >
+            </g>
+          ))
+        }
+      </svg>
+    </figure>
+  </section>
+
+  <section class="border-t border-rule py-10">
+    <h2 class="font-display text-[1.15rem] font-semibold text-charcoal">
+      {strings.catchTitle}
+    </h2>
+    <p class="mt-3 max-w-3xl text-[14.5px] leading-relaxed text-slate-light">
+      {strings.catch}
+    </p>
+  </section>
+
+  <section class="border-t border-rule py-12 sm:py-16">
+    <h2 class="text-[13px] font-medium text-slate-light">{strings.notesTitle}</h2>
+    <div class="mt-4 grid max-w-5xl gap-6 sm:grid-cols-3">
+      {
+        strings.notes.map((para) => (
+          <p class="text-[13.5px] leading-relaxed text-slate-light">{para}</p>
+        ))
+      }
+    </div>
+  </section>
+
+  <nav class="flex flex-wrap items-baseline justify-between gap-4 border-t border-rule py-8">
+    <a href={SECTION_BASE[lang]} class="text-[14px] text-sky underline underline-offset-4">
+      ← {strings.backLabel}
+    </a>
+    <span class="text-[14px] text-rule-strong">
+      {strings.nextLabel}: {next.question[lang]} ({strings.soon})
+    </span>
+  </nav>
+</div>
+
+<style>
+  .map-btn {
+    border: 1px solid var(--color-rule);
+    border-radius: 3px;
+    padding: 0.3rem 0.7rem;
+    font-size: 13px;
+    color: var(--color-slate-light);
+    background: white;
+    transition:
+      background-color 140ms cubic-bezier(0.32, 0.72, 0, 1),
+      border-color 140ms cubic-bezier(0.32, 0.72, 0, 1),
+      color 140ms cubic-bezier(0.32, 0.72, 0, 1);
+  }
+  .map-btn:hover {
+    border-color: var(--color-rule-strong);
+    color: var(--color-charcoal);
+  }
+  .map-btn[aria-pressed="true"] {
+    background: var(--color-slate);
+    border-color: var(--color-slate);
+    color: white;
+  }
+  .map-btn:focus-visible {
+    outline: 2px solid var(--color-sky);
+    outline-offset: 2px;
+  }
+
+  .map-layer,
+  .map-legend {
+    display: none;
+  }
+  .map-layer.is-active {
+    display: inline;
+  }
+  .map-legend.is-active {
+    display: block;
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-chart="coverage-map"]').forEach((fig) => {
+    const buttons = fig.querySelectorAll<HTMLButtonElement>("[data-map-layer]");
+    buttons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const key = btn.dataset.mapLayer!;
+        fig.dataset.layer = key;
+        fig
+          .querySelectorAll<HTMLElement>(".map-layer, .map-legend")
+          .forEach((g) => g.classList.toggle("is-active", g.dataset.layer === key));
+        buttons.forEach((b) =>
+          b.setAttribute("aria-pressed", String(b.dataset.mapLayer === key))
+        );
+      });
+    });
+  });
+</script>

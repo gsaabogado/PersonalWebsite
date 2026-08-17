@@ -98,7 +98,7 @@ export const MODULES: OutreachModule[] = [
       en: "Descriptive maps of reporting coverage, visit rates and temperature exposure.",
       es: "Mapas descriptivos de cobertura de reporte, tasas de visitas y exposición a temperatura.",
     },
-    status: "soon",
+    status: "live",
   },
   {
     id: "method",
