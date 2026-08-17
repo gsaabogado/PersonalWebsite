@@ -445,7 +445,7 @@ const strings = {
     <h2 class="font-display text-[1.3rem] leading-snug font-semibold text-charcoal">
       {strings.covTitle}
     </h2>
-    <figure class="not-prose mt-6">
+    <figure class="not-prose mt-6" data-chart="coverage-years">
       <svg viewBox={`0 0 ${CW} ${CH}`} class="h-auto w-full" role="img" aria-label={strings.covTitle}>
         {
           cTicks.map((tv) => (
@@ -529,7 +529,7 @@ const strings = {
     <a href={SECTION_BASE[lang]} class="text-[14px] text-sky underline underline-offset-4">
       ← {strings.backLabel}
     </a>
-    <span class="text-[14px] text-rule-strong">
+    <span class="text-[14px] text-muted">
       {strings.nextLabel}: {next.question[lang]} ({strings.soon})
     </span>
   </nav>

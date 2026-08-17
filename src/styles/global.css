@@ -91,7 +91,10 @@
 
   /* Chart furniture */
   --color-rule: #d7dce3;
+  /* Strokes only. At 2.52:1 on white this fails WCAG AA for text, so text that
+     needs to look muted uses --color-muted instead. */
   --color-rule-strong: #9aa4b2;
+  --color-muted: #5a6b82;
   --color-annotation: #475569;
 
   /* Font Families */
@@ -154,5 +157,37 @@
     opacity: 1;
     transform: none;
     transition: none;
+  }
+}
+
+
+/* =============================================================================
+   Chart responsiveness and touch targets
+   ========================================================================== */
+
+/* Charts carry 9 to 12px labels sized for their native 780px width. Letting them
+   shrink to a phone's viewport makes that text illegible, so they scroll inside
+   their own figure instead. The map is exempt: it holds no small text and is more
+   useful seen whole. */
+figure[data-chart]:not([data-chart="coverage-map"]) {
+  overflow-x: auto;
+}
+figure[data-chart]:not([data-chart="coverage-map"]) > svg {
+  min-width: 780px;
+}
+
+@media (max-width: 640px) {
+  /* Comfortable touch targets on the chart controls. */
+  .gc-btn,
+  .map-btn,
+  .rc-btn,
+  .dr-btn,
+  .ab-btn,
+  .curve-btn,
+  .lag-btn {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    padding-left: 0.8rem;
+    padding-right: 0.8rem;
   }
 }
