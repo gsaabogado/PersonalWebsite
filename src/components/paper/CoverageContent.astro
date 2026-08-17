@@ -23,6 +23,7 @@ import geo from "../../data/paper/m6_map_geometry.json";
 import coverageByYear from "../../data/paper/m6_coverage_by_year.json";
 import tempByMun from "../../data/paper/m6_temperature_by_mun.json";
 import originCap from "../../data/paper/m6_origin_and_capacity.json";
+import edCounts from "../../data/paper/m6_ed_counts.json";
 import { scaleLinear, scaleBand, niceTicks, type Lang } from "./chart-utils";
 import { MODULES, SECTION_BASE, modulePath } from "../../data/outreach";
 
@@ -79,6 +80,19 @@ const originVals = (originCap as Array<{ origin_rate: number | null }>)
 const oq = (pp: number) => originVals[Math.min(originVals.length - 1, Math.floor(pp * originVals.length))];
 const ORIGIN_BREAKS = [0.2, 0.4, 0.6, 0.8].map(oq);
 
+const edMap = new Map(
+  (edCounts as Array<{ agem: string; eds: number; eds_per_100k: number }>).map((r) => [
+    r.agem,
+    r,
+  ])
+);
+const edVals = (edCounts as Array<{ eds_per_100k: number }>)
+  .map((r) => r.eds_per_100k)
+  .sort((a, b) => a - b);
+const eq = (pp: number) => edVals[Math.min(edVals.length - 1, Math.floor(pp * edVals.length))];
+const ED_BREAKS = [0.2, 0.4, 0.6, 0.8].map(eq);
+const edTotal = (edCounts as Array<{ eds: number }>).reduce((a, r) => a + r.eds, 0);
+
 const bedVals = (originCap as Array<{ beds_per_100k: number | null }>)
   .map((r) => r.beds_per_100k)
   .filter((v): v is number => typeof v === "number" && v > 0)
@@ -131,28 +145,6 @@ const deg = (v: number) => `${v.toFixed(1)} °C`;
 
 const LAYERS: LayerSpec[] = [
   {
-    key: "coverage",
-    group: "system",
-    en: "Years reporting",
-    es: "Años reportando",
-    ramp: YEAR_RAMP,
-    breaks: YEAR_BANDS,
-    value: (m) => (m.reports ? m.years_reporting : null),
-    label: (v) => `${v}`,
-    legend: yearBandLabel,
-  },
-  {
-    key: "rate",
-    group: "system",
-    en: "Visits per 100,000, where treated",
-    es: "Visitas por 100,000, donde se atiende",
-    ramp: RATE_RAMP,
-    breaks: [],
-    value: (m) => (m.reports ? (m.mean_rate as number) : null),
-    label: (v) => fmtInt(Math.round(v)),
-    legend: () => "",
-  },
-  {
     key: "origin",
     group: "system",
     en: "Visits per 100,000, where patients live",
@@ -165,16 +157,16 @@ const LAYERS: LayerSpec[] = [
       i === 0 ? `<${fmtInt(Math.round(ORIGIN_BREAKS[0]))}` : `${fmtInt(Math.round(ORIGIN_BREAKS[i - 1]))}+`,
   },
   {
-    key: "beds",
+    key: "eds",
     group: "system",
-    en: "Hospital beds per 100,000",
-    es: "Camas de hospital por 100,000",
+    en: "Emergency departments per 100,000",
+    es: "Urgencias por 100,000 habitantes",
     ramp: YEAR_RAMP,
-    breaks: BED_BREAKS,
-    value: (m) => oc.get(m.agem)?.beds_per_100k ?? null,
-    label: (v) => fmtInt(Math.round(v)),
+    breaks: ED_BREAKS,
+    value: (m) => edMap.get(m.agem)?.eds_per_100k ?? null,
+    label: (v) => v.toFixed(2),
     legend: (i) =>
-      i === 0 ? `<${fmtInt(Math.round(BED_BREAKS[0]))}` : `${fmtInt(Math.round(BED_BREAKS[i - 1]))}+`,
+      i === 0 ? `<${ED_BREAKS[0].toFixed(1)}` : `${ED_BREAKS[i - 1].toFixed(1)}+`,
   },
   {
     key: "meantemp",
@@ -211,13 +203,12 @@ const LAYERS: LayerSpec[] = [
   },
 ];
 const DEFAULT_LAYER = "origin";
+const edMuns = (edCounts as Array<unknown>).length;
 
 const fmtInt = (v: number) => v.toLocaleString(lang === "es" ? "es-MX" : "en-US");
 
-/* The facility-side rate is extremely skewed, so its classes are quantiles. */
-LAYERS.find((l) => l.key === "rate")!.breaks = RATE_BREAKS;
-LAYERS.find((l) => l.key === "rate")!.legend = (i: number) =>
-  i === 0 ? `<${fmtInt(Math.round(RATE_BREAKS[0]))}` : `${fmtInt(Math.round(RATE_BREAKS[i - 1]))}+`;
+/* RATE_BREAKS and `rates` are kept: the facility-side figures are still quoted in
+   the prose that explains why the residence layer is the one shown. */
 
 /* Coverage-over-time chart. */
 const CW = 780;
@@ -282,8 +273,10 @@ const strings = {
     noData: "never reports",
     years: "years",
     covTitle: "Municipalities reporting, by year",
-    catchTitle: "Two ways to count a visit",
-    catch: `The two rate layers count the same visits against different denominators, and the difference is instructive. "Where treated" divides visits recorded in a municipality by that municipality's own population, so a small town hosting a regional hospital reads as extraordinary: the median is ${fmtInt(Math.round(qAt(0.5)))} per 100,000 a year but the top reaches ${fmtInt(Math.round(rates[rates.length - 1]))}, which describes catchment areas rather than health. "Where patients live" uses the patient's own municipality of residence, so numerator and denominator finally describe the same people, and the distribution is far better behaved with a median of ${fmtInt(Math.round(oq(0.5)))}. Prefer the residence layer for anything about people, and the treatment layer for anything about facilities.`,
+    catchTitle: "How these two layers were built",
+    catch: `Visits are counted by the patient's own municipality of residence, so numerator and denominator describe the same people. Counting instead by where treatment happened would divide visits by the host municipality's population, which makes a small town with a regional hospital read as extraordinary: on that basis the median is ${fmtInt(Math.round(qAt(0.5)))} per 100,000 and the top reaches ${fmtInt(Math.round(rates[rates.length - 1]))}, describing catchment areas rather than health. Both versions are in the downloadable file.`,
+    edTitle: "The emergency department count is inferred, and checked",
+    edNote: `The archive identifies each hospital by its CLUES code, whose first two letters give the state but not the municipality, and it contains no crosswalk. Each facility is therefore placed in the municipality where most of its patients live, which for a typical hospital is 91 percent of them. Two things the inference never saw were used to test it: the state it implies agrees with the state encoded in the CLUES code for 99.1 percent of facilities, and 94.2 percent of the implied locations are municipalities that the visit records independently show to host a reporting hospital. The layer counts the ${fmtInt(edTotal)} departments that reported at any point between 2012 and 2021 across ${fmtInt(edMuns)} municipalities, not a snapshot of any single year.`,
     notesTitle: "How these layers were built",
     notes: [
       "Both layers aggregate the deposited municipality-day panel: visits are summed by municipality and year, annualised to account for partly reported years, and divided by municipal population from the same archive.",
@@ -310,8 +303,10 @@ const strings = {
     noData: "nunca reporta",
     years: "años",
     covTitle: "Municipios que reportan, por año",
-    catchTitle: "Dos maneras de contar una visita",
-    catch: `Las dos capas de tasas cuentan las mismas visitas contra denominadores distintos, y la diferencia es instructiva. "Donde se atiende" divide las visitas registradas en un municipio entre su propia población, así que un pueblo pequeño con un hospital regional se ve extraordinario: la mediana es de ${fmtInt(Math.round(qAt(0.5)))} por 100,000 al año pero el extremo llega a ${fmtInt(Math.round(rates[rates.length - 1]))}, que describe áreas de influencia y no salud. "Donde viven los pacientes" usa el municipio de residencia del paciente, así que numerador y denominador por fin describen a las mismas personas, y la distribución se comporta mucho mejor, con una mediana de ${fmtInt(Math.round(oq(0.5)))}. Para lo relativo a personas conviene la capa de residencia; para lo relativo a instalaciones, la de atención.`,
+    catchTitle: "Cómo se construyeron estas dos capas",
+    catch: `Las visitas se cuentan por el municipio de residencia del propio paciente, así que numerador y denominador describen a las mismas personas. Contarlas por donde ocurrió la atención dividiría las visitas entre la población del municipio anfitrión, lo que hace que un pueblo pequeño con hospital regional se vea extraordinario: sobre esa base la mediana es de ${fmtInt(Math.round(qAt(0.5)))} por 100,000 y el extremo llega a ${fmtInt(Math.round(rates[rates.length - 1]))}, describiendo áreas de influencia y no salud. Las dos versiones están en el archivo descargable.`,
+    edTitle: "El conteo de urgencias es inferido, y verificado",
+    edNote: `El archivo identifica cada hospital por su código CLUES, cuyas primeras dos letras dan el estado pero no el municipio, y no incluye ninguna tabla de correspondencia. Por eso cada hospital se ubica en el municipio donde vive la mayoría de sus pacientes, que en un hospital típico son 91 por ciento. Se usaron dos cosas que la inferencia nunca vio para probarla: el estado que implica coincide con el estado codificado en el CLUES en 99.1 por ciento de los hospitales, y 94.2 por ciento de las ubicaciones implicadas son municipios que los registros de visitas muestran de forma independiente que albergan un hospital que reporta. La capa cuenta las ${fmtInt(edTotal)} urgencias que reportaron en algún momento entre 2012 y 2021 en ${fmtInt(edMuns)} municipios, no una foto de un año concreto.`,
     notesTitle: "Cómo se construyeron estas capas",
     notes: [
       "Ambas capas agregan el panel municipio-día depositado: las visitas se suman por municipio y año, se anualizan para tener en cuenta los años parcialmente reportados, y se dividen entre la población municipal del mismo archivo.",
@@ -439,7 +434,10 @@ const strings = {
       }
     </figure>
 
-    <DataDownload lang={lang} files={["m6_municipality_descriptives", "m6_coverage_by_year"]} />
+    <DataDownload
+      lang={lang}
+      files={["m6_origin_and_capacity", "m6_ed_counts", "m6_temperature_by_mun", "m6_municipality_descriptives"]}
+    />
   </section>
 
   {/* Coverage over time */}
@@ -501,13 +499,19 @@ const strings = {
     </figure>
   </section>
 
-  <section class="border-t border-rule py-10">
-    <h2 class="font-display text-[1.15rem] font-semibold text-charcoal">
-      {strings.catchTitle}
-    </h2>
-    <p class="mt-3 max-w-3xl text-[14.5px] leading-relaxed text-slate-light">
-      {strings.catch}
-    </p>
+  <section class="grid gap-8 border-t border-rule py-10 lg:grid-cols-2">
+    <div>
+      <h2 class="font-display text-[1.15rem] font-semibold text-charcoal">
+        {strings.catchTitle}
+      </h2>
+      <p class="mt-3 text-[14.5px] leading-relaxed text-slate-light">{strings.catch}</p>
+    </div>
+    <div>
+      <h2 class="font-display text-[1.15rem] font-semibold text-charcoal">
+        {strings.edTitle}
+      </h2>
+      <p class="mt-3 text-[14.5px] leading-relaxed text-slate-light">{strings.edNote}</p>
+    </div>
   </section>
 
   <section class="border-t border-rule py-12 sm:py-16">
