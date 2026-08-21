@@ -1,6 +1,7 @@
 // @ts-check
 import { defineConfig } from "astro/config";
 import tailwindcss from "@tailwindcss/vite";
+import devEdit from "./tools/dev-edit-plugin.mjs";
 
 export default defineConfig({
   site: "https://luissarmiento.com",
@@ -12,6 +13,6 @@ export default defineConfig({
     },
   },
   vite: {
-    plugins: [tailwindcss()],
+    plugins: [tailwindcss(), devEdit()],
   },
 });

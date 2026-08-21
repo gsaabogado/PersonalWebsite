@@ -1,6 +1,7 @@
 ---
 import "../styles/global.css";
 import { getLangFromUrl, getAlternatePath, getAlternateLang } from "../i18n/utils";
+import DevEdit from "../components/DevEdit.astro";
 
 interface Props {
   title?: string;
@@ -106,5 +107,6 @@ const altHref = new URL(alternate, site).href;
         observer.observe(el);
       });
     </script>
+    {import.meta.env.DEV && <DevEdit />}
   </body>
 </html>
