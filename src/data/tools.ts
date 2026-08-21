@@ -1,6 +1,7 @@
 export interface Tool {
   id: string;
-  href: string;
+  /** One path for both languages, or a path per language. */
+  href: string | { en: string; es: string };
   date: string;
   title: { en: string; es: string };
   kind: { en: string; es: string };
@@ -9,6 +10,27 @@ export interface Tool {
 }
 
 export const tools: Tool[] = [
+  {
+    id: "temperature-ed-visits",
+    href: { en: "/temperature-and-emergency-visits/", es: "/es/temperatura-y-urgencias/" },
+    date: "2026-08",
+    title: {
+      en: "Temperature and emergency department visits in Mexico",
+      es: "Temperatura y visitas a urgencias en México",
+    },
+    kind: {
+      en: "Interactive research companion",
+      es: "Compañero interactivo de investigación",
+    },
+    description: {
+      en: "How daily temperature moves emergency department visits across Mexico, from the universe of public hospitals, 2008 to 2021. Cold days reduce visits and the effect builds over the following month; hot days raise them on the day. Every figure is an estimate from the paper, with its confidence interval and the numbers behind it, by age, by diagnosis and projected to midcentury.",
+      es: "Cómo la temperatura diaria mueve las visitas a urgencias en México, con la totalidad de los hospitales públicos, 2008 a 2021. Los días fríos reducen las visitas y el efecto se acumula durante el mes siguiente; los calurosos las aumentan el mismo día. Cada figura es una estimación del artículo, con su intervalo de confianza y los números detrás, por edad, por diagnóstico y proyectada a mediados de siglo.",
+    },
+    audience: {
+      en: "Companion to a paper forthcoming in the Journal of Economic Behavior & Organization.",
+      es: "Complemento de un artículo en prensa en el Journal of Economic Behavior & Organization.",
+    },
+  },
   {
     id: "air-purifiers-trial",
     href: "/tools/air-purifiers-trial/",
