@@ -1,19 +1,24 @@
 ---
 /**
- * Why cold is the surprise: emergency department visits and deaths, on one axis.
+ * Why cold is the surprise: the SHAPE of the temperature response for emergency
+ * department visits against the shape for all-cause mortality.
  *
- * The two outcomes are both Poisson semi-elasticities in percent, so they belong
- * on a SHARED vertical axis. A second y-axis would let the two curves be slid
- * against each other until they told whatever story the author wanted; a shared
- * axis makes both the opposite signs and the very different magnitudes visible at
- * once, which is the honest presentation.
+ * One panel, cumulative (30-day) effects only, two series on one percent
+ * axis: visits slope down-to-up across the range, deaths form a U. Both are
+ * 100 x a Poisson coefficient, so a shared axis is legitimate; but the
+ * mortality estimates use a different specification (Cohen and
+ * Dechezleprêtre's fixed effects, the paper's Figure A.5), so the prose
+ * compares shapes, quotes numbers for visits only, and states the mortality
+ * U-shape with a reference rather than quantifying it. Rebuilt 2026-08-21; the earlier version put cause-specific
+ * deaths on a shared axis with all visits and quoted cumulative mortality
+ * percentages, neither of which was a like-for-like comparison.
  */
 import ModuleRail from "./ModuleRail.astro";
 import GroupCurves from "./GroupCurves.astro";
 import DataDownload from "./DataDownload.astro";
 import edData from "../../data/paper/m1_curve.json";
 import mortData from "../../data/paper/m2_mortality.json";
-import { fmtMag, fmtPct, type Estimate, type Lang } from "./chart-utils";
+import { fmtMag, type Estimate, type Lang } from "./chart-utils";
 import { MODULES, SECTION_BASE, modulePath } from "../../data/outreach";
 
 interface Props {
@@ -21,76 +26,42 @@ interface Props {
 }
 const { lang } = Astro.props;
 
-type MortRow = Estimate & {
-  spec: string;
-  spec_label_en: string;
-  spec_label_es: string;
-};
 const ed = edData as Estimate[];
-const mort = mortData as MortRow[];
+const mort = mortData as Estimate[];
 
-/* Series definitions. ED first so it is the darkest mark and the anchor of the
-   comparison; the three mortality series follow in a lighter neutral family.
-   Neither family may use the cold/hot palette, which belongs to temperature. */
-const SERIES = [
-  { key: "ed", order: 1, en: "ED visits", es: "Visitas a urgencias" },
-  { key: "circ", order: 2, en: "Deaths, circulatory", es: "Muertes, circulatorias" },
-  {
-    key: "non_circ",
-    order: 3,
-    en: "Deaths, non-circulatory",
-    es: "Muertes, no circulatorias",
-  },
-  {
-    key: "other_icd",
-    order: 4,
-    en: "Deaths, other or unknown cause",
-    es: "Muertes, otra causa o no especificada",
-  },
-] as const;
-const RAMP = ["#111c2b", "#5a6b82", "#8e9cb0", "#b9c3d1"];
+const at = (rows: Estimate[], bin: string, h: number) =>
+  rows.find((r) => r.bin === bin && r.horizon === h)!;
 
-/* Reshape both sources into the one row schema GroupCurves consumes. Only the
-   two horizons it draws are kept. */
-const meta = (key: string) => SERIES.find((x) => x.key === key)!;
-const combined = [
-  ...ed
+/* One row schema for GroupCurves: visits first (dark), deaths second. */
+const LABELS = {
+  ed: { en: "Emergency department visits", es: "Visitas a urgencias", short_en: "Visits", short_es: "Visitas" },
+  all_cause: { en: "Deaths, all causes", es: "Muertes, todas las causas", short_en: "Deaths", short_es: "Muertes" },
+};
+const tag = (rows: Estimate[], spec: "ed" | "all_cause", order: number) =>
+  rows
     .filter((r) => !r.reference && (r.horizon === 0 || r.horizon === 30))
-    .map((r) => ({ ...r, spec: "ed" })),
-  ...mort.filter((r) => r.horizon === 0 || r.horizon === 30),
-].map((r) => {
-  const m = meta((r as { spec: string }).spec);
-  return {
-    ...r,
-    group_order: m.order,
-    group_label_en: m.en,
-    group_label_es: m.es,
-  };
-});
-
-/* Headline numbers, read from the data. */
-const pick = (rows: Estimate[], spec: string, bin: string, h: number) =>
-  (rows as Array<Estimate & { spec?: string }>).find(
-    (r) => (spec === "ed" ? true : r.spec === spec) && r.bin === bin && r.horizon === h
-  )!;
-
-const edColdCum = pick(ed, "ed", "-15_10", 30);
-const edHotCum = pick(ed, "ed", "30_45", 30);
-const circColdCum = pick(mort, "circ", "-15_10", 30);
-const circColdDay = pick(mort, "circ", "-15_10", 0);
-const circHotCum = pick(mort, "circ", "30_45", 30);
-const nonCircColdCum = pick(mort, "non_circ", "-15_10", 30);
+    .map((r) => ({
+      ...r,
+      spec,
+      group_order: order,
+      group_label_en: LABELS[spec].en,
+      group_label_es: LABELS[spec].es,
+      group_short_en: LABELS[spec].short_en,
+      group_short_es: LABELS[spec].short_es,
+    }));
+const combined = [...tag(ed, "ed", 1), ...tag(mort, "all_cause", 2)];
+const RAMP = ["#111c2b", "#8e9cb0"];
 
 const n = {
-  edColdCum: fmtMag(edColdCum.pct),
-  edHotCum: fmtMag(edHotCum.pct),
-  circColdCum: fmtMag(circColdCum.pct),
-  circColdDay: fmtPct(circColdDay.pct),
-  circHotCum: fmtMag(circHotCum.pct),
-  nonCircColdCum: fmtMag(nonCircColdCum.pct),
-  ratio: (Math.abs(circColdCum.pct) / Math.abs(edColdCum.pct)).toFixed(1),
+  coldDay: fmtMag(at(ed, "-15_10", 0).pct),
+  coldCum: fmtMag(at(ed, "-15_10", 30).pct),
+  mildDay: fmtMag(at(ed, "15_20", 0).pct),
+  warmDay: fmtMag(at(ed, "25_30", 0).pct),
+  hotDay: fmtMag(at(ed, "30_45", 0).pct),
+  hotCum: fmtMag(at(ed, "30_45", 30).pct),
 };
 
+const CD_DOI = "https://doi.org/10.1257/pol.20180594";
 const self = MODULES.find((m) => m.id === "cold")!;
 const next = MODULES.find((m) => m.id === "who")!;
 
@@ -98,50 +69,54 @@ const strings = {
   en: {
     eyebrow: self.short.en,
     h1: self.question.en,
-    standfirst: `A cold day pushes emergency department visits down by ${n.edColdCum} over the following month and pushes circulatory deaths up by ${n.circColdCum} over the same month. Same day, same weather, opposite signs. Fewer people arriving at the emergency room on cold days is not a sign that fewer people are being harmed.`,
-    yAxis: "Change over the following 30 days (%)",
-    figTitle: "Visits and deaths, measured the same way, on the same axis",
+    standfirst: `Mortality rises at both ends of the temperature distribution; that U shape is well documented, for Mexico by Cohen and Dechezleprêtre (2022). Emergency department visits do not follow it. They rise with temperature across the whole range: an additional day below 10 °C reduces them by ${n.coldDay}, a day above 30 °C raises them by ${n.hotDay}.`,
+    yAxis: "Change accounting for the following 30 days (%)",
+    figTitle: "Two outcomes, one axis",
+    figNote:
+      "Cumulative effects over 30 days for mortality and ED visits. Visits slope in one direction across the whole range; deaths rise at both ends.",
     readTitle: "What to read here",
     read: [
-      `The signs are opposite. Across the whole cold range, visits fall and deaths rise. Warm temperatures move both in the same direction, up, so it is specifically the cold end where the two outcomes disagree.`,
-      `Deaths respond to cold only with a delay. On the day itself the effect on circulatory deaths is ${n.circColdDay} and not statistically distinguishable from zero. It reaches ${n.circColdCum} once the following 30 days are counted, so a same-day analysis would have found almost nothing.`,
-      `The magnitudes are not comparable in the way the signs are. The cumulative cold effect on circulatory deaths is about ${n.ratio} times the size of the effect on visits. Both are drawn on one axis so that difference stays visible rather than being hidden by a second scale.`,
+      `Visits are monotonic. Each interval colder than the reference reduces them more than the last (${n.mildDay} at 15 to 20 °C, ${n.coldDay} below 10 °C) and each warmer interval raises them (${n.warmDay} at 25 to 30 °C, ${n.hotDay} above 30 °C). There is no turning point.`,
+      `Deaths behave differently. Once the following 30 days are accounted for, the mortality curve is higher at both ends than in the middle: cold days and hot days both raise deaths relative to a day at 20 to 25 °C.`,
+      `The disagreement is at the cold end. At the hot end both outcomes move up. At the cold end deaths move up while visits move down, and the reduction in visits grows rather than reverses: ${n.coldDay} on the day, ${n.coldCum} once the following 30 days are accounted for.`,
     ],
-    whyTitle: "Why this matters for planning",
-    why: `Emergency department volume is a measure of demand, not of health. On cold days demand falls while mortality rises, which means the two cannot be used as proxies for each other. A cold snap that empties waiting rooms is the moment when the underlying harm is greatest and the least of it is presenting for care. Any surveillance system that watches arrivals alone will read that period as quiet.`,
+    whyTitle: "Why this matters",
+    why: `Emergency department volume measures demand for emergency care, not population health. At the cold end of the distribution fewer people come to the emergency room, on the day and in the weeks after. The paper's mechanism section discusses why visits fall: fewer infections spread by vectors and food, fewer injuries, and patients staying home.`,
     linearTitle: "The shape, not just the level",
-    linear: `Mortality traces the U shape familiar from the temperature and health literature: deaths rise at both ends of the distribution. Visits do not. They rise as temperature rises, across the whole range, which is why the paper describes the demand for emergency care as responding to temperature roughly linearly.`,
+    linear: `The paper's summary statement is that, unlike mortality, the demand for emergency care responds to temperature roughly linearly. That is what the visits series shows, and it is what the rest of this site unpacks: by age (the young respond most), by diagnosis (respiratory is the one chapter that rises after cold), and in the projections (a warming Mexico trades fewer cold days for more hot ones, with visits of different severity).`,
     notesTitle: "What is being estimated",
     notes: [
-      "Both outcomes come from Poisson distributed lag models with 30 lags, measured against a day between 20 and 25 °C, with the same weather controls and fixed effects. Visits are municipality by age group by day; deaths are municipality by day.",
-      "Percentages are 100 times the estimated coefficient in both cases, which is what makes a shared axis meaningful.",
-      "The three mortality series are mutually exclusive: circulatory, remaining named causes, and other or unspecified cause. Confidence intervals are 95% and clustered at the municipality level.",
+      "Visits: the paper's main specification, a Poisson distributed lag model with 30 lags on the ED visit rate per 100,000 people by municipality and day, 2008 to 2021, with municipality-by-year-month and municipality-by-weekday fixed effects, weather controls, population weights, and standard errors clustered by municipality.",
+      "Deaths: all-cause deaths per 100,000 people by municipality and day over the same years, in the same Poisson distributed lag form, but with the model of Cohen and Dechezleprêtre (2022): municipality by day of year, municipality by year, and date.",
     ],
+    cite: "Cohen, F. and A. Dechezleprêtre (2022). Mortality, Temperature, and Public Health Provision: Evidence from Mexico. American Economic Journal: Economic Policy 14(2), 161–192.",
     nextLabel: "Next",
     backLabel: "All questions",
   },
   es: {
     eyebrow: self.short.es,
     h1: self.question.es,
-    standfirst: `Un día frío baja las visitas a urgencias ${n.edColdCum} durante el mes siguiente y sube las muertes circulatorias ${n.circColdCum} en ese mismo mes. El mismo día, el mismo clima, signos opuestos. Que lleguen menos personas a urgencias en los días fríos no indica que se esté dañando a menos personas.`,
-    yAxis: "Cambio durante los 30 días siguientes (%)",
-    figTitle: "Visitas y muertes, medidas igual, en el mismo eje",
+    standfirst: `La mortalidad sube en los dos extremos de la distribución de temperatura; esa forma de U está bien documentada, para México por Cohen y Dechezleprêtre (2022). Las visitas a urgencias no la siguen. Suben con la temperatura en todo el rango: un día adicional por debajo de 10 °C las reduce ${n.coldDay}, y un día por encima de 30 °C las aumenta ${n.hotDay}.`,
+    yAxis: "Cambio contando los 30 días siguientes (%)",
+    figTitle: "Dos resultados, un solo eje",
+    figNote:
+      "Efectos acumulados a 30 días para la mortalidad y las visitas a urgencias. Las visitas se inclinan en una sola dirección en todo el rango; las muertes suben en los dos extremos.",
     readTitle: "Qué leer aquí",
     read: [
-      `Los signos son opuestos. En todo el rango de frío, las visitas bajan y las muertes suben. Las temperaturas cálidas mueven ambas en la misma dirección, hacia arriba, así que es específicamente en el extremo frío donde los dos resultados discrepan.`,
-      `Las muertes responden al frío solo con retraso. El mismo día el efecto sobre las muertes circulatorias es de ${n.circColdDay} y no se distingue estadísticamente de cero. Llega a ${n.circColdCum} al contar los 30 días siguientes, así que un análisis del mismo día casi no habría encontrado nada.`,
-      `Las magnitudes no son comparables del modo en que sí lo son los signos. El efecto acumulado del frío sobre las muertes circulatorias es cerca de ${n.ratio} veces el efecto sobre las visitas. Ambos se dibujan en un solo eje para que esa diferencia siga visible en vez de quedar oculta tras una segunda escala.`,
+      `Las visitas son monótonas. Cada intervalo más frío que la referencia las reduce más que el anterior (${n.mildDay} entre 15 y 20 °C, ${n.coldDay} por debajo de 10 °C) y cada intervalo más cálido las aumenta (${n.warmDay} entre 25 y 30 °C, ${n.hotDay} por encima de 30 °C). No hay punto de inflexión.`,
+      `Las muertes se comportan distinto. Una vez contados los 30 días siguientes, la curva de mortalidad es más alta en los dos extremos que en el centro: tanto los días fríos como los calurosos aumentan las muertes respecto a un día de 20 a 25 °C.`,
+      `El desacuerdo está en el extremo frío. En el extremo caluroso ambos resultados suben. En el frío las muertes suben mientras las visitas bajan, y la reducción de visitas crece en vez de revertirse: ${n.coldDay} el mismo día, ${n.coldCum} una vez contados los 30 días siguientes.`,
     ],
-    whyTitle: "Por qué importa para la planeación",
-    why: `El volumen de urgencias mide demanda, no salud. En los días fríos la demanda cae mientras la mortalidad sube, lo que significa que una no puede usarse como proxy de la otra. Una racha de frío que vacía las salas de espera es justo el momento en que el daño subyacente es mayor y en que menos de ese daño se presenta a atención. Cualquier sistema de vigilancia que observe solo las llegadas leerá ese periodo como tranquilo.`,
+    whyTitle: "Por qué importa",
+    why: `El volumen de urgencias mide la demanda de atención de urgencias, no la salud de la población. En el extremo frío de la distribución menos personas acuden a urgencias, el mismo día y en las semanas posteriores. La sección de mecanismos del artículo discute por qué caen las visitas: menos infecciones transmitidas por vectores y alimentos, menos lesiones, y pacientes que se quedan en casa.`,
     linearTitle: "La forma, no solo el nivel",
-    linear: `La mortalidad traza la forma de U conocida en la literatura de temperatura y salud: las muertes suben en los dos extremos de la distribución. Las visitas no. Suben conforme sube la temperatura, en todo el rango, y por eso el artículo describe la demanda de atención de urgencias como una respuesta a la temperatura aproximadamente lineal.`,
+    linear: `La afirmación de síntesis del artículo es que, a diferencia de la mortalidad, la demanda de atención de urgencias responde a la temperatura de forma aproximadamente lineal. Eso es lo que muestra la serie de visitas, y es lo que el resto de este sitio desglosa: por edad (los jóvenes responden más), por diagnóstico (el respiratorio es el único capítulo que sube tras el frío) y en las proyecciones (un México más cálido cambia días fríos por días calurosos, con visitas de distinta gravedad).`,
     notesTitle: "Qué se está estimando",
     notes: [
-      "Ambos resultados provienen de modelos Poisson de rezagos distribuidos con 30 rezagos, medidos contra un día de entre 20 y 25 °C, con los mismos controles de clima y efectos fijos. Las visitas son municipio por grupo de edad por día; las muertes son municipio por día.",
-      "Los porcentajes son 100 veces el coeficiente estimado en los dos casos, que es lo que hace significativo un eje compartido.",
-      "Las tres series de mortalidad son mutuamente excluyentes: circulatorias, el resto de causas con nombre, y otra causa o no especificada. Los intervalos de confianza son del 95% y se agrupan a nivel municipio.",
+      "Visitas: la especificación principal del artículo, un modelo Poisson de rezagos distribuidos con 30 rezagos sobre la tasa de visitas a urgencias por cada 100,000 personas por municipio y día, 2008 a 2021, con efectos fijos de municipio por año-mes y municipio por día de la semana, controles de clima, pesos de población y errores estándar agrupados por municipio.",
+      "Muertes: muertes por todas las causas por cada 100,000 personas por municipio y día en los mismos años, en la misma forma Poisson de rezagos distribuidos, pero con el modelo de Cohen y Dechezleprêtre (2022): municipio por día del año, municipio por año, y fecha.",
     ],
+    cite: "Cohen, F. y A. Dechezleprêtre (2022). Mortality, Temperature, and Public Health Provision: Evidence from Mexico. American Economic Journal: Economic Policy 14(2), 161–192.",
     nextLabel: "Siguiente",
     backLabel: "Todas las preguntas",
   },
@@ -167,13 +142,15 @@ const strings = {
     <h2 class="font-display text-[1.3rem] leading-snug font-semibold text-charcoal">
       {strings.figTitle}
     </h2>
+    <p class="mt-2 max-w-3xl text-[14px] leading-relaxed text-slate-light">{strings.figNote}</p>
+
     <div class="mt-6">
       <GroupCurves
         lang={lang}
         rows={combined}
         ramp={RAMP}
         chartId="cold"
-        defaultOn={["ed", "circ"]}
+        defaultOn={["ed", "all_cause"]}
         defaultHorizon={30}
         yAxisLabel={strings.yAxis}
         height={500}
@@ -214,13 +191,16 @@ const strings = {
 
   <section class="border-t border-rule py-12 sm:py-16">
     <h2 class="text-[13px] font-medium text-slate-light">{strings.notesTitle}</h2>
-    <div class="mt-4 grid max-w-5xl gap-6 sm:grid-cols-3">
+    <div class="mt-4 grid max-w-5xl gap-6 sm:grid-cols-2">
       {
         strings.notes.map((para) => (
           <p class="text-[13.5px] leading-relaxed text-slate-light">{para}</p>
         ))
       }
     </div>
+    <p class="mt-6 max-w-3xl text-[13px] leading-relaxed text-slate-light">
+      <a href={CD_DOI} class="text-sky underline underline-offset-4">{strings.cite}</a>
+    </p>
   </section>
 
   <nav class="flex flex-wrap items-baseline justify-between gap-4 border-t border-rule py-8">

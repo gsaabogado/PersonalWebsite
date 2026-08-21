@@ -38,7 +38,7 @@ const strings = {
         </a>
       </li>
       {
-        MODULES.map((m) =>
+        MODULES.filter((m) => m.status !== "hidden").map((m) =>
           m.status === "live" ? (
             <li class="shrink-0">
               <a

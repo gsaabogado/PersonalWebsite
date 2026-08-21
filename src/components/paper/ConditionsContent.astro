@@ -28,8 +28,22 @@ const coldCum = rows
 const mostDown = coldCum[0];
 const mostUp = coldCum[coldCum.length - 1];
 const respiratory = coldCum.find((r) => r.chapter === "respiratory")!;
-const rising = coldCum.filter((r) => r.pct > 0);
-const busiest = [...coldCum].sort((a, b) => b.baseline_mean - a.baseline_mean)[0];
+const sig = (r: Row) => (r as Row & { p: number }).p < 0.05;
+const fallingSig = coldCum.filter((r) => r.pct < 0 && sig(r)).length;
+const flat = coldCum.filter((r) => !sig(r)).length;
+
+/* The other three cells of the 2 x 2: cold same-day, heat same-day, heat 30 days. */
+const at = (bin: string, h: number) => rows.filter((r) => r.bin === bin && r.horizon === h);
+const byChapter = (bin: string, h: number, c: string) => rows.find((r) => r.bin === bin && r.horizon === h && r.chapter === c)!;
+const coldDay = at("-15_10", 0);
+const hotDay = at("30_45", 0);
+const hotCum = at("30_45", 30);
+const coldDayFalling = coldDay.filter((r) => r.pct < 0 && sig(r)).length;
+const coldDayRising = coldDay.filter((r) => r.pct > 0 && sig(r)).length;
+const smallestFallCum = Math.max(...coldCum.filter((r) => r.pct < 0 && sig(r)).map((r) => r.pct));
+const smallestFallCumLabel = lab(coldCum.filter((r) => r.pct < 0 && sig(r)).sort((a, b) => b.pct - a.pct)[0]).toLowerCase();
+const m = (bin: string, h: number, c: string) => fmtMag(byChapter(bin, h, c).pct);
+const pc = (bin: string, h: number, c: string) => fmtPct(byChapter(bin, h, c).pct);
 
 const n = {
   mostDownLabel: lab(mostDown).toLowerCase(),
@@ -38,10 +52,30 @@ const n = {
   mostUp: fmtMag(mostUp.pct),
   respiratory: fmtPct(respiratory.pct),
   respiratoryBase: respiratory.baseline_mean.toFixed(1),
-  risingCount: String(rising.length),
-  totalCount: String(coldCum.length),
-  busiestLabel: lab(busiest).toLowerCase(),
-  busiestBase: busiest.baseline_mean.toFixed(1),
+  totalCount: coldCum.length,
+  fallingSig,
+  flat,
+  coldDayFalling,
+  coldDayRisingText: coldDayRising === 0 ? "no chapter rises" : `${coldDayRising} rise`,
+  coldDayRisingTextEs: coldDayRising === 0 ? "ningún capítulo sube" : `${coldDayRising} suben`,
+  coldDayInfect: m("-15_10", 0, "infectious_parasatic"),
+  coldDayResp: m("-15_10", 0, "respiratory"),
+  smallestFallCum: fmtMag(smallestFallCum),
+  smallestFallCumLabel,
+  respCum: fmtMag(respiratory.pct),
+  hotDayEndo: pc("30_45", 0, "endocrine_metabolic"),
+  hotDayMental: pc("30_45", 0, "mental"),
+  hotDayInfect: pc("30_45", 0, "infectious_parasatic"),
+  hotDayExternal: pc("30_45", 0, "external_causes"),
+  hotDayCirc: m("30_45", 0, "circulatory"),
+  hotCumGenito: pc("30_45", 30, "genitourinary"),
+  hotCumEndo: pc("30_45", 30, "endocrine_metabolic"),
+  hotCumBlood: pc("30_45", 30, "blood_and_inmune"),
+  hotCumExternal: pc("30_45", 30, "external_causes"),
+  hotCumResp: pc("30_45", 30, "respiratory"),
+  hotCumInfect: pc("30_45", 30, "infectious_parasatic"),
+  hotCumCirc: pc("30_45", 30, "circulatory"),
+  hotDayEndoMag: m("30_45", 0, "endocrine_metabolic"),
 };
 
 const self = MODULES.find((m) => m.id === "conditions")!;
@@ -51,16 +85,15 @@ const strings = {
   en: {
     eyebrow: self.short.en,
     h1: self.question.en,
-    standfirst: `The fall in total visits on cold days is a net figure, and the net hides two opposite movements. Over 30 days after a day below 10 °C, ${n.mostDownLabel} visits fall by ${n.mostDown} while respiratory visits rise by ${n.respiratory}.`,
+    standfirst: `The change in total visits is a net figure, and the net hides opposite movements by diagnosis. After a cold day, ${n.mostDownLabel} visits fall ${n.mostDown} over 30 days while respiratory visits rise ${n.respCum}. After a hot day, endocrine and metabolic visits rise ${n.hotDayEndoMag} on the day and circulatory visits fall ${n.hotDayCirc}.`,
     fig1: "Every diagnostic chapter, at the interval and horizon you choose",
     readTitle: "What to read here",
     read: [
-      `The aggregate is not the operational picture. ${n.risingCount} of ${n.totalCount} chapters move up on cold days over 30 days, even though the total moves down. Planning from the headline number alone would point a service in the wrong direction.`,
-      `Respiratory is the chapter that rises, and it is a high-volume one: ${n.respiratory} over 30 days on a baseline of ${n.respiratoryBase} visits per 100,000. A percentage on a common condition is a larger absolute load than the same percentage on a rare one, which is why baseline volume sits next to every label.`,
-      `The largest percentage belongs to ${n.mostDownLabel}, at ${n.mostDown}. That is consistent with the paper's suggestive evidence on ecosystem dynamics, since pathogen transmission itself varies with temperature.`,
+      ["cold", `When looking at the effect of a very cold day (mean temperature below 10 °C) on the same day, ${n.coldDayFalling} of ${n.totalCount} chapters fall significantly, ${n.mostDownLabel} the most at ${n.coldDayInfect}; respiratory falls ${n.coldDayResp}, and ${n.coldDayRisingText}.`],
+      ["cold", `When looking at the cumulative effect of a very cold day over the following 30 days, ${n.fallingSig} chapters fall significantly, from ${n.smallestFallCum} (${n.smallestFallCumLabel}) to ${n.mostDown} (${n.mostDownLabel}), and ${n.flat} show no significant change. Respiratory rises ${n.respCum}, consistent with infections spreading after cold exposure.`],
+      ["hot", `When looking at the effect of a very hot day (mean temperature above 30 °C) on the same day, endocrine and metabolic (${n.hotDayEndo}), mental (${n.hotDayMental}), infectious and parasitic (${n.hotDayInfect}) and external causes (${n.hotDayExternal}) rise most. Circulatory visits fall ${n.hotDayCirc}, the only chapter to do so; the paper's mechanism section discusses why.`],
+      ["hot", `When looking at the cumulative effect of a very hot day over the following 30 days, blood and immune (${n.hotCumBlood}), genitourinary (${n.hotCumGenito}), endocrine and metabolic (${n.hotCumEndo}) and external causes (${n.hotCumExternal}) keep rising. Respiratory reverses to ${n.hotCumResp}, infectious and parasitic to ${n.hotCumInfect}, and circulatory deepens to ${n.hotCumCirc}.`],
     ],
-    caveatTitle: "Read percentages against volume",
-    caveat: `${n.busiestLabel} carries the largest baseline volume at ${n.busiestBase} visits per 100,000, so even a modest percentage there moves more people than a dramatic percentage on a rare chapter. Use the bars beside the labels.`,
     notesTitle: "What is being estimated",
     notes: [
       "Each chapter is a separate Poisson distributed lag model with 30 lags, fitted to visits assigned to that ICD-10 chapter, and measured against a day between 20 and 25 °C.",
@@ -73,16 +106,15 @@ const strings = {
   es: {
     eyebrow: self.short.es,
     h1: self.question.es,
-    standfirst: `La caída de visitas totales en los días fríos es una cifra neta, y lo neto esconde dos movimientos opuestos. En los 30 días posteriores a un día por debajo de 10 °C, las visitas por ${n.mostDownLabel} caen ${n.mostDown} mientras que las respiratorias suben ${n.respiratory}.`,
+    standfirst: `El cambio en las visitas totales es una cifra neta, y la neta esconde movimientos opuestos por diagnóstico. Tras un día frío, las visitas por ${n.mostDownLabel} caen ${n.mostDown} en 30 días mientras las respiratorias suben ${n.respCum}. Tras un día caluroso, las visitas endocrinas y metabólicas suben ${n.hotDayEndoMag} el mismo día y las circulatorias caen ${n.hotDayCirc}.`,
     fig1: "Todos los capítulos diagnósticos, en el intervalo y horizonte que elijas",
     readTitle: "Qué leer aquí",
     read: [
-      `El agregado no es el panorama operativo. ${n.risingCount} de ${n.totalCount} capítulos suben en los días fríos a 30 días, aunque el total baje. Planear solo con la cifra principal apuntaría a un servicio en la dirección equivocada.`,
-      `El capítulo que sube es el respiratorio, y es de alto volumen: ${n.respiratory} en 30 días sobre una base de ${n.respiratoryBase} visitas por 100,000. Un porcentaje sobre un padecimiento común implica una carga absoluta mayor que el mismo porcentaje sobre uno raro, y por eso el volumen base aparece junto a cada etiqueta.`,
-      `El mayor porcentaje corresponde a ${n.mostDownLabel}, con ${n.mostDown}. Es consistente con la evidencia sugestiva del artículo sobre dinámicas de ecosistemas, ya que la transmisión de patógenos varía con la temperatura.`,
+      ["cold", `Al mirar el efecto de un día muy frío (temperatura media por debajo de 10 °C) el mismo día, ${n.coldDayFalling} de ${n.totalCount} capítulos caen de forma significativa, ${n.mostDownLabel} el que más, ${n.coldDayInfect}; el respiratorio cae ${n.coldDayResp}, y ${n.coldDayRisingTextEs}.`],
+      ["cold", `Al mirar el efecto acumulado de un día muy frío durante los 30 días siguientes, ${n.fallingSig} capítulos caen de forma significativa, desde ${n.smallestFallCum} (${n.smallestFallCumLabel}) hasta ${n.mostDown} (${n.mostDownLabel}), y ${n.flat} no cambian de forma significativa. El respiratorio sube ${n.respCum}, consistente con la propagación de infecciones tras la exposición al frío.`],
+      ["hot", `Al mirar el efecto de un día muy caluroso (temperatura media por encima de 30 °C) el mismo día, endocrinas y metabólicas (${n.hotDayEndo}), mentales (${n.hotDayMental}), infecciosas y parasitarias (${n.hotDayInfect}) y causas externas (${n.hotDayExternal}) son las que más suben. Las circulatorias caen ${n.hotDayCirc}, el único capítulo que lo hace; la sección de mecanismos del artículo discute por qué.`],
+      ["hot", `Al mirar el efecto acumulado de un día muy caluroso durante los 30 días siguientes, sangre e inmunidad (${n.hotCumBlood}), genitourinarias (${n.hotCumGenito}), endocrinas y metabólicas (${n.hotCumEndo}) y causas externas (${n.hotCumExternal}) siguen subiendo. Las respiratorias se revierten a ${n.hotCumResp}, las infecciosas y parasitarias a ${n.hotCumInfect}, y las circulatorias se profundizan a ${n.hotCumCirc}.`],
     ],
-    caveatTitle: "Lee los porcentajes contra el volumen",
-    caveat: `El capítulo de ${n.busiestLabel} tiene el mayor volumen base, con ${n.busiestBase} visitas por 100,000, así que incluso un porcentaje modesto ahí mueve a más personas que un porcentaje dramático en un capítulo raro. Usa las barras junto a las etiquetas.`,
     notesTitle: "Qué se está estimando",
     notes: [
       "Cada capítulo es un modelo Poisson de rezagos distribuidos con 30 rezagos, ajustado a las visitas asignadas a ese capítulo de la CIE-10, y medido contra un día de entre 20 y 25 °C.",
@@ -120,23 +152,19 @@ const strings = {
     <DataDownload lang={lang} files={["m4_chapters"]} />
   </section>
 
-  <section class="grid gap-10 border-t border-rule py-12 lg:grid-cols-3 sm:py-16">
+  <section class="grid gap-x-10 gap-y-8 border-t border-rule py-12 lg:grid-cols-2 sm:py-16">
     {
-      strings.read.map((para) => (
-        <p class="border-l-2 border-rule pl-4 text-[14.5px] leading-relaxed text-slate">
+      strings.read.map(([side, para]) => (
+        <p
+          class:list={[
+            "border-l-2 pl-4 text-[14.5px] leading-relaxed text-slate",
+            side === "cold" ? "border-temp-cold" : "border-temp-hot",
+          ]}
+        >
           {para}
         </p>
       ))
     }
-  </section>
-
-  <section class="border-t border-rule py-10">
-    <h2 class="font-display text-[1.15rem] font-semibold text-charcoal">
-      {strings.caveatTitle}
-    </h2>
-    <p class="mt-3 max-w-3xl text-[14.5px] leading-relaxed text-slate-light">
-      {strings.caveat}
-    </p>
   </section>
 
   <section class="border-t border-rule py-12 sm:py-16">

@@ -23,10 +23,14 @@ import {
 
 interface Props {
   lang: Lang;
+  /** Defaults to the ED visit curve. Pass another outcome's rows to reuse the chart. */
+  rows?: Estimate[];
+  /** Override the y-axis title when the outcome is not ED visits. */
+  yAxis?: string;
 }
-const { lang } = Astro.props;
+const { lang, rows: rowsProp, yAxis } = Astro.props;
 
-const rows = curveData as Estimate[];
+const rows = (rowsProp ?? (curveData as Estimate[])).filter((r) => r.horizon === 0 || r.horizon === 30);
 const bins = [...new Set(rows.map((r) => r.bin))].sort(
   (a, b) =>
     rows.find((r) => r.bin === a)!.bin_order - rows.find((r) => r.bin === b)!.bin_order
@@ -57,7 +61,7 @@ const zeroY = y(0);
 
 const strings = {
   en: {
-    yAxis: "Change in ED visits (%)",
+    yAxis: yAxis ?? "Change in ED visits (%)",
     xAxis: "Daily mean temperature",
     reference: "reference",
     both: "Both",
@@ -69,7 +73,7 @@ const strings = {
       "Point estimates with 95% confidence intervals. The 20–25 °C interval is the omitted reference category, so every effect is measured against a day in that range.",
   },
   es: {
-    yAxis: "Cambio en visitas a urgencias (%)",
+    yAxis: yAxis ?? "Cambio en visitas a urgencias (%)",
     xAxis: "Temperatura media diaria",
     reference: "referencia",
     both: "Ambos",

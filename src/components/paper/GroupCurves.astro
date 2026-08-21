@@ -74,6 +74,9 @@ type Row = Estimate & {
   group_order: number;
   group_label_en: string;
   group_label_es: string;
+  /** Optional short form for the value strip, which has room for ~14 characters. */
+  group_short_en?: string;
+  group_short_es?: string;
 };
 const all = rows as Row[];
 
@@ -96,6 +99,9 @@ const groups = [...new Set(all.map((r) => r.spec))]
       spec,
       order: rs[0].group_order,
       label: lang === "es" ? rs[0].group_label_es : rs[0].group_label_en,
+      short:
+        (lang === "es" ? rs[0].group_short_es : rs[0].group_short_en) ??
+        (lang === "es" ? rs[0].group_label_es : rs[0].group_label_en),
     };
   })
   .sort((a, b) => a.order - b.order);
@@ -160,11 +166,11 @@ const strings = {
     yAxis: "Change in ED visits (%)",
     xAxis: "Daily mean temperature, against a day between 20 and 25 °C",
     caption:
-      "Estimates with 95% confidence intervals, against a day between 20 and 25 °C. Add groups to compare them; each keeps its own slot and row, so a hidden group leaves a gap and nothing shifts. The vertical scale is fixed across selections and differs between the two horizons, since the 30-day intervals are about twice as wide.",
+      "Estimates with 95% confidence intervals, against a day between 20 and 25 °C.",
     reference: "reference",
     all: "All",
     groupCol: "Group",
-    stripHead: "Change in ED visits, % (95% interval in brackets)",
+    stripHead: (h: number) => `Change, % (95% interval in brackets), ${h === 0 ? "same day" : "accounting for the following 30 days"}`,
     ciNote: "estimate, with the 95% interval beneath",
     to: "to",
   },
@@ -180,7 +186,7 @@ const strings = {
     reference: "referencia",
     all: "Todos",
     groupCol: "Grupo",
-    stripHead: "Cambio en visitas a urgencias, % (intervalo del 95% en paréntesis)",
+    stripHead: (h: number) => `Cambio, % (intervalo del 95% en paréntesis), ${h === 0 ? "el mismo día" : "contando los 30 días siguientes"}`,
     ciNote: "estimación, con el intervalo del 95% debajo",
     to: "a",
   },
@@ -391,7 +397,7 @@ const strings = {
               stroke-width="1"
             />
             <text x={0} y={yStripHead} class="fill-annotation text-[10.5px]">
-              {strings.stripHead}
+              {strings.stripHead(h)}
             </text>
             {groups.map((g, gi) => {
               const ry = stripTop + gi * STRIP_ROW_H + 11;
@@ -403,7 +409,7 @@ const strings = {
                     fill={colourOf(gi)}
                   />
                   <text x={15} y={ry} class="tnum fill-charcoal text-[9.5px]">
-                    {g.label}
+                    {g.short}
                   </text>
                   {BINS.map((b, bi) => {
                     const d = at(g.spec, b.bin, h);

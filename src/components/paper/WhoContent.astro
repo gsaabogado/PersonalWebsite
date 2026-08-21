@@ -3,6 +3,7 @@ import ModuleRail from "./ModuleRail.astro";
 import GroupCurves from "./GroupCurves.astro";
 import DataDownload from "./DataDownload.astro";
 import ageData from "../../data/paper/m3_age.json";
+import curveData from "../../data/paper/m1_curve.json";
 import sexData from "../../data/paper/m3_sex.json";
 import { fmtMag, type Estimate, type Lang } from "./chart-utils";
 import { MODULES, SECTION_BASE, modulePath } from "../../data/outreach";
@@ -21,11 +22,30 @@ type Row = Estimate & {
 const age = ageData as Row[];
 const sex = sexData as Row[];
 
+/* The full-sample estimate (Table 2) drawn alongside the groups as a reference. */
+const baseline: Row[] = (curveData as Array<Row & { reference?: boolean }>)
+  .filter((r) => !r.reference && (r.horizon === 0 || r.horizon === 30))
+  .map((r) => ({
+    ...r,
+    spec: "baseline",
+    group_order: 0,
+    group_label_en: "Baseline (all)",
+    group_label_es: "Base (todos)",
+  }));
+const ageWithBase = [...baseline, ...age];
+const sexWithBase = [...baseline, ...sex];
+const ALL_AGE = ["baseline", ...new Set(age.map((r) => r.spec))];
+const ALL_SEX = ["baseline", ...new Set(sex.map((r) => r.spec))];
+
 /* Numbers read from the data so the prose cannot drift from the panels. */
 const coldCum = (rows: Row[], spec: string) =>
   rows.find((r) => r.spec === spec && r.bin === "-15_10" && r.horizon === 30)!;
 const coldDay = (rows: Row[], spec: string) =>
   rows.find((r) => r.spec === spec && r.bin === "-15_10" && r.horizon === 0)!;
+const hotDay = (rows: Row[], spec: string) =>
+  rows.find((r) => r.spec === spec && r.bin === "30_45" && r.horizon === 0)!;
+const hotCum = (rows: Row[], spec: string) =>
+  rows.find((r) => r.spec === spec && r.bin === "30_45" && r.horizon === 30)!;
 
 const ageSpecs = [...new Set(age.map((r) => r.spec))];
 const cumRanked = ageSpecs
@@ -50,13 +70,28 @@ const n = {
   smallestCum: fmtMag(smallestCum.row.pct),
   biggestDayLabel: label(biggestDay.row),
   biggestDay: fmtMag(biggestDay.row.pct),
+  coldDayLo: fmtMag(dayRanked[dayRanked.length - 1].row.pct),
+  coldDayHi: fmtMag(dayRanked[1].row.pct),
   women: fmtMag(women.pct),
   men: fmtMag(men.pct),
+  /* Heat, same day: under-40s rise, over-60s do not. */
+  hotYoungLo: Math.abs(hotDay(age, "20_40").pct).toFixed(1),
+  hotYoungHi: fmtMag(hotDay(age, "12_20").pct),
+  hotMid: fmtMag(hotDay(age, "40_60").pct),
+  hotOldest: fmtMag(hotDay(age, "80_130").pct),
+  /* Heat, 30 days: adults keep rising, children reverse. */
+  hotCumTeens: fmtMag(hotCum(age, "12_20").pct),
+  hotCumYoungAdults: fmtMag(hotCum(age, "20_40").pct),
+  hotCumMid: fmtMag(hotCum(age, "40_60").pct),
+  hotCumKids: fmtMag(hotCum(age, "0_12").pct),
 };
+const CD_DOI = "https://doi.org/10.1257/pol.20180594";
 
 /* Sequential neutral ramp, light = youngest. Kept off the temperature palette. */
-const AGE_RAMP = ["#a8b6c8", "#8496ad", "#647892", "#485c76", "#31435a", "#1e293b"];
-const SEX_RAMP = ["#7f93ab", "#28374b"];
+/* Baseline is black and first; the groups follow on the neutral ramp. */
+const BASE = "#000000";
+const AGE_RAMP = [BASE, "#b4c1d1", "#93a5ba", "#7389a3", "#566d89", "#3e536e", "#2b3d55"];
+const SEX_RAMP = [BASE, "#7f93ab", "#28374b"];
 
 const self = MODULES.find((m) => m.id === "who")!;
 const next = MODULES.find((m) => m.id === "conditions")!;
@@ -65,14 +100,15 @@ const strings = {
   en: {
     eyebrow: self.short.en,
     h1: self.question.en,
-    standfirst: `Every age group reduces its emergency department use on cold days, but not by the same amount and not on the same timetable. Over 30 days the response ranges from ${n.biggestCum} among people aged ${n.biggestCumLabel} down to ${n.smallestCum} among those aged ${n.smallestCumLabel}.`,
+    standfirst: `Every age group reduces its emergency department use on cold days, but not by the same amount and not on the same timetable: accounting for 30 days, the response ranges from ${n.biggestCum} among people aged ${n.biggestCumLabel} down to an insignificant ${n.smallestCum} among those aged ${n.smallestCumLabel}. Heat runs the other way and is concentrated in the young: on a hot day, visits rise ${n.hotYoungLo} to ${n.hotYoungHi} for people under 40, ${n.hotMid} for those aged 40–60, and do not rise for those over 60.`,
     fig1: "By age group",
     fig2: "By sex",
     read1Title: "What to read here",
     read1: [
-      `The youngest respond fastest. Children aged ${n.biggestDayLabel} show the largest same-day reduction, ${n.biggestDay}, which is what you would expect if the mechanism runs partly through a caregiver deciding whether to travel.`,
-      `Teenagers respond most in total. Over 30 days the ${n.biggestCumLabel} group reaches ${n.biggestCum}, the largest cumulative effect of any age group.`,
-      `The oldest group barely accumulates. Among people aged ${n.smallestCumLabel} the cumulative cold effect is ${n.smallestCum}, far smaller than for any younger group. Note what this is and is not: it describes the demand for emergency care, not deaths, and the mortality literature finds the opposite age gradient.`,
+      ["cold", `Cold, same day. Every age group comes less on a cold day. Children aged ${n.biggestDayLabel} show the largest same-day reduction, ${n.biggestDay}; the other groups fall between ${n.coldDayLo} and ${n.coldDayHi}.`],
+      ["cold", `Cold, 30 days. The gap opens in the weeks after. The ${n.biggestCumLabel} group reaches ${n.biggestCum}, the largest cumulative effect of any age group, while among people aged ${n.smallestCumLabel} it is a statistically insignificant ${n.smallestCum}. This describes demand for emergency care, not deaths; the mortality literature finds the opposite age gradient (Cohen and Dechezleprêtre, 2022).`],
+      ["hot", `Heat, same day. The increase is concentrated in the young: visits rise ${n.hotYoungLo} to ${n.hotYoungHi} for people under 40 and ${n.hotMid} for those aged 40–60. Over 60 there is no significant increase, and the over-80s show a ${n.hotOldest} reduction.`],
+      ["hot", `Heat, 30 days. For adults the effect persists: ${n.hotCumTeens} at 12–20, ${n.hotCumYoungAdults} at 20–40, ${n.hotCumMid} at 40–60. For children aged 0–12 it reverses to a ${n.hotCumKids} reduction, so their same-day increase is followed by fewer visits in the weeks after. Over 60 the cumulative effect is not significant.`],
     ],
     read2Title: "Women and men",
     read2: `The difference by sex is small next to the differences by age. Over 30 days the cold response is ${n.women} for women and ${n.men} for men, on a scale where the age groups span ${n.smallestCum} to ${n.biggestCum}.`,
@@ -89,14 +125,15 @@ const strings = {
   es: {
     eyebrow: self.short.es,
     h1: self.question.es,
-    standfirst: `Todos los grupos de edad reducen su uso de urgencias en los días fríos, pero no en la misma medida ni en el mismo plazo. En 30 días la respuesta va de ${n.biggestCum} entre las personas de ${n.biggestCumLabel} años hasta ${n.smallestCum} entre las de ${n.smallestCumLabel}.`,
+    standfirst: `Todos los grupos de edad reducen su uso de urgencias en los días fríos, pero no en la misma medida ni en el mismo plazo: contando 30 días, la respuesta va de ${n.biggestCum} entre las personas de ${n.biggestCumLabel} años hasta un ${n.smallestCum} no significativo entre las de ${n.smallestCumLabel} años. El calor va en sentido contrario y se concentra en los jóvenes: en un día caluroso, las visitas suben entre ${n.hotYoungLo} y ${n.hotYoungHi} en menores de 40 años, ${n.hotMid} entre los 40 y 60, y no suben en mayores de 60.`,
     fig1: "Por grupo de edad",
     fig2: "Por sexo",
     read1Title: "Qué leer aquí",
     read1: [
-      `Los más jóvenes responden más rápido. Los niños de ${n.biggestDayLabel} años muestran la mayor reducción el mismo día, ${n.biggestDay}, que es lo que cabría esperar si parte del mecanismo pasa por la decisión de un cuidador de trasladarse o no.`,
-      `Los adolescentes responden más en total. En 30 días el grupo de ${n.biggestCumLabel} años llega a ${n.biggestCum}, el mayor efecto acumulado de cualquier grupo de edad.`,
-      `El grupo de mayor edad casi no acumula. Entre las personas de ${n.smallestCumLabel} años el efecto acumulado del frío es ${n.smallestCum}, mucho menor que en cualquier grupo más joven. Conviene precisar qué es y qué no es esto: describe la demanda de atención de urgencias, no las muertes, y la literatura de mortalidad encuentra el gradiente de edad opuesto.`,
+      ["cold", `Frío, el mismo día. Todos los grupos de edad acuden menos en un día frío. Los niños de ${n.biggestDayLabel} años muestran la mayor reducción el mismo día, ${n.biggestDay}; los demás grupos caen entre ${n.coldDayLo} y ${n.coldDayHi}.`],
+      ["cold", `Frío, 30 días. La brecha se abre en las semanas siguientes. El grupo de ${n.biggestCumLabel} años llega a ${n.biggestCum}, el mayor efecto acumulado de cualquier grupo de edad, mientras que entre las personas de ${n.smallestCumLabel} años es un ${n.smallestCum} estadísticamente no significativo. Esto describe la demanda de atención de urgencias, no las muertes; la literatura de mortalidad encuentra el gradiente de edad opuesto (Cohen y Dechezleprêtre, 2022).`],
+      ["hot", `Calor, el mismo día. El aumento se concentra en los jóvenes: las visitas suben entre ${n.hotYoungLo} y ${n.hotYoungHi} en menores de 40 años y ${n.hotMid} entre los 40 y 60. En mayores de 60 no hay un aumento significativo, y los mayores de 80 muestran una reducción de ${n.hotOldest}.`],
+      ["hot", `Calor, 30 días. En adultos el efecto persiste: ${n.hotCumTeens} entre 12 y 20 años, ${n.hotCumYoungAdults} entre 20 y 40, ${n.hotCumMid} entre 40 y 60. En niños de 0 a 12 años se revierte a una reducción de ${n.hotCumKids}, de modo que a su aumento del mismo día le siguen menos visitas en las semanas posteriores. En mayores de 60 el efecto acumulado no es significativo.`],
     ],
     read2Title: "Mujeres y hombres",
     read2: `La diferencia por sexo es pequeña al lado de las diferencias por edad. En 30 días la respuesta al frío es de ${n.women} en mujeres y ${n.men} en hombres, en una escala donde los grupos de edad van de ${n.smallestCum} a ${n.biggestCum}.`,
@@ -128,33 +165,38 @@ const strings = {
     </p>
   </header>
 
-  <section class="py-12 sm:py-16">
-    <h2 class="font-display text-[1.3rem] leading-snug font-semibold text-charcoal">
+  <details class="who-fold py-12 sm:py-16">
+    <summary class="cursor-pointer font-display text-[1.3rem] leading-snug font-semibold text-charcoal">
       {strings.fig1}
-    </h2>
+    </summary>
     <div class="mt-6">
-      <GroupCurves lang={lang} rows={age} ramp={AGE_RAMP} chartId="age" />
+      <GroupCurves lang={lang} rows={ageWithBase} ramp={AGE_RAMP} chartId="age" defaultOn={ALL_AGE} />
     </div>
     <DataDownload lang={lang} files={["m3_age"]} />
 
     <h3 class="mt-12 text-[13px] font-medium text-slate-light">{strings.read1Title}</h3>
-    <ol class="mt-4 grid list-none gap-8 lg:grid-cols-3">
+    <ol class="mt-4 grid list-none gap-x-10 gap-y-8 lg:grid-cols-2">
       {
-        strings.read1.map((para) => (
-          <li class="border-l-2 border-rule pl-4 text-[14.5px] leading-relaxed text-slate">
+        strings.read1.map(([side, para]) => (
+          <li
+            class:list={[
+              "border-l-2 pl-4 text-[14.5px] leading-relaxed text-slate",
+              side === "cold" ? "border-temp-cold" : "border-temp-hot",
+            ]}
+          >
             {para}
           </li>
         ))
       }
     </ol>
-  </section>
+  </details>
 
-  <section class="border-t border-rule py-12 sm:py-16">
-    <h2 class="font-display text-[1.3rem] leading-snug font-semibold text-charcoal">
+  <details class="who-fold border-t border-rule py-12 sm:py-16">
+    <summary class="cursor-pointer font-display text-[1.3rem] leading-snug font-semibold text-charcoal">
       {strings.fig2}
-    </h2>
+    </summary>
     <div class="mt-6">
-      <GroupCurves lang={lang} rows={sex} ramp={SEX_RAMP} chartId="sex" height={400} />
+      <GroupCurves lang={lang} rows={sexWithBase} ramp={SEX_RAMP} chartId="sex" height={400} defaultOn={ALL_SEX} />
     </div>
     <DataDownload lang={lang} files={["m3_sex"]} />
 
@@ -162,7 +204,7 @@ const strings = {
     <p class="mt-4 max-w-3xl border-l-2 border-rule pl-4 text-[14.5px] leading-relaxed text-slate">
       {strings.read2}
     </p>
-  </section>
+  </details>
 
   <section class="border-t border-rule py-12 sm:py-16">
     <h2 class="text-[13px] font-medium text-slate-light">{strings.notesTitle}</h2>
@@ -187,3 +229,13 @@ const strings = {
     </a>
   </nav>
 </div>
+
+<style>
+  .who-fold > summary::marker {
+    color: var(--color-slate-light);
+    font-size: 0.8em;
+  }
+  .who-fold > summary:hover {
+    color: var(--color-sky);
+  }
+</style>

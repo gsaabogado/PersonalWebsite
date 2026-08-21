@@ -139,6 +139,7 @@ export const MARK_KINDS = [
   "diamond",
   "triangleDown",
   "plus",
+  "cross",
 ] as const;
 export type MarkKind = (typeof MARK_KINDS)[number];
 
@@ -177,6 +178,21 @@ export function markPath(kind: MarkKind, cx: number, cy: number, r: number): str
         `M${p(cx - b)},${p(cy - a)}H${p(cx + b)}V${p(cy - b)}H${p(cx + a)}` +
         `V${p(cy + b)}H${p(cx + b)}V${p(cy + a)}H${p(cx - b)}V${p(cy + b)}` +
         `H${p(cx - a)}V${p(cy - b)}H${p(cx - b)}Z`
+      );
+    }
+    case "cross": {
+      // A plus rotated 45 degrees: the 12 corners of the plus, rotated about (cx, cy).
+      const a = r * 1.22;
+      const b = r * 0.4;
+      const pts: Array<[number, number]> = [
+        [-b, -a], [b, -a], [b, -b], [a, -b], [a, b], [b, b],
+        [b, a], [-b, a], [-b, b], [-a, b], [-a, -b], [-b, -b],
+      ];
+      const k = Math.SQRT1_2;
+      return (
+        pts
+          .map(([x, y], i) => `${i === 0 ? "M" : "L"}${p(cx + (x - y) * k)},${p(cy + (x + y) * k)}`)
+          .join("") + "Z"
       );
     }
     case "circle":

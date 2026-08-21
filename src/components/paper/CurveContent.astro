@@ -43,7 +43,7 @@ const strings = {
     eyebrow: self.short.en,
     h1: self.question.en,
     standfirst: `A day below 10 °C reduces emergency department visits by ${n.coldDay} compared with a day between 20 and 25 °C. A day above 30 °C raises them by ${n.hotDay}.`,
-    figure1Title: "The response on the day itself, and over the following month",
+    figure1Title: "The response on the day itself, and accounting for the following 30 days",
     read1Title: "What to read here",
     read1: [
       `The response is close to monotonic. Each step down in temperature produces a larger reduction: ${n.mildDay} between 15 and 20 °C, ${n.coldDay} below 10 °C. There is no threshold below which cold suddenly starts to matter.`,
@@ -55,8 +55,8 @@ const strings = {
     read2: `Read from left to right, each line shows how much of an interval's total effect has arrived by a given number of days. The cold lines keep descending for the whole month, so a cold spell has a long tail that a same-day count would miss. The warm lines flatten within about a week.`,
     notesTitle: "What is being estimated",
     notes: [
-      "The outcome is the count of emergency department visits per municipality, age group and day, for the universe of Mexican public hospitals from 2008 to 2021, and the model is a Poisson distributed lag specification with 30 lags.",
-      "Effects are measured against a day between 20 and 25 °C, the omitted reference category. Every specification absorbs municipality-by-age-by-year-month and municipality-by-age-by-weekday fixed effects, and controls for precipitation and relative humidity with the same 30 lags. Standard errors are clustered at the municipality level.",
+      "The outcome is the rate of emergency department visits per 100,000 people, by municipality and day, for the universe of Mexican public hospitals from 2008 to 2021, and the model is a Poisson distributed lag specification with 30 lags.",
+      "Effects are measured against a day between 20 and 25 °C, the omitted reference category. Every specification absorbs municipality-by-year-month and municipality-by-weekday fixed effects, and controls for precipitation and relative humidity with the same 30 lags. Standard errors are clustered at the municipality level.",
       "Percentages are 100 times the estimated coefficient, which is how the paper reports them.",
     ],
     nextLabel: "Next",
@@ -67,7 +67,7 @@ const strings = {
     eyebrow: self.short.es,
     h1: self.question.es,
     standfirst: `Un día por debajo de 10 °C reduce las visitas a urgencias en ${n.coldDay} frente a un día de entre 20 y 25 °C. Un día por encima de 30 °C las aumenta en ${n.hotDay}.`,
-    figure1Title: "La respuesta el mismo día, y durante el mes siguiente",
+    figure1Title: "La respuesta el mismo día, y contando los 30 días siguientes",
     read1Title: "Qué leer aquí",
     read1: [
       `La respuesta es casi monótona. Cada escalón hacia abajo en la temperatura produce una reducción mayor: ${n.mildDay} entre 15 y 20 °C, ${n.coldDay} por debajo de 10 °C. No hay un umbral por debajo del cual el frío empiece de pronto a importar.`,
@@ -79,7 +79,7 @@ const strings = {
     read2: `Leída de izquierda a derecha, cada línea muestra cuánto del efecto total de un intervalo ha llegado a un número dado de días. Las líneas de frío siguen descendiendo durante todo el mes, así que una racha fría tiene una cola larga que un conteo del mismo día no vería. Las líneas cálidas se aplanan en cerca de una semana.`,
     notesTitle: "Qué se está estimando",
     notes: [
-      "El resultado es el conteo de visitas a urgencias por municipio, grupo de edad y día, para la totalidad de los hospitales públicos mexicanos de 2008 a 2021, y el modelo es una especificación Poisson de rezagos distribuidos con 30 rezagos.",
+      "El resultado es la tasa de visitas a urgencias por cada 100,000 personas, por municipio y día, para la totalidad de los hospitales públicos mexicanos de 2008 a 2021, y el modelo es una especificación Poisson de rezagos distribuidos con 30 rezagos.",
       "Los efectos se miden contra un día de entre 20 y 25 °C, la categoría de referencia omitida. Cada especificación absorbe efectos fijos de municipio-por-edad-por-año-mes y de municipio-por-edad-por-día-de-la-semana, y controla por precipitación y humedad relativa con los mismos 30 rezagos. Los errores estándar se agrupan a nivel municipio.",
       "Los porcentajes son 100 veces el coeficiente estimado, que es como los reporta el artículo.",
     ],

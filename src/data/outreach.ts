@@ -24,7 +24,8 @@ export interface OutreachModule {
   short: Record<Lang, string>;
   /** One line on what the module answers. */
   blurb: Record<Lang, string>;
-  status: "live" | "soon";
+  /** hidden = the page builds and is linkable, but is off the rail and the hub. */
+  status: "live" | "soon" | "hidden";
 }
 
 export const MODULES: OutreachModule[] = [
@@ -37,8 +38,8 @@ export const MODULES: OutreachModule[] = [
     },
     short: { en: "The response", es: "La respuesta" },
     blurb: {
-      en: "The whole temperature response, on the day itself and cumulated over the following month.",
-      es: "La respuesta completa a la temperatura, el mismo día y acumulada durante el mes siguiente.",
+      en: "The whole temperature response, on the day itself and accounting for the following 30 days.",
+      es: "La respuesta completa a la temperatura, el mismo día y contando los 30 días siguientes.",
     },
     status: "live",
   },
@@ -98,7 +99,7 @@ export const MODULES: OutreachModule[] = [
       en: "Descriptive maps of reporting coverage, visit rates and temperature exposure.",
       es: "Mapas descriptivos de cobertura de reporte, tasas de visitas y exposición a temperatura.",
     },
-    status: "live",
+    status: "hidden",
   },
   {
     id: "method",
@@ -109,7 +110,7 @@ export const MODULES: OutreachModule[] = [
       en: "The design, the robustness checks, and the data and code behind every number.",
       es: "El diseño, las pruebas de robustez, y los datos y el código detrás de cada número.",
     },
-    status: "live",
+    status: "hidden",
   },
 ];
 
