@@ -108,6 +108,11 @@ export const ui = {
     // Publications page
     "publications.title": "Publications",
     "publications.description": "A complete list of my published research, papers under review, and working papers.",
+    // Tools page
+    "tools.title": "Tools",
+    "tools.description": "Interactive pages that put the numbers behind a research question in the reader's hands.",
+    "tools.open": "Open the tool",
+
     "grants.title": "Grants and Funding",
     "grants.description": "Competitive research funding awarded as principal or co-investigator.",
 
@@ -235,6 +240,11 @@ export const ui = {
     // Publications page
     "publications.title": "Publicaciones",
     "publications.description": "Una lista completa de mi investigación publicada, artículos en revisión y documentos de trabajo.",
+    // Tools page
+    "tools.title": "Herramientas",
+    "tools.description": "Páginas interactivas que ponen en manos del lector los números detrás de una pregunta de investigación.",
+    "tools.open": "Abrir la herramienta",
+
     "grants.title": "Financiamiento",
     "grants.description": "Financiamiento competitivo para investigación obtenido como investigador principal o coinvestigador.",
 
