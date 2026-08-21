@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Air purifiers in schools: sizing a second trial</title>
+<style>
+:root {
+  color-scheme: light;
+  --page:      #f9f9f7;
+  --surface:   #fcfcfb;
+  --ink:       #0b0b0b;
+  --ink-2:     #52514e;
+  --muted:     #898781;
+  --grid:      #e1e0d9;
+  --baseline:  #c3c2b7;
+  --border:    rgba(11,11,11,0.10);
+  --accent:    #2a78d6;   /* series 1: LPM family */
+  --series-2:  #008300;   /* series 2: Callaway-Sant'Anna */
+  --series-3:  #e87ba4;   /* series 3: ETWFE */
+  --quote-bg:  #f3f2ee;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+    --page:      #0d0d0d;
+    --surface:   #1a1a19;
+    --ink:       #ffffff;
+    --ink-2:     #c3c2b7;
+    --muted:     #898781;
+    --grid:      #2c2c2a;
+    --baseline:  #383835;
+    --border:    rgba(255,255,255,0.10);
+    --accent:    #3987e5;
+    --series-2:  #008300;
+    --series-3:  #d55181;
+    --quote-bg:  #222220;
+  }
+}
+* { box-sizing: border-box; margin: 0; }
+body {
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  background: var(--page); color: var(--ink);
+  display: flex; min-height: 100vh; font-size: 15px; line-height: 1.55;
+}
+/* ---------------- sidebar ---------------- */
+nav {
+  width: 285px; flex: 0 0 285px; padding: 22px 14px;
+  border-right: 1px solid var(--grid); background: var(--surface);
+  position: sticky; top: 0; height: 100vh; overflow-y: auto;
+}
+nav h1 { font-size: 16px; margin-bottom: 2px; }
+nav .sub { font-size: 12px; color: var(--muted); margin-bottom: 18px; }
+nav .group { font-size: 11px; letter-spacing: .06em; text-transform: uppercase;
+  color: var(--muted); margin: 16px 6px 6px; }
+nav button {
+  display: block; width: 100%; text-align: left; border: 0; background: none;
+  color: var(--ink-2); font: inherit; font-size: 13.5px; padding: 8px 10px;
+  border-radius: 7px; cursor: pointer;
+}
+nav button:hover { background: var(--quote-bg); }
+nav button.active { background: var(--quote-bg); color: var(--ink); font-weight: 600; }
+nav button .ids { display: block; font-size: 11px; color: var(--muted); font-weight: 400; }
+.badge { display: inline-block; font-size: 10.5px; font-weight: 600; border-radius: 9px;
+  padding: 1px 7px; margin-left: 6px; vertical-align: 1px; }
+.badge.p1 { background: var(--accent); color: #fff; }
+.badge.pending { background: var(--quote-bg); color: var(--muted); border: 1px solid var(--grid); }
+/* ---------------- main ---------------- */
+main { flex: 1; padding: 30px 40px 80px; max-width: 980px; }
+section.page { display: none; }
+section.page.visible { display: block; }
+h2 { font-size: 21px; margin-bottom: 4px; }
+.meta { color: var(--muted); font-size: 13px; margin-bottom: 22px; }
+h3 { font-size: 16px; margin: 26px 0 10px; }
+p { margin: 0 0 12px; color: var(--ink-2); }
+p strong, li strong { color: var(--ink); }
+ul, ol { margin: 0 0 12px 22px; color: var(--ink-2); }
+li { margin-bottom: 6px; }
+code { font-family: ui-monospace, Menlo, monospace; font-size: 12.5px;
+  background: var(--quote-bg); padding: 1px 5px; border-radius: 4px; }
+blockquote {
+  background: var(--quote-bg); border-left: 3px solid var(--baseline);
+  padding: 12px 16px; border-radius: 0 8px 8px 0; margin: 0 0 12px;
+  font-size: 14px; color: var(--ink-2);
+}
+blockquote .who { display: block; font-size: 12px; color: var(--muted); margin-top: 8px; }
+/* ---------------- equations ---------------- */
+.eq { font-family: "Times New Roman", Georgia, serif; font-style: italic;
+  text-align: center; margin: 12px 0 6px; font-size: 16px; color: var(--ink);
+  overflow-x: auto; white-space: nowrap; padding: 2px 0; }
+.eq .rm { font-style: normal; }
+.eq sub, .eq sup { font-size: 11px; }
+.eq .op { padding: 0 3px; }
+.eqnote { font-size: 13px; color: var(--muted); margin: 0 0 14px; text-align: center; }
+.eqwhere { font-size: 13.5px; color: var(--ink-2); margin: 0 0 14px; }
+/* ---------------- tabs ---------------- */
+.tabs { display: flex; gap: 4px; flex-wrap: wrap; border-bottom: 1px solid var(--grid);
+  margin: 10px 0 16px; }
+.tabs button {
+  border: 0; background: none; font: inherit; font-size: 13.5px; color: var(--muted);
+  padding: 7px 13px; cursor: pointer; border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+}
+.tabs button:hover { color: var(--ink); }
+.tabs button.active { color: var(--ink); font-weight: 600; border-bottom-color: var(--accent); }
+.tabpane { display: none; }
+.tabpane.visible { display: block; }
+/* nested (sub) tabs inside Findings */
+.tabs.sub { border-bottom: 0; gap: 2px; background: var(--quote-bg);
+  border: 1px solid var(--grid); border-radius: 8px; padding: 3px;
+  margin: 4px 0 16px; display: inline-flex; }
+.tabs.sub button { font-size: 12.5px; padding: 5px 12px; border-radius: 6px;
+  border-bottom: 0; margin-bottom: 0; }
+.tabs.sub button.active { background: var(--surface); border-bottom: 0;
+  box-shadow: 0 1px 2px rgba(0,0,0,.10); }
+/* multi-select chips (raw-series view) */
+.chiprow { display: inline-flex; gap: 3px; background: var(--quote-bg);
+  border: 1px solid var(--grid); border-radius: 8px; padding: 3px; margin: 0 0 14px; }
+.chiprow button { border: 0; background: none; font: inherit; font-size: 12.5px;
+  color: var(--muted); padding: 5px 13px; border-radius: 6px; cursor: pointer; }
+.chiprow button:hover { color: var(--ink); }
+.chiprow button.active { background: var(--accent); color: #fff; font-weight: 600; }
+.status { display: inline-block; font-size: 10.5px; font-weight: 600;
+  border-radius: 9px; padding: 1px 7px; margin-left: 6px; vertical-align: 1px;
+  border: 1px solid var(--grid); background: var(--quote-bg); color: var(--muted); }
+.status.run { border-color: var(--accent); color: var(--accent); }
+.headline { border: 1px solid var(--border); border-left: 3px solid var(--series-2);
+  background: var(--surface); border-radius: 0 8px 8px 0; padding: 12px 16px;
+  margin: 0 0 14px; font-size: 14px; }
+/* ---------------- cards / tables / charts ---------------- */
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px;
+  padding: 18px 20px; margin-bottom: 16px; }
+figure { margin: 0 0 8px; }
+figcaption { font-size: 12.5px; color: var(--muted); margin-top: 6px; }
+.chartwrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-size: 13px; margin: 8px 0 14px; }
+th { text-align: left; color: var(--muted); font-weight: 600; font-size: 12px;
+  border-bottom: 1px solid var(--grid); padding: 6px 8px; }
+td { padding: 6px 8px; border-bottom: 1px solid var(--grid); color: var(--ink-2);
+  font-variant-numeric: tabular-nums; }
+td:first-child { color: var(--ink); }
+/* econ table convention: estimate on top, (SE) beneath it, stars only */
+td .se { display: block; color: var(--muted); font-size: 12px; margin-top: 1px; }
+.legend { display: flex; gap: 18px; font-size: 12.5px; color: var(--ink-2);
+  margin: 2px 0 8px; flex-wrap: wrap; }
+.legend span::before { content: ""; display: inline-block; width: 10px; height: 10px;
+  border-radius: 50%; margin-right: 6px; vertical-align: -1px; }
+.legend .k1::before { background: var(--accent); }
+.legend .k2::before { background: var(--series-2); }
+.legend .k3::before { background: var(--series-3); }
+.seg { display: inline-flex; gap: 2px; background: var(--quote-bg); border: 1px solid var(--grid);
+  border-radius: 8px; padding: 3px; margin: 0 0 10px; }
+.seg button { border: 0; background: none; font: inherit; font-size: 12.5px;
+  color: var(--muted); padding: 4px 12px; border-radius: 6px; cursor: pointer; }
+.seg button:hover { color: var(--ink); }
+.seg button.active { background: var(--surface); color: var(--ink); font-weight: 600;
+  box-shadow: 0 1px 2px rgba(0,0,0,.10); }
+.seg-note { font-size: 12.5px; color: var(--muted); margin-left: 12px; }
+.tooltip { position: fixed; pointer-events: none; background: var(--surface);
+  border: 1px solid var(--border); border-radius: 8px; padding: 8px 11px;
+  font-size: 12.5px; color: var(--ink); box-shadow: 0 4px 14px rgba(0,0,0,.14);
+  display: none; z-index: 50; max-width: 280px; }
+.tooltip .tt-sub { color: var(--muted); }
+.callout { border: 1px solid var(--border); border-left: 3px solid var(--accent);
+  background: var(--surface); border-radius: 0 8px 8px 0; padding: 12px 16px;
+  margin: 0 0 14px; font-size: 14px; }
+.pill-row { font-size: 12.5px; color: var(--muted); margin-bottom: 14px; }
+svg text { font-family: system-ui, -apple-system, "Segoe UI", sans-serif; }
+
+/* ---------------- power calculator (standalone) ---------------- */
+body { display: block; }
+main { max-width: 1000px; margin: 0 auto; padding: 28px 32px 60px; }
+.topbar { border-bottom: 1px solid var(--grid); background: var(--surface); padding: 18px 32px; }
+.topbar h1 { font-size: 20px; margin: 0 0 2px; }
+.topbar .sub { font-size: 13px; color: var(--muted); }
+.topbar-row { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; }
+.topbar .logo img { height: 26px; width: auto; display: block; margin-top: 4px; }
+.topbar .logo img.logo-dark { display: none; }
+@media (prefers-color-scheme: dark) { .topbar .logo img.logo-light { display: none; } .topbar .logo img.logo-dark { display: block; } }
+.topbar .context { font-size: 13.5px; color: var(--ink-2); max-width: 900px; margin: 12px 0 8px; }
+.topbar .contact { font-size: 12.5px; color: var(--muted); }
+.topbar .contact a { color: var(--accent); text-decoration: none; }
+
+.pw-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px 22px; margin: 4px 0 10px; }
+.pw-grid label { display: block; font-size: 13px; color: var(--ink-2); }
+.pw-grid input[type=range] { width: 100%; margin-top: 4px; accent-color: var(--accent); }
+.pw-val { float: right; color: var(--ink); font-weight: 600; font-variant-numeric: tabular-nums; }
+.pw-lab { font-size: 13px; color: var(--ink-2); margin-bottom: 4px; }
+.pw-hint { display: block; font-size: 12px; color: var(--muted); font-weight: 400; margin-top: 2px; }
+h3 .pw-hint { display: inline; margin-left: 6px; }
+.pw-eq { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 13.5px; text-align: center;
+  background: var(--quote-bg); border: 1px solid var(--grid); border-radius: 8px; padding: 10px 12px; margin: 6px 0 12px; }
+.pw-steps { padding-left: 22px; margin: 0 0 14px; }
+.pw-steps li { margin-bottom: 8px; }
+main { max-width: 1360px; }
+.pw-design-line { font-size: 13px; color: var(--ink-2); margin: 0 0 8px; }
+.kpi-row { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin: 0 0 16px; }
+@media (max-width: 1180px) { .kpi-row { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.kpi { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; min-width: 0; }
+.kpi-l { font-size: 11.5px; letter-spacing: .04em; text-transform: uppercase; color: var(--muted); }
+.kpi-v { font-size: 30px; font-weight: 650; line-height: 1.15; margin: 4px 0 2px; font-variant-numeric: tabular-nums; }
+.kpi-s { font-size: 12px; color: var(--muted); }
+.kpi-bar { position: relative; height: 6px; background: var(--grid); border-radius: 3px; margin: 6px 0 6px; overflow: visible; }
+.kpi-bar > div { height: 100%; border-radius: 3px; }
+.kpi-tick { position: absolute; top: -3px; width: 2px; height: 12px; background: var(--ink-2); }
+.pw-layout { display: grid; grid-template-columns: 330px minmax(0, 1fr); gap: 18px; align-items: start; }
+.pw-controls { position: sticky; top: 12px; max-height: calc(100vh - 24px); overflow-y: auto; }
+.pw-controls .card { padding: 14px 16px; }
+.pw-controls .pw-grid { grid-template-columns: 1fr; gap: 10px; }
+.pw-controls h3 { font-size: 14px; margin: 14px 0 6px; }
+.pw-controls .seg { flex-wrap: wrap; }
+.pw-controls .seg button { padding: 4px 9px; font-size: 12px; }
+.pw-controls .pill-row { margin-bottom: 0; }
+.pw-results { min-width: 0; }
+@media (max-width: 980px) {
+  .pw-layout { grid-template-columns: 1fr; }
+  .pw-controls { position: static; max-height: none; }
+}
+
+
+</style>
+</head>
+<body class="">
+<div class="topbar">
+  <div class="topbar-row">
+    <div>
+      <h1>Air purifiers in schools: sizing a second trial</h1>
+      <div class="sub">How many schools would a second trial need to detect an effect of a given size on student
+      absences, and at what cost. Every input is measured in the first Milan trial (5 schools, 95 classrooms, 2023-24).</div>
+    </div>
+    <a class="logo" href="https://ethz.ch" target="_blank" rel="noopener" aria-label="ETH Zürich">
+      <img class="logo-light" src="data:image/png;base64,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" alt="ETH Zürich">
+      <img class="logo-dark" src="data:image/png;base64,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" alt="ETH Zürich">
+    </a>
+  </div>
+  <p class="context"><strong>Context.</strong> In 2023-24 we randomised air purifiers across 95 classrooms in 5 Milan
+  primary schools. Indoor PM2.5 fell by 34%; the effect on absences could not be estimated precisely. This page sizes
+  a second trial in which purifiers are installed over the summer break and attendance is observed for a full school
+  year. All figures are planning estimates.</p>
+  <div class="contact">Luis Sarmiento · Chair of Sustainability Economics, Department of Management, Technology and
+  Economics, ETH Zürich · <a href="mailto:lsarmiento@ethz.ch">lsarmiento@ethz.ch</a> · with Jacopo Bonan, Francesco
+  Granella, Stefania Renna and Massimo Tavoni · August 2026</div>
+</div>
+<main>
+<!-- ============================================================ POWER -->
+<section class="page visible" id="page-power">
+
+  <div class="tabs" data-group="pw-top">
+    <button data-tab="howto" class="active">How to use it</button>
+    <button data-tab="calc">Calculator</button>
+    <button data-tab="scen">The two data scenarios</button>
+    <button data-tab="why">Why power changes</button>
+    <button data-tab="inputs">Where the inputs come from</button>
+  </div>
+
+  <!-- ---------------------------------------------------------- HOW TO -->
+  <div class="tabpane visible" data-group="pw-top" data-tab="howto">
+    <p>This page answers one question: <strong>how many schools does a second trial need to detect an
+    effect of a given size?</strong> No statistics background is needed to use it. Six steps, all on the
+    <em>Calculator</em> tab.</p>
+
+    <ol class="pw-steps">
+      <li><strong>Pick the data scenario</strong> (the buttons under "Analysis"). This lets us choose whether we
+        will get each child's absence records from <em>before</em> the purifiers go in, across all schools, and for
+        how many years. Getting pre-purifier absence records increases the statistical power of the trial,
+        but it is likely that some schools will either refuse to provide these records or simply do not have them.</li>
+      <li><strong>Describe the trial</strong> (four sliders under "Design"). This lets you modify the characteristics
+        of the trial dynamically: the number of schools; classes per school in grades 1–5 (a Milan Istituto
+        Comprensivo, the school unit that groups several primary schools, has about 19 in these grades); students per class (22 in the first trial); the share of classes that receive a
+        purifier (50% is the most informative split). In principle, more schools, classes and children increase the
+        statistical power of the trial.</li>
+      <li><strong>Say what you want to be able to see.</strong> The <em>target effect</em> is a percentage of the
+        average absence rate. In our first study the average absence rate was about 5.9% (each child lost around 6
+        school days per 100). A 10% reduction in the average absence rate would therefore be a decrease of 0.59
+        percentage points (5.9% multiplied by 0.1). <em>Power</em> is the probability that, given the options selected
+        in steps 1 and 2, the trial will find an effect of that pre-specified size (e.g. 10%) if it is real;
+        80% is the convention in the experimental economics literature and often the number funders expect. They
+        expect a statement like "this intervention can detect an effect of 5% with 80% power." The default target is
+        5%: the corrected estimates from the first trial lie between 0 and 8%, so the trial should be able to see effects well below the 12.5% originally pre-registered. A
+        trial powered only for a large effect would report "nothing" on an intervention that works.</li>
+      <li><strong>Read the four tiles.</strong> The tiles at the top of the calculator give the smallest effect
+        the design can detect, the power against your target, the number of schools needed at your chosen power,
+        and the cost.</li>
+      <li><strong>Read the chart.</strong> Each curve is one data scenario (a dashed curve appears when you ask
+        for more than one prior year). Find where the curve crosses the dashed red target line: that is the number
+        of schools you need. Hover anywhere for exact values. The hollow marker at 5 schools is the first trial's
+        actual precision without a baseline, so you can see that the curve starts from something measured.</li>
+      <li><strong>Use the table and the cost sliders.</strong> The table lines up standard sizes side by
+        side; the cost block prices each of them.</li>
+    </ol>
+
+    <h3>Six words you will meet</h3>
+    <table>
+      <tbody><tr><th>Term</th><th>Meaning here</th></tr>
+      <tr><td>Percentage points vs percent</td><td>The absence rate is 5.9% of school days. A
+        <em>7% effect</em> means 7% of that, i.e. 0.41 <em>percentage points</em> (5.9 → 5.5). The
+        calculator shows both.</td></tr>
+      <tr><td>Minimum detectable effect (MDE)</td><td>The smallest true effect the trial would find with
+        the chosen power. Smaller is better. It is what the chart plots.</td></tr>
+      <tr><td>Power</td><td>If the true effect is exactly the target, the chance the trial's result is
+        statistically significant. 80% means a one-in-five risk of a false "no effect".</td></tr>
+      <tr><td>Standard error (SE)</td><td>The typical distance between the estimate and the truth. The MDE
+        is 2.8 standard errors at 80% power; everything on this page works by shrinking the SE.</td></tr>
+      <tr><td>Strata</td><td>School × grade blocks. The lottery is run inside each block, so every grade
+        in every school has both treated and control classes.</td></tr>
+      <tr><td>ICC (intra-class correlation)</td><td>How alike children in the same classroom are in their
+        absences, on a 0–1 scale. The higher it is, the less each extra child adds and the more each extra
+        classroom matters. Measured at 0.042 here.</td></tr>
+    </tbody></table>
+  </div>
+
+  <!-- ---------------------------------------------------------- CALCULATOR -->
+  <div class="tabpane" data-group="pw-top" data-tab="calc">
+  <div class="pw-layout">
+  <aside class="pw-controls">
+    <div class="card">
+      <h3 style="margin-top:0">Design <span class="pw-hint">(step 2)</span></h3>
+      <div class="pw-grid">
+        <label>Schools <span class="pw-val" id="pw-schools-v"></span>
+          <input type="range" id="pw-schools" min="5" max="120" step="1" value="48">
+          <span class="pw-hint">The first trial had 5. Default 48: the number that gives 80% power for a 5% effect with
+          no pre-treatment data at the other default settings; 34 if schools provide one prior year.</span></label>
+        <label>Classes per school (grades 1–5) <span class="pw-val" id="pw-cps-v"></span>
+          <input type="range" id="pw-cps" min="4" max="30" step="1" value="19">
+          <span class="pw-hint">Classrooms are the unit of the lottery; this is what a school buys.</span></label>
+        <label>Students per class <span class="pw-val" id="pw-m-v"></span>
+          <input type="range" id="pw-m" min="10" max="30" step="1" value="22">
+          <span class="pw-hint">Matters less than you would think; see "Why power changes".</span></label>
+        <label>Share of classes treated <span class="pw-val" id="pw-share-v"></span>
+          <input type="range" id="pw-share" min="0.2" max="0.8" step="0.05" value="0.5">
+          <span class="pw-hint">50% is best. Lower it only if purifiers, not schools, are the constraint.</span></label>
+      </div>
+
+      <h3>Analysis <span class="pw-hint">(steps 1 and 3)</span></h3>
+      <div class="pw-grid">
+        <div>
+          <div class="pw-lab">Data scenario: which pre-treatment absence records can schools provide?</div>
+          <div class="seg" id="pw-design">
+            <button data-d="post" class="active">A · no</button>
+            <button data-d="prior">B · yes, prior years</button>
+          </div>
+          <span id="pw-ny-wrap" style="display: none;"><span class="pw-lab" style="display:inline;margin-right:8px">How many prior years?</span>
+          <div class="seg" id="pw-ny" style="vertical-align:middle">
+            <button data-ny="1" class="active">1</button>
+            <button data-ny="2">2</button>
+            <button data-ny="3">3</button>
+          </div></span>
+          <div class="pw-hint" id="pw-design-hint"></div>
+        </div>
+        <div>
+          <div class="pw-lab">Classroom ICC (within strata)</div>
+          <div class="seg" id="pw-icc">
+            <button data-icc="0.0418" class="active">0.042 measured</button>
+            <button data-icc="0.0689">0.069 raw</button>
+            <button data-icc="0.1015">0.10 control-only</button>
+          </div>
+          <div class="pw-hint">Leave at "measured" unless you want a pessimistic case.</div>
+        </div>
+        <label>Target effect, % of mean absence <span class="pw-val" id="pw-eff-v"></span>
+          <input type="range" id="pw-eff" min="2" max="25" step="0.5" value="5">
+          <span class="pw-hint">5% = middle of the corrected first-trial range (0–8%) ·
+          7% = optimistic · 12.5% = the pre-registered number, since revised down.</span></label>
+        <label>Power <span class="pw-val" id="pw-pow-v"></span>
+          <input type="range" id="pw-pow" min="0.5" max="0.95" step="0.05" value="0.8">
+          <span class="pw-hint">80% is the convention; 90% is what a cautious funder asks for.</span></label>
+      </div>
+
+      <h3>Cost <span class="status">back of envelope</span></h3>
+      <div class="pw-grid">
+        <label>€ per treated classroom (purifier, at cost) <span class="pw-val" id="pw-cpur-v"></span>
+          <input type="range" id="pw-cpur" min="100" max="3000" step="25" value="600"></label>
+        <label>€ per indoor sensor <span class="pw-val" id="pw-csen-v"></span>
+          <input type="range" id="pw-csen" min="50" max="800" step="10" value="300"></label>
+        <label>Share of classes with a sensor <span class="pw-val" id="pw-ssen-v"></span>
+          <input type="range" id="pw-ssen" min="0.1" max="1" step="0.05" value="0.4"></label>
+      </div>
+      <p class="pill-row">Defaults: €600 per purifier and €300 per indoor sensor, the prices the first trial paid. Both sit in the
+      middle of today's market: classroom-grade HEPA purifiers list at roughly €350–800 and research-grade low-cost
+      PM2.5/CO₂ monitors at €150–400. In a new trial we would explore whether other partnerships (the original
+      supplier again, or a HEPA manufacturer, and a sensor maker) can bring these unit costs down. The paper's
+      cost-benefit analysis uses a different figure, the €2,000 bulk market price of the ULPA unit plus filters and
+      electricity, €2,910 over ten years. Researcher time, installation and data extraction are not costed
+      (universities and the supplier covered them in the first trial).</p>
+    </div>
+  </aside>
+
+  <div class="pw-results">
+    <div class="pw-design-line" id="pw-designline"><strong>49 schools</strong> · 931 classrooms · about 20,482 students · scenario A · no pre-treatment data</div>
+    <div class="kpi-row" id="pw-headline"></div>
+
+    <div class="card">
+      <h3 style="margin-top:0">Smallest detectable effect by number of schools <span class="pw-hint">(step 5)</span></h3>
+      <div class="legend"><span class="k1">A · no pre-treatment data</span><span class="k2">B · 1 prior year</span>
+        <span class="k3">B · n prior years (dashed, when n &gt; 1)</span>
+        <span style="color:var(--muted)">dashed red: your target · dotted: first trial (5 schools) · hollow: first trial's realized precision (scenario A)</span></div>
+      <div class="chartwrap"><svg id="pw-chart" viewBox="0 0 900 400" style="width:100%;height:auto;max-width:900px" role="img" aria-label="Minimum detectable effect as a function of the number of schools"></svg></div>
+      <figcaption>Vertical axis: minimum detectable effect at the chosen power (two-sided 5% test), as a share of
+      the mean absence rate. Where a curve crosses the dashed line is the number of schools that scenario
+      needs. Hover for values.</figcaption>
+    </div>
+
+    <div class="card">
+      <h3 style="margin-top:0">Readout at standard sizes <span class="pw-hint">(step 6)</span></h3>
+      <div class="chartwrap"><table id="pw-table"></table></div>
+      <p class="pill-row" id="pw-tablenote"></p>
+    </div>
+  </div><!-- /pw-results -->
+  </div><!-- /pw-layout -->
+  </div>
+
+  <!-- ---------------------------------------------------------- SCENARIOS -->
+  <div class="tabpane" data-group="pw-top" data-tab="scen">
+    <p>The two buttons in the calculator are two <em>data</em> situations, each with its own statistical
+    model. They share the design and differ only in whether the schools can hand over each child's absence
+    records from <em>before</em> the purifiers were installed.</p>
+    <p><strong>Timing of the second trial.</strong> Purifiers are installed during the summer break, so the
+    outcome is each child's absence over the <em>whole</em> school year that follows (September to June, about
+    170 school days). The first trial installed in November and observed only November to June (131 days); the
+    calculator's noise inputs come from that window, but a child's full-year rate has the same spread (SD 0.056
+    against 0.054), because absence noise is persistent within a child rather than day-to-day, so the power numbers
+    carry over to the full-year design unchanged.</p>
+
+    <h3>Common setup</h3>
+    <table>
+      <tbody><tr><th>Symbol</th><th>Meaning</th></tr>
+      <tr><td><em>i</em>, <em>c</em>, <em>s</em>, <em>g</em></td><td>student, classroom, school, grade</td></tr>
+      <tr><td><em>Y<sub>ic</sub></em></td><td>share of school days student <em>i</em> in classroom <em>c</em> was
+        absent during the school year with the purifiers in place (September to June). A number between 0 and 1.</td></tr>
+      <tr><td><em>T<sub>c</sub></em></td><td>1 if classroom <em>c</em> drew a purifier, 0 otherwise. Drawn by lottery
+        inside each school × grade block.</td></tr>
+      <tr><td><em>α<sub>s(c),g(c)</sub></em></td><td>one constant per school × grade block (strata fixed effects).
+        Compares treated and control classes only <em>within</em> the same block, which is how the lottery was run.</td></tr>
+      <tr><td><em>B<sub>ic</sub></em></td><td>the student's own absence share in the previous school year(s): the
+        "baseline". Only scenario B has it.</td></tr>
+      <tr><td><em>β</em></td><td>the effect of the purifier on the absence share, in percentage points. Always
+        the quantity of interest.</td></tr>
+      <tr><td><em>ε<sub>ic</sub></em></td><td>everything else. Standard errors are clustered by classroom, because
+        children who share a room share a teacher, a flu season and one lottery ticket.</td></tr>
+    </tbody></table>
+
+    <div class="card">
+      <h3 style="margin-top:0">Scenario A · no pre-treatment absence data</h3>
+      <p class="pw-eq">Y<sub>ic</sub> = α<sub>s(c),g(c)</sub> + β·T<sub>c</sub> + ε<sub>ic</sub></p>
+      <p><strong>In words:</strong> the share of the year that child <em>i</em> in classroom <em>c</em> missed is
+      explained by which school-and-grade block the classroom belongs to (α), by whether the classroom drew a
+      purifier (β·T), and by everything else (ε). β is the average difference in the absence share between purifier
+      and non-purifier classrooms within the same block: a negative β means purifiers reduced absences, and
+      β / 0.06 expresses it as a percentage of the mean. Estimated by ordinary least squares on one row per child,
+      each child weighted by their number of school days, with standard errors clustered by classroom.</p>
+      <p><strong>What schools must provide:</strong> the attendance register for the trial year only.</p>
+      <p><strong>Why it works:</strong> the lottery guarantees that treated and control classes are, on average,
+      the same kind of children, so the difference in their absence rates is an unbiased estimate of β.</p>
+      <p><strong>Why it is weak:</strong> everything that makes one child miss more school than another (a chronic
+      condition, a family that travels, a sibling in daycare) stays in <em>ε</em>. The estimate is unbiased but
+      noisy. Fixed child characteristics from the school register (sex, nationality) do not help: measured in the first
+      trial they explain 0.06% of the within-block variation in absence and leave the standard error unchanged
+      (0.336 against 0.337 pp). Health or socio-economic information would predict more, but whatever they do to
+      attendance is already contained in the child's own past absences, which is what scenario B uses.</p>
+    </div>
+
+    <div class="card">
+      <h3 style="margin-top:0">Scenario B · prior-year absence records (one year, or <em>n</em> years)</h3>
+      <p class="pw-hint" style="margin:-4px 0 8px">Statisticians call this design ANCOVA, analysis of covariance.</p>
+      <p class="pw-eq">Y<sub>ic</sub> = α<sub>s(c),g(c)</sub> + β·T<sub>c</sub> + γ·B<sub>ic</sub> + ε<sub>ic</sub>,
+        &nbsp; B<sub>ic</sub> = student <em>i</em>'s average absence share over the previous <em>n</em> school years</p>
+      <p><strong>In words:</strong> the same regression with one more explanatory variable, the child's own absence
+      share in earlier years. γ measures how much of a child's past absence carries into the trial year.
+      β keeps its meaning, the purifier effect within a block, but it is now estimated after removing the part of
+      each child's absence that their history already predicts. Children with no history (all of grade 1, newcomers)
+      get B = 0 and a "no baseline" indicator, so nobody is dropped.</p>
+      <p><strong>What schools must provide:</strong> the trial year's register plus the previous year's (or several
+      years') for the same children, linked by name or ID. The first trial obtained one year. Italian schools keep electronic registers, so earlier years are usually
+      retrievable at no cost in purifiers, only in data-extraction effort.</p>
+      <p><strong>Why it helps:</strong> a child's past absences predict their future absences. Including <em>B</em>
+      takes that predictable part out of <em>ε</em>; whatever <em>B</em>
+      explains no longer counts as noise. One full year explains <strong>25%</strong> of the student-level and
+      <strong>48%</strong> of the classroom-level variation. Standard error 0.27 pp instead of 0.37 on the 76 classrooms that had a baseline: a 26%
+      reduction, the same precision gain as adding about 80% more schools. Once grade 1, which has no prior year, is
+      averaged in, the gain is about 16%, which is what the calculator shows.</p>
+      <p><strong>What more years buy.</strong> Think of each child's yearly absence rate as a permanent tendency
+      plus that year's luck (which infections went round). One year measures the tendency with noise; averaging
+      <em>n</em> years averages the luck away. If λ is the correlation of a child's rate from one year to the next
+      (measured: 0.50 for students, 0.69 for classrooms within strata), an <em>n</em>-year average explains</p>
+      <p class="pw-eq">R²(n) = λ²·n / (n·λ + 1 − λ) &nbsp;&nbsp;→&nbsp;&nbsp; students: 25% (1 yr), 33% (2), 37% (3), 50% (∞) &nbsp;·&nbsp; classrooms: 48%, 57%, 60%, 69%</p>
+      <p>At <em>n</em> = 1 this is λ², which reproduces the measured 25% and 48%, so the extension is calibrated and
+      not a free parameter. Returns fall quickly: the second year buys about a third of what the first did, and the
+      ceiling is λ itself, because a child's own permanent tendency explains at most half of next year's rate.
+      The calculator also respects the calendar: a grade-1 child has no prior year of primary school, a grade-2 child one and a
+      grade-3 child two, so with <em>n</em> = 2 grades 3–5 get two years, grade 2 one and grade 1 none; all classes are kept.</p>
+    </div>
+
+    <h3>Side by side (first trial, 5 schools)</h3>
+    <table>
+      <tbody><tr><th>Scenario</th><th>Schools must provide</th><th>Baseline explains (student · class)</th>
+          <th>Standard error, realized</th><th>Standard error, formula</th><th>Smallest detectable effect, 80% power</th></tr>
+      <tr><td>A · none (95 classes, grades 1–5)</td><td>trial-year register</td><td>—</td><td>0.336 pp</td><td>0.327 pp</td><td>0.94 pp = 16% of mean</td></tr>
+      <tr><td>B · 1 prior year (ANCOVA; 76 classes, grades 2–5, the ones with a 2022-23 record)</td><td>trial year + previous year, linked</td><td>25% · 48%</td><td>0.274 pp</td><td>0.293 pp</td><td>0.77 pp = 13%</td></tr>
+    </tbody></table>
+    <p class="pill-row">"Formula" is what the calculator computes at the first trial's size; it reproduces the
+    realized numbers within 10%, which is why the curves can be trusted away from 5 schools. The scenario B row uses only grades 2–5 because grade-1 children
+    had no 2022-23 record in the first trial; in a second trial they stay in the sample through the missing-baseline
+    dummy, which is how the calculator treats them.</p>
+  </div>
+
+  <!-- ---------------------------------------------------------- WHY -->
+  <div class="tabpane" data-group="pw-top" data-tab="why">
+    <p>Everything the calculator does is one formula for the standard error (SE) of β, then the minimum detectable effect (MDE) is 2.8 × SE
+    (at 80% power, two-sided 5%).&nbsp;</p><p>Power against a target δ is the probability that an estimate with that
+    standard error clears significance: Φ(δ / SE − 1.96), where Φ is the normal cumulative distribution (shown only for
+    completeness).</p>
+    <p class="pw-eq">SE² &nbsp;=&nbsp; σ² · [ ρ·(1 − R²<sub>class</sub>) &nbsp;+&nbsp; (1 − ρ)·(1 − R²<sub>student</sub>) / m ] &nbsp;/&nbsp; ( J · π · (1 − π) )</p>
+    <table>
+      <tbody><tr><th>Symbol</th><th>Meaning</th><th>First trial</th></tr>
+      <tr><td>σ²</td><td>variance of a student's absence share</td><td>0.0541²</td></tr>
+      <tr><td>ρ</td><td>classroom ICC within strata: the share of σ² that is common to a classroom</td><td>0.042</td></tr>
+      <tr><td>R²<sub>class</sub>, R²<sub>student</sub></td><td>share of the classroom-level and student-level variation the baseline explains</td><td>0 · 0 (A); 0.48 · 0.25 (B, one year); 0.57 · 0.33 (B, two years)</td></tr>
+      <tr><td>m</td><td>students per classroom</td><td>21.6</td></tr>
+      <tr><td>J</td><td>number of classrooms = schools × classes per school</td><td>95</td></tr>
+      <tr><td>π</td><td>share of classrooms treated</td><td>0.45</td></tr>
+    </tbody></table>
+
+    <h3>In words</h3>
+    <p>The noise in the estimate has two parts. The first term is <strong>classroom noise</strong>: a classroom is one
+    lottery ticket, and its children share a teacher, a room and a flu season, so part of their absence moves
+    together. Adding children to the room does nothing to this part; only <em>more classrooms</em> or a
+    <em>baseline</em> shrink it. The second term is <strong>student noise</strong>, the child-to-child variation
+    that averages out as the class gets bigger; it is already divided by m = 22. In the first trial the two
+    parts were about equal (0.042 against 0.958 / 21.6 = 0.044), which is why the sliders behave as they do:</p>
+
+    <table id="pw-levers">
+      <tbody><tr><th>Lever</th><th>What happens</th><th>Try it</th></tr>
+      <tr><td>More classrooms (J)</td><td>Both noise terms fall in proportion. Doubling J halves SE², i.e. cuts the
+        MDE by 29%. This is the only lever with no ceiling.</td><td>Schools 35 → 70: MDE <span data-lv="j"></span>.</td></tr>
+      <tr><td>Bigger classes (m)</td><td>Only the student term falls. Doubling m removes about a quarter (scenario A) to a third (scenario B) of SE², and
+        beyond 30 children the curve is flat.</td><td>Students 22 → 30 at 35 schools: MDE <span data-lv="m"></span>.</td></tr>
+      <tr><td>More schools at fixed classrooms</td><td>Nothing. Schools matter only through the classrooms they
+        contain; the lottery inside each school × grade block removes school-level differences (school ICC
+        0.014).</td><td>35 × 19 and 70 × 9.5 classes are the same trial.</td></tr>
+      <tr><td>Treated share (π)</td><td>π(1 − π) is largest at 0.5. A 30/70 split loses 16% of the effective
+        sample; 20/80 loses 36%.</td><td>Share 0.5 → 0.3 at 35 schools: MDE <span data-lv="pi"></span>.</td></tr>
+      <tr><td>A baseline (R²)</td><td>Acts on both terms at once. One prior year cuts the SE by about 16% (a fifth on the grades that
+        have a baseline), the same gain as adding about 40% more classrooms (precision goes with the square of the SE:
+        1 / 0.84² ≈ 1.4).</td><td>Switch A → B at 35 schools: MDE
+        <span data-lv="r2"></span>.</td></tr>
+      <tr><td>More prior years (n)</td><td>Diminishing: the second year buys about a third of the first in explained variation, and less than that in
+        precision once grades 1 and 2, which cannot have two years, are averaged in; the third year less again.</td><td>1 → 2 → 3 years at 35 schools: MDE
+        <span data-lv="ny"></span>.</td></tr>
+      <tr><td>A larger target effect</td><td>Required schools fall with the <em>square</em> of the effect: detecting
+        10% instead of 5% needs a quarter of the schools.</td><td>Target 5% → 10% under B: <span data-lv="eff"></span> schools.</td></tr>
+      <tr><td>Higher power</td><td>90% instead of 80% multiplies the required sample by (3.24 / 2.80)² = 1.34.</td>
+        <td>Power 0.8 → 0.9 at 35 schools: MDE <span data-lv="pow"></span>.</td></tr>
+    </tbody></table>
+    <p class="pill-row">The "Try it" column is computed live at 19 classes per school, 22 students, 50% treated,
+    measured ICC, scenario B with one prior year unless stated.</p>
+
+    <div class="callout">
+      <strong>Why indoor PM2.5 was precise with 30 classrooms and absence was not.</strong> The purifier cut PM2.5
+      by 34% against a within-classroom variation it dwarfs: the sensor reads every minute, so the estimate is
+      twelve times its standard error. Absence is the opposite kind of outcome: rare (6% of days), concentrated in a few
+      children, and moved by at most a fraction of a percentage point. The same design gave an absence estimate
+      of about a fifth of its standard error. The pollution effect does not need a second trial; the absence effect does.
+    </div>
+  </div>
+
+  <!-- ---------------------------------------------------------- INPUTS -->
+  <div class="tabpane" data-group="pw-top" data-tab="inputs">
+    <p>A power calculation is only as good as its inputs, and the usual ones (a Bernoulli variance, a
+    textbook ICC) are wrong for this outcome. Everything below is computed on the first trial's own
+    panel,
+    so the second trial is planned on the population it will actually sample.</p>
+
+    <table>
+      <tbody><tr><th>Quantity</th><th>Value</th><th>Why it matters</th></tr>
+      <tr><td>Mean absence rate</td><td>5.88%&nbsp;</td>
+          <td>The mean every "% reduction" is a share of. A 7% effect is 0.41 pp.</td></tr>
+      <tr><td>SD of a student's post-period absence <em>rate</em></td><td>0.0541</td>
+          <td>The right noise level.</td></tr>
+      <tr><td>Students per class and classes per school</td><td>21.6 students and 19 classes</td>
+          <td>Cluster size and how many clusters a school buys.</td></tr>
+      <tr><td>Classroom intra-class correlation (ICC)</td><td><strong>0.042 within strata</strong></td>
+          <td>How alike children in the same classroom are. Randomisation is within school × grade, so the
+          between-strata part of the variance never enters the comparison and the within-strata value is the one
+          the design faces. The calculator's 0.069 (raw) and 0.10 (control arm only) buttons are pessimistic
+          alternatives.</td></tr>
+      <tr><td>School ICC</td><td>0.014</td>
+          <td>Absorbed by stratification; shown to confirm there is little of it.</td></tr>
+      <tr><td>Baseline R², prior-year absence rate</td><td>student 0.25 · class 0.48 (within strata)</td>
+          <td>What one prior year of records buys. The regression slope on the prior year
+          is 0.49.</td></tr>
+      <tr><td>Year-to-year correlation λ of a student's / classroom's rate</td><td>0.50 for a student, 0.69 for a classroom</td>
+          <td>Drives how much a second or third baseline year adds; λ² is the one-year R².</td></tr>
+      <tr><td>Realized SE, first trial, no baseline (scenario A)</td><td>0.00336 (95 classes) · 0.00372 (76 classes)</td>
+          <td>The yardstick. The formula with the inputs above gives 0.00327 and 0.00366.</td></tr>
+      <tr><td>Realized SE, first trial, one prior year (scenario B)</td><td>0.00274</td><td>Formula: 0.00293 (+7%).</td></tr>
+      <tr><td>Effect on indoor PM2.5 (log scale)</td><td>−0.413 (SE 0.034), twelve times its standard error, 30 classes</td>
+          <td>Why the pollution effect is precise and the absence effect is not: minute-level
+          readings give an outcome with enormous within-class variation that the purifier moves a
+          lot; absence is rare, sticky, and moved a little.</td></tr></tbody></table>
+
+    <p><strong>What is held fixed.</strong> Mean, SD, ICC and R² are those of Milan primary schools in
+    2023-24. Grade 1 is included throughout: its absence rate (5.85%) and spread match the other grades, and it
+    adds a quarter more classrooms per school. A different city, grade range, or a year with a different flu season will move them; the ICC
+    buttons bracket the plausible range. Standard large-sample critical values are used throughout (the smallest design on
+    the slider has 20 classrooms). Cost excludes researcher time, installation and data extraction, which
+    the first trial did not pay for. Subgroup effects are not sized: detecting the effect in the high-baseline
+    half of students alone needs roughly the sample shown for half the effect.</p>
+  </div>
+</section>
+
+</main>
+<div class="tooltip" id="tt"></div>
+<script>
+/* ---------------- tabs ---------------- */
+document.querySelectorAll('.tabs button').forEach(b => b.addEventListener('click', () => {
+  const g = b.parentElement.dataset.group;
+  document.querySelectorAll(`.tabs[data-group="${g}"] button`).forEach(x => x.classList.remove('active'));
+  b.classList.add('active');
+  document.querySelectorAll(`.tabpane[data-group="${g}"]`).forEach(p =>
+    p.classList.toggle('visible', p.dataset.tab === b.dataset.tab));
+}));
+
+/* ---------------- tooltip ---------------- */
+const tt = document.getElementById('tt');
+function showTT(evt, html) {
+  tt.innerHTML = html; tt.style.display = 'block';
+  const pad = 14;
+  let x = evt.clientX + pad, y = evt.clientY + pad;
+  const r = tt.getBoundingClientRect();
+  if (x + r.width > window.innerWidth - 8)  x = evt.clientX - r.width - pad;
+  if (y + r.height > window.innerHeight - 8) y = evt.clientY - r.height - pad;
+  tt.style.left = x + 'px'; tt.style.top = y + 'px';
+}
+function hideTT() { tt.style.display = 'none'; }
+
+/* ---------------- chart helpers ---------------- */
+const css = v => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+const NS = 'http://www.w3.org/2000/svg';
+function el(tag, attrs, parent) {
+  const e = document.createElementNS(NS, tag);
+  for (const k in attrs) e.setAttribute(k, attrs[k]);
+  parent.appendChild(e); return e;
+}
+function fmt(x, d = 4) { return (x >= 0 ? '+' : '−') + Math.abs(x).toFixed(d); }
+function starsZ(est, se) {
+  const z = Math.abs(est / se);
+  return z >= 2.576 ? '***' : z >= 1.96 ? '**' : z >= 1.645 ? '*' : '';
+}
+
+
+
+
+/* ====== power calculator ====== */
+(function () {
+  // ---- measured inputs, first trial, grades 2-5, post period 
+  const P = {
+    mean: 0.05880,            // post-period absence rate, grades 1-5
+    sd: 0.05410,              // SD of a student's post-period absence rate, grades 1-5
+    // year-to-year correlation (reliability) of a student's / a classroom's absence rate, within strata.
+    // One prior year explains lambda^2: student 0.498^2 = 0.248 (measured 0.251), class 0.693^2 = 0.480 (measured).
+    lam: { s: 0.498, c: 0.693 },
+    // first trial, for the calibration markers
+    // post-only: all 95 classes (grades 1-5); ANCOVA: the 76 classes with a prior-year record (grades 2-5)
+    trial: { schools: 5, classes: 95, m: 21.6, share: 43 / 95, se: { post: 0.00336 } }
+  };
+  // R^2 of an n-year baseline average under the permanent + transient model: lambda^2 n / (n lambda + 1 - lambda)
+  const r2n = (lam, n) => n <= 0 ? 0 : lam * lam * n / (n * lam + 1 - lam);
+  const NAME = { post: 'A · no pre-treatment data', prior: 'B · prior-year absence records' };
+  const COL  = { post: '--accent', prior: '--series-2', priorN: '--series-3' };
+  const Z975 = 1.959964;
+  const qnorm = p => { // Acklam's rational approximation, |err| < 1.2e-9
+    const a = [-3.969683028665376e+01, 2.209460984245205e+02, -2.759285104469687e+02,
+               1.383577518672690e+02, -3.066479806614716e+01, 2.506628277459239e+00];
+    const b = [-5.447609879822406e+01, 1.615858368580409e+02, -1.556989798598866e+02,
+               6.680131188771972e+01, -1.328068155288572e+01];
+    const c = [-7.784894002430293e-03, -3.223964580411365e-01, -2.400758277161838e+00,
+               -2.549732539343734e+00, 4.374664141464968e+00, 2.938163982698783e+00];
+    const d = [7.784695709041462e-03, 3.224671290700398e-01, 2.445134137142996e+00,
+               3.754408661907416e+00];
+    const pl = 0.02425, ph = 1 - pl; let q, r;
+    if (p < pl) { q = Math.sqrt(-2 * Math.log(p));
+      return (((((c[0]*q+c[1])*q+c[2])*q+c[3])*q+c[4])*q+c[5]) / ((((d[0]*q+d[1])*q+d[2])*q+d[3])*q+1); }
+    if (p <= ph) { q = p - 0.5; r = q * q;
+      return (((((a[0]*r+a[1])*r+a[2])*r+a[3])*r+a[4])*r+a[5])*q / (((((b[0]*r+b[1])*r+b[2])*r+b[3])*r+b[4])*r+1); }
+    q = Math.sqrt(-2 * Math.log(1 - p));
+    return -(((((c[0]*q+c[1])*q+c[2])*q+c[3])*q+c[4])*q+c[5]) / ((((d[0]*q+d[1])*q+d[2])*q+d[3])*q+1);
+  };
+  const pnorm = x => { // Abramowitz-Stegun 7.1.26 via erf
+    const t = 1 / (1 + 0.3275911 * Math.abs(x) / Math.SQRT2);
+    const e = 1 - (((((1.061405429 * t - 1.453152027) * t) + 1.421413741) * t - 0.284496736) * t + 0.254829592) * t
+                  * Math.exp(-x * x / 2);
+    return 0.5 * (1 + (x < 0 ? -e : e));
+  };
+
+  // SE of the treated-control difference for J classes, share pi treated, m students/class
+  // nyears = prior years requested; a grade-g child (g = 1..5) has min(nyears, g-1) of them
+  // (grade 1 has none and enters through the missing-baseline dummy), so the noise term is
+  // averaged over the five grades (all classes kept).
+  function seOf(J, pi, m, icc, dsg, nyears = 1) {
+    let term = 0;
+    for (let g = 1; g <= 5; g++) {
+      const n = dsg === 'post' ? 0 : Math.min(nyears, g - 1);
+      term += icc * (1 - r2n(P.lam.c, n)) + (1 - icc) * (1 - r2n(P.lam.s, n)) / m;
+    }
+    term /= 5;
+    return Math.sqrt(P.sd * P.sd * term / (J * pi * (1 - pi)));
+  }
+  const mdeOf = (se, pow) => (Z975 + qnorm(pow)) * se;
+  const powerOf = (delta, se) => pnorm(Math.abs(delta) / se - Z975);
+
+  // ---- controls
+  const $ = id => document.getElementById(id);
+  const S = { schools: $('pw-schools'), cps: $('pw-cps'), m: $('pw-m'), share: $('pw-share'),
+              eff: $('pw-eff'), pow: $('pw-pow'), cpur: $('pw-cpur'), csen: $('pw-csen'), ssen: $('pw-ssen') };
+  let dsg = 'post', icc = 0.0418, ny = 1;
+  const HINT = () => dsg === 'post'
+    ? 'Scenario A: compare treated and control classes after installation; no baseline. Least power.'
+    : `Scenario B with ${ny} prior year${ny > 1 ? 's' : ''}: same comparison, plus each student's own absence rate over the ` +
+      (ny === 1 ? 'previous school year (grade 1 has none and keeps its outcome through a missing-baseline dummy)'
+                : `previous ${ny} school years (grade 1 has none, grade 2 one, grade 3 two)`) +
+      ` as a covariate. Baseline explains ${pct(r2n(P.lam.s, ny), 0)} of student and ${pct(r2n(P.lam.c, ny), 0)} of classroom variation` +
+      (ny > 1 ? ' where all years exist.' : '.');
+  const svg = $('pw-chart'), tbl = $('pw-table'), head = $('pw-headline'), tnote = $('pw-tablenote'),
+        dhint = $('pw-design-hint');
+  const eur = x => '€' + Math.round(x / 1000) + 'k';
+  const pct = (x, d = 1) => (100 * x).toFixed(d) + '%';
+
+  function read() {
+    const v = {}; for (const k in S) v[k] = parseFloat(S[k].value);
+    $('pw-schools-v').textContent = v.schools;
+    $('pw-cps-v').textContent = v.cps;
+    $('pw-m-v').textContent = v.m;
+    $('pw-share-v').textContent = pct(v.share, 0);
+    $('pw-eff-v').textContent = v.eff + '% (' + (v.eff / 100 * P.mean * 100).toFixed(2) + ' pp)';
+    $('pw-pow-v').textContent = pct(v.pow, 0);
+    $('pw-cpur-v').textContent = '€' + v.cpur;
+    $('pw-csen-v').textContent = '€' + v.csen;
+    $('pw-ssen-v').textContent = pct(v.ssen, 0);
+    return v;
+  }
+  function cost(v, schools) {
+    const J = schools * v.cps;
+    return J * v.share * v.cpur + J * v.ssen * v.csen;
+  }
+  function schoolsFor(v, d, targetShare, n = ny) {
+    // smallest number of schools whose MDE (at chosen power) is <= target
+    for (let s = 1; s <= 1000; s++) {
+      if (mdeOf(seOf(s * v.cps, v.share, v.m, icc, d, n), v.pow) / P.mean <= targetShare) return s;
+    }
+    return Infinity;
+  }
+  // the curves drawn: A, B(1 year), and B(n years) when n > 1
+  const series = () => { const a = [['post', 1, 'post', NAME.post], ['prior', 1, 'prior', 'B · 1 prior year']];
+    if (ny > 1) a.push(['prior', ny, 'priorN', `B · ${ny} prior years`]); return a; };
+
+  function niceStep(range) {
+    const raw = range / 5, mag = Math.pow(10, Math.floor(Math.log10(raw))), n = raw / mag;
+    return (n < 1.5 ? 1 : n < 3 ? 2 : n < 7 ? 5 : 10) * mag;
+  }
+
+  function draw() {
+    const v = read();
+    const delta = v.eff / 100 * P.mean;
+    const J = v.schools * v.cps;
+
+    // ---- headline
+    const se = seOf(J, v.share, v.m, icc, dsg, ny), mde = mdeOf(se, v.pow), pw = powerOf(delta, se);
+    const need = schoolsFor(v, dsg, v.eff / 100);
+    dhint.textContent = HINT();
+    $('pw-ny-wrap').style.display = dsg === 'post' ? 'none' : '';
+    const scen = dsg === 'post' ? NAME.post : `B · ${ny} prior year${ny > 1 ? 's' : ''} of absence records`;
+    $('pw-designline').innerHTML =
+      `<strong>${v.schools} schools</strong> · ${J} classrooms · about ${Math.round(J * v.m).toLocaleString()} students · scenario ${scen}`;
+    const reached = pw >= v.pow - 1e-9, enough = v.schools >= need;
+    head.innerHTML =
+      `<div class="kpi"><div class="kpi-l">Smallest detectable effect</div>` +
+        `<div class="kpi-v">${pct(mde / P.mean)}</div>` +
+        `<div class="kpi-s">of the mean absence rate · ${(100 * mde).toFixed(2)} pp · at ${pct(v.pow, 0)} power</div></div>` +
+      `<div class="kpi"><div class="kpi-l">Power against a ${v.eff}% effect</div>` +
+        `<div class="kpi-v" style="color:${reached ? 'var(--series-2)' : '#c0392b'}">${pct(pw, 0)}</div>` +
+        `<div class="kpi-bar"><div style="width:${Math.min(100, 100 * pw).toFixed(1)}%;background:${reached ? 'var(--series-2)' : '#c0392b'}"></div>` +
+        `<span class="kpi-tick" style="left:${(100 * v.pow).toFixed(0)}%" title="target power"></span></div>` +
+        `<div class="kpi-s">${reached ? 'reaches' : 'below'} the ${pct(v.pow, 0)} target</div></div>` +
+      `<div class="kpi"><div class="kpi-l">Schools needed</div>` +
+        `<div class="kpi-v" style="color:${enough ? 'var(--series-2)' : '#c0392b'}">${need}</div>` +
+        `<div class="kpi-s">for ${pct(v.pow, 0)} power against ${v.eff}% · you have ${v.schools}</div></div>` +
+      `<div class="kpi"><div class="kpi-l">Cost of this design</div>` +
+        `<div class="kpi-v">${eur(cost(v, v.schools))}</div>` +
+        `<div class="kpi-s">purifiers and sensors · ${eur(cost(v, need))} for ${need} schools</div></div>`;
+
+    // ---- chart: MDE (% of mean) vs schools, three designs
+    while (svg.firstChild) svg.removeChild(svg.firstChild);
+    const W = 900, H = 400, L = 58, R = 24, T = 22, B = 50;
+    const xs = []; for (let s = 5; s <= 120; s++) xs.push(s);
+    const curves = {}, SER = series();
+    let hi = 0;
+    SER.forEach(([d, n, key]) => {
+      curves[key] = xs.map(s => mdeOf(seOf(s * v.cps, v.share, v.m, icc, d, n), v.pow) / P.mean);
+      hi = Math.max(hi, curves[key][0]);
+    });
+    const selKey = dsg === 'post' ? 'post' : (ny > 1 ? 'priorN' : 'prior');
+    hi = Math.min(Math.max(hi, v.eff / 100 * 1.15, 0.2), 0.6);
+    const lo = 0;
+    const X = s => L + (s - 5) / (120 - 5) * (W - L - R);
+    const Y = y => T + (hi - y) / (hi - lo) * (H - T - B);
+
+    // y grid + ticks
+    const st = niceStep(hi * 100) / 100;
+    for (let y = 0; y <= hi + 1e-9; y += st) {
+      el('line', { x1: L, y1: Y(y), x2: W - R, y2: Y(y), stroke: y === 0 ? css('--baseline') : css('--grid'),
+                   'stroke-width': y === 0 ? 1.5 : 1 }, svg);
+      const t = el('text', { x: L - 8, y: Y(y) + 4, 'text-anchor': 'end', 'font-size': 11, fill: css('--muted') }, svg);
+      t.textContent = Math.round(y * 100) + '%';
+    }
+    const yl = el('text', { x: 14, y: H / 2, 'font-size': 11.5, fill: css('--muted'),
+                            transform: `rotate(-90 14 ${H / 2})`, 'text-anchor': 'middle' }, svg);
+    yl.textContent = 'minimum detectable effect, % of mean absence';
+    // x ticks
+    [5, 10, 20, 30, 40, 50, 60, 80, 100, 120].forEach(s => {
+      el('line', { x1: X(s), y1: H - B, x2: X(s), y2: H - B + 4, stroke: css('--muted') }, svg);
+      const t = el('text', { x: X(s), y: H - B + 17, 'text-anchor': 'middle', 'font-size': 11, fill: css('--muted') }, svg);
+      t.textContent = s;
+    });
+    const xl = el('text', { x: (L + W - R) / 2, y: H - 12, 'text-anchor': 'middle', 'font-size': 11.5,
+                            fill: css('--muted') }, svg);
+    xl.textContent = `schools (× ${v.cps} classes × ${v.m} students)`;
+
+    // target effect line
+    const ty = v.eff / 100;
+    if (ty <= hi) {
+      el('line', { x1: L, y1: Y(ty), x2: W - R, y2: Y(ty), stroke: '#c0392b', 'stroke-width': 1.3,
+                   'stroke-dasharray': '6 4' }, svg);
+      const t = el('text', { x: W - R - 4, y: Y(ty) - 5, 'text-anchor': 'end', 'font-size': 11, fill: '#c0392b' }, svg);
+      t.textContent = `target ${v.eff}%`;
+    }
+    // first-trial vertical
+    el('line', { x1: X(5), y1: T, x2: X(5), y2: H - B, stroke: css('--muted'), 'stroke-width': 1,
+                 'stroke-dasharray': '2 3' }, svg);
+    const ft = el('text', { x: X(5) + 5, y: T + 12, 'font-size': 11, fill: css('--muted') }, svg);
+    ft.textContent = 'first trial';
+    // selected design vertical
+    el('line', { x1: X(v.schools), y1: T, x2: X(v.schools), y2: H - B, stroke: css('--ink-2'),
+                 'stroke-width': 1, 'stroke-dasharray': '3 3', opacity: 0.7 }, svg);
+
+    // curves (selected design drawn last and thicker)
+    const order = SER.filter(r => r[2] !== selKey).concat(SER.filter(r => r[2] === selKey));
+    order.forEach(([d, n, key]) => {
+      let path = '';
+      curves[key].forEach((y, i) => { const yy = Math.min(y, hi); path += (i ? 'L' : 'M') + X(xs[i]) + ' ' + Y(yy); });
+      el('path', { d: path, fill: 'none', stroke: css(COL[key]), 'stroke-width': key === selKey ? 2.6 : 1.6,
+                   opacity: key === selKey ? 1 : 0.75, 'stroke-dasharray': key === 'priorN' ? '7 4' : 'none' }, svg);
+      // calibration marker: first trial's realized post-only SE on all 95 classes (hollow); A only
+      if (d === 'post') {
+        const mreal = mdeOf(P.trial.se[d], v.pow) / P.mean;
+        if (mreal <= hi) el('circle', { cx: X(5), cy: Y(mreal), r: 5, fill: css('--surface'),
+                                        stroke: css(COL[key]), 'stroke-width': 2 }, svg);
+      }
+      // selected-size marker
+      const ysel = curves[key][v.schools - 5];
+      if (ysel <= hi) el('circle', { cx: X(v.schools), cy: Y(ysel), r: key === selKey ? 5.5 : 4,
+                                     fill: css(COL[key]), stroke: css('--surface'), 'stroke-width': 2 }, svg);
+    });
+
+    // hover: vertical hit strips per school
+    xs.forEach((s, i) => {
+      const hit = el('rect', { x: X(s) - (X(6) - X(5)) / 2, y: T, width: X(6) - X(5), height: H - T - B,
+                               fill: 'transparent' }, svg);
+      hit.addEventListener('mousemove', e => showTT(e,
+        `<strong>${s} schools</strong> · ${s * v.cps} classes · ${eur(cost(v, s))}<br>` +
+        SER.map(([d, n, key, label]) =>
+          `${label}: MDE ${pct(curves[key][i])} · power vs ${v.eff}%: ` +
+          `${pct(powerOf(delta, seOf(s * v.cps, v.share, v.m, icc, d, n)), 0)}`).join('<br>') +
+        `<br><span class="tt-sub">MDE at ${pct(v.pow, 0)} power, two-sided 5%</span>`));
+      hit.addEventListener('mouseleave', hideTT);
+    });
+
+    // ---- table
+    const sizes = [5, 10, 20, 30, 35, 40, 50, 60, 80, 100];
+    if (!sizes.includes(v.schools)) { sizes.push(v.schools); sizes.sort((a, b) => a - b); }
+    let h = '<tr><th>Schools</th><th>Classes</th><th>Students</th>';
+    SER.forEach(([d, n, key, label]) => h += `<th>MDE, ${label}</th>`);
+    h += `<th>Power vs ${v.eff}% (${scen})</th><th>Cost</th></tr>`;
+    sizes.forEach(s => {
+      const Js = s * v.cps, sel = s === v.schools;
+      h += `<tr${sel ? ' style="font-weight:600"' : ''}><td>${s}${s === 5 ? ' (first trial)' : ''}</td>` +
+           `<td>${Js}</td><td>${Math.round(Js * v.m).toLocaleString()}</td>`;
+      SER.forEach(([d, n]) => {
+        const m = mdeOf(seOf(Js, v.share, v.m, icc, d, n), v.pow);
+        h += `<td>${pct(m / P.mean)}<span class="se">${(100 * m).toFixed(2)} pp</span></td>`;
+      });
+      h += `<td>${pct(powerOf(delta, seOf(Js, v.share, v.m, icc, dsg, ny)), 0)}</td><td>${eur(cost(v, s))}</td></tr>`;
+    });
+    tbl.innerHTML = h;
+    tnote.textContent = `MDE at ${pct(v.pow, 0)} power; ICC ${icc}; ${v.cps} classes/school, ${v.m} students/class, ` +
+      `${pct(v.share, 0)} of classes treated. The 5-school row is the formula at the slider settings with 5 schools, ` +
+      `not the first trial's exact design or its realized SE (realized at 80% power: A 0.94 pp on 95 classes, B with one year 0.77 pp on the 76 classes with a baseline).`;
+  }
+
+  // "Try it" column on the Why tab: fixed reference design 15 classes/school, 22 students, 50%, measured ICC
+  (function levers() {
+    const ref = (sch, d = 'prior', m = 22, pi = 0.5, pow = 0.8) => mdeOf(seOf(sch * 19, pi, m, 0.0418, d), pow) / P.mean;
+    const need = (d, t) => { for (let s = 1; s < 1000; s++) if (ref(s, d) <= t) return s; return '>999'; };
+    const f = x => pct(x);
+    const out = {
+      j:   `${f(ref(35))} → ${f(ref(70))}`,
+      m:   `${f(ref(35))} → ${f(ref(35, 'prior', 30))}`,
+      pi:  `${f(ref(35))} → ${f(ref(35, 'prior', 22, 0.3))}`,
+      r2:  `${f(ref(35, 'post'))} → ${f(ref(35))}`,
+      ny:  `${f(ref(35))} → ${f(mdeOf(seOf(35 * 19, 0.5, 22, 0.0418, 'prior', 2), 0.8) / P.mean)} → ${f(mdeOf(seOf(35 * 19, 0.5, 22, 0.0418, 'prior', 3), 0.8) / P.mean)}`,
+      eff: `${need('prior', 0.05)} → ${need('prior', 0.10)}`,
+      pow: `${f(ref(35))} → ${f(ref(35, 'prior', 22, 0.5, 0.9))}`
+    };
+    document.querySelectorAll('#pw-levers [data-lv]').forEach(e => { e.textContent = out[e.dataset.lv]; });
+  })();
+
+  for (const k in S) S[k].addEventListener('input', draw);
+  $('pw-design').querySelectorAll('button').forEach(b => b.addEventListener('click', () => {
+    dsg = b.dataset.d;
+    b.parentElement.querySelectorAll('button').forEach(x => x.classList.toggle('active', x === b));
+    draw();
+  }));
+  $('pw-ny').querySelectorAll('button').forEach(b => b.addEventListener('click', () => {
+    ny = parseInt(b.dataset.ny, 10);
+    b.parentElement.querySelectorAll('button').forEach(x => x.classList.toggle('active', x === b));
+    draw();
+  }));
+  $('pw-icc').querySelectorAll('button').forEach(b => b.addEventListener('click', () => {
+    icc = parseFloat(b.dataset.icc);
+    b.parentElement.querySelectorAll('button').forEach(x => x.classList.toggle('active', x === b));
+    draw();
+  }));
+  draw();
+})();
+
+
+
+
+</script>
+
+
+</body></html>

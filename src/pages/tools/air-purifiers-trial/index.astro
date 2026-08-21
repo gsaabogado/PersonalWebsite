@@ -1,0 +1,27 @@
+---
+import PageLayout from "../../../layouts/PageLayout.astro";
+import { getLangFromUrl } from "../../../i18n/utils";
+import { tools } from "../../../data/tools";
+
+const lang = getLangFromUrl(Astro.url);
+const tool = tools.find((t) => t.id === "air-purifiers-trial")!;
+---
+
+<PageLayout title={`${tool.title[lang]} — Luis Sarmiento`} description={tool.description[lang]}>
+  <iframe
+    id="pw-frame"
+    src="/tools/air-purifiers-trial/app/"
+    title={tool.title[lang]}
+    class="block w-full border-0"
+    style="min-height: 100vh;"
+    loading="eager"
+  ></iframe>
+  <script>
+    const frame = document.getElementById("pw-frame") as HTMLIFrameElement | null;
+    window.addEventListener("message", (e) => {
+      if (!frame || !e.data || e.data.type !== "pw-height") return;
+      if (e.source !== frame.contentWindow) return;
+      frame.style.height = Math.ceil(e.data.h) + 24 + "px";
+    });
+  </script>
+</PageLayout>
