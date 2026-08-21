@@ -38,7 +38,7 @@ export const publications: Publication[] = [
     questionEs: "¿Cómo afectan las temperaturas a las visitas a urgencias en un país en desarrollo, y difieren los efectos de los patrones de mortalidad?",
     findings: [
       "Cold temperatures reduce ED visits by up to 8.9% on the same day and cumulatively by 16.3% over 30 days; warm temperatures increase visits by up to 3.6%.",
-      "Unlike mortality, which shows a U-shaped response, ED visits respond approximately linearly to temperature — with limited harvesting for heat.",
+      "Unlike mortality, which shows a U-shaped response, ED visits respond approximately linearly to temperature, with limited harvesting for heat.",
       "Children and teenagers are more sensitive to heat; older populations are more vulnerable to cold. Climate projections indicate ED usage will rise, adding an estimated $86 million in annual medical costs by midcentury.",
     ],
     findingsEs: [
@@ -60,7 +60,7 @@ export const publications: Publication[] = [
     findings: [
       "The Inflation Reduction Act amplifies near-term decarbonization, but additional policies have far larger impacts on long-run net-zero outcomes.",
       "Each dollar per metric ton of carbon pricing yields a 0.06–0.31% reduction in economy-wide CO2 across 14 models.",
-      "Energy spending as a share of GDP decreases relative to today for many models — even under net-zero policies.",
+      "Energy spending as a share of GDP decreases relative to today for many models, even under net-zero policies.",
     ],
     findingsEs: [
       "La Ley de Reducción de la Inflación amplifica la descarbonización a corto plazo, pero políticas adicionales tienen impactos mucho mayores en los resultados de cero emisiones netas a largo plazo.",
@@ -123,7 +123,7 @@ export const publications: Publication[] = [
     questionEs: "¿Cómo influye la ocupación en la vulnerabilidad a la mortalidad relacionada con la temperatura en países en desarrollo?",
     findings: [
       "Agricultural workers aged 15–24 are over 10 times more likely to die from heat than peers in professional or managerial jobs.",
-      "People under 35 account for 75% of heat-related deaths — overturning the assumption that elderly populations are most vulnerable.",
+      "People under 35 account for 75% of heat-related deaths, overturning the assumption that elderly populations are most vulnerable.",
       "Occupation is a critical and previously underappreciated driver of climate vulnerability in developing countries.",
     ],
     findingsEs: [
@@ -229,7 +229,7 @@ export const publications: Publication[] = [
     findings: [
       "Higher air pollution exposure leads to significantly more convictions by Indian judges across 10 million penal cases.",
       "Reducing average pollution by one standard deviation could lead to up to 145,000 fewer convictions among active cases.",
-      "The mechanism operates through pollutants altering brain chemistry — causing fatigue, unstable risk preferences, and greater propensity to punish.",
+      "The mechanism operates through pollutants altering brain chemistry, causing fatigue, unstable risk preferences, and greater propensity to punish.",
     ],
     findingsEs: [
       "Una mayor exposición a la contaminación del aire lleva a significativamente más condenas por parte de jueces indios en 10 millones de casos penales.",
@@ -240,7 +240,7 @@ export const publications: Publication[] = [
   {
     title: "The Nonlinear Effects of Pollution on Crime: Evidence from Mexico City and New York",
     authors: "Luis Sarmiento",
-    journal: "Environmental Research — Health 1(2), p.021001",
+    journal: "Environmental Research: Health 1(2), p.021001",
     year: 2023,
     doi: "10.1088/2752-5309/ac9a65",
     status: "published",
@@ -250,7 +250,7 @@ export const publications: Publication[] = [
     findings: [
       "Air pollution and crime follow an inverted U-shape: pollution first increases criminality, then decreases it at very high levels.",
       "Crime peaks at NowCast AQI values of ~150 and 116 in Mexico City; beyond these thresholds, avoidance behavior dominates.",
-      "Analysis uses 2.9 million hourly observations — prior linear models may have mischaracterized the pollution-crime relationship.",
+      "Analysis uses 2.9 million hourly observations. Prior linear models may have mischaracterized the pollution-crime relationship.",
     ],
     findingsEs: [
       "La contaminación del aire y la criminalidad siguen una U invertida: la contaminación primero aumenta la criminalidad, luego la disminuye en niveles muy altos.",
@@ -277,7 +277,7 @@ export const publications: Publication[] = [
     question: "How are the costs of net-zero emissions policies distributed across income groups in the United States?",
     questionEs: "¿Cómo se distribuyen los costos de las políticas de cero emisiones netas entre los grupos de ingreso en Estados Unidos?",
     findings: [
-      "Net-zero policy costs are unevenly distributed — lowest-income households face the largest percentage increase in energy expenditures.",
+      "Net-zero policy costs are unevenly distributed. Lowest-income households face the largest percentage increase in energy expenditures.",
       "Per-capita rebates from climate policy revenues can offset energy burdens, creating net progressive outcomes.",
       "Seven-model comparison provides robust evidence on distributional effects across income groups.",
     ],
@@ -300,7 +300,7 @@ export const publications: Publication[] = [
     findings: [
       "Mexico's 2021 dispatch reform increases the state company's market power to 99% of total generation by 2050.",
       "Renewable share in the generation mix drops from 72% to 51% under the new physical-order dispatch rule.",
-      "Cumulative power sector emissions increase by 563 Mt CO2 — equivalent to ~€36 billion in carbon costs.",
+      "Cumulative power sector emissions increase by 563 Mt CO2, equivalent to ~€36 billion in carbon costs.",
     ],
     findingsEs: [
       "La reforma de despacho de México en 2021 aumenta el poder de mercado de la empresa estatal al 99% de la generación total para 2050.",
@@ -321,7 +321,7 @@ export const publications: Publication[] = [
     questionEs: "¿La contaminación del aire afecta la productividad del trabajo cognitivo de alta cualificación?",
     findings: [
       "A 10 μg/m³ increase in PM2.5 lengthens court hearings by 6.8%; a 10 ppb increase in NO2 adds 5.1%.",
-      "Reducing PM2.5 by 10 μg/m³ would save ~81,712 hearing minutes — equivalent to 56 days of court time.",
+      "Reducing PM2.5 by 10 μg/m³ would save ~81,712 hearing minutes, equivalent to 56 days of court time.",
       "First evidence that air pollution impairs high-skill cognitive work, not just physical labor productivity.",
     ],
     findingsEs: [
@@ -387,7 +387,7 @@ export const publications: Publication[] = [
     questionEs: "¿Cuál es la trayectoria costo-óptima para integrar fuentes de energía renovable en el sistema energético de México?",
     findings: [
       "Cost-optimal renewable shares by 2050: 75% for electricity, 90% for transportation, but only 5% for industrial heating.",
-      "Mexico's official renewable targets are lower than the cost-optimal share — equivalent to a no-climate-policy scenario.",
+      "Mexico's official renewable targets are lower than the cost-optimal share, equivalent to a no-climate-policy scenario.",
       "Full decarbonization is technically feasible but requires substantially higher investment; current targets represent a missed economic opportunity.",
     ],
     findingsEs: [
@@ -486,12 +486,12 @@ export const publications: Publication[] = [
     question: "How do material imbalances between countries and recycling policies shape international waste trade?",
     questionEs: "¿Cómo influyen los desequilibrios de materiales entre países y las políticas de reciclaje en el comercio internacional de residuos?",
     findings: [
-      "Countries experience material imbalances — disparities between production material needs and consumption waste — that drive international waste trade flows.",
+      "Countries experience material imbalances (disparities between production material needs and consumption waste) that drive international waste trade flows.",
       "Gravity model estimates show an elasticity of 0.8 between country-pair material imbalances and waste exports, confirming their role as a key determinant.",
       "Poorly designed recycling policies may encourage waste exports to developing countries rather than enhance domestic recycling, raising environmental and ethical concerns.",
     ],
     findingsEs: [
-      "Los países experimentan desequilibrios de materiales —disparidades entre las necesidades de materiales de producción y los residuos de consumo— que impulsan los flujos de comercio internacional de residuos.",
+      "Los países experimentan desequilibrios de materiales (disparidades entre las necesidades de materiales de producción y los residuos de consumo) que impulsan los flujos de comercio internacional de residuos.",
       "Las estimaciones del modelo gravitacional muestran una elasticidad de 0.8 entre los desequilibrios de materiales por par de países y las exportaciones de residuos, confirmando su papel como determinante clave.",
       "Las políticas de reciclaje mal diseñadas pueden fomentar las exportaciones de residuos a países en desarrollo en lugar de mejorar el reciclaje doméstico, generando preocupaciones ambientales y éticas.",
     ],
@@ -559,7 +559,7 @@ export const publications: Publication[] = [
     question: "Did Madrid's low emission zone improve city-wide air quality and health, or did it produce unintended consequences?",
     questionEs: "¿La zona de bajas emisiones de Madrid mejoró la calidad del aire y la salud de toda la ciudad, o produjo consecuencias no deseadas?",
     findings: [
-      "While pollution fell within the restricted area, it increased in neighboring zones — leading to worse city-wide air quality overall.",
+      "While pollution fell within the restricted area, it increased in neighboring zones, leading to worse city-wide air quality overall.",
       "Aggregate effects suggest an increase in annual all-cause mortality of more than 900 additional deaths (3.7%).",
       "The policy exacerbated disparities in pollution exposure between high- and low-income neighborhoods.",
     ],

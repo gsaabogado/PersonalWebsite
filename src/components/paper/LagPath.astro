@@ -1,0 +1,285 @@
+---
+/**
+ * How the effect accumulates: cumulative percent change in ED visits from the
+ * day of exposure out to 30 days after it, one line per temperature interval.
+ *
+ * All five lines are always drawn, because the shape of the whole family is the
+ * point: the cold lines keep falling while the hot lines flatten. One interval's
+ * confidence band is shown at a time — five overlapping ribbons would be
+ * unreadable. The default focus is ≤10 °C, the paper's headline result, and it
+ * is rendered server-side so the chart is complete without JavaScript.
+ */
+import lagData from "../../data/paper/m1_lagpath.json";
+import {
+  scaleLinear,
+  niceTicks,
+  fmtPct,
+  linePath,
+  bandPath,
+  binLabel,
+  SIDE_COLOR,
+  SIDE_CI_COLOR,
+  type Estimate,
+  type Lang,
+} from "./chart-utils";
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+
+const rows = lagData as Estimate[];
+const DEFAULT_FOCUS = "-15_10";
+
+const bins = [...new Set(rows.map((r) => r.bin))]
+  .map((bin) => {
+    const series = rows
+      .filter((r) => r.bin === bin)
+      .sort((a, b) => a.horizon - b.horizon);
+    return { bin, series, meta: series[0] };
+  })
+  .sort((a, b) => a.meta.bin_order - b.meta.bin_order);
+
+// --- geometry ---------------------------------------------------------------
+const W = 780;
+const H = 430;
+const M = { top: 26, right: 128, bottom: 60, left: 62 };
+const plotW = W - M.left - M.right;
+const plotH = H - M.top - M.bottom;
+
+const focusSeries = bins.find((b) => b.bin === DEFAULT_FOCUS)!.series;
+const yMin = Math.min(...rows.map((r) => r.pct), ...focusSeries.map((r) => r.ci_low), 0);
+const yMax = Math.max(...rows.map((r) => r.pct), ...focusSeries.map((r) => r.ci_high), 0);
+const pad = (yMax - yMin) * 0.06;
+
+const x = scaleLinear([0, 30], [M.left, M.left + plotW]);
+const y = scaleLinear([yMin - pad, yMax + pad], [M.top + plotH, M.top]);
+const ticks = niceTicks(yMin - pad, yMax + pad, 6);
+const xTicks = [0, 5, 10, 15, 20, 25, 30];
+
+const strings = {
+  en: {
+    yAxis: "Cumulative change in ED visits (%)",
+    xAxis: "Days since the temperature day",
+    focus: "Confidence interval for:",
+    caption:
+      "Each line is the cumulative effect of one day in the given temperature interval, summed from that day through the following 30. The shaded ribbon is the 95% confidence interval for the selected interval only.",
+    days: "days",
+  },
+  es: {
+    yAxis: "Cambio acumulado en visitas a urgencias (%)",
+    xAxis: "Días desde el día de la temperatura",
+    focus: "Intervalo de confianza para:",
+    caption:
+      "Cada línea es el efecto acumulado de un día en el intervalo de temperatura indicado, sumado desde ese día hasta 30 días después. La banda sombreada es el intervalo de confianza del 95% únicamente para el intervalo seleccionado.",
+    days: "días",
+  },
+}[lang];
+---
+
+<figure class="not-prose" data-chart="lag-path">
+  <div class="mb-5 flex flex-wrap items-center gap-2">
+    <span class="mr-1 text-[13px] text-slate-light">{strings.focus}</span>
+    {
+      bins.map((b) => (
+        <button
+          type="button"
+          data-focus-btn={b.bin}
+          aria-pressed={b.bin === DEFAULT_FOCUS ? "true" : "false"}
+          class="lag-btn tnum"
+        >
+          {binLabel(b.meta, lang)}
+        </button>
+      ))
+    }
+  </div>
+
+  <svg
+    viewBox={`0 0 ${W} ${H}`}
+    class="h-auto w-full overflow-visible"
+    role="img"
+    aria-label={strings.yAxis}
+  >
+    {
+      ticks.map((tv) => (
+        <g>
+          <line
+            x1={M.left}
+            x2={M.left + plotW}
+            y1={y(tv)}
+            y2={y(tv)}
+            stroke={tv === 0 ? "var(--color-rule-strong)" : "var(--color-rule)"}
+            stroke-width={tv === 0 ? 1.25 : 1}
+            stroke-dasharray={tv === 0 ? "none" : "2 4"}
+          />
+          <text
+            x={M.left - 10}
+            y={y(tv) + 4}
+            text-anchor="end"
+            class="tnum fill-slate-light text-[12px]"
+          >
+            {tv > 0 ? `+${tv}` : tv}
+          </text>
+        </g>
+      ))
+    }
+
+    <text
+      x={M.left - 46}
+      y={M.top + plotH / 2}
+      text-anchor="middle"
+      transform={`rotate(-90 ${M.left - 46} ${M.top + plotH / 2})`}
+      class="fill-annotation text-[12.5px]"
+    >
+      {strings.yAxis}
+    </text>
+
+    {
+      xTicks.map((tv) => (
+        <text
+          x={x(tv)}
+          y={M.top + plotH + 22}
+          text-anchor="middle"
+          class="tnum fill-slate-light text-[12px]"
+        >
+          {tv}
+        </text>
+      ))
+    }
+    <text
+      x={M.left + plotW / 2}
+      y={H - 12}
+      text-anchor="middle"
+      class="fill-annotation text-[12.5px]"
+    >
+      {strings.xAxis}
+    </text>
+
+    {/* Confidence ribbons — all rendered, one visible at a time. */}
+    {
+      bins.map((b) => (
+        <path
+          class:list={["lp-band", { "is-focus": b.bin === DEFAULT_FOCUS }]}
+          data-bin={b.bin}
+          d={bandPath(
+            b.series.map((r) => [x(r.horizon), y(r.ci_high)] as [number, number]),
+            b.series.map((r) => [x(r.horizon), y(r.ci_low)] as [number, number])
+          )}
+          fill={SIDE_CI_COLOR[b.meta.side]}
+        />
+      ))
+    }
+
+    {/* Lines and their terminal labels. */}
+    {
+      bins.map((b) => {
+        const last = b.series[b.series.length - 1];
+        return (
+          <g
+            class:list={["lp-line", { "is-focus": b.bin === DEFAULT_FOCUS }]}
+            data-bin={b.bin}
+          >
+            <path
+              d={linePath(
+                b.series.map((r) => [x(r.horizon), y(r.pct)] as [number, number])
+              )}
+              fill="none"
+              stroke={SIDE_COLOR[b.meta.side]}
+              stroke-width="2.25"
+              stroke-linejoin="round"
+              stroke-linecap="round"
+            />
+            <circle
+              cx={x(last.horizon)}
+              cy={y(last.pct)}
+              r="3.5"
+              fill={SIDE_COLOR[b.meta.side]}
+            />
+            <text
+              x={x(last.horizon) + 10}
+              y={y(last.pct) + 4}
+              class="tnum text-[12px] font-medium"
+              fill={SIDE_COLOR[b.meta.side]}
+            >
+              {binLabel(b.meta, lang)}
+            </text>
+            <text
+              x={x(last.horizon) + 10}
+              y={y(last.pct) + 19}
+              class="tnum text-[11.5px]"
+              fill="var(--color-annotation)"
+            >
+              {fmtPct(last.pct)}
+            </text>
+          </g>
+        );
+      })
+    }
+  </svg>
+
+  <figcaption class="mt-4 max-w-2xl text-[13.5px] leading-relaxed text-slate-light">
+    {strings.caption}
+  </figcaption>
+</figure>
+
+<style>
+  .lag-btn {
+    border: 1px solid var(--color-rule);
+    border-radius: 3px;
+    padding: 0.3rem 0.65rem;
+    font-size: 12.5px;
+    color: var(--color-slate-light);
+    background: white;
+    transition:
+      background-color 140ms cubic-bezier(0.32, 0.72, 0, 1),
+      border-color 140ms cubic-bezier(0.32, 0.72, 0, 1),
+      color 140ms cubic-bezier(0.32, 0.72, 0, 1);
+  }
+  .lag-btn:hover {
+    border-color: var(--color-rule-strong);
+    color: var(--color-charcoal);
+  }
+  .lag-btn[aria-pressed="true"] {
+    background: var(--color-slate);
+    border-color: var(--color-slate);
+    color: white;
+  }
+  .lag-btn:focus-visible {
+    outline: 2px solid var(--color-sky);
+    outline-offset: 2px;
+  }
+
+  .lp-band {
+    opacity: 0;
+    transition: opacity 180ms cubic-bezier(0.32, 0.72, 0, 1);
+  }
+  .lp-band.is-focus {
+    opacity: 1;
+  }
+
+  /* Unfocused lines stay legible but recede, so the family shape survives. */
+  .lp-line {
+    opacity: 0.42;
+    transition: opacity 180ms cubic-bezier(0.32, 0.72, 0, 1);
+  }
+  .lp-line.is-focus {
+    opacity: 1;
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-chart="lag-path"]').forEach((fig) => {
+    const buttons = fig.querySelectorAll<HTMLButtonElement>("[data-focus-btn]");
+    buttons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const bin = btn.dataset.focusBtn!;
+        fig.querySelectorAll<SVGElement>(".lp-band, .lp-line").forEach((el) => {
+          el.classList.toggle("is-focus", el.dataset.bin === bin);
+        });
+        buttons.forEach((b) =>
+          b.setAttribute("aria-pressed", String(b.dataset.focusBtn === bin))
+        );
+      });
+    });
+  });
+</script>

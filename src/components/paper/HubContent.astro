@@ -1,0 +1,263 @@
+---
+import ModuleRail from "./ModuleRail.astro";
+import {
+  MODULES,
+  modulePath,
+  PAPER,
+  type Lang,
+} from "../../data/outreach";
+import curveData from "../../data/paper/m1_curve.json";
+import chapterData from "../../data/paper/m4_chapters.json";
+import ageData from "../../data/paper/m3_age.json";
+import sevData from "../../data/paper/m5_projections_severity.json";
+import mechData from "../../data/paper/m7_mechanisms.json";
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+
+/* Every figure in the practitioner panel is read from the exported estimates, so
+   the takeaways cannot drift from the modules they point at. */
+type Row = Record<string, unknown> & { bin: string; horizon: number; pct: number };
+const pick = (rows: unknown[], pred: (r: Row) => boolean) =>
+  (rows as Row[]).find(pred)!;
+
+const cold = (h: number) => pick(curveData, (r) => r.bin === "-15_10" && r.horizon === h);
+const hot = (h: number) => pick(curveData, (r) => r.bin === "30_45" && r.horizon === h);
+const chap = (c: string, h: number) =>
+  pick(chapterData, (r) => r.chapter === c && r.bin === "-15_10" && r.horizon === h);
+const age = (spec: string, bin: string, h: number) =>
+  pick(ageData, (r) => r.spec === spec && r.bin === bin && r.horizon === h);
+/* Cold, 30 days: every chapter falls except respiratory (eye-ear and circulatory
+   are positive but insignificant, so they are not "rises"). */
+const fallingCold = (chapterData as Row[]).filter(
+  (r) => r.bin === "-15_10" && r.horizon === 30 && r.pct < 0
+);
+const smallestFall = Math.max(...fallingCold.map((r) => r.pct));
+const largestFall = Math.min(...fallingCold.map((r) => r.pct));
+/* Severity shares: the paper states them "around 2050", i.e. the 2041-2050 decade. */
+const sev2050 = (sevData as Array<Record<string, unknown>>).filter(
+  (r) => r.outcome === "Hospitalized" && r.decade === "2041 - 2050"
+);
+const hotShare = Math.round(
+  (sev2050.find((r) => r.effect === "Hot")!.share_hospitalized as number) * 100
+);
+const coldShare = Math.round(
+  (sev2050.find((r) => r.effect === "Cold")!.share_hospitalized as number) * 100
+);
+const mech = (icd: string, bin: string, h: number) =>
+  pick(mechData, (r) => (r as Row & { icd10: string }).icd10 === icd && r.bin === bin && r.horizon === h);
+const t63Base = (mechData as Array<Record<string, unknown>>).find((r) => r.icd10 === "t63")!
+  .baseline_mean as number;
+const pct0 = (v: number) => `${Math.abs(v).toFixed(0)} percent`;
+const pct1 = (v: number) => `${Math.abs(v).toFixed(1)} percent`;
+const pc0 = (v: number) => `${Math.abs(v).toFixed(0)} por ciento`;
+const pc1 = (v: number) => `${Math.abs(v).toFixed(1)} por ciento`;
+const CD_DOI = "https://doi.org/10.1257/pol.20180594";
+
+const mod = (id: string) => MODULES.find((m) => m.id === id)!;
+
+const strings = {
+  en: {
+    eyebrow: `${PAPER.journal} · forthcoming`,
+    h1: "Cold weather reduces emergency department visits in Mexico by more than heat increases them.",
+    lede: "Daily records from the universe of public hospitals in Mexico, 2008 to 2021, show three things.",
+    findings: [
+      "Cold days cut emergency department visits by up to 9.1 percent on the day itself.",
+      "Accounting for the following 30 days, the reduction from a cold day reaches 16 percent.",
+      "Hot days raise visits by up to 3.7 percent, and the effect does not accumulate the way cold does.",
+    ],
+    coda: "Unlike mortality, the demand for emergency care responds to temperature almost linearly.",
+    useTitle: "What to do with this",
+    useIntro:
+      "Eight things that follow from the estimates and matter for planning emergency services, four for cold days and four for hot ones.",
+    coldHead: "Cold days",
+    hotHead: "Hot days",
+    cold: [
+      ["cold", `Cold kills, but it does not fill emergency rooms.`, `Mortality has a well-documented U-shaped relationship with temperature: both cold and hot days raise deaths, in Mexico as elsewhere (<a href="${CD_DOI}">Cohen and Dechezleprêtre, 2022</a>). Emergency visits do not. An additional cold day reduces them by ${pct1(cold(0).pct)} on the day and by ${pct0(cold(30).pct)} accounting for the following 30 days, while an additional hot day raises them by up to ${pct1(hot(0).pct)}.`],
+      ["curve", `The cold effect is not over on the day.`, `An additional day below 10°C reduces visits by ${pct1(cold(0).pct)} on the day itself and by ${pct0(cold(30).pct)} once the following 30 days are accounted for; most of the difference builds up over the first two weeks.`],
+      ["conditions", `Cold empties the emergency room, except for respiratory cases.`, `Accounting for 30 days, an additional cold day reduces visits in every diagnostic chapter but one, from ${pct0(smallestFall)} for endocrine and metabolic conditions to ${pct0(largestFall)} for infectious and parasitic diseases. Respiratory visits are the exception: they fall ${pct1(chap("respiratory", 0).pct)} on the day and rise ${pct0(chap("respiratory", 30).pct)} cumulatively, consistent with infections spreading after cold exposure.`],
+      ["who", `The young stay away longest; the old barely change.`, `Accounting for 30 days after a cold day, visits fall ${pct0(age("12_20", "-15_10", 30).pct)} for ages 12 to 20 and ${pct0(age("20_40", "-15_10", 30).pct)} for ages 20 to 40, against a statistically insignificant ${pct1(age("80_130", "-15_10", 30).pct)} for the over-80s. Same-day reductions run from ${Math.abs(age("20_40", "-15_10", 0).pct).toFixed(0)} to ${pct0(age("0_12", "-15_10", 0).pct)} across ages; the gap opens in the weeks that follow.`],
+    ],
+    hot: [
+      ["curve", `Heat is a same-day effect.`, `An additional day above 30°C raises visits by ${pct1(hot(0).pct)} on the day and by ${pct1(hot(30).pct)} once the following 30 days are accounted for. The cumulative effect is slightly smaller than the same-day one, a sign that some of the visits are brought forward rather than added.`],
+      ["who", `Heat hits the young.`, `On a hot day, visits rise ${Math.abs(age("20_40", "30_45", 0).pct).toFixed(0)} to ${pct0(age("12_20", "30_45", 0).pct)} for people under 40 and do not rise for those over 60; for the over-80s they fall ${pct0(age("80_130", "30_45", 0).pct)}. Children, adolescents and young adults are the groups to plan around.`],
+      ["conditions", `Heat brings bites, bugs and spoiled food.`, `On a day above 30°C, same-day visits for contact with venomous animals and plants rise ${pct0(mech("t63", "30_45", 0).pct)}, gastroenteritis ${pct0(mech("a09", "30_45", 0).pct)} and foodborne intoxication ${pct0(mech("a05", "30_45", 0).pct)}. Dengue responds to warm rather than hot days: ${pct0(mech("a90", "25_30", 0).pct)} on a day at 25 to 30°C, building over the following month. These are large shares of small numbers; venomous contacts average ${t63Base.toFixed(1)} visits per 100,000 people per day.`],
+      ["projections", `Equal visit counts do not mean equal bed demand.`, `Around 2050, roughly ${hotShare} percent of the projected excess visits attributable to heat require hospitalization, against ${coldShare} percent of those attributable to cold and a historical rate of 13 percent across all visits. Heat adds severe cases; the cold-related change is concentrated in low-severity ones.`],
+    ],
+    aboutTitle: "What this is",
+    methodLink: "For the method and robustness checks, see the paper",
+    about:
+      "A companion to the paper, built for people who plan and staff emergency services rather than for referees. Every figure is an estimate from the published paper, shown with its confidence interval and downloadable as the numbers behind it. Nothing here is new analysis.",
+    citeTitle: "Cite the paper",
+    dataTitle: "Data and code",
+    dataBody:
+      "The full replication package, including the code that produced every estimate on this site, and the archived data.",
+  },
+  es: {
+    eyebrow: `${PAPER.journal} · en prensa`,
+    h1: "El frío reduce las visitas a urgencias en México más de lo que el calor las aumenta.",
+    lede: "Los registros diarios de la totalidad de los hospitales públicos de México, de 2008 a 2021, muestran tres cosas.",
+    findings: [
+      "Los días fríos reducen las visitas a urgencias hasta 9.1 por ciento el mismo día.",
+      "Contando los 30 días siguientes, la reducción por un día frío llega a 16 por ciento.",
+      "Los días calurosos aumentan las visitas hasta 3.7 por ciento, y el efecto no se acumula como el del frío.",
+    ],
+    coda: "A diferencia de la mortalidad, la demanda de atención de urgencias responde a la temperatura de forma casi lineal.",
+    useTitle: "Qué hacer con esto",
+    useIntro:
+      "Ocho cosas que se siguen de las estimaciones y que importan para planear los servicios de urgencias, cuatro para los días fríos y cuatro para los calurosos.",
+    coldHead: "Días fríos",
+    hotHead: "Días calurosos",
+    cold: [
+      ["cold", `El frío mata, pero no llena las salas de urgencias.`, `La mortalidad tiene una relación en forma de U con la temperatura bien documentada: tanto los días fríos como los calurosos aumentan las muertes, en México como en otros países (<a href="${CD_DOI}">Cohen y Dechezleprêtre, 2022</a>). Las visitas a urgencias no. Un día frío adicional las reduce ${pc1(cold(0).pct)} el mismo día y ${pc0(cold(30).pct)} contando los 30 días siguientes, mientras que un día caluroso adicional las aumenta hasta ${pc1(hot(0).pct)}.`],
+      ["curve", `El efecto del frío no termina el mismo día.`, `Un día adicional por debajo de 10°C reduce las visitas ${pc1(cold(0).pct)} el mismo día y ${pc0(cold(30).pct)} una vez contados los 30 días siguientes; la mayor parte de la diferencia se acumula en las primeras dos semanas.`],
+      ["conditions", `El frío vacía urgencias, salvo por los casos respiratorios.`, `Contando 30 días, un día frío adicional reduce las visitas en todos los capítulos diagnósticos menos uno, desde ${pc0(smallestFall)} en padecimientos endocrinos y metabólicos hasta ${pc0(largestFall)} en enfermedades infecciosas y parasitarias. Las visitas respiratorias son la excepción: caen ${pc1(chap("respiratory", 0).pct)} el mismo día y suben ${pc0(chap("respiratory", 30).pct)} en el acumulado, consistente con la propagación de infecciones tras la exposición al frío.`],
+      ["who", `Los jóvenes se alejan por más tiempo; los mayores apenas cambian.`, `Contando los 30 días posteriores a un día frío, las visitas caen ${pc0(age("12_20", "-15_10", 30).pct)} entre los 12 y 20 años y ${pc0(age("20_40", "-15_10", 30).pct)} entre los 20 y 40, frente a un ${pc1(age("80_130", "-15_10", 30).pct)} estadísticamente no significativo en mayores de 80. Las reducciones del mismo día van de ${Math.abs(age("20_40", "-15_10", 0).pct).toFixed(0)} a ${pc0(age("0_12", "-15_10", 0).pct)} según la edad; la brecha se abre en las semanas siguientes.`],
+    ],
+    hot: [
+      ["curve", `El calor es un efecto del mismo día.`, `Un día adicional por encima de 30°C aumenta las visitas ${pc1(hot(0).pct)} el mismo día y ${pc1(hot(30).pct)} una vez contados los 30 días siguientes. El efecto acumulado es algo menor que el del mismo día, señal de que parte de las visitas se adelantan en vez de sumarse.`],
+      ["who", `El calor golpea a los jóvenes.`, `En un día caluroso, las visitas suben entre ${Math.abs(age("20_40", "30_45", 0).pct).toFixed(0)} y ${pc0(age("12_20", "30_45", 0).pct)} en menores de 40 años y no suben en mayores de 60; en mayores de 80 caen ${pc0(age("80_130", "30_45", 0).pct)}. Niños, adolescentes y adultos jóvenes son los grupos alrededor de los cuales planear.`],
+      ["conditions", `El calor trae picaduras, bichos y comida en mal estado.`, `En un día por encima de 30°C, las visitas del mismo día por contacto con animales y plantas venenosos suben ${pc0(mech("t63", "30_45", 0).pct)}, las de gastroenteritis ${pc0(mech("a09", "30_45", 0).pct)} y las de intoxicación alimentaria ${pc0(mech("a05", "30_45", 0).pct)}. El dengue responde a los días cálidos más que a los calurosos: ${pc0(mech("a90", "25_30", 0).pct)} en un día de 25 a 30°C, y se acumula durante el mes siguiente. Son porcentajes grandes de números pequeños; los contactos con animales venenosos promedian ${t63Base.toFixed(1)} visitas por cada 100,000 personas al día.`],
+      ["projections", `Conteos de visitas iguales no implican demanda de camas igual.`, `Alrededor de 2050, cerca de ${hotShare} por ciento de las visitas adicionales proyectadas atribuibles al calor requieren hospitalización, frente a ${coldShare} por ciento de las atribuibles al frío y una tasa histórica de 13 por ciento en el total de visitas. El calor añade casos graves; el cambio asociado al frío se concentra en casos de baja gravedad.`],
+    ],
+    aboutTitle: "Qué es esto",
+    methodLink: "Para el método y las pruebas de robustez, consulta el artículo",
+    about:
+      "Un complemento del artículo, hecho para quienes planean y dotan de personal los servicios de urgencias, no para dictaminadores. Cada figura es una estimación del artículo publicado, con su intervalo de confianza y descargable con los números que la producen. Nada aquí es análisis nuevo.",
+    citeTitle: "Cita el artículo",
+    dataTitle: "Datos y código",
+    dataBody:
+      "El paquete de replicación completo, incluyendo el código que produjo cada estimación de este sitio, y los datos archivados.",
+  },
+}[lang];
+
+---
+
+<ModuleRail lang={lang} current="hub" />
+
+<div class="mx-auto max-w-6xl px-6">
+  {/* --- header. No badge above the H1, no centred hero. ------------------- */}
+  <header class="max-w-3xl border-b border-rule py-14 sm:py-20">
+    <p class="text-[13px] tracking-normal text-slate-light">{strings.eyebrow}</p>
+    <h1
+      class="mt-4 font-display text-[2.1rem] leading-[1.15] font-semibold text-charcoal sm:text-[2.9rem]"
+    >
+      {strings.h1}
+    </h1>
+    <p class="mt-6 text-[1.0625rem] leading-relaxed text-slate-light sm:text-[1.125rem]">
+      {strings.lede}
+    </p>
+    <ol
+      class="mt-4 list-decimal space-y-2 pl-6 text-[1.0625rem] leading-relaxed text-slate-light sm:text-[1.125rem] marker:text-slate-light"
+    >
+      {strings.findings.map((f) => <li>{f}</li>)}
+    </ol>
+    <p class="mt-4 text-[1.0625rem] leading-relaxed text-slate-light sm:text-[1.125rem]">
+      {strings.coda}
+    </p>
+    <p class="mt-6 text-[14px] text-slate-light">
+      {PAPER.authors}
+    </p>
+  </header>
+
+  {/* --- what to do with this -------------------------------------------- */}
+  <section id="what" class="py-12 sm:py-16">
+    <h2 class="font-display text-[1.5rem] leading-snug font-semibold text-charcoal">
+      {strings.useTitle}
+    </h2>
+    <p class="mt-3 max-w-2xl text-[15px] leading-relaxed text-slate-light">
+      {strings.useIntro}
+    </p>
+    <div class="mt-8 grid gap-x-12 gap-y-12 lg:grid-cols-2">
+      {
+        (
+          [
+            ["cold", strings.coldHead, strings.cold],
+            ["hot", strings.hotHead, strings.hot],
+          ] as const
+        ).map(([side, head, items]) => (
+          <div>
+            <h3
+              class:list={[
+                "text-[13px] font-medium tracking-normal",
+                side === "cold" ? "text-temp-cold" : "text-temp-hot",
+              ]}
+            >
+              {head}
+            </h3>
+            <ol class="mt-4 list-none space-y-8">
+              {items.map(([id, claim, why]) => (
+                <li
+                  class:list={[
+                    "border-l-2 pl-4",
+                    side === "cold" ? "border-temp-cold" : "border-temp-hot",
+                  ]}
+                >
+                  <p class="font-display text-[1.1rem] leading-snug font-semibold text-charcoal">
+                    {claim}
+                  </p>
+                  <p class="mt-1.5 text-[14.5px] leading-relaxed text-slate-light" set:html={why} />
+                  <a
+                    href={modulePath(mod(id), lang)}
+                    class="mt-2 inline-block text-[13px] text-sky underline underline-offset-4"
+                  >
+                    {mod(id).short[lang]} →
+                  </a>
+                </li>
+              ))}
+            </ol>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  {/* --- about, citation, access ------------------------------------------ */}
+  <section class="grid gap-10 border-t border-rule py-12 sm:grid-cols-3 sm:py-16">
+    <div>
+      <h2 class="font-display text-[1.15rem] font-semibold text-charcoal">
+        {strings.aboutTitle}
+      </h2>
+      <p class="mt-3 text-[14.5px] leading-relaxed text-slate-light">{strings.about}</p>
+      <a href="#cite" class="mt-2 inline-block text-[13px] text-sky underline underline-offset-4">
+        {strings.methodLink} →
+      </a>
+    </div>
+    <div id="cite">
+      <h2 class="font-display text-[1.15rem] font-semibold text-charcoal">
+        {strings.citeTitle}
+      </h2>
+      <p class="mt-3 text-[14.5px] leading-relaxed text-slate-light">
+        {PAPER.authors}. <span class="italic">{PAPER.title[lang]}</span>.{" "}
+        {PAPER.journal}.
+      </p>
+    </div>
+    <div>
+      <h2 class="font-display text-[1.15rem] font-semibold text-charcoal">
+        {strings.dataTitle}
+      </h2>
+      <p class="mt-3 text-[14.5px] leading-relaxed text-slate-light">
+        {strings.dataBody}
+      </p>
+      <p class="mt-3 flex flex-col gap-1 text-[14px]">
+        <a href={PAPER.codeUrl} class="hub-link">{PAPER.codeUrl.replace("https://", "")}</a>
+        <a href={PAPER.dataUrl} class="hub-link tnum">doi:{PAPER.dataDoi}</a>
+      </p>
+    </div>
+  </section>
+</div>
+
+<style>
+  .hub-link {
+    color: var(--color-sky);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+    word-break: break-word;
+  }
+  .hub-link:hover {
+    color: var(--color-slate);
+  }
+</style>

@@ -1,0 +1,380 @@
+---
+/**
+ * How we know: the design, and what happens when you change it.
+ *
+ * This page shows the robustness checks including the one that does not flatter
+ * the paper. The 30-day cumulative cold effect ranges from +2.5 to -22.3 across
+ * seven fixed-effects specifications, and is insignificant in the three that
+ * include national day fixed effects. Hiding that would be the wrong call: it has
+ * a structural explanation, it is already in the published appendix, and a reader
+ * who finds it later without the explanation draws a worse conclusion than one who
+ * meets it here with it.
+ */
+import ModuleRail from "./ModuleRail.astro";
+import GroupCurves from "./GroupCurves.astro";
+import DataDownload from "./DataDownload.astro";
+import feData from "../../data/paper/m6_fixed_effects.json";
+import weatherData from "../../data/paper/m6_weather_source.json";
+import outcomeData from "../../data/paper/m6_outcome.json";
+import { fmtMag, fmtPct, type Estimate, type Lang } from "./chart-utils";
+import { MODULES, SECTION_BASE, PAPER } from "../../data/outreach";
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+
+type FeRow = Estimate & { spec: string; fe_name: string; nobs: number };
+type WxRow = Estimate & { source: string };
+type OutRow = Estimate & { spec: string; spec_label_en: string; spec_label_es: string };
+
+const fe = feData as FeRow[];
+const wx = weatherData as WxRow[];
+const out = outcomeData as OutRow[];
+
+/* --- fixed effects ---------------------------------------------------------
+   Labels are the specification number, with the paper's preferred marked, and a
+   table beneath carries the formulas. Putting "agem^year^month + weekday" in a
+   chart legend helps nobody. */
+const PREFERRED = "6";
+const feSpecs = [...new Set(fe.map((r) => r.spec))].sort((a, b) => Number(a) - Number(b));
+const feName = (spec: string) => fe.find((r) => r.spec === spec)!.fe_name;
+const hasDayFE = (spec: string) => /(^|\W)date(\W|$)/.test(feName(spec));
+
+const feRows = fe
+  .filter((r) => r.horizon === 0 || r.horizon === 30)
+  .map((r) => ({
+    ...r,
+    group_order: Number(r.spec),
+    group_label_en: r.spec === PREFERRED ? `${r.spec} ★` : r.spec,
+    group_label_es: r.spec === PREFERRED ? `${r.spec} ★` : r.spec,
+  }));
+
+const coldAt = (rows: Estimate[], key: string, val: string, h: number) =>
+  (rows as Array<Estimate & Record<string, unknown>>).find(
+    (r) => String(r[key]) === val && r.bin === "-15_10" && r.horizon === h
+  )!;
+
+const withDay = feSpecs.filter(hasDayFE);
+const withoutDay = feSpecs.filter((s) => !hasDayFE(s));
+
+const n = {
+  nSpecs: String(feSpecs.length),
+  nWithDay: String(withDay.length),
+  nWithoutDay: String(withoutDay.length),
+  day0Lo: fmtMag(Math.min(...withDay.map((s) => Math.abs(coldAt(fe, "spec", s, 0).pct)))),
+  day0Hi: fmtMag(Math.max(...withDay.map((s) => Math.abs(coldAt(fe, "spec", s, 0).pct)))),
+  noday0Lo: fmtMag(Math.min(...withoutDay.map((s) => Math.abs(coldAt(fe, "spec", s, 0).pct)))),
+  noday0Hi: fmtMag(Math.max(...withoutDay.map((s) => Math.abs(coldAt(fe, "spec", s, 0).pct)))),
+  noday30Lo: fmtMag(Math.min(...withoutDay.map((s) => Math.abs(coldAt(fe, "spec", s, 30).pct)))),
+  noday30Hi: fmtMag(Math.max(...withoutDay.map((s) => Math.abs(coldAt(fe, "spec", s, 30).pct)))),
+  preferred30: fmtMag(coldAt(fe, "spec", PREFERRED, 30).pct),
+  preferred0: fmtMag(coldAt(fe, "spec", PREFERRED, 0).pct),
+};
+
+/* --- weather source -------------------------------------------------------- */
+const WX_LABEL: Record<string, { en: string; es: string; order: number }> = {
+  ERA5: { en: "ERA5 (used)", es: "ERA5 (usada)", order: 1 },
+  "CONAGUA (station+IDW)": { en: "CONAGUA, interpolated", es: "CONAGUA, interpolada", order: 2 },
+  "CONAGUA station-only": { en: "CONAGUA, stations only", es: "CONAGUA, solo estaciones", order: 3 },
+};
+const wxRows = wx.map((r) => ({
+  ...r,
+  spec: r.source,
+  group_order: WX_LABEL[r.source].order,
+  group_label_en: WX_LABEL[r.source].en,
+  group_label_es: WX_LABEL[r.source].es,
+}));
+const wxCold = Object.keys(WX_LABEL).map((k) => coldAt(wx, "source", k, 30).pct);
+
+/* --- outcome --------------------------------------------------------------- */
+const outRows = out
+  .filter((r) => r.horizon === 0 || r.horizon === 30)
+  .map((r) => ({
+    ...r,
+    group_order: r.spec === "home" ? 1 : 2,
+    // GroupCurves reads group_label_*, not spec_label_*.
+    group_label_en: r.spec_label_en,
+    group_label_es: r.spec_label_es,
+  }));
+const outHome = coldAt(out, "spec", "home", 30);
+const outHosp = coldAt(out, "spec", "hosp", 30);
+
+const RAMP7 = ["#c3cfdd", "#a3b2c6", "#8496ad", "#647892", "#485c76", "#111c2b", "#93a5bc"];
+const RAMP3 = ["#111c2b", "#647892", "#a3b2c6"];
+const RAMP2 = ["#5a6b82", "#111c2b"];
+
+const self = MODULES.find((m) => m.id === "method")!;
+
+const strings = {
+  en: {
+    eyebrow: self.short.en,
+    h1: self.question.en,
+    standfirst: `Every number on this site comes from one kind of model: a Poisson regression of daily emergency department visits on which temperature interval the day fell into, with thirty days of lags, fitted to the universe of Mexican public hospitals from 2008 to 2021. This page shows what the model holds fixed, and what happens to the answer when those choices are changed.`,
+    designTitle: "The design in five parts",
+    design: [
+      ["What is counted", "Emergency department visits per municipality, age group and day. Counts, not rates, with population entering as a weight."],
+      ["What is compared", "A day in one temperature interval against a day between 20 and 25 °C in the same municipality, same age group, same month of the same year."],
+      ["What is absorbed", "Municipality by age by year-month, and municipality by age by weekday. That removes any difference between places, any local seasonal pattern, and any day-of-week rhythm."],
+      ["What else is controlled", "Precipitation and its square, and relative humidity, each with the same thirty lags as temperature."],
+      ["How uncertainty is computed", "Standard errors clustered at the municipality level, so days within a municipality are allowed to be correlated with each other."],
+    ],
+    feTitle: "Change the fixed effects and see what moves",
+    feRead: [
+      `The same-day effect survives everything. Cold reduces visits in all ${n.nSpecs} specifications, at better than one percent significance in every one. The magnitude splits cleanly: ${n.noday0Lo} to ${n.noday0Hi} in the ${n.nWithoutDay} specifications without national day fixed effects, ${n.day0Lo} to ${n.day0Hi} in the ${n.nWithDay} that include them.`,
+      `The 30-day cumulative effect does not survive everything, and this is the honest limitation of the design. Without national day fixed effects it runs from ${n.noday30Lo} to ${n.noday30Hi} and is significant throughout. With them it is small, insignificant, and in one specification changes sign.`,
+      `There is a reason rather than an accident. A full set of national day dummies absorbs everything common to a given date across the country, and cold spells are largely synchronous national events. What is left identifies the contemporaneous response perfectly well, but strips out much of the across-day variation that a thirty-day accumulation needs. The paper's preferred specification, marked with a star, is one of those without day dummies, and gives ${n.preferred0} on the day and ${n.preferred30} cumulated.`,
+    ],
+    specTable: "The seven specifications",
+    specCols: ["", "Fixed effects", "National day dummies", "Same day", "30 days"],
+    yes: "yes",
+    no: "no",
+    preferredNote: "★ the paper's preferred specification",
+    wxTitle: "Change the thermometer",
+    wxRead: `The paper measures temperature from ERA5 reanalysis. Rebuilding the exposure from CONAGUA's physical weather stations instead, both interpolated to population-weighted municipal centroids and used raw, moves the cumulative cold effect from ${fmtMag(wxCold[0])} to ${fmtMag(wxCold[1])} and ${fmtMag(wxCold[2])}. All three are significant at better than one percent. The finding does not depend on the choice of weather data.`,
+    outTitle: "Which visits disappear",
+    outRead: `Splitting by what happened to the patient is informative about mechanism. Over thirty days a cold day reduces visits that ended in discharge by ${fmtMag(outHome.pct)}, and visits that ended in hospitalisation or death by ${fmtMag(outHosp.pct)}. Both fall, so this is not only people with minor complaints staying home, but the reduction is concentrated in the less severe cases, which is what a demand-side channel would predict.`,
+    limitsTitle: "What this design cannot tell you",
+    limits: [
+      "It cannot tell you where. Every estimate is national. The paper produces no municipality-level effect, so no local number can be read off it.",
+      "It cannot tell you why. The mechanisms in the paper are suggestive: the design identifies that visits move, not which of behaviour, physiology or ecology moves them.",
+      "It cannot follow people. The data are counts of visits, not patient records, so nothing here tracks whether the same person came back later or never came at all.",
+      "It cannot see private care, or anyone who never presented. Only public hospitals report, and only 657 municipalities host one.",
+    ],
+    dataTitle: "Everything behind this",
+    dataBody:
+      "The full replication package contains the code that produced every estimate on this site, and the archived data it runs on. Each figure here also links the exact numbers plotted.",
+    nextLabel: "All questions",
+  },
+  es: {
+    eyebrow: self.short.es,
+    h1: self.question.es,
+    standfirst: `Cada número de este sitio proviene de un mismo tipo de modelo: una regresión Poisson de las visitas diarias a urgencias sobre el intervalo de temperatura en que cayó el día, con treinta días de rezagos, ajustada a la totalidad de los hospitales públicos mexicanos de 2008 a 2021. Esta página muestra qué mantiene fijo el modelo, y qué le pasa a la respuesta cuando se cambian esas decisiones.`,
+    designTitle: "El diseño en cinco partes",
+    design: [
+      ["Qué se cuenta", "Visitas a urgencias por municipio, grupo de edad y día. Conteos, no tasas, con la población entrando como peso."],
+      ["Qué se compara", "Un día en un intervalo de temperatura contra un día de entre 20 y 25 °C en el mismo municipio, el mismo grupo de edad y el mismo mes del mismo año."],
+      ["Qué se absorbe", "Municipio por edad por año-mes, y municipio por edad por día de la semana. Eso quita cualquier diferencia entre lugares, cualquier patrón estacional local y cualquier ritmo semanal."],
+      ["Qué más se controla", "Precipitación y su cuadrado, y humedad relativa, cada una con los mismos treinta rezagos que la temperatura."],
+      ["Cómo se calcula la incertidumbre", "Errores estándar agrupados a nivel municipio, de modo que los días dentro de un municipio pueden estar correlacionados entre sí."],
+    ],
+    feTitle: "Cambia los efectos fijos y observa qué se mueve",
+    feRead: [
+      `El efecto del mismo día sobrevive a todo. El frío reduce las visitas en las ${n.nSpecs} especificaciones, con significancia mejor que uno por ciento en todas. La magnitud se separa con claridad: ${n.noday0Lo} a ${n.noday0Hi} en las ${n.nWithoutDay} especificaciones sin efectos fijos de día nacional, y ${n.day0Lo} a ${n.day0Hi} en las ${n.nWithDay} que los incluyen.`,
+      `El efecto acumulado a 30 días no sobrevive a todo, y esta es la limitación honesta del diseño. Sin efectos fijos de día nacional va de ${n.noday30Lo} a ${n.noday30Hi} y es significativo en todo el rango. Con ellos es pequeño, no significativo, y en una especificación cambia de signo.`,
+      `Hay una razón, no un accidente. Un conjunto completo de dummies de día nacional absorbe todo lo común a una fecha en todo el país, y las rachas de frío son en buena medida eventos nacionales sincrónicos. Lo que queda identifica bien la respuesta contemporánea, pero elimina mucha de la variación entre días que necesita una acumulación de treinta. La especificación preferida del artículo, marcada con estrella, es una de las que no llevan dummies de día, y da ${n.preferred0} el mismo día y ${n.preferred30} acumulado.`,
+    ],
+    specTable: "Las siete especificaciones",
+    specCols: ["", "Efectos fijos", "Dummies de día nacional", "Mismo día", "30 días"],
+    yes: "sí",
+    no: "no",
+    preferredNote: "★ especificación preferida del artículo",
+    wxTitle: "Cambia el termómetro",
+    wxRead: `El artículo mide la temperatura con el reanálisis ERA5. Reconstruir la exposición con las estaciones meteorológicas físicas de CONAGUA, tanto interpoladas a centroides municipales ponderados por población como usadas en crudo, mueve el efecto acumulado del frío de ${fmtMag(wxCold[0])} a ${fmtMag(wxCold[1])} y ${fmtMag(wxCold[2])}. Las tres son significativas a mejor que uno por ciento. El hallazgo no depende de la elección de los datos de clima.`,
+    outTitle: "Qué visitas desaparecen",
+    outRead: `Separar por lo que le pasó al paciente dice algo sobre el mecanismo. En treinta días un día frío reduce ${fmtMag(outHome.pct)} las visitas que terminaron en alta, y ${fmtMag(outHosp.pct)} las que terminaron en hospitalización o muerte. Ambas bajan, así que no se trata solo de gente con molestias menores quedándose en casa, pero la reducción se concentra en los casos menos graves, que es lo que predeciría un canal de demanda.`,
+    limitsTitle: "Lo que este diseño no puede decirte",
+    limits: [
+      "No puede decirte dónde. Cada estimación es nacional. El artículo no produce ningún efecto a nivel municipio, así que no se puede leer de ahí ninguna cifra local.",
+      "No puede decirte por qué. Los mecanismos del artículo son sugestivos: el diseño identifica que las visitas se mueven, no cuál de comportamiento, fisiología o ecología las mueve.",
+      "No puede seguir a las personas. Los datos son conteos de visitas, no expedientes, así que nada aquí rastrea si la misma persona volvió después o nunca llegó.",
+      "No ve la atención privada, ni a quien nunca se presentó. Solo reportan los hospitales públicos, y solo 657 municipios albergan uno.",
+    ],
+    dataTitle: "Todo lo que hay detrás",
+    dataBody:
+      "El paquete de replicación contiene el código que produjo cada estimación de este sitio, y los datos archivados sobre los que corre. Cada figura de aquí también enlaza los números exactos que se grafican.",
+    nextLabel: "Todas las preguntas",
+  },
+}[lang];
+---
+
+<ModuleRail lang={lang} current="method" />
+
+<div class="mx-auto max-w-6xl px-6">
+  <header class="max-w-3xl border-b border-rule py-12 sm:py-16">
+    <p class="text-[13px] text-slate-light">{strings.eyebrow}</p>
+    <h1
+      class="mt-3 font-display text-[1.9rem] leading-[1.18] font-semibold text-charcoal sm:text-[2.5rem]"
+    >
+      {strings.h1}
+    </h1>
+    <p class="mt-5 text-[1.0625rem] leading-relaxed text-slate-light">
+      {strings.standfirst}
+    </p>
+  </header>
+
+  {/* --- the design ------------------------------------------------------- */}
+  <section class="border-b border-rule py-10 sm:py-14">
+    <h2 class="text-[13px] font-medium text-slate-light">{strings.designTitle}</h2>
+    <dl class="mt-5 grid gap-x-10 gap-y-6 sm:grid-cols-2 lg:grid-cols-3">
+      {
+        strings.design.map(([term, def]) => (
+          <div class="border-l-2 border-rule pl-4">
+            <dt class="font-display text-[1.05rem] font-semibold text-charcoal">{term}</dt>
+            <dd class="mt-1.5 text-[14px] leading-relaxed text-slate-light">{def}</dd>
+          </div>
+        ))
+      }
+    </dl>
+  </section>
+
+  {/* --- fixed effects ---------------------------------------------------- */}
+  <section class="py-12 sm:py-16">
+    <h2 class="font-display text-[1.3rem] leading-snug font-semibold text-charcoal">
+      {strings.feTitle}
+    </h2>
+    <div class="mt-6">
+      <GroupCurves
+        lang={lang}
+        rows={feRows}
+        ramp={RAMP7}
+        chartId="fe"
+        defaultOn={[PREFERRED]}
+        defaultHorizon={30}
+        height={470}
+      />
+    </div>
+    <DataDownload lang={lang} files={["m6_fixed_effects"]} />
+
+    <div class="mt-10 overflow-x-auto">
+      <h3 class="text-[13px] font-medium text-slate-light">{strings.specTable}</h3>
+      <table class="mt-3 w-full border-collapse text-left text-[13px]">
+        <thead>
+          <tr class="border-b border-rule text-slate-light">
+            {
+              strings.specCols.map((c, i) => (
+                <th class:list={["py-2 pr-4 font-medium", { "text-right": i > 1 }]}>{c}</th>
+              ))
+            }
+          </tr>
+        </thead>
+        <tbody>
+          {
+            feSpecs.map((s) => (
+              <tr
+                class:list={[
+                  "border-b border-rule/60",
+                  { "bg-warm-gray": s === PREFERRED },
+                ]}
+              >
+                <td class="tnum py-2 pr-4 font-medium">
+                  {s}
+                  {s === PREFERRED ? " ★" : ""}
+                </td>
+                <td class="py-2 pr-4 font-mono text-[12px] text-slate">
+                  {feName(s).replace(/^\(\d\)\s*/, "")}
+                </td>
+                <td class="py-2 pr-4 text-right text-slate-light">
+                  {hasDayFE(s) ? strings.yes : strings.no}
+                </td>
+                <td class="tnum py-2 pr-4 text-right">
+                  {fmtPct(coldAt(fe, "spec", s, 0).pct)}
+                  <span class="text-slate-light">{coldAt(fe, "spec", s, 0).stars}</span>
+                </td>
+                <td class="tnum py-2 pr-4 text-right">
+                  {fmtPct(coldAt(fe, "spec", s, 30).pct)}
+                  <span class="text-slate-light">{coldAt(fe, "spec", s, 30).stars}</span>
+                </td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+      <p class="mt-2 text-[12px] text-slate-light">{strings.preferredNote}</p>
+    </div>
+
+    <ol class="mt-10 grid list-none gap-8 lg:grid-cols-3">
+      {
+        strings.feRead.map((para) => (
+          <li class="border-l-2 border-rule pl-4 text-[14.5px] leading-relaxed text-slate">
+            {para}
+          </li>
+        ))
+      }
+    </ol>
+  </section>
+
+  {/* --- weather source --------------------------------------------------- */}
+  <section class="border-t border-rule py-12 sm:py-16">
+    <h2 class="font-display text-[1.3rem] leading-snug font-semibold text-charcoal">
+      {strings.wxTitle}
+    </h2>
+    <div class="mt-6">
+      <GroupCurves
+        lang={lang}
+        rows={wxRows}
+        ramp={RAMP3}
+        chartId="wx"
+        defaultOn={["ERA5", "CONAGUA (station+IDW)", "CONAGUA station-only"]}
+        defaultHorizon={30}
+        height={430}
+      />
+    </div>
+    <DataDownload lang={lang} files={["m6_weather_source"]} />
+    <p class="mt-8 max-w-3xl border-l-2 border-rule pl-4 text-[14.5px] leading-relaxed text-slate">
+      {strings.wxRead}
+    </p>
+  </section>
+
+  {/* --- outcome ---------------------------------------------------------- */}
+  <section class="border-t border-rule py-12 sm:py-16">
+    <h2 class="font-display text-[1.3rem] leading-snug font-semibold text-charcoal">
+      {strings.outTitle}
+    </h2>
+    <div class="mt-6">
+      <GroupCurves
+        lang={lang}
+        rows={outRows}
+        ramp={RAMP2}
+        chartId="out"
+        defaultOn={["home", "hosp"]}
+        defaultHorizon={30}
+        height={430}
+      />
+    </div>
+    <DataDownload lang={lang} files={["m6_outcome"]} />
+    <p class="mt-8 max-w-3xl border-l-2 border-rule pl-4 text-[14.5px] leading-relaxed text-slate">
+      {strings.outRead}
+    </p>
+  </section>
+
+  {/* --- limits ----------------------------------------------------------- */}
+  <section class="border-t border-rule py-12 sm:py-16">
+    <h2 class="font-display text-[1.3rem] leading-snug font-semibold text-charcoal">
+      {strings.limitsTitle}
+    </h2>
+    <ul class="mt-5 grid list-none gap-6 sm:grid-cols-2">
+      {
+        strings.limits.map((l) => (
+          <li class="border-l-2 border-temp-hot/40 pl-4 text-[14.5px] leading-relaxed text-slate">
+            {l}
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  {/* --- data and code ---------------------------------------------------- */}
+  <section class="border-t border-rule py-10 sm:py-14">
+    <h2 class="font-display text-[1.15rem] font-semibold text-charcoal">
+      {strings.dataTitle}
+    </h2>
+    <p class="mt-3 max-w-3xl text-[14.5px] leading-relaxed text-slate-light">
+      {strings.dataBody}
+    </p>
+    <p class="mt-4 flex flex-col gap-1 text-[14px]">
+      <a href={PAPER.codeUrl} class="text-sky underline underline-offset-4">
+        {PAPER.codeUrl.replace("https://", "")}
+      </a>
+      <a href={PAPER.dataUrl} class="tnum text-sky underline underline-offset-4">
+        doi:{PAPER.dataDoi}
+      </a>
+    </p>
+  </section>
+
+  <nav class="border-t border-rule py-8">
+    <a href={SECTION_BASE[lang]} class="text-[14px] text-sky underline underline-offset-4">
+      ← {strings.nextLabel}
+    </a>
+  </nav>
+</div>

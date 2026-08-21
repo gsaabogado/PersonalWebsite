@@ -1,0 +1,13 @@
+effect,decade,share_hospitalized,outcome,difference
+Cold,2031 - 2040,0.100341,Hospitalized,14585.9
+Cold,2041 - 2050,0.100409,Hospitalized,18459.1
+Cold,2051 - 2060,0.10094,Hospitalized,24067.2
+Hot,2031 - 2040,0.173401,Hospitalized,6652.8
+Hot,2041 - 2050,0.183016,Hospitalized,8619.93
+Hot,2051 - 2060,0.21307,Hospitalized,12264.2
+Cold,2031 - 2040,0.100341,Sent home,130778
+Cold,2041 - 2050,0.100409,Sent home,165380
+Cold,2051 - 2060,0.10094,Sent home,214364
+Hot,2031 - 2040,0.173401,Sent home,31713.8
+Hot,2041 - 2050,0.183016,Sent home,38479.5
+Hot,2051 - 2060,0.21307,Sent home,45295.3

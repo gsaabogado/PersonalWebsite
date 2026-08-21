@@ -1,0 +1,37 @@
+effect,decade,spec,cases,method,Future,Historical,difference,expenditures_annual,label
+Cold,2031 - 2040,< 12,8993010,annual_admissions_variation_corrected,-41799.7,-54372.6,12572.9,3716850,6
+Cold,2031 - 2040,12 - 20,8993010,annual_admissions_variation_corrected,-139483,-166053,26569.7,7854630,35
+Cold,2031 - 2040,20 - 40,8993010,annual_admissions_variation_corrected,-328880,-393612,64731.7,19136200,90
+Cold,2031 - 2040,40 - 60,8993010,annual_admissions_variation_corrected,-146469,-173792,27323.1,8077360,36
+Cold,2031 - 2040,60 - 80,8993010,annual_admissions_variation_corrected,-56341.7,-67997.8,11656.1,3445810,14
+Cold,2031 - 2040,> 80,8993010,annual_admissions_variation_corrected,-17678.2,-20188.3,2510.05,742029,4
+Cold,2041 - 2050,< 12,8993010,annual_admissions_variation_corrected,-35661.4,-49822.1,14160.7,4186240,6
+Cold,2041 - 2050,12 - 20,8993010,annual_admissions_variation_corrected,-122477,-152343,29865.7,8829000,39
+Cold,2041 - 2050,20 - 40,8993010,annual_admissions_variation_corrected,-321401,-402677,81276.6,24027300,111
+Cold,2041 - 2050,40 - 60,8993010,annual_admissions_variation_corrected,-143824,-178234,34409.9,10172400,45
+Cold,2041 - 2050,60 - 80,8993010,annual_admissions_variation_corrected,-74679.3,-94568.4,19889.1,5879680,23
+Cold,2041 - 2050,> 80,8993010,annual_admissions_variation_corrected,-23718.7,-27955.6,4236.94,1252540,6
+Cold,2051 - 2060,< 12,8993010,annual_admissions_variation_corrected,-29655.8,-45271.7,15615.8,4616410,5
+Cold,2051 - 2060,12 - 20,8993010,annual_admissions_variation_corrected,-104229,-138633,34404.4,10170700,43
+Cold,2051 - 2060,20 - 40,8993010,annual_admissions_variation_corrected,-306905,-411743,104838,30992400,142
+Cold,2051 - 2060,40 - 60,8993010,annual_admissions_variation_corrected,-138064,-182677,44612.2,13188400,58
+Cold,2051 - 2060,60 - 80,8993010,annual_admissions_variation_corrected,-89264.9,-121139,31874,9422710,37
+Cold,2051 - 2060,> 80,8993010,annual_admissions_variation_corrected,-28635.8,-35723,7087.16,2095130,11
+Hot,2031 - 2040,< 12,8993010,annual_admissions_variation_corrected,-18073.5,-11071,-7002.51,-2070100,6
+Hot,2031 - 2040,12 - 20,8993010,annual_admissions_variation_corrected,36986.3,28773.9,8212.4,2427780,35
+Hot,2031 - 2040,20 - 40,8993010,annual_admissions_variation_corrected,107876,82863,25012.8,7394360,90
+Hot,2031 - 2040,40 - 60,8993010,annual_admissions_variation_corrected,37432.5,28555.9,8876.6,2624130,36
+Hot,2031 - 2040,60 - 80,8993010,annual_admissions_variation_corrected,8348.08,6354.86,1993.22,589243,14
+Hot,2031 - 2040,> 80,8993010,annual_admissions_variation_corrected,4633.91,3359.85,1274.07,376644,4
+Hot,2041 - 2050,< 12,8993010,annual_admissions_variation_corrected,-17882,-9842.33,-8039.7,-2376720,6
+Hot,2041 - 2050,12 - 20,8993010,annual_admissions_variation_corrected,34386.8,25569.4,8817.43,2606640,39
+Hot,2041 - 2050,20 - 40,8993010,annual_admissions_variation_corrected,111825,81724.1,30100.4,8898380,111
+Hot,2041 - 2050,40 - 60,8993010,annual_admissions_variation_corrected,38946.9,28164.3,10782.6,3187590,45
+Hot,2041 - 2050,60 - 80,8993010,annual_admissions_variation_corrected,11845.5,8549.39,3296.06,974393,23
+Hot,2041 - 2050,> 80,8993010,annual_admissions_variation_corrected,6650.26,4507.63,2142.63,633412,6
+Hot,2051 - 2060,< 12,8993010,annual_admissions_variation_corrected,-19261.6,-8613.62,-10648,-3147800,5
+Hot,2051 - 2060,12 - 20,8993010,annual_admissions_variation_corrected,31590.4,22364.9,9225.48,2727270,43
+Hot,2051 - 2060,20 - 40,8993010,annual_admissions_variation_corrected,117305,80585.2,36720,10855300,142
+Hot,2051 - 2060,40 - 60,8993010,annual_admissions_variation_corrected,41166.7,27772.7,13394,3959580,58
+Hot,2051 - 2060,60 - 80,8993010,annual_admissions_variation_corrected,15968.5,10743.9,5224.54,1544500,37
+Hot,2051 - 2060,> 80,8993010,annual_admissions_variation_corrected,9298.94,5655.41,3643.53,1077110,11

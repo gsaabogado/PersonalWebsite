@@ -1,4 +1,5 @@
 import { ui, defaultLang, type Lang, type UiKey } from "./ui";
+import { outreachAlternatePath } from "../data/outreach";
 
 export function getLangFromUrl(url: URL): Lang {
   const [, lang] = url.pathname.split("/");
@@ -22,6 +23,11 @@ export function getAlternateLang(lang: Lang): Lang {
 export function getAlternatePath(url: URL): string {
   const lang = getLangFromUrl(url);
   const path = url.pathname;
+
+  // The outreach section uses translated slugs, so the generic /es prefix rule
+  // would send the reader to a 404. Its own pairing wins where it matches.
+  const outreach = outreachAlternatePath(path);
+  if (outreach) return outreach;
 
   if (lang === "en") {
     // Currently English (default), switch to Spanish

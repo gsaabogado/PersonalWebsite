@@ -7,6 +7,15 @@ import SocialLinks from "./SocialLinks.astro";
 const lang = getLangFromUrl(Astro.url);
 const navigation = getNavigation(lang);
 const currentPath = Astro.url.pathname;
+/* A tab is active on its own page and on pages that live under it. The
+   temperature companion has its own top-level slugs but belongs to Tools. */
+const TOOL_SECTIONS = ["/temperature-and-emergency-visits", "/es/temperatura-y-urgencias"];
+const isActive = (href: string) => {
+  if (currentPath === href) return true;
+  if (href === "/" || href === "/es/") return false;
+  if (currentPath.startsWith(href)) return true;
+  return /\/tools\/$/.test(href) && TOOL_SECTIONS.some((s) => currentPath.startsWith(s));
+};
 const alternatePath = getAlternatePath(Astro.url);
 const alternateLang = lang === "en" ? "es" : "en";
 ---
@@ -27,7 +36,7 @@ const alternateLang = lang === "en" ? "es" : "en";
             href={item.href}
             class:list={[
               "px-4 py-2 text-sm font-body font-medium rounded-md transition-colors",
-              currentPath === item.href
+              isActive(item.href)
                 ? "text-sky bg-sky/5"
                 : "text-charcoal hover:text-sky hover:bg-sky/5",
             ]}
@@ -106,7 +115,7 @@ const alternateLang = lang === "en" ? "es" : "en";
           href={item.href}
           class:list={[
             "block px-4 py-3 text-base font-body font-medium rounded-md transition-colors",
-            currentPath === item.href
+            isActive(item.href)
               ? "text-sky bg-sky/5"
               : "text-charcoal hover:text-sky hover:bg-sky/5",
           ]}

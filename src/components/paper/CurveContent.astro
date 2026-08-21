@@ -1,0 +1,177 @@
+---
+import ModuleRail from "./ModuleRail.astro";
+import EffectCurve from "./EffectCurve.astro";
+import LagPath from "./LagPath.astro";
+import DataDownload from "./DataDownload.astro";
+import curveData from "../../data/paper/m1_curve.json";
+import { fmtMag, type Estimate } from "./chart-utils";
+import { MODULES, SECTION_BASE, modulePath, type Lang } from "../../data/outreach";
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+
+/* Every number in the prose below is read out of the exported estimates, so the
+   text cannot drift from the figures. */
+const rows = curveData as Estimate[];
+const at = (bin: string, horizon: number) =>
+  rows.find((r) => r.bin === bin && r.horizon === horizon)!;
+
+const coldDay = at("-15_10", 0).pct;
+const coldCum = at("-15_10", 30).pct;
+const hotDay = at("30_45", 0).pct;
+const hotCum = at("30_45", 30).pct;
+const warmCum = at("25_30", 30).pct;
+const mildDay = at("15_20", 0).pct;
+
+const n = {
+  coldDay: fmtMag(coldDay),
+  coldCum: fmtMag(coldCum),
+  hotDay: fmtMag(hotDay),
+  hotCum: fmtMag(hotCum),
+  warmCum: fmtMag(warmCum),
+  mildDay: fmtMag(mildDay),
+  coldRatio: (Math.abs(coldCum) / Math.abs(coldDay)).toFixed(1),
+};
+
+const self = MODULES.find((m) => m.id === "curve")!;
+const next = MODULES.find((m) => m.id === "cold")!;
+
+const strings = {
+  en: {
+    eyebrow: self.short.en,
+    h1: self.question.en,
+    standfirst: `A day below 10 °C reduces emergency department visits by ${n.coldDay} compared with a day between 20 and 25 °C. A day above 30 °C raises them by ${n.hotDay}.`,
+    figure1Title: "The response on the day itself, and accounting for the following 30 days",
+    read1Title: "What to read here",
+    read1: [
+      `The response is close to monotonic. Each step down in temperature produces a larger reduction: ${n.mildDay} between 15 and 20 °C, ${n.coldDay} below 10 °C. There is no threshold below which cold suddenly starts to matter.`,
+      `Cold deepens with time. Counting the 30 days after a cold day, the reduction grows from ${n.coldDay} to ${n.coldCum}, which is ${n.coldRatio} times the same-day effect. The visits are not postponed and later recovered. They do not come back.`,
+      `Heat does not deepen. Above 30 °C the same-day increase of ${n.hotDay} becomes ${n.hotCum} over 30 days, and between 25 and 30 °C it reaches ${n.warmCum}. Contemporaneous and cumulative effects are similar, which means little displacement of visits from one day to another.`,
+    ],
+    figure2Title: "How the effect accumulates over 30 days",
+    read2Title: "Why the shape matters",
+    read2: `Read from left to right, each line shows how much of an interval's total effect has arrived by a given number of days. The cold lines keep descending for the whole month, so a cold spell has a long tail that a same-day count would miss. The warm lines flatten within about a week.`,
+    notesTitle: "What is being estimated",
+    notes: [
+      "The outcome is the rate of emergency department visits per 100,000 people, by municipality and day, for the universe of Mexican public hospitals from 2008 to 2021, and the model is a Poisson distributed lag specification with 30 lags.",
+      "Effects are measured against a day between 20 and 25 °C, the omitted reference category. Every specification absorbs municipality-by-year-month and municipality-by-weekday fixed effects, and controls for precipitation and relative humidity with the same 30 lags. Standard errors are clustered at the municipality level.",
+      "Percentages are 100 times the estimated coefficient, which is how the paper reports them.",
+    ],
+    nextLabel: "Next",
+    backLabel: "All questions",
+    soon: "in progress",
+  },
+  es: {
+    eyebrow: self.short.es,
+    h1: self.question.es,
+    standfirst: `Un día por debajo de 10 °C reduce las visitas a urgencias en ${n.coldDay} frente a un día de entre 20 y 25 °C. Un día por encima de 30 °C las aumenta en ${n.hotDay}.`,
+    figure1Title: "La respuesta el mismo día, y contando los 30 días siguientes",
+    read1Title: "Qué leer aquí",
+    read1: [
+      `La respuesta es casi monótona. Cada escalón hacia abajo en la temperatura produce una reducción mayor: ${n.mildDay} entre 15 y 20 °C, ${n.coldDay} por debajo de 10 °C. No hay un umbral por debajo del cual el frío empiece de pronto a importar.`,
+      `El frío se profundiza con el tiempo. Contando los 30 días posteriores a un día frío, la reducción crece de ${n.coldDay} a ${n.coldCum}, es decir ${n.coldRatio} veces el efecto del mismo día. Las visitas no se posponen para recuperarse después. No regresan.`,
+      `El calor no se profundiza. Por encima de 30 °C el aumento de ${n.hotDay} del mismo día llega a ${n.hotCum} en 30 días, y entre 25 y 30 °C alcanza ${n.warmCum}. Los efectos contemporáneo y acumulado son parecidos, lo que implica poco desplazamiento de visitas de un día a otro.`,
+    ],
+    figure2Title: "Cómo se acumula el efecto en 30 días",
+    read2Title: "Por qué importa la forma",
+    read2: `Leída de izquierda a derecha, cada línea muestra cuánto del efecto total de un intervalo ha llegado a un número dado de días. Las líneas de frío siguen descendiendo durante todo el mes, así que una racha fría tiene una cola larga que un conteo del mismo día no vería. Las líneas cálidas se aplanan en cerca de una semana.`,
+    notesTitle: "Qué se está estimando",
+    notes: [
+      "El resultado es la tasa de visitas a urgencias por cada 100,000 personas, por municipio y día, para la totalidad de los hospitales públicos mexicanos de 2008 a 2021, y el modelo es una especificación Poisson de rezagos distribuidos con 30 rezagos.",
+      "Los efectos se miden contra un día de entre 20 y 25 °C, la categoría de referencia omitida. Cada especificación absorbe efectos fijos de municipio-por-edad-por-año-mes y de municipio-por-edad-por-día-de-la-semana, y controla por precipitación y humedad relativa con los mismos 30 rezagos. Los errores estándar se agrupan a nivel municipio.",
+      "Los porcentajes son 100 veces el coeficiente estimado, que es como los reporta el artículo.",
+    ],
+    nextLabel: "Siguiente",
+    backLabel: "Todas las preguntas",
+    soon: "en preparación",
+  },
+}[lang];
+---
+
+<ModuleRail lang={lang} current="curve" />
+
+<div class="mx-auto max-w-6xl px-6">
+  <header class="max-w-3xl border-b border-rule py-12 sm:py-16">
+    <p class="text-[13px] text-slate-light">{strings.eyebrow}</p>
+    <h1
+      class="mt-3 font-display text-[1.9rem] leading-[1.18] font-semibold text-charcoal sm:text-[2.5rem]"
+    >
+      {strings.h1}
+    </h1>
+    <p class="mt-5 text-[1.0625rem] leading-relaxed text-slate-light">
+      {strings.standfirst}
+    </p>
+  </header>
+
+  {/* --- figure 1 --------------------------------------------------------- */}
+  <section class="grid gap-10 py-12 lg:grid-cols-[minmax(0,1fr)_20rem] lg:gap-14 sm:py-16">
+    <div>
+      <h2 class="font-display text-[1.3rem] leading-snug font-semibold text-charcoal">
+        {strings.figure1Title}
+      </h2>
+      <div class="mt-6">
+        <EffectCurve lang={lang} />
+      </div>
+      <DataDownload lang={lang} files={["m1_curve"]} />
+    </div>
+
+    <aside class="lg:pt-1">
+      <h3 class="text-[13px] font-medium text-slate-light">{strings.read1Title}</h3>
+      <ol class="mt-4 flex list-none flex-col gap-5">
+        {
+          strings.read1.map((para) => (
+            <li class="border-l-2 border-rule pl-4 text-[14.5px] leading-relaxed text-slate">
+              {para}
+            </li>
+          ))
+        }
+      </ol>
+    </aside>
+  </section>
+
+  {/* --- figure 2 --------------------------------------------------------- */}
+  <section
+    class="grid gap-10 border-t border-rule py-12 lg:grid-cols-[minmax(0,1fr)_20rem] lg:gap-14 sm:py-16"
+  >
+    <div>
+      <h2 class="font-display text-[1.3rem] leading-snug font-semibold text-charcoal">
+        {strings.figure2Title}
+      </h2>
+      <div class="mt-6">
+        <LagPath lang={lang} />
+      </div>
+      <DataDownload lang={lang} files={["m1_lagpath"]} />
+    </div>
+
+    <aside class="lg:pt-1">
+      <h3 class="text-[13px] font-medium text-slate-light">{strings.read2Title}</h3>
+      <p class="mt-4 border-l-2 border-rule pl-4 text-[14.5px] leading-relaxed text-slate">
+        {strings.read2}
+      </p>
+    </aside>
+  </section>
+
+  {/* --- notes ------------------------------------------------------------ */}
+  <section class="border-t border-rule py-12 sm:py-16">
+    <h2 class="text-[13px] font-medium text-slate-light">{strings.notesTitle}</h2>
+    <div class="mt-4 grid max-w-5xl gap-6 sm:grid-cols-3">
+      {
+        strings.notes.map((para) => (
+          <p class="text-[13.5px] leading-relaxed text-slate-light">{para}</p>
+        ))
+      }
+    </div>
+  </section>
+
+  {/* --- onward ----------------------------------------------------------- */}
+  <nav class="flex flex-wrap items-baseline justify-between gap-4 border-t border-rule py-8">
+    <a href={SECTION_BASE[lang]} class="text-[14px] text-sky underline underline-offset-4">
+      ← {strings.backLabel}
+    </a>
+    <span class="text-[14px] text-muted">
+      {strings.nextLabel}: {next.question[lang]} ({strings.soon})
+    </span>
+  </nav>
+</div>

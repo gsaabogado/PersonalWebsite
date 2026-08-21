@@ -1,0 +1,593 @@
+---
+/**
+ * What the data covers: a descriptive map, and nothing else.
+ *
+ * Every layer here is an average over the deposited panel. There is no estimate
+ * on this page and no coefficient anywhere near the map, because the paper has no
+ * municipality-level effects and a choropleth sitting beside one would imply that
+ * it does.
+ *
+ * Geometry arrives pre-projected. `outreach/02_export_map_data.R` transforms to
+ * EPSG:6372, simplifies, and emits SVG path strings already scaled to the
+ * viewBox, so there is no projection code in the browser.
+ *
+ * The coverage layer uses explicit year bands and the visit-rate layer uses
+ * QUANTILE breaks. Its distribution runs from 2 to
+ * 327,786 per 100,000, because the denominator is a municipality's own population
+ * while its hospital serves a wider catchment. A linear ramp would paint the
+ * country one flat colour and a handful of regional hospitals bright.
+ */
+import ModuleRail from "./ModuleRail.astro";
+import DataDownload from "./DataDownload.astro";
+import geo from "../../data/paper/m6_map_geometry.json";
+import coverageByYear from "../../data/paper/m6_coverage_by_year.json";
+import tempByMun from "../../data/paper/m6_temperature_by_mun.json";
+import originCap from "../../data/paper/m6_origin_and_capacity.json";
+import edCounts from "../../data/paper/m6_ed_counts.json";
+import { scaleLinear, scaleBand, niceTicks, type Lang } from "./chart-utils";
+import { MODULES, SECTION_BASE, modulePath } from "../../data/outreach";
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+
+interface Mun {
+  agem: string;
+  name: string;
+  d: string;
+  reports: boolean;
+  years_reporting: number;
+  first_year: number | null;
+  last_year: number | null;
+  mean_rate: number | null;
+}
+const [MW, MH] = geo.viewBox as [number, number];
+const muns = geo.municipalities as Mun[];
+const states = geo.states as string[];
+const cov = coverageByYear as Array<{ year: number; municipalities: number }>;
+
+const reporting = muns.filter((m) => m.reports);
+const nMax = Math.max(...reporting.map((m) => m.years_reporting));
+
+/* Quantile breaks over reporting municipalities only. */
+const rates = reporting
+  .map((m) => m.mean_rate as number)
+  .filter((v) => Number.isFinite(v))
+  .sort((a, b) => a - b);
+const qAt = (p: number) => rates[Math.min(rates.length - 1, Math.floor(p * rates.length))];
+const RATE_BREAKS = [0.2, 0.4, 0.6, 0.8].map(qAt);
+
+/* Ramps. Neutral for anything that is not temperature; the cold/hot palette is
+   reserved for temperature, and the temperature layers are where it belongs. */
+const RATE_RAMP = ["#e4e9f0", "#bcc8d8", "#8fa1b9", "#5f7391", "#33455e"];
+const YEAR_RAMP = ["#e8edf3", "#c3cfdd", "#93a5bc", "#5d7290", "#2b3d55"];
+const TEMP_RAMP = ["#0369a1", "#86b4cf", "#e9e6e1", "#d69c88", "#b23a1e"];
+const COLD_RAMP = ["#eaf1f6", "#c6dcea", "#93bfd8", "#4e90b8", "#0369a1"];
+const HOT_RAMP = ["#f7ece8", "#eed3c9", "#dfa998", "#c9705a", "#b23a1e"];
+const NO_DATA = "#f4f2ef";
+
+const oc = new Map(
+  (originCap as Array<Record<string, number | string | null>>).map((r) => [
+    String(r.agem),
+    r as unknown as { origin_rate: number | null; beds_per_100k: number | null },
+  ])
+);
+const originVals = (originCap as Array<{ origin_rate: number | null }>)
+  .map((r) => r.origin_rate)
+  .filter((v): v is number => typeof v === "number")
+  .sort((a, b) => a - b);
+const oq = (pp: number) => originVals[Math.min(originVals.length - 1, Math.floor(pp * originVals.length))];
+const ORIGIN_BREAKS = [0.2, 0.4, 0.6, 0.8].map(oq);
+
+const edMap = new Map(
+  (edCounts as Array<{ agem: string; eds: number; eds_per_100k: number }>).map((r) => [
+    r.agem,
+    r,
+  ])
+);
+const edVals = (edCounts as Array<{ eds_per_100k: number }>)
+  .map((r) => r.eds_per_100k)
+  .sort((a, b) => a - b);
+const eq = (pp: number) => edVals[Math.min(edVals.length - 1, Math.floor(pp * edVals.length))];
+const ED_BREAKS = [0.2, 0.4, 0.6, 0.8].map(eq);
+const edTotal = (edCounts as Array<{ eds: number }>).reduce((a, r) => a + r.eds, 0);
+
+const bedVals = (originCap as Array<{ beds_per_100k: number | null }>)
+  .map((r) => r.beds_per_100k)
+  .filter((v): v is number => typeof v === "number" && v > 0)
+  .sort((a, b) => a - b);
+const bq = (pp: number) => bedVals[Math.min(bedVals.length - 1, Math.floor(pp * bedVals.length))];
+const BED_BREAKS = [0.2, 0.4, 0.6, 0.8].map(bq);
+
+/* Temperature is observed everywhere; ED reporting is not. */
+const temps = new Map(
+  (tempByMun as Array<Record<string, number | string>>).map((t) => [
+    String(t.agem),
+    t as unknown as { mean_temp: number; share_cold: number; share_hot: number },
+  ])
+);
+
+const YEAR_BANDS = [3, 7, 11, 13];
+const yearBandLabel = (i: number) => {
+  const lo = i === 0 ? 1 : YEAR_BANDS[i - 1] + 1;
+  const hi = i < YEAR_BANDS.length ? YEAR_BANDS[i] : nMax;
+  return lo === hi ? `${lo}` : `${lo}\u2013${hi}`;
+};
+const fullPeriod = reporting.filter((m) => m.years_reporting === nMax).length;
+const withOrigin = muns.filter(
+  (m) => typeof oc.get(m.agem)?.origin_rate === "number"
+).length;
+
+const bucketOf = (v: number, breaks: number[]) => {
+  let i = 0;
+  while (i < breaks.length && v >= breaks[i]) i++;
+  return i;
+};
+
+interface LayerSpec {
+  key: string;
+  /** Buttons are grouped so seven layers do not read as one undifferentiated row. */
+  group: "system" | "temp";
+  en: string;
+  es: string;
+  ramp: string[];
+  breaks: number[];
+  /** null means the municipality has no value for this layer. */
+  value: (m: Mun) => number | null;
+  label: (v: number) => string;
+  /** Legend text for bucket i. */
+  legend: (i: number) => string;
+}
+
+const pct1 = (v: number) => `${v.toFixed(1)}%`;
+const deg = (v: number) => `${v.toFixed(1)} °C`;
+
+const LAYERS: LayerSpec[] = [
+  {
+    key: "origin",
+    group: "system",
+    en: "Visits per 100,000, where patients live",
+    es: "Visitas por 100,000, donde viven los pacientes",
+    ramp: RATE_RAMP,
+    breaks: ORIGIN_BREAKS,
+    value: (m) => oc.get(m.agem)?.origin_rate ?? null,
+    label: (v) => fmtInt(Math.round(v)),
+    legend: (i) =>
+      i === 0 ? `<${fmtInt(Math.round(ORIGIN_BREAKS[0]))}` : `${fmtInt(Math.round(ORIGIN_BREAKS[i - 1]))}+`,
+  },
+  {
+    key: "eds",
+    group: "system",
+    en: "Emergency departments per 100,000",
+    es: "Urgencias por 100,000 habitantes",
+    ramp: YEAR_RAMP,
+    breaks: ED_BREAKS,
+    value: (m) => edMap.get(m.agem)?.eds_per_100k ?? null,
+    label: (v) => v.toFixed(2),
+    legend: (i) =>
+      i === 0 ? `<${ED_BREAKS[0].toFixed(1)}` : `${ED_BREAKS[i - 1].toFixed(1)}+`,
+  },
+  {
+    key: "meantemp",
+    group: "temp",
+    en: "Mean daily temperature",
+    es: "Temperatura media diaria",
+    ramp: TEMP_RAMP,
+    breaks: [15, 18, 21, 24],
+    value: (m) => temps.get(m.agem)?.mean_temp ?? null,
+    label: deg,
+    legend: (i) => (i === 0 ? "<15" : `${[15, 18, 21, 24][i - 1]}+`),
+  },
+  {
+    key: "colddays",
+    group: "temp",
+    en: "Days at or below 10 °C",
+    es: "Días de 10 °C o menos",
+    ramp: COLD_RAMP,
+    breaks: [0.5, 2, 5, 10],
+    value: (m) => temps.get(m.agem)?.share_cold ?? null,
+    label: pct1,
+    legend: (i) => (i === 0 ? "<0.5%" : `${[0.5, 2, 5, 10][i - 1]}%+`),
+  },
+  {
+    key: "hotdays",
+    group: "temp",
+    en: "Days above 30 °C",
+    es: "Días de más de 30 °C",
+    ramp: HOT_RAMP,
+    breaks: [0.5, 2, 5, 10],
+    value: (m) => temps.get(m.agem)?.share_hot ?? null,
+    label: pct1,
+    legend: (i) => (i === 0 ? "<0.5%" : `${[0.5, 2, 5, 10][i - 1]}%+`),
+  },
+];
+const DEFAULT_LAYER = "origin";
+const edMuns = (edCounts as Array<unknown>).length;
+
+const fmtInt = (v: number) => v.toLocaleString(lang === "es" ? "es-MX" : "en-US");
+
+/* RATE_BREAKS and `rates` are kept: the facility-side figures are still quoted in
+   the prose that explains why the residence layer is the one shown. */
+
+/* Coverage-over-time chart. */
+const CW = 780;
+const CH = 220;
+const CM = { top: 22, right: 20, bottom: 40, left: 54 };
+const cPlotW = CW - CM.left - CM.right;
+const cPlotH = CH - CM.top - CM.bottom;
+const cBand = scaleBand(cov.length, [CM.left, CM.left + cPlotW], 0.32);
+const cMax = Math.max(...cov.map((d) => d.municipalities));
+const cy = scaleLinear([0, cMax * 1.1], [CM.top + cPlotH, CM.top]);
+const cTicks = niceTicks(0, cMax * 1.1, 4);
+
+/* Geometry is rendered ONCE. Each municipality carries one class per layer
+   naming its colour bucket, and the active layer on the container decides which
+   of those classes actually paints. Rendering all five layers as separate path
+   sets would have duplicated ~900 KB of geometry five times over. */
+const NO_BUCKET = 9;
+const buckets = muns.map((m) =>
+  LAYERS.map((l) => {
+    const v = l.value(m);
+    return v === null ? NO_BUCKET : bucketOf(v, l.breaks);
+  })
+);
+const layerHasGaps = LAYERS.map((l) => muns.some((m) => l.value(m) === null));
+
+const fillRules = LAYERS.flatMap((l, li) => {
+  const rules = l.ramp.map(
+    (c, bi) => `[data-layer="${l.key}"] .mL${li}-${bi}{fill:${c}}`
+  );
+  rules.push(`[data-layer="${l.key}"] .mL${li}-${NO_BUCKET}{fill:${NO_DATA}}`);
+  return rules;
+}).join("");
+
+/* One hover readout covering every layer, since a single <title> cannot change
+   with the selection. */
+const titleFor = (m: Mun, i: number) =>
+  [
+    m.name,
+    ...LAYERS.map((l) => {
+      const v = l.value(m);
+      const short = lang === "es" ? l.es : l.en;
+      return `${short}: ${v === null ? (lang === "es" ? "sin dato" : "no data") : l.label(v)}`;
+    }),
+  ].join(" · ");
+
+const self = MODULES.find((m) => m.id === "geography")!;
+const next = MODULES.find((m) => m.id === "method")!;
+
+const strings = {
+  en: {
+    eyebrow: self.short.en,
+    h1: self.question.en,
+    standfirst: `Only ${fmtInt(reporting.length)} of Mexico's ${fmtInt(muns.length)} municipalities host a hospital that reports emergency department visits, and reporting improves over the sample rather than decaying, from ${fmtInt(cov[0].municipalities)} municipalities in ${cov[0].year} to ${fmtInt(cov[cov.length - 1].municipalities)} by ${cov[cov.length - 1].year}. Counted by where patients actually live, though, the records reach ${fmtInt(withOrigin)} municipalities, because residents of the other ${fmtInt(withOrigin - reporting.length)} travel to a hospital somewhere else.`,
+    descriptive: "Descriptive only",
+    descriptiveNote:
+      "Nothing on this page is an estimate. The paper's effects are national, and it produces no municipality-level result, so no map here can be read as a local effect of temperature. These layers describe which places appear in the data and how much they report.",
+    groupSystem: "Health system:",
+    groupTemp: "Temperature:",
+    coverage: "Years reporting",
+    rate: "Visits per 100,000",
+    mapTitle: "Which municipalities appear in the data",
+    noData: "never reports",
+    years: "years",
+    covTitle: "Municipalities reporting, by year",
+    catchTitle: "How these two layers were built",
+    catch: `Visits are counted by the patient's own municipality of residence, so numerator and denominator describe the same people. Counting instead by where treatment happened would divide visits by the host municipality's population, which makes a small town with a regional hospital read as extraordinary: on that basis the median is ${fmtInt(Math.round(qAt(0.5)))} per 100,000 and the top reaches ${fmtInt(Math.round(rates[rates.length - 1]))}, describing catchment areas rather than health. Both versions are in the downloadable file.`,
+    edTitle: "The emergency department count is inferred, and checked",
+    edNote: `The archive identifies each hospital by its CLUES code, whose first two letters give the state but not the municipality, and it contains no crosswalk. Each facility is therefore placed in the municipality where most of its patients live, which for a typical hospital is 91 percent of them. Two things the inference never saw were used to test it: the state it implies agrees with the state encoded in the CLUES code for 99.1 percent of facilities, and 94.2 percent of the implied locations are municipalities that the visit records independently show to host a reporting hospital. The layer counts the ${fmtInt(edTotal)} departments that reported at any point between 2012 and 2021 across ${fmtInt(edMuns)} municipalities, not a snapshot of any single year.`,
+    notesTitle: "How these layers were built",
+    notes: [
+      "Both layers aggregate the deposited municipality-day panel: visits are summed by municipality and year, annualised to account for partly reported years, and divided by municipal population from the same archive.",
+      "Geometry is the 2012 INEGI municipality boundary file, projected to EPSG:6372 and simplified. Projection and simplification happen in the export script, not in the browser.",
+      "The residence layer covers 2012 and 2014 to 2021. Residence is absent from the 2008 to 2011 files, and the 2013 file records the state code in place of the municipality, so it is excluded. Between 5 and 10 percent of visits carry no usable residence and are dropped, 25 percent in 2012, which makes residence rates a slight undercount.",
+      "The rate layer uses quantile breaks, so each shade holds a comparable number of municipalities rather than an equal slice of a very skewed range. The coverage layer uses year bands instead, because most reporting municipalities report the whole period and quantiles would collapse into a single class.",
+    ],
+    nextLabel: "Next",
+    backLabel: "All questions",
+    soon: "in progress",
+  },
+  es: {
+    eyebrow: self.short.es,
+    h1: self.question.es,
+    standfirst: `Solo ${fmtInt(reporting.length)} de los ${fmtInt(muns.length)} municipios de México albergan un hospital que reporte visitas a urgencias, y el reporte mejora a lo largo de la muestra en vez de decaer, de ${fmtInt(cov[0].municipalities)} municipios en ${cov[0].year} a ${fmtInt(cov[cov.length - 1].municipalities)} para ${cov[cov.length - 1].year}. Contando por donde viven realmente los pacientes, en cambio, los registros alcanzan ${fmtInt(withOrigin)} municipios, porque los residentes de los otros ${fmtInt(withOrigin - reporting.length)} viajan a un hospital en otro lugar.`,
+    descriptive: "Solo descriptivo",
+    descriptiveNote:
+      "Nada en esta página es una estimación. Los efectos del artículo son nacionales y no produce ningún resultado a nivel municipio, así que ningún mapa de aquí puede leerse como un efecto local de la temperatura. Estas capas describen qué lugares aparecen en los datos y cuánto reportan.",
+    groupSystem: "Sistema de salud:",
+    groupTemp: "Temperatura:",
+    coverage: "Años reportando",
+    rate: "Visitas por 100,000",
+    mapTitle: "Qué municipios aparecen en los datos",
+    noData: "nunca reporta",
+    years: "años",
+    covTitle: "Municipios que reportan, por año",
+    catchTitle: "Cómo se construyeron estas dos capas",
+    catch: `Las visitas se cuentan por el municipio de residencia del propio paciente, así que numerador y denominador describen a las mismas personas. Contarlas por donde ocurrió la atención dividiría las visitas entre la población del municipio anfitrión, lo que hace que un pueblo pequeño con hospital regional se vea extraordinario: sobre esa base la mediana es de ${fmtInt(Math.round(qAt(0.5)))} por 100,000 y el extremo llega a ${fmtInt(Math.round(rates[rates.length - 1]))}, describiendo áreas de influencia y no salud. Las dos versiones están en el archivo descargable.`,
+    edTitle: "El conteo de urgencias es inferido, y verificado",
+    edNote: `El archivo identifica cada hospital por su código CLUES, cuyas primeras dos letras dan el estado pero no el municipio, y no incluye ninguna tabla de correspondencia. Por eso cada hospital se ubica en el municipio donde vive la mayoría de sus pacientes, que en un hospital típico son 91 por ciento. Se usaron dos cosas que la inferencia nunca vio para probarla: el estado que implica coincide con el estado codificado en el CLUES en 99.1 por ciento de los hospitales, y 94.2 por ciento de las ubicaciones implicadas son municipios que los registros de visitas muestran de forma independiente que albergan un hospital que reporta. La capa cuenta las ${fmtInt(edTotal)} urgencias que reportaron en algún momento entre 2012 y 2021 en ${fmtInt(edMuns)} municipios, no una foto de un año concreto.`,
+    notesTitle: "Cómo se construyeron estas capas",
+    notes: [
+      "Ambas capas agregan el panel municipio-día depositado: las visitas se suman por municipio y año, se anualizan para tener en cuenta los años parcialmente reportados, y se dividen entre la población municipal del mismo archivo.",
+      "La geometría es el archivo de límites municipales INEGI 2012, proyectado a EPSG:6372 y simplificado. La proyección y la simplificación ocurren en el script de exportación, no en el navegador.",
+      "La capa de residencia cubre 2012 y de 2014 a 2021. La residencia no está en los archivos de 2008 a 2011, y el archivo de 2013 registra el código de estado en lugar del de municipio, así que se excluye. Entre 5 y 10 por ciento de las visitas no tienen residencia utilizable y se descartan, 25 por ciento en 2012, lo que hace de las tasas de residencia un ligero subconteo.",
+      "La capa de tasas usa cortes por cuantiles, así que cada tono contiene un número comparable de municipios y no una porción igual de un rango muy sesgado. La capa de cobertura usa bandas de años, porque la mayoría de los municipios que reportan lo hacen todo el periodo y los cuantiles se colapsarían en una sola clase.",
+    ],
+    nextLabel: "Siguiente",
+    backLabel: "Todas las preguntas",
+    soon: "en preparación",
+  },
+}[lang];
+---
+
+<ModuleRail lang={lang} current="geography" />
+
+<div class="mx-auto max-w-6xl px-6">
+  <header class="max-w-3xl border-b border-rule py-12 sm:py-16">
+    <p class="text-[13px] text-slate-light">{strings.eyebrow}</p>
+    <h1
+      class="mt-3 font-display text-[1.9rem] leading-[1.18] font-semibold text-charcoal sm:text-[2.5rem]"
+    >
+      {strings.h1}
+    </h1>
+    <p class="mt-5 text-[1.0625rem] leading-relaxed text-slate-light">
+      {strings.standfirst}
+    </p>
+  </header>
+
+  {/* The descriptive-only statement sits above the map, not under it. */}
+  <section class="py-8">
+    <div class="max-w-3xl border-l-4 border-rule-strong bg-warm-gray px-5 py-4">
+      <h2 class="font-display text-[1.15rem] font-semibold text-charcoal">
+        {strings.descriptive}
+      </h2>
+      <p class="mt-2 text-[14.5px] leading-relaxed text-slate">
+        {strings.descriptiveNote}
+      </p>
+    </div>
+  </section>
+
+  <section class="py-6 sm:py-10">
+    <h2 class="font-display text-[1.3rem] leading-snug font-semibold text-charcoal">
+      {strings.mapTitle}
+    </h2>
+
+    <figure class="not-prose mt-6" data-chart="coverage-map" data-layer={DEFAULT_LAYER}>
+      <div class="mb-4 flex flex-col gap-2">
+        {
+          (["system", "temp"] as const).map((g) => (
+            <div class="flex flex-wrap items-center gap-2">
+              <span class="mr-1 w-[7.5rem] shrink-0 text-[13px] text-slate-light">
+                {g === "system" ? strings.groupSystem : strings.groupTemp}
+              </span>
+              {LAYERS.filter((l) => l.group === g).map((l) => (
+                <button
+                  type="button"
+                  data-map-layer={l.key}
+                  aria-pressed={l.key === DEFAULT_LAYER ? "true" : "false"}
+                  class="map-btn"
+                >
+                  {lang === "es" ? l.es : l.en}
+                </button>
+              ))}
+            </div>
+          ))
+        }
+      </div>
+
+      <svg
+        viewBox={`0 0 ${MW} ${MH}`}
+        class="h-auto w-full"
+        role="img"
+        aria-label={strings.mapTitle}
+      >
+        <style is:inline set:html={fillRules}></style>
+        {
+          muns.map((m, i) => (
+            <path
+              class={buckets[i].map((b, li) => `mL${li}-${b}`).join(" ")}
+              d={m.d}
+              stroke="#fff"
+              stroke-width="0.25"
+            >
+              <title>{titleFor(m, i)}</title>
+            </path>
+          ))
+        }
+        {/* State outlines last, so they read on top of the fills. */}
+        {
+          states.map((d) => (
+            <path d={d} fill="none" stroke="var(--color-rule-strong)" stroke-width="0.7" />
+          ))
+        }
+      </svg>
+
+      {/* Legend, per layer */}
+      {
+        LAYERS.map((l, li) => (
+          <div
+            class:list={["map-legend", { "is-active": l.key === DEFAULT_LAYER }]}
+            data-layer={l.key}
+          >
+            <div class="mt-4 flex flex-wrap items-center gap-x-5 gap-y-2 text-[12.5px] text-slate-light">
+              <span>{lang === "es" ? l.es : l.en}</span>
+              <span class="flex items-center gap-1">
+                {l.ramp.map((c, i) => (
+                  <span class="inline-flex flex-col items-center">
+                    <span class="block h-3 w-11" style={`background:${c}`}></span>
+                    <span class="tnum mt-1 text-[10.5px]">{l.legend(i)}</span>
+                  </span>
+                ))}
+              </span>
+              {layerHasGaps[li] && (
+                <span class="flex items-center gap-2">
+                  <span
+                    class="inline-block h-3 w-9 border border-rule"
+                    style={`background:${NO_DATA}`}></span>
+                  {strings.noData}
+                </span>
+              )}
+            </div>
+          </div>
+        ))
+      }
+    </figure>
+
+    <DataDownload
+      lang={lang}
+      files={["m6_origin_and_capacity", "m6_ed_counts", "m6_temperature_by_mun", "m6_municipality_descriptives"]}
+    />
+  </section>
+
+  {/* Coverage over time */}
+  <section class="border-t border-rule py-10 sm:py-14">
+    <h2 class="font-display text-[1.3rem] leading-snug font-semibold text-charcoal">
+      {strings.covTitle}
+    </h2>
+    <figure class="not-prose mt-6" data-chart="coverage-years">
+      <svg viewBox={`0 0 ${CW} ${CH}`} class="h-auto w-full" role="img" aria-label={strings.covTitle}>
+        {
+          cTicks.map((tv) => (
+            <g>
+              <line
+                x1={CM.left}
+                x2={CM.left + cPlotW}
+                y1={cy(tv)}
+                y2={cy(tv)}
+                stroke={tv === 0 ? "var(--color-rule-strong)" : "var(--color-rule)"}
+                stroke-dasharray={tv === 0 ? "none" : "2 4"}
+                stroke-width="1"
+              />
+              <text
+                x={CM.left - 9}
+                y={cy(tv) + 4}
+                text-anchor="end"
+                class="tnum fill-slate-light text-[11.5px]">{tv}</text
+              >
+            </g>
+          ))
+        }
+        {
+          cov.map((d, i) => (
+            <g>
+              <rect
+                x={cBand.centre(i) - cBand.width / 2}
+                y={cy(d.municipalities)}
+                width={cBand.width}
+                height={cy(0) - cy(d.municipalities)}
+                fill="var(--color-slate-light)"
+              >
+                <title>{`${d.year}: ${fmtInt(d.municipalities)}`}</title>
+              </rect>
+              <text
+                x={cBand.centre(i)}
+                y={cy(d.municipalities) - 6}
+                text-anchor="middle"
+                class="tnum fill-charcoal text-[10.5px]">{d.municipalities}</text
+              >
+              <text
+                x={cBand.centre(i)}
+                y={CM.top + cPlotH + 18}
+                text-anchor="middle"
+                class="tnum fill-slate-light text-[11px]">{d.year}</text
+              >
+            </g>
+          ))
+        }
+      </svg>
+    </figure>
+  </section>
+
+  <section class="grid gap-8 border-t border-rule py-10 lg:grid-cols-2">
+    <div>
+      <h2 class="font-display text-[1.15rem] font-semibold text-charcoal">
+        {strings.catchTitle}
+      </h2>
+      <p class="mt-3 text-[14.5px] leading-relaxed text-slate-light">{strings.catch}</p>
+    </div>
+    <div>
+      <h2 class="font-display text-[1.15rem] font-semibold text-charcoal">
+        {strings.edTitle}
+      </h2>
+      <p class="mt-3 text-[14.5px] leading-relaxed text-slate-light">{strings.edNote}</p>
+    </div>
+  </section>
+
+  <section class="border-t border-rule py-12 sm:py-16">
+    <h2 class="text-[13px] font-medium text-slate-light">{strings.notesTitle}</h2>
+    <div class="mt-4 grid max-w-5xl gap-6 sm:grid-cols-3">
+      {
+        strings.notes.map((para) => (
+          <p class="text-[13.5px] leading-relaxed text-slate-light">{para}</p>
+        ))
+      }
+    </div>
+  </section>
+
+  <nav class="flex flex-wrap items-baseline justify-between gap-4 border-t border-rule py-8">
+    <a href={SECTION_BASE[lang]} class="text-[14px] text-sky underline underline-offset-4">
+      ← {strings.backLabel}
+    </a>
+    <span class="text-[14px] text-muted">
+      {strings.nextLabel}: {next.question[lang]} ({strings.soon})
+    </span>
+  </nav>
+</div>
+
+<style>
+  .map-btn {
+    border: 1px solid var(--color-rule);
+    border-radius: 3px;
+    padding: 0.3rem 0.7rem;
+    font-size: 13px;
+    color: var(--color-slate-light);
+    background: white;
+    transition:
+      background-color 140ms cubic-bezier(0.32, 0.72, 0, 1),
+      border-color 140ms cubic-bezier(0.32, 0.72, 0, 1),
+      color 140ms cubic-bezier(0.32, 0.72, 0, 1);
+  }
+  .map-btn:hover {
+    border-color: var(--color-rule-strong);
+    color: var(--color-charcoal);
+  }
+  .map-btn[aria-pressed="true"] {
+    background: var(--color-slate);
+    border-color: var(--color-slate);
+    color: white;
+  }
+  .map-btn:focus-visible {
+    outline: 2px solid var(--color-sky);
+    outline-offset: 2px;
+  }
+
+  .map-layer,
+  .map-legend {
+    display: none;
+  }
+  .map-layer.is-active {
+    display: inline;
+  }
+  .map-legend.is-active {
+    display: block;
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-chart="coverage-map"]').forEach((fig) => {
+    const buttons = fig.querySelectorAll<HTMLButtonElement>("[data-map-layer]");
+    buttons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const key = btn.dataset.mapLayer!;
+        fig.dataset.layer = key;
+        fig
+          .querySelectorAll<HTMLElement>(".map-layer, .map-legend")
+          .forEach((g) => g.classList.toggle("is-active", g.dataset.layer === key));
+        buttons.forEach((b) =>
+          b.setAttribute("aria-pressed", String(b.dataset.mapLayer === key))
+        );
+      });
+    });
+  });
+</script>

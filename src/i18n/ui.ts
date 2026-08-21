@@ -20,7 +20,7 @@ export const ui = {
     "hero.chip": "Environmental Economist",
     "hero.title1": "Luis",
     "hero.title2": "Sarmiento",
-    "hero.description": "I study how environmental quality shapes economic outcomes — from air pollution's effects on productivity and well-being to the design of energy systems for a sustainable future.",
+    "hero.description": "I study how environmental quality shapes economic outcomes, from air pollution's effects on productivity and well-being to the design of energy systems for a sustainable future.",
     "hero.cta1": "View Research",
     "hero.cta2": "Download CV",
 
@@ -28,7 +28,7 @@ export const ui = {
     "about.label": "About me",
     "about.title": "Bridging econometrics and energy policy",
     "about.p1": "I am a Postdoctoral Researcher at D-MTEC, ETH Zurich in Switzerland. My research sits at the intersection of applied econometrics and energy modeling.",
-    "about.p2": "I use causal inference methods to study the effects of air pollution on human welfare — from court decisions in India to crime rates in Mexico City. I also design optimization and agent-based models to evaluate policies for decarbonizing energy systems.",
+    "about.p2": "I use causal inference methods to study the effects of air pollution on human welfare, from court decisions in India to crime rates in Mexico City. I also design optimization and agent-based models to evaluate policies for decarbonizing energy systems.",
     "about.p3": "I hold a Ph.D. in Economics (Summa Cum Laude) from TU Berlin and have previously worked at the Bank of Mexico, CMCC Foundation, DIW Berlin, and the Hertie School of Governance.",
 
     // Research Highlights
@@ -118,7 +118,7 @@ export const ui = {
 
     // Contact page
     "contact.heroTitle": "Contact",
-    "contact.heroDesc": "I'd love to hear from you — whether about research collaborations, speaking invitations, or general inquiries.",
+    "contact.heroDesc": "I'd love to hear from you, whether about research collaborations, speaking invitations, or general inquiries.",
     "contact.formTitle": "Send a message",
     "contact.formDesc": "Fill out the form and I'll get back to you as soon as possible.",
     "contact.infoTitle": "Get in touch",
@@ -152,7 +152,7 @@ export const ui = {
     "hero.chip": "Economista Ambiental",
     "hero.title1": "Luis",
     "hero.title2": "Sarmiento",
-    "hero.description": "Estudio la relación entre nuestro medio ambiente y la economía — desde los efectos de la contaminación del aire en la productividad y el bienestar hasta el diseño de sistemas energéticos para un futuro sostenible.",
+    "hero.description": "Estudio la relación entre nuestro medio ambiente y la economía, desde los efectos de la contaminación del aire en la productividad y el bienestar hasta el diseño de sistemas energéticos para un futuro sostenible.",
     "hero.cta1": "Ver investigación",
     "hero.cta2": "Descargar CV",
 
@@ -160,7 +160,7 @@ export const ui = {
     "about.label": "Sobre mí",
     "about.title": "Conectando econometría, investigación ambiental y política energética",
     "about.p1": "Soy Investigador Postdoctoral en D-MTEC, ETH Zurich en Suiza. Mi investigación se encuentra en la intersección de la econometría aplicada y la modelación energética.",
-    "about.p2": "Utilizo métodos de inferencia causal para estudiar los efectos de la contaminación del aire en el bienestar humano — desde decisiones judiciales en India hasta tasas de criminalidad en la Ciudad de México. También diseño modelos de optimización y basados en agentes para evaluar políticas de descarbonización de sistemas energéticos.",
+    "about.p2": "Utilizo métodos de inferencia causal para estudiar los efectos de la contaminación del aire en el bienestar humano, desde decisiones judiciales en India hasta tasas de criminalidad en la Ciudad de México. También diseño modelos de optimización y basados en agentes para evaluar políticas de descarbonización de sistemas energéticos.",
     "about.p3": "Tengo un Doctorado en Economía (Summa Cum Laude) de la TU Berlin y he trabajado anteriormente en el Banco de México, la Fundación CMCC, el DIW Berlin y la Hertie School of Governance.",
 
     // Research Highlights
@@ -250,7 +250,7 @@ export const ui = {
 
     // Contact page
     "contact.heroTitle": "Contacto",
-    "contact.heroDesc": "Me encantaría saber de ti — ya sea sobre colaboraciones de investigación, invitaciones a conferencias o consultas generales.",
+    "contact.heroDesc": "Me encantaría saber de ti, ya sea sobre colaboraciones de investigación, invitaciones a conferencias o consultas generales.",
     "contact.formTitle": "Enviar un mensaje",
     "contact.formDesc": "Completa el formulario y te responderé lo antes posible.",
     "contact.infoTitle": "Contacto directo",

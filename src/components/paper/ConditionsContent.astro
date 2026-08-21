@@ -1,0 +1,192 @@
+---
+import ModuleRail from "./ModuleRail.astro";
+import RankedChapters from "./RankedChapters.astro";
+import DataDownload from "./DataDownload.astro";
+import chapterData from "../../data/paper/m4_chapters.json";
+import { fmtMag, fmtPct, type Estimate, type Lang } from "./chart-utils";
+import { MODULES, SECTION_BASE, modulePath } from "../../data/outreach";
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+
+type Row = Estimate & {
+  chapter: string;
+  chapter_label_en: string;
+  chapter_label_es: string;
+  baseline_mean: number;
+};
+const rows = chapterData as Row[];
+const lab = (r: Row) => (lang === "es" ? r.chapter_label_es : r.chapter_label_en);
+
+/* Cold, cumulated over 30 days: the state the chart opens on. */
+const coldCum = rows
+  .filter((r) => r.bin === "-15_10" && r.horizon === 30)
+  .sort((a, b) => a.pct - b.pct);
+
+const mostDown = coldCum[0];
+const mostUp = coldCum[coldCum.length - 1];
+const respiratory = coldCum.find((r) => r.chapter === "respiratory")!;
+const sig = (r: Row) => (r as Row & { p: number }).p < 0.05;
+const fallingSig = coldCum.filter((r) => r.pct < 0 && sig(r)).length;
+const flat = coldCum.filter((r) => !sig(r)).length;
+
+/* The other three cells of the 2 x 2: cold same-day, heat same-day, heat 30 days. */
+const at = (bin: string, h: number) => rows.filter((r) => r.bin === bin && r.horizon === h);
+const byChapter = (bin: string, h: number, c: string) => rows.find((r) => r.bin === bin && r.horizon === h && r.chapter === c)!;
+const coldDay = at("-15_10", 0);
+const hotDay = at("30_45", 0);
+const hotCum = at("30_45", 30);
+const coldDayFalling = coldDay.filter((r) => r.pct < 0 && sig(r)).length;
+const coldDayRising = coldDay.filter((r) => r.pct > 0 && sig(r)).length;
+const smallestFallCum = Math.max(...coldCum.filter((r) => r.pct < 0 && sig(r)).map((r) => r.pct));
+const smallestFallCumLabel = lab(coldCum.filter((r) => r.pct < 0 && sig(r)).sort((a, b) => b.pct - a.pct)[0]).toLowerCase();
+const m = (bin: string, h: number, c: string) => fmtMag(byChapter(bin, h, c).pct);
+const pc = (bin: string, h: number, c: string) => fmtPct(byChapter(bin, h, c).pct);
+
+const n = {
+  mostDownLabel: lab(mostDown).toLowerCase(),
+  mostDown: fmtMag(mostDown.pct),
+  mostUpLabel: lab(mostUp).toLowerCase(),
+  mostUp: fmtMag(mostUp.pct),
+  respiratory: fmtPct(respiratory.pct),
+  respiratoryBase: respiratory.baseline_mean.toFixed(1),
+  totalCount: coldCum.length,
+  fallingSig,
+  flat,
+  coldDayFalling,
+  coldDayRisingText: coldDayRising === 0 ? "no chapter rises" : `${coldDayRising} rise`,
+  coldDayRisingTextEs: coldDayRising === 0 ? "ningún capítulo sube" : `${coldDayRising} suben`,
+  coldDayInfect: m("-15_10", 0, "infectious_parasatic"),
+  coldDayResp: m("-15_10", 0, "respiratory"),
+  smallestFallCum: fmtMag(smallestFallCum),
+  smallestFallCumLabel,
+  respCum: fmtMag(respiratory.pct),
+  hotDayEndo: pc("30_45", 0, "endocrine_metabolic"),
+  hotDayMental: pc("30_45", 0, "mental"),
+  hotDayInfect: pc("30_45", 0, "infectious_parasatic"),
+  hotDayExternal: pc("30_45", 0, "external_causes"),
+  hotDayCirc: m("30_45", 0, "circulatory"),
+  hotCumGenito: pc("30_45", 30, "genitourinary"),
+  hotCumEndo: pc("30_45", 30, "endocrine_metabolic"),
+  hotCumBlood: pc("30_45", 30, "blood_and_inmune"),
+  hotCumExternal: pc("30_45", 30, "external_causes"),
+  hotCumResp: pc("30_45", 30, "respiratory"),
+  hotCumInfect: pc("30_45", 30, "infectious_parasatic"),
+  hotCumCirc: pc("30_45", 30, "circulatory"),
+  hotDayEndoMag: m("30_45", 0, "endocrine_metabolic"),
+};
+
+const self = MODULES.find((m) => m.id === "conditions")!;
+const next = MODULES.find((m) => m.id === "projections")!;
+
+const strings = {
+  en: {
+    eyebrow: self.short.en,
+    h1: self.question.en,
+    standfirst: `The change in total visits is a net figure, and the net hides opposite movements by diagnosis. After a cold day, ${n.mostDownLabel} visits fall ${n.mostDown} over 30 days while respiratory visits rise ${n.respCum}. After a hot day, endocrine and metabolic visits rise ${n.hotDayEndoMag} on the day and circulatory visits fall ${n.hotDayCirc}.`,
+    fig1: "Every diagnostic chapter, at the interval and horizon you choose",
+    readTitle: "What to read here",
+    read: [
+      ["cold", `When looking at the effect of a very cold day (mean temperature below 10 °C) on the same day, ${n.coldDayFalling} of ${n.totalCount} chapters fall significantly, ${n.mostDownLabel} the most at ${n.coldDayInfect}; respiratory falls ${n.coldDayResp}, and ${n.coldDayRisingText}.`],
+      ["cold", `When looking at the cumulative effect of a very cold day over the following 30 days, ${n.fallingSig} chapters fall significantly, from ${n.smallestFallCum} (${n.smallestFallCumLabel}) to ${n.mostDown} (${n.mostDownLabel}), and ${n.flat} show no significant change. Respiratory rises ${n.respCum}, consistent with infections spreading after cold exposure.`],
+      ["hot", `When looking at the effect of a very hot day (mean temperature above 30 °C) on the same day, endocrine and metabolic (${n.hotDayEndo}), mental (${n.hotDayMental}), infectious and parasitic (${n.hotDayInfect}) and external causes (${n.hotDayExternal}) rise most. Circulatory visits fall ${n.hotDayCirc}, the only chapter to do so; the paper's mechanism section discusses why.`],
+      ["hot", `When looking at the cumulative effect of a very hot day over the following 30 days, blood and immune (${n.hotCumBlood}), genitourinary (${n.hotCumGenito}), endocrine and metabolic (${n.hotCumEndo}) and external causes (${n.hotCumExternal}) keep rising. Respiratory reverses to ${n.hotCumResp}, infectious and parasitic to ${n.hotCumInfect}, and circulatory deepens to ${n.hotCumCirc}.`],
+    ],
+    notesTitle: "What is being estimated",
+    notes: [
+      "Each chapter is a separate Poisson distributed lag model with 30 lags, fitted to visits assigned to that ICD-10 chapter, and measured against a day between 20 and 25 °C.",
+      "Row order is fixed by the cumulative effect of a day below 10 °C and does not change with the controls, so a condition can be followed across states.",
+      "Baseline volume is the mean outcome reported in the paper, in visits per 100,000 people. Whiskers are 95% confidence intervals, clustered at the municipality level.",
+    ],
+    nextLabel: "Next",
+    backLabel: "All questions",
+  },
+  es: {
+    eyebrow: self.short.es,
+    h1: self.question.es,
+    standfirst: `El cambio en las visitas totales es una cifra neta, y la neta esconde movimientos opuestos por diagnóstico. Tras un día frío, las visitas por ${n.mostDownLabel} caen ${n.mostDown} en 30 días mientras las respiratorias suben ${n.respCum}. Tras un día caluroso, las visitas endocrinas y metabólicas suben ${n.hotDayEndoMag} el mismo día y las circulatorias caen ${n.hotDayCirc}.`,
+    fig1: "Todos los capítulos diagnósticos, en el intervalo y horizonte que elijas",
+    readTitle: "Qué leer aquí",
+    read: [
+      ["cold", `Al mirar el efecto de un día muy frío (temperatura media por debajo de 10 °C) el mismo día, ${n.coldDayFalling} de ${n.totalCount} capítulos caen de forma significativa, ${n.mostDownLabel} el que más, ${n.coldDayInfect}; el respiratorio cae ${n.coldDayResp}, y ${n.coldDayRisingTextEs}.`],
+      ["cold", `Al mirar el efecto acumulado de un día muy frío durante los 30 días siguientes, ${n.fallingSig} capítulos caen de forma significativa, desde ${n.smallestFallCum} (${n.smallestFallCumLabel}) hasta ${n.mostDown} (${n.mostDownLabel}), y ${n.flat} no cambian de forma significativa. El respiratorio sube ${n.respCum}, consistente con la propagación de infecciones tras la exposición al frío.`],
+      ["hot", `Al mirar el efecto de un día muy caluroso (temperatura media por encima de 30 °C) el mismo día, endocrinas y metabólicas (${n.hotDayEndo}), mentales (${n.hotDayMental}), infecciosas y parasitarias (${n.hotDayInfect}) y causas externas (${n.hotDayExternal}) son las que más suben. Las circulatorias caen ${n.hotDayCirc}, el único capítulo que lo hace; la sección de mecanismos del artículo discute por qué.`],
+      ["hot", `Al mirar el efecto acumulado de un día muy caluroso durante los 30 días siguientes, sangre e inmunidad (${n.hotCumBlood}), genitourinarias (${n.hotCumGenito}), endocrinas y metabólicas (${n.hotCumEndo}) y causas externas (${n.hotCumExternal}) siguen subiendo. Las respiratorias se revierten a ${n.hotCumResp}, las infecciosas y parasitarias a ${n.hotCumInfect}, y las circulatorias se profundizan a ${n.hotCumCirc}.`],
+    ],
+    notesTitle: "Qué se está estimando",
+    notes: [
+      "Cada capítulo es un modelo Poisson de rezagos distribuidos con 30 rezagos, ajustado a las visitas asignadas a ese capítulo de la CIE-10, y medido contra un día de entre 20 y 25 °C.",
+      "El orden de las filas está fijado por el efecto acumulado de un día por debajo de 10 °C y no cambia con los controles, de modo que se puede seguir un padecimiento entre estados.",
+      "El volumen base es la media del resultado reportada en el artículo, en visitas por 100,000 personas. Los bigotes son intervalos de confianza del 95%, agrupados a nivel municipio.",
+    ],
+    nextLabel: "Siguiente",
+    backLabel: "Todas las preguntas",
+  },
+}[lang];
+---
+
+<ModuleRail lang={lang} current="conditions" />
+
+<div class="mx-auto max-w-6xl px-6">
+  <header class="max-w-3xl border-b border-rule py-12 sm:py-16">
+    <p class="text-[13px] text-slate-light">{strings.eyebrow}</p>
+    <h1
+      class="mt-3 font-display text-[1.9rem] leading-[1.18] font-semibold text-charcoal sm:text-[2.5rem]"
+    >
+      {strings.h1}
+    </h1>
+    <p class="mt-5 text-[1.0625rem] leading-relaxed text-slate-light">
+      {strings.standfirst}
+    </p>
+  </header>
+
+  <section class="py-12 sm:py-16">
+    <h2 class="font-display text-[1.3rem] leading-snug font-semibold text-charcoal">
+      {strings.fig1}
+    </h2>
+    <div class="mt-6">
+      <RankedChapters lang={lang} />
+    </div>
+    <DataDownload lang={lang} files={["m4_chapters"]} />
+  </section>
+
+  <section class="grid gap-x-10 gap-y-8 border-t border-rule py-12 lg:grid-cols-2 sm:py-16">
+    {
+      strings.read.map(([side, para]) => (
+        <p
+          class:list={[
+            "border-l-2 pl-4 text-[14.5px] leading-relaxed text-slate",
+            side === "cold" ? "border-temp-cold" : "border-temp-hot",
+          ]}
+        >
+          {para}
+        </p>
+      ))
+    }
+  </section>
+
+  <section class="border-t border-rule py-12 sm:py-16">
+    <h2 class="text-[13px] font-medium text-slate-light">{strings.notesTitle}</h2>
+    <div class="mt-4 grid max-w-5xl gap-6 sm:grid-cols-3">
+      {
+        strings.notes.map((para) => (
+          <p class="text-[13.5px] leading-relaxed text-slate-light">{para}</p>
+        ))
+      }
+    </div>
+  </section>
+
+  <nav class="flex flex-wrap items-baseline justify-between gap-4 border-t border-rule py-8">
+    <a href={SECTION_BASE[lang]} class="text-[14px] text-sky underline underline-offset-4">
+      ← {strings.backLabel}
+    </a>
+    <a
+      href={modulePath(next, lang)}
+      class="text-[14px] text-sky underline underline-offset-4"
+    >
+      {strings.nextLabel}: {next.question[lang]} →
+    </a>
+  </nav>
+</div>

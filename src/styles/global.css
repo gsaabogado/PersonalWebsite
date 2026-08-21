@@ -1,21 +1,105 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap");
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
+
+/* =============================================================================
+   Self-hosted fonts
+   Inter previously came from a render-blocking Google Fonts @import. Both
+   families are now served from /public/fonts as variable woff2 (OFL; license
+   text sits alongside the files).
+
+   Glyph coverage note: Source Serif 4 has no U+2264/U+2265 (≤ ≥), so any label
+   using those symbols must be set in Inter — which is where axis ticks, numbers
+   and units live anyway. Keep headings wordy, not symbolic.
+   ========================================================================== */
+
+/* --- Source Serif 4 — display / headings ---------------------------------- */
+@font-face {
+  font-family: "Source Serif 4";
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url("/fonts/source-serif-4-latin.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
+    U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Source Serif 4";
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url("/fonts/source-serif-4-latin-ext.woff2") format("woff2");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF,
+    U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020,
+    U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+/* --- Inter — body / UI / every numeral ------------------------------------ */
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 300 700;
+  font-display: swap;
+  src: url("/fonts/inter-latin.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
+    U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 300 700;
+  font-display: swap;
+  src: url("/fonts/inter-latin-ext.woff2") format("woff2");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF,
+    U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020,
+    U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* Math and unit glyphs used in chart labels: ≤ ≥ – ° × − and digits. */
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 300 700;
+  font-display: swap;
+  src: url("/fonts/inter-symbols.woff2") format("woff2");
+  unicode-range: U+0030-0039, U+00B0, U+00D7, U+2013, U+2212, U+2264-2265;
+}
 
 /* === Tailwind v4 Theme Customization === */
 @theme {
   /* Brand Colors — clean & minimal academic palette */
-  --color-slate: #1E293B;
+  --color-slate: #1e293b;
   --color-slate-light: #334155;
-  --color-slate-dark: #0F172A;
-  --color-sky: #0369A1;
-  --color-sky-light: #0EA5E9;
-  --color-warm-gray: #F8F6F4;
-  --color-cool-gray: #E2E8F0;
-  --color-charcoal: #1E1E1E;
+  --color-slate-dark: #0f172a;
+  --color-sky: #0369a1;
+  --color-sky-light: #0ea5e9;
+  --color-warm-gray: #f8f6f4;
+  --color-cool-gray: #e2e8f0;
+  --color-charcoal: #1e1e1e;
+
+  /* --- Semantic temperature scale ----------------------------------------
+     Named by FUNCTION, not appearance, and used for temperature and nothing
+     else. Cold deliberately reuses --color-sky so this palette EXTENDS the
+     existing site rather than forking it. The `side` field in the exported
+     data (cold | reference | hot) maps straight onto these three. */
+  --color-temp-cold: #0369a1;
+  --color-temp-cold-ci: #c6dcea;
+  --color-temp-hot: #b23a1e;
+  --color-temp-hot-ci: #eed3c9;
+  --color-temp-reference: #64748b;
+  --color-temp-reference-ci: #e2e8f0;
+
+  /* Chart furniture */
+  --color-rule: #d7dce3;
+  /* Strokes only. At 2.52:1 on white this fails WCAG AA for text, so text that
+     needs to look muted uses --color-muted instead. */
+  --color-rule-strong: #9aa4b2;
+  --color-muted: #5a6b82;
+  --color-annotation: #475569;
 
   /* Font Families */
-  --font-heading: "Inter", "Helvetica Neue", "Arial", sans-serif;
+  --font-display: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --font-heading: "Source Serif 4", Georgia, "Times New Roman", serif;
   --font-body: "Inter", "Helvetica Neue", "Arial", sans-serif;
 }
 
@@ -32,7 +116,19 @@
   }
 }
 
-/* === Scroll Animations === */
+/* === Utilities === */
+
+/* Estimates and confidence intervals must align in columns. This is the
+   clearest available signal that a numbers person made the page. */
+@utility tnum {
+  font-variant-numeric: tabular-nums lining-nums;
+  font-feature-settings: "tnum" 1, "lnum" 1;
+}
+
+/* === Scroll Animations ===
+   Attribute-driven, so a page that omits [data-animate] gets no motion at all.
+   The outreach section omits it deliberately: motion there is reserved for
+   state changes, never for arrival. */
 [data-animate] {
   opacity: 0;
   transform: translateY(24px);
@@ -54,4 +150,44 @@
 [data-animate].is-visible {
   opacity: 1;
   transform: translateY(0) translateX(0) scale(1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-animate] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+
+/* =============================================================================
+   Chart responsiveness and touch targets
+   ========================================================================== */
+
+/* Charts carry 9 to 12px labels sized for their native 780px width. Letting them
+   shrink to a phone's viewport makes that text illegible, so they scroll inside
+   their own figure instead. The map is exempt: it holds no small text and is more
+   useful seen whole. */
+figure[data-chart]:not([data-chart="coverage-map"]) {
+  overflow-x: auto;
+}
+figure[data-chart]:not([data-chart="coverage-map"]) > svg {
+  min-width: 780px;
+}
+
+@media (max-width: 640px) {
+  /* Comfortable touch targets on the chart controls. */
+  .gc-btn,
+  .map-btn,
+  .rc-btn,
+  .dr-btn,
+  .ab-btn,
+  .curve-btn,
+  .lag-btn {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    padding-left: 0.8rem;
+    padding-right: 0.8rem;
+  }
 }

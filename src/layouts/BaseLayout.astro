@@ -1,22 +1,35 @@
 ---
 import "../styles/global.css";
-import { getLangFromUrl } from "../i18n/utils";
+import { getLangFromUrl, getAlternatePath, getAlternateLang } from "../i18n/utils";
+import DevEdit from "../components/DevEdit.astro";
 
 interface Props {
   title?: string;
   description?: string;
+  /** Path under /og, without extension. Falls back to the site-wide card. */
+  ogImage?: string;
+  ogType?: "website" | "article";
 }
 
 const lang = getLangFromUrl(Astro.url);
 
 const {
   title = lang === "en"
-    ? "Luis Sarmiento — Environmental Economist"
-    : "Luis Sarmiento — Economista Ambiental",
+    ? "Luis Sarmiento · Environmental Economist"
+    : "Luis Sarmiento · Economista Ambiental",
   description = lang === "en"
     ? "Environmental economist specializing in applied econometrics and energy modeling. Research on air pollution, causal inference, and energy policy."
     : "Economista ambiental especializado en econometría aplicada y modelación energética. Investigación sobre contaminación del aire, inferencia causal y política energética.",
+  ogImage,
+  ogType = "website",
 } = Astro.props;
+
+/* Absolute URLs, because Open Graph consumers do not resolve relative paths. */
+const site = Astro.site ?? new URL("https://luissarmiento.com");
+const canonical = new URL(Astro.url.pathname, site).href.replace(/\/$/, "") || site.href;
+const ogUrl = new URL(ogImage ? `/og/${ogImage}.png` : "/apple-touch-icon.png", site).href;
+const alternate = getAlternatePath(Astro.url);
+const altHref = new URL(alternate, site).href;
 ---
 
 <!doctype html>
@@ -28,6 +41,44 @@ const {
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
     <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+    {/* Self-hosted variable fonts. Only the latin subsets are preloaded; the
+        latin-ext and symbol subsets load on demand via unicode-range. */}
+    <link
+      rel="preload"
+      href="/fonts/source-serif-4-latin.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/fonts/inter-latin.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+
+    <link rel="canonical" href={canonical} />
+    <link rel="alternate" hrefLang={lang} href={canonical} />
+    <link rel="alternate" hrefLang={getAlternateLang(lang)} href={altHref} />
+
+    {/* Open Graph. The section's cards are generated from the published
+        estimates by tools/make_og_cards.py, so a shared preview cannot show a
+        number the page does not. */}
+    <meta property="og:type" content={ogType} />
+    <meta property="og:site_name" content="Luis Sarmiento" />
+    <meta property="og:locale" content={lang === "es" ? "es_MX" : "en_US"} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogUrl} />
+    {ogImage && <meta property="og:image:width" content="1200" />}
+    {ogImage && <meta property="og:image:height" content="630" />}
+    <meta name="twitter:card" content={ogImage ? "summary_large_image" : "summary"} />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogUrl} />
 
     <title>{title}</title>
   </head>
@@ -56,5 +107,6 @@ const {
         observer.observe(el);
       });
     </script>
+    {import.meta.env.DEV && <DevEdit />}
   </body>
 </html>
