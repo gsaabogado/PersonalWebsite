@@ -2,6 +2,7 @@
 import "../styles/global.css";
 import { getLangFromUrl, getAlternatePath, getAlternateLang } from "../i18n/utils";
 import DevEdit from "../components/DevEdit.astro";
+import Analytics from "../components/Analytics.astro";
 
 interface Props {
   title?: string;
@@ -81,6 +82,7 @@ const altHref = new URL(alternate, site).href;
     <meta name="twitter:image" content={ogUrl} />
 
     <title>{title}</title>
+    <Analytics />
   </head>
   <body class="bg-white text-charcoal antialiased font-body min-h-screen flex flex-col">
     <slot />
