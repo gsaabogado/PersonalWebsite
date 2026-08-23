@@ -63,6 +63,12 @@ blocks; Luis ran it himself with the `!` prefix.
 - [x] 2 high Dependabot alerts cleared 2026-08-23 (`c34d43f`): lockfile-only patch bumps, `nanoid` 3.3.16 → 3.3.18 (via vite/postcss) and `js-yaml` 4.3.0 → 4.3.1 (via astro). Both are build-time transitive deps of a static site, so neither ever reached a visitor's browser — CPU-exhaustion bugs in tooling run against our own content. `package.json` untouched; build still 36 pages, GA tag intact.
 - [x] GA data stream URL relabelled apex → `https://www.luissarmiento.com` 2026-08-23. Measurement ID (`G-N6C4L0GZLS`) and stream ID (`15485179603`) unchanged, so collection was unaffected.
 - [x] CLAUDE.md + CLAUDE.local.md updates committed 2026-08-23.
+- [x] **GA moved off the CMCC work account 2026-08-23.** Luis flagged that the
+  property had been created under `luis.sarmiento@cmcc.it`, which was its ONLY
+  user. Added `gsaabogado@gmail.com` as account-level Administrator, then
+  removed the cmcc.it user from the Gmail session. Sole admin is now the
+  personal Gmail. No collection impact — `G-N6C4L0GZLS`, stream 15485179603 and
+  the Internal Traffic filter all untouched, history intact.
 - [ ] Optional: add a build-only CI workflow (`npm ci && npm run build`, no deploy). The
   repo now has no workflows at all, so a broken Netlify build is silent. Deliberately not
   added on 2026-08-23 — Luis builds locally before pushing. Revisit only if a broken
