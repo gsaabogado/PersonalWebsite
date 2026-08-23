@@ -132,3 +132,28 @@ Added 2026-08-23, alongside the GA ownership fix.
   only `x-default` was missing and was added.
 - `public/CNAME` (`luissarmiento.com`) is dead since GitHub Pages was deleted.
   Harmless — Netlify ignores it — but it is not doing anything.
+
+## Google Search Console
+Set up 2026-08-23, owned by `gsaabogado@gmail.com` (same account as GA and Netlify).
+
+- **Domain property** `sc-domain:luissarmiento.com` — covers apex + www + http +
+  https in one property, unlike a URL-prefix property.
+- **Verified by DNS TXT.** DNS is **Netlify-managed** (NS1 nameservers,
+  `dns[1-4].p01.nsone.net`); the domain is registered THROUGH Netlify and
+  auto-renews Sep 11 (~$19.99/yr). whois names Name.com, but records are edited
+  at `app.netlify.com/teams/gsaabogado/dns/luissarmiento.com`, NOT at Name.com.
+  The TXT record at the apex is
+  `google-site-verification=7QYxo5nwLYX22GYLfJm4aYw1pI_6MnGD8w3b9qJhpDI`.
+  **Do not delete it** — verification is lost and the property goes away.
+- `netlify api createDnsRecord` returns 422 for reasons I could not pin down;
+  the web DNS panel works. Read-only calls (`getDnsZones`, `getDnsRecords`) are
+  fine and are the quickest way to inspect the zone.
+- **Sitemap** `https://www.luissarmiento.com/sitemap-index.xml` submitted,
+  status Success. "Couldn't fetch" right after submitting is a pending state,
+  not an error; it flipped to Success within a minute.
+- **Linked to GA4** (Admin > Product links > Search Console links) against the
+  "Personal website" stream. The Search Console report collection **published
+  itself on linking** — the Queries and "Google organic search traffic" reports
+  appeared without a manual step in Reports > Library.
+- Reports stay empty until Search Console accumulates its own data (a day or
+  two); that is not a broken link.

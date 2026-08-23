@@ -69,6 +69,12 @@ blocks; Luis ran it himself with the `!` prefix.
   removed the cmcc.it user from the Gmail session. Sole admin is now the
   personal Gmail. No collection impact — `G-N6C4L0GZLS`, stream 15485179603 and
   the Internal Traffic filter all untouched, history intact.
+- [x] **Search Console + SEO groundwork done 2026-08-23** (`aaafa53`, `a058a86`).
+  Site had NO sitemap and NO robots.txt, and canonical/og:url pointed at the
+  apex, which 301s to www. Added `@astrojs/sitemap` (36 URLs), `robots.txt`,
+  `x-default` hreflang, and repointed `site` at www. Then created the
+  `sc-domain:luissarmiento.com` domain property, verified by a TXT record added
+  in Netlify DNS, submitted the sitemap (Success) and linked it to GA4.
 - [ ] Optional: add a build-only CI workflow (`npm ci && npm run build`, no deploy). The
   repo now has no workflows at all, so a broken Netlify build is silent. Deliberately not
   added on 2026-08-23 — Luis builds locally before pushing. Revisit only if a broken
