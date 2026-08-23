@@ -80,3 +80,42 @@ page carries it. Mirrors the Trifecta setup.
 - The air-purifiers calculator at `/tools/air-purifiers-trial/app/` is untagged
   ON PURPOSE — it is an iframe inside an already-tagged page. Tagging it would
   double-count every visit.
+- **Ownership.** The GA account was created in-browser on 2026-08-23 under the
+  WORK account `luis.sarmiento@cmcc.it`, which was for a few hours its only
+  user — a single point of failure for a personal site, since CMCC
+  deprovisioning that Workspace account would have orphaned the analytics.
+  Fixed the same day: `gsaabogado@gmail.com` added as **Administrator at the
+  ACCOUNT level** (405640314), which cascades to the property, then
+  `luis.sarmiento@cmcc.it` removed. **`gsaabogado@gmail.com` is now the sole
+  Administrator** — the personal Gmail, not the work address. Access changes
+  touch no collection: measurement ID, stream, filters and history were all
+  unaffected.
+  - To reach this account you must be signed in AS Gmail. If a browser has both
+    Google accounts, force it with
+    `?authuser=gsaabogado@gmail.com` in the analytics.google.com URL — the
+    account picker at top-left switches PROPERTIES, not logins, and clicking it
+    by mistake jumps to the separate **Trifecta** GA account (404648778).
+
+## SEO / crawlability
+Added 2026-08-23, alongside the GA ownership fix.
+
+- **`site` is the WWW host**, `https://www.luissarmiento.com`. The apex
+  301-redirects to www, so everything derived from `site` (canonical tags,
+  `og:url`, the sitemap) must point at www or the site advertises URLs that
+  redirect. `BaseLayout.astro`'s fallback URL was changed to match.
+- **`@astrojs/sitemap`** generates `sitemap-index.xml` + `sitemap-0.xml` (36
+  URLs). Two non-obvious bits of its config:
+  - the `i18n` block emits EN/ES `xhtml:link` alternates. It pairs pages by path
+    after the locale prefix, so the outreach pages (translated slugs,
+    `/temperature-and-emergency-visits` vs `/es/temperatura-y-urgencias`) stay
+    UNPAIRED there. That is correct, not a bug — `BaseLayout`'s own hreflang
+    tags pair them, and prefix-matching could only ever mis-pair them.
+  - a `serialize` hook strips trailing slashes, because `BaseLayout`'s canonical
+    strips them. Without it the sitemap says `/research/` while the page's own
+    canonical says `/research`, and the two disagree about the same page. The
+    root URL keeps its slash.
+- **`public/robots.txt`** points at the sitemap. There was none before.
+- **hreflang was already correct** in both directions (`BaseLayout.astro`);
+  only `x-default` was missing and was added.
+- `public/CNAME` (`luissarmiento.com`) is dead since GitHub Pages was deleted.
+  Harmless — Netlify ignores it — but it is not doing anything.
