@@ -77,6 +77,19 @@ page carries it. Mirrors the Trifecta setup.
   `paper_title`, sourced from `data-publication` on `PublicationCard`),
   `email_click`, `cv_download`, `profile_click`. One delegated listener, so new
   links are covered without further edits.
+- **Property config set 2026-08-23** (all three are NOT retroactive, which is why
+  they were done immediately):
+  - **Event data retention 2 → 14 months.** 2 months is the GA4 default and it
+    silently discards everything older. User-data retention was already 14.
+  - **Custom dimension "Paper title"**, event-scoped, parameter `paper_title`.
+    Without it the parameter is collected but cannot be used as a report
+    breakdown, so `publication_click` could never be split by paper.
+  - **Key events**: `publication_click`, `cv_download`, `email_click`.
+    `profile_click` is deliberately NOT a key event — add it if the Scholar/ORCID
+    links become something worth tracking as an outcome.
+  - Reporting timezone verified as Switzerland (GMT+02:00); currency USD.
+  - Google Signals left OFF on purpose: at this traffic level it triggers data
+    thresholding, which hides rows rather than adding insight.
 - The air-purifiers calculator at `/tools/air-purifiers-trial/app/` is untagged
   ON PURPOSE — it is an iframe inside an already-tagged page. Tagging it would
   double-count every visit.
