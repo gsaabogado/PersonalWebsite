@@ -1,0 +1,70 @@
+---
+// Google Analytics 4 — account "Luis Sarmiento", property "luissarmiento.com"
+const GA_MEASUREMENT_ID = "G-N6C4L0GZLS";
+---
+
+<!-- Google tag (gtag.js) -->
+<script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}></script>
+<script is:inline define:vars={{ GA_MEASUREMENT_ID }}>
+  window.dataLayer = window.dataLayer || [];
+  // Assigned onto window explicitly: Astro's define:vars scopes this script,
+  // so a bare `function gtag()` would not be reachable from other scripts.
+  window.gtag = function gtag() {
+    window.dataLayer.push(arguments);
+  };
+  window.gtag("js", new Date());
+
+  // Internal-traffic flag. Visit any page once with ?internal=1 per browser; a
+  // 2-year cookie then marks every hit as traffic_type=internal, which GA4
+  // excludes through its "Internal Traffic" data filter. ?internal=0 clears it.
+  var INTERNAL_COOKIE = "ls_internal";
+  var params = new URLSearchParams(window.location.search);
+  var flag = params.get("internal");
+  if (flag === "1") {
+    document.cookie = INTERNAL_COOKIE + "=1; max-age=63072000; path=/; SameSite=Lax; Secure";
+  } else if (flag === "0") {
+    document.cookie = INTERNAL_COOKIE + "=; max-age=0; path=/; SameSite=Lax; Secure";
+  }
+  var isInternal = flag === "1" || document.cookie.split("; ").indexOf(INTERNAL_COOKIE + "=1") !== -1;
+
+  window.gtag("config", GA_MEASUREMENT_ID, isInternal ? { traffic_type: "internal" } : {});
+</script>
+
+<!--
+  Named click events. GA4 enhanced measurement already logs generic outbound
+  clicks and file downloads; these add the context those lack, namely which
+  paper was opened and whether a click was an email or the CV. One delegated
+  listener covers the whole site, so new links are picked up automatically.
+-->
+<script is:inline>
+  document.addEventListener("click", (event) => {
+    const target = event.target;
+    if (!(target instanceof Element)) return;
+
+    const link = target.closest("a[href]");
+    if (!link || typeof window.gtag !== "function") return;
+
+    const href = link.getAttribute("href") || "";
+    const card = link.closest("[data-publication]");
+    let name = null;
+    const params = {
+      link_url: href,
+      page_path: window.location.pathname,
+    };
+
+    if (href.startsWith("mailto:")) {
+      name = "email_click";
+    } else if (/\.pdf($|\?)/i.test(href)) {
+      name = "cv_download";
+    } else if (card && /^https?:/i.test(href)) {
+      name = "publication_click";
+      params.paper_title = (card.getAttribute("data-publication") || "").slice(0, 100);
+    } else if (/^https?:\/\/(www\.)?(scholar\.google|linkedin|github|twitter|x)\./i.test(href)) {
+      name = "profile_click";
+    }
+
+    if (!name) return;
+
+    window.gtag("event", name, params);
+  });
+</script>
