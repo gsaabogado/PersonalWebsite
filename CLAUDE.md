@@ -41,14 +41,17 @@ public/             # Static assets (images, CV PDF, favicon)
 
 ## Deployment
 **luissarmiento.com is served by Netlify**, which builds from `main` on push.
-The repo also contains `.github/workflows/deploy.yml` ("Deploy to GitHub Pages"),
-which deploys a SEPARATE Pages site that the domain does not use — a green
-Actions run says nothing about the live site.
+That is the only deploy path. A GitHub Pages workflow and Pages site used to
+exist alongside it, deploying a copy the domain never routed to; both were
+removed on 2026-08-23 because their runs carried no signal about the live site
+and their failures twice read as real breakage.
 
-- **Both build environments need Node 22** (Astro 7 requires `>=22.12.0`):
-  `netlify.toml` sets `NODE_VERSION = "22"`; the workflow passes
-  `node-version: 22` to `withastro/action@v3`. Miss either and that pipeline
-  fails silently.
+- **The repo has NO GitHub Actions workflows.** A push therefore gets no
+  automated build check, and a broken Netlify build is silent unless you look
+  at the Netlify dashboard. Run `npm run build` locally before pushing.
+- **Netlify needs Node 22** (Astro 7 requires `>=22.12.0`): `netlify.toml` sets
+  `NODE_VERSION = "22"`. Without it the build fails with "Node.js v20 is not
+  supported by Astro!".
 - **Verify a deploy against something unique to the NEW build.** Grepping for
   content that was already live passes on a stale cache and proves nothing.
   Check the `age:` header too — a large value means you are reading cache.
@@ -60,7 +63,8 @@ Actions run says nothing about the live site.
 
 ## Analytics
 Google Analytics 4, account "Luis Sarmiento" (405640314), property
-`luissarmiento.com` (551174257), measurement ID **G-N6C4L0GZLS**. Everything
+`luissarmiento.com` (551174257), measurement ID **G-N6C4L0GZLS**, web stream
+"Personal website" (15485179603) at `https://www.luissarmiento.com`. Everything
 lives in `src/components/Analytics.astro`, rendered from `BaseLayout` so every
 page carries it. Mirrors the Trifecta setup.
 

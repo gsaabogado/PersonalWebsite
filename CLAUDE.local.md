@@ -6,37 +6,52 @@ page** (property `luissarmiento.com`, G-N6C4L0GZLS) and verified receiving hits.
 Publications match `~/projects/cv/data/publications.csv` exactly (**34 entries: 18
 published / 4 R&R / 2 under review / 10 working papers**); Conferences, Grants and the
 downloadable CV PDF are current. Site now builds **36 pages** on **Astro 7.1.3**, served
-by **Netlify**. `npm audit` is back to **0 vulnerabilities** (2026-08-23, `c34d43f`).
+by **Netlify**, which is now the ONLY deploy path — the GitHub Pages workflow and Pages
+site were both removed. `npm audit` is back to **0 vulnerabilities** and GitHub reports
+no open Dependabot alerts. Nothing is pending.
 
-## Last Session: 2026-08-23
-Set up Google Analytics 4 from scratch, mirroring Trifecta. Luis had no GA property for
-this site (his account held only Trifecta), so the property was created in-browser.
+## Last Session: 2026-08-23 (part 1 — Google Analytics)
+Set up GA4 from scratch, mirroring Trifecta. Luis had no property for this site, so
+account **Luis Sarmiento** (405640314) → property **luissarmiento.com** (551174257) →
+stream "Personal website" (15485179603) were all created in-browser. Durable details in
+CLAUDE.md § Analytics.
 
-**In Google Analytics**
-- New account **Luis Sarmiento** (405640314) → property **luissarmiento.com**
-  (551174257), Switzerland time zone, Jobs & Education, stream "Personal website"
-  (15485179603). Measurement ID **G-N6C4L0GZLS**.
-- Optional Google data-sharing (products & services, modeling contributions,
-  recommendations) left OFF; technical support left on. ToS accepted under
-  **Switzerland** with the GDPR Data Processing Terms ticked — Luis approved that
-  acceptance explicitly when asked.
-- "Internal Traffic" data filter switched Testing → **Active**.
+- Optional Google data-sharing left OFF, technical support on. ToS accepted under
+  **Switzerland** with GDPR Data Processing Terms — Luis approved that explicitly when
+  asked. "Internal Traffic" data filter switched Testing → **Active**.
+- Repo: `src/components/Analytics.astro` (new), rendered from `BaseLayout`;
+  `PublicationCard.astro` gained `data-publication`. Verified against a production build
+  before pushing — right ID, all four custom events in `dataLayer`, `?internal=1` sets the
+  cookie and stamps `traffic_type`, `?internal=0` clears it.
+- `8bb8840` → merged `a53c13f`, pushed. GA Realtime confirmed `page_view` /
+  `session_start` / `first_visit`. The first two active users that day are my
+  verification hits, not visitors.
+- **Wrong turn:** ~7 minutes spent reporting "the deploy has not landed" after grepping
+  the apex without `-L`. The apex 301s to `www`, so I was searching a 45-byte redirect
+  body. Rule now in CLAUDE.md.
 
-**In the repo** (see CLAUDE.md § Analytics for the durable details)
-- `src/components/Analytics.astro` (new), `BaseLayout.astro` (renders it at the end of
-  `<head>`), `PublicationCard.astro` (`data-publication={pub.title}`).
-- Verified against a production build before pushing: config fires with the right ID,
-  all four custom events land in `dataLayer` with correct parameters, `?internal=1`
-  sets the cookie and stamps `traffic_type`, `?internal=0` clears it.
+## Last Session: 2026-08-23 (part 2 — maintenance, same day)
+Cleared the whole pending list. No site content changed; the built HTML is byte-identical
+throughout, so there was nothing user-visible to verify at the CDN.
 
-**Commits:** `8bb8840` (the change), merged to `main` as `a53c13f`. Both pushed;
-Netlify rebuilt and GA Realtime confirmed `page_view` / `session_start` / `first_visit`
-arriving. The first two active users on 2026-08-23 are verification hits, not visitors.
+- **Dependabot (`c34d43f`).** Two high alerts, both build-time transitive deps of a
+  static site: `nanoid` 3.3.16 → 3.3.18 (vite → postcss) and `js-yaml` 4.3.0 → 4.3.1
+  (astro). Lockfile-only, `package.json` untouched, build still 36 pages with the GA tag
+  intact. `npm audit` 2 → 0; the API confirms both alerts `state: fixed`. Neither was
+  exploitable here — CPU-exhaustion bugs in tooling that runs against our own content and
+  never ships to a visitor.
+- **GitHub Pages removed (`1f67e6a` + a manual API call).** Workflow deleted, then the
+  Pages site itself. It held `cname: luissarmiento.com`, so I checked DNS BEFORE deleting:
+  apex and `www` both resolve to `35.157.26.135` / `63.176.8.218` (Netlify), never to
+  Pages' `185.199.108-111.x`. Verified 200 from Netlify afterwards.
+- **GA stream URL** relabelled apex → `https://www.luissarmiento.com` in the browser.
+- Memory files committed (`c183f75`, `969ebba`) and pushed.
 
-**Wrong turn worth remembering:** I spent ~7 minutes reporting "the deploy has not
-landed" because I grepped `https://luissarmiento.com/` without `-L`. The apex
-301-redirects to `www`, so I was searching a 45-byte redirect body. The deploy had
-almost certainly been live the whole time. Rule now in CLAUDE.md.
+**Two things worth carrying forward.** (1) The push output's "GitHub found 2
+vulnerabilities" banner is computed BEFORE the rescan — it printed even though the fix was
+in that very push. Check `gh api .../dependabot/alerts`, not the banner. (2) Deleting the
+Pages site needs `gh api -X DELETE .../pages`, which the Claude Code auto-mode classifier
+blocks; Luis ran it himself with the `!` prefix.
 
 ## Pending
 - [x] Vulnerabilities cleared 2026-07-25: `npm audit` 12 → 0, in two steps — `c0ba1c8` (lockfile-only, 12→3) then `e6e2d75` (Astro 5.18.2 → 7.1.3, 3→0) + `37f7ff0` (CI Node 22 — e6e2d75's deploy failed)
@@ -44,15 +59,18 @@ almost certainly been live the whole time. Rule now in CLAUDE.md.
 - [x] Grants page single entry — DECIDED 2026-07-25: awarded grants only, deliberately. Do not add pending proposals.
 - [x] Tassinari chapter + Global Burden question/findings — DECIDED 2026-07-25: skip. Both stay listed as bibliographic-only entries (no expandable panel). No abstract exists publicly or locally for either. Do not remove the entries.
 - [x] AEA P&P resolved 2026-07-25: invited but not yet submitted → moved to working papers, venue text removed.
-- [x] CLAUDE.md + CLAUDE.local.md committed 2026-07-25 (`b4b0a53`).
 - [x] Google Analytics configured, deployed and verified live 2026-08-23 (`8bb8840` → `a53c13f`).
 - [x] 2 high Dependabot alerts cleared 2026-08-23 (`c34d43f`): lockfile-only patch bumps, `nanoid` 3.3.16 → 3.3.18 (via vite/postcss) and `js-yaml` 4.3.0 → 4.3.1 (via astro). Both are build-time transitive deps of a static site, so neither ever reached a visitor's browser — CPU-exhaustion bugs in tooling run against our own content. `package.json` untouched; build still 36 pages, GA tag intact.
 - [x] GA data stream URL relabelled apex → `https://www.luissarmiento.com` 2026-08-23. Measurement ID (`G-N6C4L0GZLS`) and stream ID (`15485179603`) unchanged, so collection was unaffected.
 - [x] CLAUDE.md + CLAUDE.local.md updates committed 2026-08-23.
+- [ ] Optional: add a build-only CI workflow (`npm ci && npm run build`, no deploy). The
+  repo now has no workflows at all, so a broken Netlify build is silent. Deliberately not
+  added on 2026-08-23 — Luis builds locally before pushing. Revisit only if a broken
+  deploy ever slips through.
 
 ## Hosting (discovered 2026-07-25)
-- **Netlify serves luissarmiento.com**, not GitHub Pages. The Pages workflow deploys an
-  unused site; `gh run list` being green is not evidence the domain updated.
+- **Netlify serves luissarmiento.com.** Since 2026-08-23 it is the only deploy path;
+  the Pages workflow and Pages site that used to shadow it are gone.
 - Astro 7 broke the Netlify build for ~70 min (same Node <22.12 cause as Actions) while
   Pages reported success. Fixed by adding `netlify.toml` with `NODE_VERSION = "22"` (`e6f3f13`).
 - [x] `.github/workflows/deploy.yml` deleted 2026-08-23 (`1f67e6a`), and the GitHub Pages
