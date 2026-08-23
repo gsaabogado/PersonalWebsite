@@ -47,7 +47,7 @@ almost certainly been live the whole time. Rule now in CLAUDE.md.
 - [x] CLAUDE.md + CLAUDE.local.md committed 2026-07-25 (`b4b0a53`).
 - [x] Google Analytics configured, deployed and verified live 2026-08-23 (`8bb8840` → `a53c13f`).
 - [x] 2 high Dependabot alerts cleared 2026-08-23 (`c34d43f`): lockfile-only patch bumps, `nanoid` 3.3.16 → 3.3.18 (via vite/postcss) and `js-yaml` 4.3.0 → 4.3.1 (via astro). Both are build-time transitive deps of a static site, so neither ever reached a visitor's browser — CPU-exhaustion bugs in tooling run against our own content. `package.json` untouched; build still 36 pages, GA tag intact.
-- [ ] Optional: relabel the GA data stream URL to `https://www.luissarmiento.com` — the canonical host is `www`, the stream says apex. Cosmetic; does not affect collection.
+- [x] GA data stream URL relabelled apex → `https://www.luissarmiento.com` 2026-08-23. Measurement ID (`G-N6C4L0GZLS`) and stream ID (`15485179603`) unchanged, so collection was unaffected.
 - [x] CLAUDE.md + CLAUDE.local.md updates committed 2026-08-23.
 
 ## Hosting (discovered 2026-07-25)
@@ -55,8 +55,13 @@ almost certainly been live the whole time. Rule now in CLAUDE.md.
   unused site; `gh run list` being green is not evidence the domain updated.
 - Astro 7 broke the Netlify build for ~70 min (same Node <22.12 cause as Actions) while
   Pages reported success. Fixed by adding `netlify.toml` with `NODE_VERSION = "22"` (`e6f3f13`).
-- [ ] Decide whether to delete `.github/workflows/deploy.yml` — it builds and deploys a
-  Pages site nobody visits, and its failures are noise.
+- [x] `.github/workflows/deploy.yml` deleted 2026-08-23 (`1f67e6a`), and the GitHub Pages
+  site itself deleted via `gh api -X DELETE .../pages` (Luis ran it; the classifier blocks
+  that call for Claude). Pages had `cname: luissarmiento.com` set, but both apex and `www`
+  resolve to Netlify (`35.157.26.135`, `63.176.8.218`), never to Pages' `185.199.108-111.x`,
+  so removing it could not affect the live site — verified 200 from Netlify afterwards.
+  **The repo now has NO workflows at all**, so a push gets no automated build check; a
+  broken Netlify build would be silent. Build locally before pushing.
 
 ## Astro 7 notes (upgraded 2026-07-25)
 - **CI needs Node 22.** Astro 7 requires `node >=22.12.0`; `withastro/action@v3`
