@@ -1,66 +1,42 @@
 # Personal Website — Session Log & Status
 
 ## Current Status
-Live and current as of 2026-07-25. Publications match
-`~/projects/cv/data/publications.csv` exactly (**34 entries: 18 published / 4 R&R /
-2 under review / 10 working papers**). Conferences cover the 2026 season with an award
-badge; a Grants section and a top-level Grants tab are live; the downloadable CV PDF is
-current. Site is 16 pages on **Astro 7.1.3 with 0 vulnerabilities**, served by **Netlify**.
+Live and current as of 2026-08-23. **Google Analytics 4 is now collecting on every
+page** (property `luissarmiento.com`, G-N6C4L0GZLS) and verified receiving hits.
+Publications match `~/projects/cv/data/publications.csv` exactly (**34 entries: 18
+published / 4 R&R / 2 under review / 10 working papers**); Conferences, Grants and the
+downloadable CV PDF are current. Site now builds **36 pages** on **Astro 7.1.3**, served
+by **Netlify**. `npm audit` is back to **0 vulnerabilities** (2026-08-23, `c34d43f`).
 
-## Last Session: 2026-07-25
-Synced with the CV after a Google Scholar audit of published metadata. Driven from
-the CV side; see `~/projects/cv/CLAUDE.local.md` for the full account.
+## Last Session: 2026-08-23
+Set up Google Analytics 4 from scratch, mirroring Trifecta. Luis had no GA property for
+this site (his account held only Trifecta), so the property was created in-browser.
 
-**`src/data/publications.ts` — 12 corrections, 4 status changes, 5 additions**
-- Corrections the site had been serving wrong for months: JPubE `277`→`227`;
-  Energy Policy `151, 113378`→`156, 112378`; TRD `S.1022774`→`82, 102274`;
-  ECC Bistline `100118`→`6, 100191` (100118 is the Equity paper's number, duplicated).
-  Added ECC vol `5` ×3, JUE `153, 103846`, EEEP pages `57–82`.
-  Issue years: Equity→2024, Policy Reversals→2024, SJE→2022, Energies→2019.
-- Status: Recycling → "Empirical Economics (Accepted)" (kept in the R&R group on
-  purpose — Luis does not want that journal made prominent); boundary layer PNAS→JEEM;
-  Madrid Central → R&R at JEEM; crop-residue → under review at AJAE.
-- Added: Reissl/Sarmiento/Emmerling 2025 (sourced from IOP, DOI 10.1088/2753-3751/ade79a),
-  Tassinari & Sarmiento 2023 Handbook chapter, Migrant Networks (AEA P&P, invited),
-  Sembrando Vida, and The Global Economic Burden of Air Pollution.
-- Tassinari and Global Burden are **bibliographic-only** — no abstract exists publicly
-  or locally, so they render without the question/findings panel. Both optional.
+**In Google Analytics**
+- New account **Luis Sarmiento** (405640314) → property **luissarmiento.com**
+  (551174257), Switzerland time zone, Jobs & Education, stream "Personal website"
+  (15485179603). Measurement ID **G-N6C4L0GZLS**.
+- Optional Google data-sharing (products & services, modeling contributions,
+  recommendations) left OFF; technical support left on. ToS accepted under
+  **Switzerland** with the GDPR Data Processing Terms ticked — Luis approved that
+  acceptance explicitly when asked.
+- "Internal Traffic" data filter switched Testing → **Active**.
 
-**`src/data/conferences.ts` + `ConferenceTable.astro`**
-- Added WCERE Lisbon, Mannheim Energy, Essen Health (2026).
-- Added optional `award`/`awardEs` to the `Conference` interface, rendered as a badge.
-  Essen carries "Best Paper Award, 3rd Place".
-- Fixed ES translation maps: `Lisbon`→`Lisboa` and `Portugal` were **missing**, so
-  they silently displayed in English on `/es/`. Also added `Essen`.
+**In the repo** (see CLAUDE.md § Analytics for the durable details)
+- `src/components/Analytics.astro` (new), `BaseLayout.astro` (renders it at the end of
+  `<head>`), `PublicationCard.astro` (`data-publication={pub.title}`).
+- Verified against a production build before pushing: config fires with the right ID,
+  all four custom events land in `dataLayer` with correct parameters, `?internal=1`
+  sets the cookie and stamps `traffic_type`, `?internal=0` clears it.
 
-**`src/data/cv.ts` — grants added, teaching was stale**
-- New `Grant` interface + `grants` array (SFOE EVEN-DEMAND, PI, CHF 220,000, 2027–2029).
-- Rendered as a section on both CV pages via the existing `Timeline`, guarded by
-  `grantItems.length > 0`, with a nav anchor.
-- **Teaching was two years behind**: ETH Fall 2026, Bologna Spring 2026, and
-  Bologna Spring 2025 were all missing. The publications/conferences sync never
-  touched `cv.ts`. Visiting lectures, experience, and education were current.
+**Commits:** `8bb8840` (the change), merged to `main` as `a53c13f`. Both pushed;
+Netlify rebuilt and GA Realtime confirmed `page_view` / `session_start` / `first_visit`
+arriving. The first two active users on 2026-08-23 are verification hits, not visitors.
 
-**New Grants page + tab**
-- `/grants/` and `/es/grants/`, nav tab directly after Publications
-  (Grants / Financiamiento). Footer and language switcher inherit it from
-  `getNavigation()`. `grants.title` / `grants.description` added to `ui.ts`.
-
-**Downloadable CV PDF — was 5 months stale**
-- `public/cv/Luis_Sarmiento_CV.pdf` was dated 2026-02-08 and still served the
-  wrong JPubE `277` and Energy Policy `113378`. Identified as the academic PHOTO
-  variant (1024x1536 embedded image, non-private header, no phone) and replaced
-  with a fresh render. `~/projects/cv/render.sh` now syncs it automatically via a
-  `website` target that verifies the copy by byte size — but **deploying still
-  needs a manual commit + push here**.
-
-**Commits (all pushed to main → deployed)**
-- `65d8036` — publications sync with Google Scholar; 5 papers added
-- `8bff715` — 2026 conference presentations
-- `1cfb70d` — conference award field; Lisbon/Portugal ES translations
-- `5c51de9` — Grants section + missing teaching entries
-- `cbdd6fc` — Grants top-level page and nav tab
-- `f36f438` — refreshed downloadable CV PDF
+**Wrong turn worth remembering:** I spent ~7 minutes reporting "the deploy has not
+landed" because I grepped `https://luissarmiento.com/` without `-L`. The apex
+301-redirects to `www`, so I was searching a 45-byte redirect body. The deploy had
+almost certainly been live the whole time. Rule now in CLAUDE.md.
 
 ## Pending
 - [x] Vulnerabilities cleared 2026-07-25: `npm audit` 12 → 0, in two steps — `c0ba1c8` (lockfile-only, 12→3) then `e6e2d75` (Astro 5.18.2 → 7.1.3, 3→0) + `37f7ff0` (CI Node 22 — e6e2d75's deploy failed)
@@ -69,6 +45,10 @@ the CV side; see `~/projects/cv/CLAUDE.local.md` for the full account.
 - [x] Tassinari chapter + Global Burden question/findings — DECIDED 2026-07-25: skip. Both stay listed as bibliographic-only entries (no expandable panel). No abstract exists publicly or locally for either. Do not remove the entries.
 - [x] AEA P&P resolved 2026-07-25: invited but not yet submitted → moved to working papers, venue text removed.
 - [x] CLAUDE.md + CLAUDE.local.md committed 2026-07-25 (`b4b0a53`).
+- [x] Google Analytics configured, deployed and verified live 2026-08-23 (`8bb8840` → `a53c13f`).
+- [x] 2 high Dependabot alerts cleared 2026-08-23 (`c34d43f`): lockfile-only patch bumps, `nanoid` 3.3.16 → 3.3.18 (via vite/postcss) and `js-yaml` 4.3.0 → 4.3.1 (via astro). Both are build-time transitive deps of a static site, so neither ever reached a visitor's browser — CPU-exhaustion bugs in tooling run against our own content. `package.json` untouched; build still 36 pages, GA tag intact.
+- [ ] Optional: relabel the GA data stream URL to `https://www.luissarmiento.com` — the canonical host is `www`, the stream says apex. Cosmetic; does not affect collection.
+- [x] CLAUDE.md + CLAUDE.local.md updates committed 2026-08-23.
 
 ## Hosting (discovered 2026-07-25)
 - **Netlify serves luissarmiento.com**, not GitHub Pages. The Pages workflow deploys an
@@ -95,6 +75,7 @@ the CV side; see `~/projects/cv/CLAUDE.local.md` for the full account.
   artifact, NOT a site bug — do not chase it.
 
 ## Prior Sessions (condensed)
+- 2026-07-25: CV/Scholar sync — 12 publication corrections, 5 additions, Grants page + tab, 2026 conferences, refreshed CV PDF, Astro 5→7, vulnerabilities 12→0.
 - 2026-03-06: Moved boundary-layer paper to under review at PNAS; added hurricane damages working paper (`f7e1c0f`, `3bbb38d`).
 - 2026-02-28: Added dedicated Publications page with nav tab in EN and ES; favicon update.
 - Initial build: full website with Astro + Tailwind CSS.
