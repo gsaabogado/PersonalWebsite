@@ -1,0 +1,26 @@
+# Build-only check. Netlify is the sole deploy path and builds from main on its
+# own; this workflow exists purely so a broken build is loud in GitHub instead
+# of silent until someone opens the Netlify dashboard. It deploys nothing.
+name: Build
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # Astro 7 requires Node >=22.12.0. This must stay in step with
+      # NODE_VERSION in netlify.toml, or CI can pass while Netlify fails.
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - run: npm ci
+      - run: npm run build

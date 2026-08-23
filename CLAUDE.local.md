@@ -75,10 +75,12 @@ blocks; Luis ran it himself with the `!` prefix.
   `x-default` hreflang, and repointed `site` at www. Then created the
   `sc-domain:luissarmiento.com` domain property, verified by a TXT record added
   in Netlify DNS, submitted the sitemap (Success) and linked it to GA4.
-- [ ] Optional: add a build-only CI workflow (`npm ci && npm run build`, no deploy). The
-  repo now has no workflows at all, so a broken Netlify build is silent. Deliberately not
-  added on 2026-08-23 — Luis builds locally before pushing. Revisit only if a broken
-  deploy ever slips through.
+- [x] **Build-only CI workflow added 2026-08-23** (`.github/workflows/build.yml`).
+  `npm ci && npm run build` on push to main, on PRs and via workflow_dispatch;
+  no deploy step, so Netlify remains the only deploy path. Verified locally with
+  the exact CI command first (`npm ci` clean, 0 vulnerabilities, 36 pages).
+  Node pinned to 22 to match `netlify.toml` — if those drift, CI goes green
+  while Netlify fails.
 
 ## Hosting (discovered 2026-07-25)
 - **Netlify serves luissarmiento.com.** Since 2026-08-23 it is the only deploy path;
