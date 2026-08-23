@@ -46,9 +46,15 @@ exist alongside it, deploying a copy the domain never routed to; both were
 removed on 2026-08-23 because their runs carried no signal about the live site
 and their failures twice read as real breakage.
 
-- **The repo has NO GitHub Actions workflows.** A push therefore gets no
-  automated build check, and a broken Netlify build is silent unless you look
-  at the Netlify dashboard. Run `npm run build` locally before pushing.
+- **One workflow: `.github/workflows/build.yml`** (added 2026-08-23). It runs
+  `npm ci && npm run build` on pushes to main, on PRs, and on demand. It
+  **deploys nothing** — Netlify still does that on its own from main. Its only
+  job is to make a broken build loud in GitHub rather than silent until someone
+  opens the Netlify dashboard. A red check here does NOT mean the live site is
+  down; it means the next Netlify build will fail too.
+  - Its `node-version: '22'` must stay in step with `NODE_VERSION` in
+    `netlify.toml`. If they drift, CI can pass while Netlify fails — which is
+    exactly the 2026-07-25 Astro 7 breakage (Node <22.12).
 - **Netlify needs Node 22** (Astro 7 requires `>=22.12.0`): `netlify.toml` sets
   `NODE_VERSION = "22"`. Without it the build fails with "Node.js v20 is not
   supported by Astro!".
