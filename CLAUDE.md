@@ -83,83 +83,64 @@ page carries it. Mirrors the Trifecta setup.
   `paper_title`, sourced from `data-publication` on `PublicationCard`),
   `email_click`, `cv_download`, `profile_click`. One delegated listener, so new
   links are covered without further edits.
-- **Property config set 2026-08-23** (all three are NOT retroactive, which is why
-  they were done immediately):
-  - **Event data retention 2 → 14 months.** 2 months is the GA4 default and it
-    silently discards everything older. User-data retention was already 14.
-  - **Custom dimension "Paper title"**, event-scoped, parameter `paper_title`.
-    Without it the parameter is collected but cannot be used as a report
-    breakdown, so `publication_click` could never be split by paper.
-  - **Key events**: `publication_click`, `cv_download`, `email_click`.
-    `profile_click` is deliberately NOT a key event — add it if the Scholar/ORCID
-    links become something worth tracking as an outcome.
-  - Reporting timezone verified as Switzerland (GMT+02:00); currency USD.
-  - Google Signals left OFF on purpose: at this traffic level it triggers data
-    thresholding, which hides rows rather than adding insight.
+- **Property config (2026-08-23), none of it retroactive:** event data retention
+  2 → **14 months** (2 is the GA4 default and silently drops anything older;
+  user data was already 14); custom dimension **"Paper title"**, event-scoped on
+  parameter `paper_title` (without it the parameter is collected but unusable as
+  a report breakdown, so publication clicks could never be split by paper); key
+  events `publication_click`, `cv_download`, `email_click`. Timezone
+  Switzerland, currency USD. `profile_click` is deliberately NOT a key event.
+  Google Signals OFF — at this traffic level it only triggers data thresholding,
+  hiding rows rather than adding insight.
 - The air-purifiers calculator at `/tools/air-purifiers-trial/app/` is untagged
   ON PURPOSE — it is an iframe inside an already-tagged page. Tagging it would
   double-count every visit.
-- **Ownership.** The GA account was created in-browser on 2026-08-23 under the
-  WORK account `luis.sarmiento@cmcc.it`, which was for a few hours its only
-  user — a single point of failure for a personal site, since CMCC
-  deprovisioning that Workspace account would have orphaned the analytics.
-  Fixed the same day: `gsaabogado@gmail.com` added as **Administrator at the
-  ACCOUNT level** (405640314), which cascades to the property, then
-  `luis.sarmiento@cmcc.it` removed. **`gsaabogado@gmail.com` is now the sole
-  Administrator** — the personal Gmail, not the work address. Access changes
-  touch no collection: measurement ID, stream, filters and history were all
-  unaffected.
-  - To reach this account you must be signed in AS Gmail. If a browser has both
-    Google accounts, force it with
-    `?authuser=gsaabogado@gmail.com` in the analytics.google.com URL — the
-    account picker at top-left switches PROPERTIES, not logins, and clicking it
-    by mistake jumps to the separate **Trifecta** GA account (404648778).
+- **Ownership: `gsaabogado@gmail.com` is the SOLE Administrator**, at the account
+  level (405640314), which cascades to the property. The account was created
+  under the WORK address `luis.sarmiento@cmcc.it` and for a few hours had no
+  other user — a single point of failure, since CMCC deprovisioning that
+  Workspace account would have orphaned the analytics. Fixed 2026-08-23: Gmail
+  added as account Administrator, then cmcc.it removed. Access changes touch no
+  collection — measurement ID, stream, filters and history were unaffected.
+  - **You must be signed in AS Gmail to reach it.** cmcc.it is the browser's
+    DEFAULT Google account, so any bare Google link opens as work; force it with
+    `?authuser=gsaabogado@gmail.com`. The picker at top-left switches
+    PROPERTIES, not logins — clicking it jumps to the separate **Trifecta** GA
+    account (404648778).
 
 ## SEO / crawlability
-Added 2026-08-23, alongside the GA ownership fix.
-
-- **`site` is the WWW host**, `https://www.luissarmiento.com`. The apex
-  301-redirects to www, so everything derived from `site` (canonical tags,
-  `og:url`, the sitemap) must point at www or the site advertises URLs that
-  redirect. `BaseLayout.astro`'s fallback URL was changed to match.
-- **`@astrojs/sitemap`** generates `sitemap-index.xml` + `sitemap-0.xml` (36
-  URLs). Two non-obvious bits of its config:
-  - the `i18n` block emits EN/ES `xhtml:link` alternates. It pairs pages by path
-    after the locale prefix, so the outreach pages (translated slugs,
-    `/temperature-and-emergency-visits` vs `/es/temperatura-y-urgencias`) stay
-    UNPAIRED there. That is correct, not a bug — `BaseLayout`'s own hreflang
-    tags pair them, and prefix-matching could only ever mis-pair them.
-  - a `serialize` hook strips trailing slashes, because `BaseLayout`'s canonical
-    strips them. Without it the sitemap says `/research/` while the page's own
-    canonical says `/research`, and the two disagree about the same page. The
-    root URL keeps its slash.
-- **`public/robots.txt`** points at the sitemap. There was none before.
-- **hreflang was already correct** in both directions (`BaseLayout.astro`);
-  only `x-default` was missing and was added.
-- `public/CNAME` (`luissarmiento.com`) is dead since GitHub Pages was deleted.
-  Harmless — Netlify ignores it — but it is not doing anything.
+- **`site` is the WWW host** (`https://www.luissarmiento.com`). The apex 301s to
+  www, so canonical tags, `og:url` and the sitemap must all point at www or the
+  site advertises URLs that redirect. `BaseLayout.astro`'s fallback matches.
+- **`@astrojs/sitemap`** → `sitemap-index.xml` + `sitemap-0.xml` (36 URLs). Two
+  non-obvious config points:
+  - its `i18n` block pairs pages by path after the locale prefix, so the
+    outreach pages (translated slugs, `/temperature-and-emergency-visits` vs
+    `/es/temperatura-y-urgencias`) stay UNPAIRED in the sitemap. Correct, not a
+    bug — `BaseLayout`'s own hreflang pairs them, and prefix-matching could only
+    ever mis-pair them.
+  - a `serialize` hook strips trailing slashes to match `BaseLayout`'s
+    canonical. Without it the sitemap says `/research/` while the page's own
+    canonical says `/research`. The root URL keeps its slash.
+- **`public/robots.txt`** names the sitemap; there was none before. hreflang was
+  already correct in both directions — only `x-default` was missing, now added.
+- `public/CNAME` is dead since Pages was deleted. Netlify ignores it.
 
 ## Google Search Console
-Set up 2026-08-23, owned by `gsaabogado@gmail.com` (same account as GA and Netlify).
+Domain property `sc-domain:luissarmiento.com` (covers apex + www + http + https
+in one), owned by `gsaabogado@gmail.com`. Sitemap submitted (Success) and linked
+to GA4 against the "Personal website" stream; the Search Console report
+collection published ITSELF on linking — no manual Reports > Library step.
 
-- **Domain property** `sc-domain:luissarmiento.com` — covers apex + www + http +
-  https in one property, unlike a URL-prefix property.
-- **Verified by DNS TXT.** DNS is **Netlify-managed** (NS1 nameservers,
-  `dns[1-4].p01.nsone.net`); the domain is registered THROUGH Netlify and
-  auto-renews Sep 11 (~$19.99/yr). whois names Name.com, but records are edited
-  at `app.netlify.com/teams/gsaabogado/dns/luissarmiento.com`, NOT at Name.com.
-  The TXT record at the apex is
-  `google-site-verification=7QYxo5nwLYX22GYLfJm4aYw1pI_6MnGD8w3b9qJhpDI`.
-  **Do not delete it** — verification is lost and the property goes away.
-- `netlify api createDnsRecord` returns 422 for reasons I could not pin down;
-  the web DNS panel works. Read-only calls (`getDnsZones`, `getDnsRecords`) are
-  fine and are the quickest way to inspect the zone.
-- **Sitemap** `https://www.luissarmiento.com/sitemap-index.xml` submitted,
-  status Success. "Couldn't fetch" right after submitting is a pending state,
-  not an error; it flipped to Success within a minute.
-- **Linked to GA4** (Admin > Product links > Search Console links) against the
-  "Personal website" stream. The Search Console report collection **published
-  itself on linking** — the Queries and "Google organic search traffic" reports
-  appeared without a manual step in Reports > Library.
-- Reports stay empty until Search Console accumulates its own data (a day or
-  two); that is not a broken link.
+- **Verified by a DNS TXT record at the apex. Do not delete it** — verification
+  and the property go with it:
+  `google-site-verification=7QYxo5nwLYX22GYLfJm4aYw1pI_6MnGD8w3b9qJhpDI`
+- **DNS is Netlify-managed** (NS1, `dns[1-4].p01.nsone.net`); the domain is
+  registered THROUGH Netlify and auto-renews Sep 11 (~$19.99/yr). whois names
+  Name.com, but records are edited at
+  `app.netlify.com/teams/gsaabogado/dns/luissarmiento.com`. `netlify api
+  createDnsRecord` returns 422 for reasons I could not pin down — use the web
+  panel; read-only `getDnsZones` / `getDnsRecords` work and are the fastest way
+  to inspect the zone.
+- "Couldn't fetch" immediately after submitting a sitemap is a pending state,
+  not an error. Reports stay empty for a day or two while data accumulates.
