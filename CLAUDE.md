@@ -54,3 +54,25 @@ Actions run says nothing about the live site.
   Check the `age:` header too — a large value means you are reading cache.
 - Identify the host with:
   `curl -sS -D - -o /dev/null https://luissarmiento.com/ | grep -i '^server:'`
+- **The apex 301-redirects to `www.luissarmiento.com`.** `curl` without `-L`
+  returns a 45-byte redirect body, so any grep for page content silently finds
+  nothing and reads as "the deploy failed". Always verify with `curl -sSL`.
+
+## Analytics
+Google Analytics 4, account "Luis Sarmiento" (405640314), property
+`luissarmiento.com` (551174257), measurement ID **G-N6C4L0GZLS**. Everything
+lives in `src/components/Analytics.astro`, rendered from `BaseLayout` so every
+page carries it. Mirrors the Trifecta setup.
+
+- **Internal traffic:** loading any page once with `?internal=1` sets a two-year
+  `ls_internal` cookie; every later hit then carries `traffic_type=internal`,
+  which the property's "Internal Traffic" data filter (state: Active) excludes.
+  `?internal=0` clears it. Because the filter excludes rather than tags, an
+  internal visit will NOT show up in Realtime — that is the filter working.
+- **Custom events** beyond enhanced measurement: `publication_click` (carries
+  `paper_title`, sourced from `data-publication` on `PublicationCard`),
+  `email_click`, `cv_download`, `profile_click`. One delegated listener, so new
+  links are covered without further edits.
+- The air-purifiers calculator at `/tools/air-purifiers-trial/app/` is untagged
+  ON PURPOSE — it is an iframe inside an already-tagged page. Tagging it would
+  double-count every visit.
