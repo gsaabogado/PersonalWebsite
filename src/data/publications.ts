@@ -24,7 +24,7 @@ export interface Publication {
 export const publications: Publication[] = [
   // === Published ===
   {
-    title: "Emergency Room Visits and Temperature: Evidence from Mexico",
+    title: "Emergency department visits and temperature: Evidence from Mexico",
     authors: "Luis Sarmiento, Francesco Pietro Colelli, Filippo Pavanello",
     journal: "Journal of Economic Behavior and Organization (Forthcoming)",
     year: 2026,
@@ -37,14 +37,14 @@ export const publications: Publication[] = [
     question: "How do temperatures affect emergency department visits in a developing country, and do the effects differ from mortality patterns?",
     questionEs: "¿Cómo afectan las temperaturas a las visitas a urgencias en un país en desarrollo, y difieren los efectos de los patrones de mortalidad?",
     findings: [
-      "Cold temperatures reduce ED visits by up to 8.9% on the same day and cumulatively by 16.3% over 30 days; warm temperatures increase visits by up to 3.6%.",
+      "Cold temperatures reduce ED visits by up to 9.1% on the same day, and by up to 16% accounting for the following 30 days; warm temperatures increase visits by as much as 3.7%.",
       "Unlike mortality, which shows a U-shaped response, ED visits respond approximately linearly to temperature, with limited harvesting for heat.",
-      "Children and teenagers are more sensitive to heat; older populations are more vulnerable to cold. Climate projections indicate ED usage will rise, adding an estimated $86 million in annual medical costs by midcentury.",
+      "Children and teenagers are more sensitive to heat; older populations are more vulnerable to cold. Climate projections indicate ED usage will rise, adding an estimated $8.5 million in annual medical costs by midcentury.",
     ],
     findingsEs: [
-      "Las temperaturas frías reducen las visitas a urgencias hasta un 8.9% el mismo día y un 16.3% acumulado en 30 días; las temperaturas cálidas las aumentan hasta un 3.6%.",
+      "Las temperaturas frías reducen las visitas a urgencias hasta un 9.1% el mismo día, y hasta un 16% considerando los 30 días siguientes; las temperaturas cálidas las aumentan hasta un 3.7%.",
       "A diferencia de la mortalidad, que muestra una respuesta en forma de U, las visitas a urgencias responden de forma aproximadamente lineal a la temperatura, con cosecha limitada para el calor.",
-      "Los niños y adolescentes son más sensibles al calor; las poblaciones mayores son más vulnerables al frío. Las proyecciones climáticas indican que el uso de urgencias aumentará, añadiendo un estimado de $86 millones en costos médicos anuales para mediados de siglo.",
+      "Los niños y adolescentes son más sensibles al calor; las poblaciones mayores son más vulnerables al frío. Las proyecciones climáticas indican que el uso de urgencias aumentará, añadiendo un estimado de $8.5 millones en costos médicos anuales para mediados de siglo.",
     ],
   },
   {
