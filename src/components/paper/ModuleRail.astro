@@ -6,6 +6,13 @@
  * Deliberately not a numbered 1-2-3 sequence and not a grid of icon cards:
  * one layout primitive, repeated, with the current item marked by weight and a
  * rule rather than by a coloured pill.
+ *
+ * `top-20` is deliberate and must track Header's height. Header is
+ * `sticky top-0 z-50` with an `h-20` (80px) bar; if this rail also sticks at
+ * `top-0` the two occupy the same coordinate and the header, winning on
+ * z-index, paints over it. Raising this z-index is the wrong fix: it puts the
+ * rail over the site header. Park it below instead. If Header's height ever
+ * changes, change this offset with it.
  */
 import { MODULES, SECTION_BASE, modulePath, type Lang } from "../../data/outreach";
 
@@ -23,7 +30,7 @@ const strings = {
 ---
 
 <nav
-  class="sticky top-0 z-20 border-b border-rule bg-white/95 backdrop-blur-sm"
+  class="sticky top-20 z-20 border-b border-rule bg-white/95 backdrop-blur-sm"
   aria-label={strings.overview}
 >
   <div class="mx-auto max-w-6xl px-6">
