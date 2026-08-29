@@ -23,6 +23,10 @@ export default defineConfig({
     // them.
     sitemap({
       i18n: { defaultLocale: "en", locales: { en: "en", es: "es" } },
+      // `/es/corneta` is an unlisted pitch page. It carries `noindex` in
+      // BaseLayout; listing it in the sitemap would hand crawlers the very URL
+      // the tag asks them to forget, so the two have to agree.
+      filter: (page) => !/\/es\/corneta\/?$/.test(new URL(page).pathname),
       // BaseLayout's canonical strips the trailing slash, so the sitemap has to
       // strip it too. Advertising `/research/` while the page's own canonical
       // says `/research` makes the two disagree about the same page.

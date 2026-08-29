@@ -4,3 +4,13 @@
 # "Node.js vXX is not supported by Astro!".
 [build.environment]
   NODE_VERSION = "22"
+
+# The Corneta pitch page lives at /es/corneta, because the site header reads
+# the nav's language off the URL prefix and the page is Spanish. This keeps the
+# short URL working for cold emails, and it stops the header's EN switcher —
+# which always points at the un-prefixed path — from landing on a 404.
+[[redirects]]
+  from = "/corneta"
+  to = "/es/corneta"
+  status = 301
+  force = true

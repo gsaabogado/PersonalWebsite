@@ -10,6 +10,10 @@ interface Props {
   /** Path under /og, without extension. Falls back to the site-wide card. */
   ogImage?: string;
   ogType?: "website" | "article";
+  /** Keeps the page out of search results. A page that opts in also drops its
+      hreflang tags, because a page nobody should index has no translation
+      worth advertising. Pair it with an exclusion in the sitemap `filter`. */
+  noindex?: boolean;
 }
 
 const lang = getLangFromUrl(Astro.url);
@@ -23,6 +27,7 @@ const {
     : "Economista ambiental especializado en econometría aplicada y modelación energética. Investigación sobre contaminación del aire, inferencia causal y política energética.",
   ogImage,
   ogType = "website",
+  noindex = false,
 } = Astro.props;
 
 /* Absolute URLs, because Open Graph consumers do not resolve relative paths. */
@@ -61,11 +66,19 @@ const altHref = new URL(alternate, site).href;
     />
 
     <link rel="canonical" href={canonical} />
-    <link rel="alternate" hrefLang={lang} href={canonical} />
-    <link rel="alternate" hrefLang={getAlternateLang(lang)} href={altHref} />
-    {/* x-default names the version to serve when no declared language matches.
-        English is the default locale, so it is whichever of the two is the EN URL. */}
-    <link rel="alternate" hrefLang="x-default" href={lang === "en" ? canonical : altHref} />
+    {/* robots.txt deliberately keeps allowing the crawl. A disallowed page is
+        never fetched, so the crawler never reads this tag and the URL can still
+        surface bare. Letting it in and telling it noindex is what removes it. */}
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+    {!noindex && (
+      <Fragment>
+        <link rel="alternate" hrefLang={lang} href={canonical} />
+        <link rel="alternate" hrefLang={getAlternateLang(lang)} href={altHref} />
+        {/* x-default names the version to serve when no declared language matches.
+            English is the default locale, so it is whichever of the two is the EN URL. */}
+        <link rel="alternate" hrefLang="x-default" href={lang === "en" ? canonical : altHref} />
+      </Fragment>
+    )}
 
     {/* Open Graph. The section's cards are generated from the published
         estimates by tools/make_og_cards.py, so a shared preview cannot show a
