@@ -15,15 +15,135 @@
  * figure, and every number from `sembrando_vida` or `blackouts_mort`. Only
  * figures already marked ✅ in an episode's verification table go on air here.
  *
- * It links the outreach microsite rather than the CV on purpose. The microsite
- * shows Luis explaining a paper to a lay reader, which is the objection a radio
- * producer actually has; a CV reinforces it.
- *
- * It uses PageLayout, so the site's header and footer wrap it and a producer
- * can browse into the rest of the site. That header carries a "Download CV"
- * button; Luis chose to keep it (2026-08-29) over hiding it on this page.
+ * The copy is Luis's, approved verbatim; this file only carries its layout.
+ * That layout is the site's own vocabulary — alternating white / warm-gray
+ * bands against dark photo sections, SectionHeader, rounded-2xl cards, the sky
+ * accent — so the pitch reads as part of luissarmiento.com rather than as a
+ * transplant. Figures Luis measured himself are set in temp-hot to separate
+ * them at a glance from figures he is quoting.
  */
 import PageLayout from "../../layouts/PageLayout.astro";
+import SectionHeader from "../../components/SectionHeader.astro";
+
+const episodes = [
+  {
+    tag: "Aire",
+    aside: "el más chilango",
+    title: "El aire de México: por qué el Hoy No Circula nunca sirvió",
+    hook: "Todo chilango cree que vive en la ciudad más contaminada de México. Ya no es cierto, y no lo es desde hace rato. Y el costo del aire sucio no está en el hospital: está en tu quincena, en tus decisiones y en el crimen de tu colonia.",
+    stats: [
+      {
+        figure: "Cero",
+        own: false,
+        text: "evidencia de que el Hoy No Circula haya mejorado el aire desde 1989. La gente hizo lo que uno haría: compró un segundo coche, y como era el extra, era el viejo y el más sucio.",
+      },
+      {
+        figure: "7 de 8",
+        own: "Dato propio",
+        text: "de los municipios más contaminados del país son el área metropolitana de Monterrey. La peor alcaldía de la capital es apenas el lugar 18 de 99.",
+      },
+      {
+        figure: "+2.3%",
+        own: "Dato propio",
+        text: "más visitas a urgencias por cada microgramo de PM2.5. En menores de 12 años sube a 4.7%; en mayores de 80, a 3.1%.",
+      },
+      {
+        figure: "+0.33%",
+        own: "Dato propio, publicado",
+        text: "más crimen por hora en la Ciudad de México por cada 10 puntos del índice de calidad del aire. Las partículas bajan la serotonina, que es el freno de la impulsividad.",
+      },
+    ],
+    cabina:
+      "La pregunta trampa perfecta: si contamino más, ¿baja el crimen? Con el aire muy malo sí baja, y la razón es buenísima: hasta los delincuentes se quedan en su casa.",
+  },
+  {
+    tag: "Ciencia",
+    aside: "el más ligero, ideal para un piloto",
+    title: "Doctor, pero no de los que curan",
+    hook: 'Todos citan "estudios científicos" y nadie sabe cómo se fabrica uno: quién lo paga, quién lo revisa (gratis), cuántos años tarda y por qué salen dos estudios que dicen lo contrario.',
+    stats: [
+      {
+        figure: "38.1%",
+        own: false,
+        text: "de margen operativo tuvo la división científica de Elsevier en 2025. El de Apple, ese mismo año, fue de 32%. Publicar el trabajo gratis de otros es mejor negocio que vender iPhones.",
+      },
+      {
+        figure: "34 meses",
+        own: false,
+        text: 'pasan en promedio entre que un economista manda su artículo y lo ve impreso. En ciencias naturales son 9. El "estudio nuevo" del noticiero se cocinó en otro sexenio.',
+      },
+      {
+        figure: "36%",
+        own: false,
+        text: "de cien estudios famosos de psicología se pudo repetir. En economía experimental, 61%. Eso no es fraude: es un sistema premiando lo que premia.",
+      },
+      {
+        figure: "71,922",
+        own: false,
+        text: "personas en 68 países. La confianza en los científicos sigue siendo alta y la gente los quiere más metidos en las decisiones públicas, no menos. Lo que creció no es la desconfianza: es la politización.",
+      },
+    ],
+    cabina:
+      "Cero riesgo político, cero dependencia de resultados míos, y una hora de anécdotas del gremio contadas por alguien que sigue adentro. Si quieren probar el formato con algo ligero, es este.",
+  },
+  {
+    tag: "Clima",
+    aside: "el más amplio",
+    title: "Cómo el cambio climático ya está afectando a México",
+    hook: "No son osos polares: es tu recibo de luz, el precio del jitomate, la guardia de urgencias llena y el primo que manda menos dinero desde Texas. Ya está pasando, es medible, y hay maneras de prepararse.",
+    stats: [
+      {
+        figure: "1,700 M",
+        own: "Dato propio",
+        text: "de dólares al año en remesas que dejan de llegar a México por el calor. Más o menos el presupuesto de Tlaxcala.",
+      },
+      {
+        figure: "1.6% / 3.7%",
+        own: "Dato propio",
+        text: "el municipio mexicano mediano recibe 1.6% más cuando hace calor aquí, pero pierde 3.7% cuando hace calor allá. El seguro familiar se descompone por los dos lados, y pesa más el de allá.",
+      },
+      {
+        figure: "+3.6%",
+        own: "Dato propio",
+        text: "más visitas a urgencias por cada día arriba de 30 °C. Y no solo por golpe de calor: también obstétricas, gastrointestinales, dengue.",
+      },
+      {
+        figure: "−42%",
+        own: false,
+        text: "caería el rendimiento del maíz de temporal a fin de siglo en el escenario de emisiones altas. Y cuando las cosechas caen, la gente se va.",
+      },
+    ],
+    cabina:
+      "Cierra con lo útil y con pleito: qué adaptación sí funciona, y por qué buena parte de la política climática mexicana es la foto y no la solución.",
+  },
+];
+
+const sources = [
+  { figure: "2,442", label: "municipios medidos desde satélite" },
+  { figure: "100%", label: "de los hospitales públicos del país, con sus registros digitales de urgencias" },
+  { figure: "ENOE", label: "la Encuesta Nacional de Ocupación y Empleo" },
+];
+
+const papers = [
+  {
+    status: "Publicado · 2023",
+    published: true,
+    title: "Contaminación del aire y crimen en la Ciudad de México y Nueva York",
+    meta: "Environmental Research: Health. 2.9 millones de observaciones por hora. El primer estimado de la relación entre contaminación y criminalidad para una ciudad del mundo en desarrollo.",
+  },
+  {
+    status: "En revisión",
+    published: false,
+    title: "Contaminación del aire y urgencias médicas en México",
+    meta: "Con los registros digitales de todos los hospitales públicos del país. Primer estimado causal a escala nacional para un país que no es de ingreso alto.",
+  },
+  {
+    status: "En revisión",
+    published: false,
+    title: "Temperatura y remesas",
+    meta: "Qué le pasa al dinero que mandan los migrantes cuando hace calor de este lado de la frontera, y qué le pasa cuando hace calor del otro.",
+  },
+];
 ---
 
 <PageLayout
@@ -31,614 +151,236 @@ import PageLayout from "../../layouts/PageLayout.astro";
   description="Propuesta de experto invitado para La Corneta Extendida. Tres episodios de economía ambiental con datos mexicanos: el aire del país, cómo se fabrica la ciencia y el clima que ya se siente en la quincena."
   noindex
 >
-  <div class="corneta">
-    <div class="page">
 
-      <header class="masthead">
-        <p class="eyebrow">Propuesta de experto invitado &middot; La Corneta Extendida</p>
-        <h1>Tres episodios listos</h1>
-        <p class="lede">Soy economista ambiental. Mido, con datos mexicanos, cómo el aire sucio y el
-          calor le pegan al bolsillo de la gente: al sueldo, a la cosecha, a las remesas, a la
-          guardia de urgencias y hasta al crimen. Estos son tres episodios que puedo sostener una
-          hora, con números propios y sin una sola diapositiva.</p>
-        <hr class="aqi-rule">
-        <ul class="affil">
-          <li>ETH Zürich</li>
-          <li>Centro climático CMCC</li>
-          <li>Banco de México</li>
-          <li>Mexicano-colombiano</li>
-        </ul>
-      </header>
-
-      <section>
-        <div class="section-head">
-          <p class="eyebrow">Por qué yo</p>
-          <h2>No vengo a opinar del planeta. Vengo con los números del país.</h2>
-        </div>
-        <p>Casi todo lo que se dice de medio ambiente en México se dice sin datos mexicanos. Yo
-          trabajo con los que hay: <strong>2,442 municipios</strong> medidos desde satélite, los
-          registros digitales de urgencias de <strong>todos los hospitales públicos del país</strong>,
-          y la Encuesta Nacional de Ocupación y Empleo.</p>
-        <p>Y con una regla que me impuse para radio: si un dato no se puede contar en una frase, y
-          si no termina en tu quincena, no sirve para el programa.</p>
-      </section>
-
-      <section>
-        <div class="section-head">
-          <p class="eyebrow">Los tres episodios</p>
-          <h2>Cada uno tiene su gancho, su pleito y su chiste.</h2>
-        </div>
-
-        <div class="episodes">
-
-          <article class="ep">
-            <p class="ep-tag">Aire <span class="aside">&middot; el más chilango</span></p>
-            <h3>El aire de México: por qué el Hoy No Circula nunca sirvió</h3>
-            <p class="ep-hook">Todo chilango cree que vive en la ciudad más contaminada de México.
-              Ya no es cierto, y no lo es desde hace rato. Y el costo del aire sucio no está en el
-              hospital: está en tu quincena, en tus decisiones y en el crimen de tu colonia.</p>
-
-            <div class="stats">
-              <div class="stat">
-                <span class="stat-figure">Cero</span>
-                <span class="stat-text">evidencia de que el Hoy No Circula haya mejorado el aire
-                  desde 1989. La gente hizo lo que uno haría: compró un segundo coche, y como era
-                  el extra, era el viejo y el más sucio.</span>
-              </div>
-              <div class="stat">
-                <span class="stat-figure own">7 de 8</span>
-                <span class="stat-text">de los municipios más contaminados del país son el área
-                  metropolitana de Monterrey. La peor alcaldía de la capital es apenas el lugar 18
-                  de 99. <span class="src own">Dato propio</span></span>
-              </div>
-              <div class="stat">
-                <span class="stat-figure own">+2.3%</span>
-                <span class="stat-text">más visitas a urgencias por cada microgramo de PM2.5. En
-                  menores de 12 años sube a 4.7%; en mayores de 80, a 3.1%.
-                  <span class="src own">Dato propio</span></span>
-              </div>
-              <div class="stat">
-                <span class="stat-figure own">+0.33%</span>
-                <span class="stat-text">más crimen por hora en la Ciudad de México por cada 10
-                  puntos del índice de calidad del aire. Las partículas bajan la serotonina, que es
-                  el freno de la impulsividad. <span class="src own">Dato propio, publicado</span></span>
-              </div>
-            </div>
-
-            <p class="ep-cabina"><b>Lo que da en cabina</b>La pregunta trampa perfecta: si contamino
-              más, ¿baja el crimen? Con el aire muy malo sí baja, y la razón es buenísima: hasta los
-              delincuentes se quedan en su casa.</p>
-          </article>
-
-          <article class="ep">
-            <p class="ep-tag">Ciencia <span class="aside">&middot; el más ligero, ideal para un piloto</span></p>
-            <h3>Doctor, pero no de los que curan</h3>
-            <p class="ep-hook">Todos citan "estudios científicos" y nadie sabe cómo se fabrica uno:
-              quién lo paga, quién lo revisa (gratis), cuántos años tarda y por qué salen dos estudios
-              que dicen lo contrario.</p>
-
-            <div class="stats">
-              <div class="stat">
-                <span class="stat-figure">38.1%</span>
-                <span class="stat-text">de margen operativo tuvo la división científica de Elsevier
-                  en 2025. El de Apple, ese mismo año, fue de 32%. Publicar el trabajo gratis de
-                  otros es mejor negocio que vender iPhones.</span>
-              </div>
-              <div class="stat">
-                <span class="stat-figure">34 meses</span>
-                <span class="stat-text">pasan en promedio entre que un economista manda su artículo y
-                  lo ve impreso. En ciencias naturales son 9. El "estudio nuevo" del noticiero se
-                  cocinó en otro sexenio.</span>
-              </div>
-              <div class="stat">
-                <span class="stat-figure">36%</span>
-                <span class="stat-text">de cien estudios famosos de psicología se pudo repetir. En
-                  economía experimental, 61%. Eso no es fraude: es un sistema premiando lo que
-                  premia.</span>
-              </div>
-              <div class="stat">
-                <span class="stat-figure">71,922</span>
-                <span class="stat-text">personas en 68 países. La confianza en los científicos sigue
-                  siendo alta y la gente los quiere más metidos en las decisiones públicas, no menos.
-                  Lo que creció no es la desconfianza: es la politización.</span>
-              </div>
-            </div>
-
-            <p class="ep-cabina"><b>Lo que da en cabina</b>Cero riesgo político, cero dependencia de
-              resultados míos, y una hora de anécdotas del gremio contadas por alguien que sigue
-              adentro. Si quieren probar el formato con algo ligero, es este.</p>
-          </article>
-
-          <article class="ep">
-            <p class="ep-tag">Clima <span class="aside">&middot; el más amplio</span></p>
-            <h3>Cómo el cambio climático ya está afectando a México</h3>
-            <p class="ep-hook">No son osos polares: es tu recibo de luz, el precio del jitomate, la
-              guardia de urgencias llena y el primo que manda menos dinero desde Texas. Ya está
-              pasando, es medible, y hay maneras de prepararse.</p>
-
-            <div class="stats">
-              <div class="stat">
-                <span class="stat-figure own">1,700 M</span>
-                <span class="stat-text">de dólares al año en remesas que dejan de llegar a México por
-                  el calor. Más o menos el presupuesto de Tlaxcala.
-                  <span class="src own">Dato propio</span></span>
-              </div>
-              <div class="stat">
-                <span class="stat-figure own">1.6% / 3.7%</span>
-                <span class="stat-text">el municipio mexicano mediano recibe 1.6% más cuando hace
-                  calor aquí, pero pierde 3.7% cuando hace calor allá. El seguro familiar se
-                  descompone por los dos lados, y pesa más el de allá.
-                  <span class="src own">Dato propio</span></span>
-              </div>
-              <div class="stat">
-                <span class="stat-figure own">+3.6%</span>
-                <span class="stat-text">más visitas a urgencias por cada día arriba de 30&deg;C. Y no
-                  solo por golpe de calor: también obstétricas, gastrointestinales, dengue.
-                  <span class="src own">Dato propio</span></span>
-              </div>
-              <div class="stat">
-                <span class="stat-figure">&minus;42%</span>
-                <span class="stat-text">caería el rendimiento del maíz de temporal a fin de siglo en
-                  el escenario de emisiones altas. Y cuando las cosechas caen, la gente se va.</span>
-              </div>
-            </div>
-
-            <p class="ep-cabina"><b>Lo que da en cabina</b>Cierra con lo útil y con pleito: qué
-              adaptación sí funciona, y por qué buena parte de la política climática mexicana es la
-              foto y no la solución.</p>
-          </article>
-
-        </div>
-      </section>
-
-      <section>
-        <div class="section-head">
-          <p class="eyebrow">De dónde salen los números</p>
-          <h2>Tres investigaciones propias, y les digo cuál está publicada y cuál no.</h2>
-        </div>
-
-        <ul class="papers">
-          <li class="paper">
-            <span class="status pub">Publicado &middot; 2023</span>
-            <div class="paper-body">
-              <span class="paper-title">Contaminación del aire y crimen en la Ciudad de México y Nueva York</span>
-              <span class="paper-meta"><em>Environmental Research: Health</em>. 2.9 millones de
-                observaciones por hora. El primer estimado de la relación entre contaminación y
-                criminalidad para una ciudad del mundo en desarrollo.</span>
-            </div>
-          </li>
-          <li class="paper">
-            <span class="status review">En revisión</span>
-            <div class="paper-body">
-              <span class="paper-title">Contaminación del aire y urgencias médicas en México</span>
-              <span class="paper-meta">Con los registros digitales de todos los hospitales públicos
-                del país. Primer estimado causal a escala nacional para un país que no es de ingreso
-                alto.</span>
-            </div>
-          </li>
-          <li class="paper">
-            <span class="status review">En revisión</span>
-            <div class="paper-body">
-              <span class="paper-title">Temperatura y remesas</span>
-              <span class="paper-meta">Qué le pasa al dinero que mandan los migrantes cuando hace
-                calor de este lado de la frontera, y qué le pasa cuando hace calor del otro.</span>
-            </div>
-          </li>
-        </ul>
-
-        <p class="note">Lo digo igual al aire: dos de los tres siguen en revisión, y eso significa
-          que otros colegas todavía los están picando. El de crimen ya pasó por ahí y está publicado.
-          Prefiero decirlo yo a que lo pregunten.</p>
-      </section>
-
-      <section>
-        <div class="section-head">
-          <p class="eyebrow">Cómo explico esto</p>
-          <h2>Un paper mío, contado para quien no es economista.</h2>
-        </div>
-        <p>Armé un micrositio con la investigación de temperatura y urgencias, la que sale en el
-          <em>Journal of Economic Behavior &amp; Organization</em>. Sin jerga, sin ecuaciones, con
-          gráficas que se entienden solas y una pregunta por pantalla. Si quieren medir de antemano
-          cómo explico, esa es la prueba.</p>
-        <p><a class="cta" href="/es/temperatura-y-urgencias">Ver el micrositio &rarr;</a></p>
-      </section>
-
-      <section>
-        <div class="section-head">
-          <p class="eyebrow">Muestra de voz</p>
-          <h2>Tres minutos para oír cómo suena esto en radio.</h2>
-        </div>
-        <div class="slot">
-          <p class="eyebrow">Pendiente de grabar</p>
-          <p class="note">Aquí va el audio de tres minutos: el arranque del episodio del aire, contado
-            como lo contaría en cabina.</p>
-        </div>
-      </section>
-
-      <section class="contact">
-        <p class="eyebrow">Cómo seguimos</p>
-        <h2>Si les late alguno, me lanzo con el que quieran.</h2>
-        <p>Puedo grabar remoto desde Europa o presencial cuando ande por México. Y si el fit no es
-          con La Corneta Extendida sino con otro espacio del grupo, también me sirve saberlo.</p>
-        <p class="note">Luis Sarmiento &middot; <em>[correo de contacto]</em></p>
-      </section>
-
+  <!-- ================= Portada ================= -->
+  <section class="relative py-16 sm:py-24 overflow-hidden">
+    <div class="absolute inset-0">
+      <img src="/images/backgrounds/city-smog.png" alt="" class="w-full h-full object-cover" />
+      <div class="absolute inset-0 bg-slate-dark/80"></div>
     </div>
-  </div>
+
+    <div class="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div data-animate class="bg-white/95 backdrop-blur-sm rounded-2xl shadow-lg p-8 sm:p-12">
+        <div class="flex flex-col sm:flex-row items-center sm:items-start gap-8">
+
+          <div class="shrink-0">
+            <div class="w-32 h-32 sm:w-36 sm:h-36 rounded-full overflow-hidden border-2 border-cool-gray shadow-sm">
+              <img src="/images/profile/headshot.png" alt="Luis Sarmiento" class="w-full h-full object-cover object-top" />
+            </div>
+          </div>
+
+          <div class="text-center sm:text-left flex-1">
+            <span class="inline-block px-3 py-1 text-xs font-medium tracking-wide rounded-full mb-4 text-sky bg-sky/10">
+              Propuesta de experto invitado · La Corneta Extendida
+            </span>
+            <h1 class="text-3xl sm:text-4xl font-heading font-bold text-slate-dark leading-tight mb-4">
+              Tres episodios listos
+            </h1>
+            <p class="text-sm sm:text-base text-charcoal/70 font-body leading-relaxed mb-6">
+              Soy economista ambiental. Mido, con datos mexicanos, cómo el aire sucio y el calor le
+              pegan al bolsillo de la gente: al sueldo, a la cosecha, a las remesas, a la guardia de
+              urgencias y hasta al crimen. Estos son tres episodios que puedo sostener una hora, con
+              números propios y sin una sola diapositiva.
+            </p>
+
+            {/* La rampa del índice de calidad del aire: la firma del pitch, una sola vez. */}
+            <div class="h-1.5 rounded-full mb-6" style="background: linear-gradient(to right, #4C9A5B 0%, #4C9A5B 18%, #E4C13C 18%, #E4C13C 38%, #E08A2E 38%, #E08A2E 58%, #C4462A 58%, #C4462A 78%, #7C4A78 78%, #7C4A78 100%);"></div>
+
+            <ul class="flex flex-wrap justify-center sm:justify-start gap-x-5 gap-y-2 text-sm text-charcoal/55 font-body">
+              <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-sky"></span>ETH Zürich</li>
+              <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-sky"></span>Centro climático CMCC</li>
+              <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-sky"></span>Banco de México</li>
+              <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-sky"></span>Mexicano-colombiano</li>
+            </ul>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= Por qué yo ================= -->
+  <section class="py-24 px-4 bg-white">
+    <div class="max-w-7xl mx-auto">
+      <SectionHeader
+        class="max-w-3xl mx-auto"
+        label="Por qué yo"
+        title="No vengo a opinar del planeta. Vengo con los números del país."
+        subtitle="Casi todo lo que se dice de medio ambiente en México se dice sin datos mexicanos. Yo trabajo con los que hay."
+      />
+
+      <div class="mt-14 grid grid-cols-1 md:grid-cols-3 gap-8">
+        {sources.map((s, i) => (
+          <div data-animate data-delay={`${0.1 + i * 0.12}s`} class="bg-warm-gray rounded-xl p-8 border border-cool-gray/60">
+            <p class="text-3xl sm:text-4xl font-heading font-bold text-slate-dark mb-3">{s.figure}</p>
+            <p class="text-charcoal/60 leading-relaxed">{s.label}</p>
+          </div>
+        ))}
+      </div>
+
+      <p data-animate class="mt-12 max-w-2xl mx-auto text-center text-lg text-charcoal/70 leading-relaxed">
+        Y con una regla que me impuse para radio: si un dato no se puede contar en una frase, y si no
+        termina en tu quincena, no sirve para el programa.
+      </p>
+    </div>
+  </section>
+
+  <!-- ================= Los tres episodios ================= -->
+  <section class="py-24 px-4 bg-warm-gray">
+    <div class="max-w-7xl mx-auto">
+      <SectionHeader
+        class="max-w-3xl mx-auto"
+        label="Los tres episodios"
+        title="Cada uno tiene su gancho, su pleito y su chiste."
+      />
+
+      <div class="mt-16 space-y-10">
+        {episodes.map((ep, i) => (
+          <article data-animate data-delay={`${0.05 + i * 0.1}s`} class="bg-white rounded-2xl shadow-lg p-8 sm:p-12">
+
+            <div class="flex flex-wrap items-baseline gap-3 mb-4">
+              <span class="inline-block px-3 py-1 text-xs font-medium tracking-wide rounded-full text-sky bg-sky/10">
+                {ep.tag}
+              </span>
+              <span class="text-sm text-charcoal/45">{ep.aside}</span>
+            </div>
+
+            <h3 class="text-2xl sm:text-3xl font-heading font-bold text-slate-dark leading-tight mb-4">
+              {ep.title}
+            </h3>
+            <p class="text-lg text-charcoal/70 leading-relaxed max-w-3xl">{ep.hook}</p>
+
+            <div class="mt-10 grid grid-cols-1 sm:grid-cols-2 gap-x-10 gap-y-8 border-t border-cool-gray/70 pt-8">
+              {ep.stats.map((st) => (
+                <div>
+                  <p class:list={[
+                    "text-3xl sm:text-4xl font-heading font-bold leading-none mb-3",
+                    st.own ? "text-temp-hot" : "text-slate-dark",
+                  ]}>
+                    {st.figure}
+                  </p>
+                  <p class="text-charcoal/65 leading-relaxed">
+                    {st.text}
+                    {st.own && (
+                      <span class="ml-2 inline-block align-middle px-2 py-0.5 text-[0.65rem] font-medium uppercase tracking-wide rounded-full text-temp-hot bg-temp-hot/10 whitespace-nowrap">
+                        {st.own}
+                      </span>
+                    )}
+                  </p>
+                </div>
+              ))}
+            </div>
+
+            <div class="mt-10 border-l-4 border-sky bg-sky/5 rounded-r-lg px-6 py-5">
+              <p class="text-xs font-medium uppercase tracking-wide text-sky mb-2">Lo que da en cabina</p>
+              <p class="text-charcoal/70 leading-relaxed">{ep.cabina}</p>
+            </div>
+
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= De dónde salen los números ================= -->
+  <section class="relative py-24 px-4 overflow-hidden">
+    <div class="absolute inset-0">
+      <img src="/images/backgrounds/world-lights.png" alt="" class="w-full h-full object-cover" />
+      <div class="absolute inset-0 bg-slate-dark/90"></div>
+    </div>
+
+    <div class="relative z-10 max-w-7xl mx-auto">
+      <SectionHeader
+        class="max-w-3xl mx-auto"
+        label="De dónde salen los números"
+        title="Tres investigaciones propias, y les digo cuál está publicada y cuál no."
+        dark
+      />
+
+      <div class="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8">
+        {papers.map((p, i) => (
+          <div data-animate data-delay={`${0.1 + i * 0.15}s`} class="bg-white/10 backdrop-blur-sm rounded-xl p-8 border border-white/10">
+            <span class:list={[
+              "inline-block px-3 py-1 text-xs font-medium tracking-wide rounded-full mb-5",
+              p.published ? "text-sky-light bg-sky/25" : "text-white/70 bg-white/10",
+            ]}>
+              {p.status}
+            </span>
+            <h3 class="text-lg font-heading font-bold text-white leading-snug mb-3">{p.title}</h3>
+            <p class="text-white/55 leading-relaxed">{p.meta}</p>
+          </div>
+        ))}
+      </div>
+
+      <p data-animate class="mt-12 max-w-3xl mx-auto text-center text-white/60 leading-relaxed">
+        Lo digo igual al aire: dos de los tres siguen en revisión, y eso significa que otros colegas
+        todavía los están picando. El de crimen ya pasó por ahí y está publicado. Prefiero decirlo yo
+        a que lo pregunten.
+      </p>
+    </div>
+  </section>
+
+  <!-- ================= Cómo explico esto ================= -->
+  <section class="py-24 px-4 bg-white">
+    <div class="max-w-4xl mx-auto text-center">
+      <SectionHeader
+        class="max-w-3xl mx-auto"
+        label="Cómo explico esto"
+        title="Un paper mío, contado para quien no es economista."
+        subtitle="Armé un micrositio con la investigación de temperatura y urgencias, la que sale en el Journal of Economic Behavior & Organization. Sin jerga, sin ecuaciones, con gráficas que se entienden solas y una pregunta por pantalla. Si quieren medir de antemano cómo explico, esa es la prueba."
+      />
+      <div data-animate class="mt-10">
+        <a
+          href="/es/temperatura-y-urgencias"
+          class="inline-flex items-center gap-2 justify-center font-body font-medium rounded-md px-8 py-4 text-lg bg-slate-dark text-white hover:bg-slate transition-all duration-200"
+        >
+          Ver el micrositio
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+          </svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= Muestra de voz ================= -->
+  <section class="py-24 px-4 bg-warm-gray">
+    <div class="max-w-4xl mx-auto">
+      <SectionHeader
+        class="max-w-3xl mx-auto"
+        label="Muestra de voz"
+        title="Tres minutos para oír cómo suena esto en radio."
+      />
+      <div data-animate class="mt-10 rounded-2xl border-2 border-dashed border-cool-gray bg-white/60 p-10 text-center">
+        <p class="text-xs font-medium uppercase tracking-wide text-charcoal/45 mb-3">Pendiente de grabar</p>
+        <p class="text-charcoal/60 leading-relaxed max-w-xl mx-auto">
+          Aquí va el audio de tres minutos: el arranque del episodio del aire, contado como lo
+          contaría en cabina.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= Cómo seguimos ================= -->
+  <section class="relative py-24 px-4 overflow-hidden">
+    <div class="absolute inset-0">
+      <img src="/images/backgrounds/conference-hall.png" alt="" class="w-full h-full object-cover" />
+      <div class="absolute inset-0 bg-slate-dark/75"></div>
+    </div>
+
+    <div data-animate class="relative z-10 max-w-4xl mx-auto text-center">
+      <span class="inline-block px-3 py-1 text-xs font-medium tracking-wide rounded-full mb-4 text-sky-light bg-white/10">
+        Cómo seguimos
+      </span>
+      <h2 class="text-3xl sm:text-4xl font-heading font-bold text-white mb-4">
+        Si les late alguno, me lanzo con el que quieran.
+      </h2>
+      <p class="text-lg text-white/60 font-body mb-8 max-w-2xl mx-auto leading-relaxed">
+        Puedo grabar remoto desde Europa o presencial cuando ande por México. Y si el fit no es con
+        La Corneta Extendida sino con otro espacio del grupo, también me sirve saberlo.
+      </p>
+      <p class="text-white/45 font-body">Luis Sarmiento · <em>[correo de contacto]</em></p>
+    </div>
+  </section>
+
 </PageLayout>
-
-<style is:global>
-  /* Ported from corneta-pitch/activo_central.html.
-     One deliberate change: the artifact pulled Archivo, Literata and IBM Plex
-     Mono from Google Fonts, and this site self-hosts its faces precisely to
-     keep a render-blocking third-party request off the critical path. The page
-     therefore rides the site's own Inter and Source Serif 4, with system mono
-     carrying the small tracked labels. Structure, palette and rhythm are the
-     artifact's. */
-  .corneta {
-    --ground:      #EFF1EF;
-    --surface:     #FBFCFB;
-    --surface-alt: #E5E9E6;
-    --ink:         #141A17;
-    --ink-soft:    #3D4742;
-    --muted:       #6B7671;
-    --line:        #D2D9D4;
-    --line-soft:   #E1E6E2;
-    --accent:      #0E6B5A;
-    --accent-ink:  #0B564A;
-    --hot:         #B8461A;
-    --focus:       #0E6B5A;
-
-    --f-display: "Inter", "Helvetica Neue", Arial, sans-serif;
-    --f-body:    "Source Serif 4", Georgia, "Times New Roman", serif;
-    --f-mono:    ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
-
-    --measure: 34rem;
-    --wide:    58rem;
-  }
-
-  /* The ground colour has to reach past the wrapper into the overscroll gutter.
-     BaseLayout puts Tailwind's `bg-white` on <body>, which beats a bare `body`
-     rule on specificity, so painting <html> is what settles it.
-
-     The page is light-only on purpose. The site's header and footer are painted
-     `bg-white` with no dark variant, so a dark body would sit under white chrome.
-     Reinstating the artifact's dark palette means theming those two first. */
-  html:has(.corneta) {
-    background: #EFF1EF;
-    color-scheme: light;
-  }
-
-  .corneta {
-    flex: 1;
-    background: var(--ground);
-    color: var(--ink);
-    font-family: var(--f-body);
-    font-size: 1.0625rem;
-    line-height: 1.62;
-  }
-
-  .corneta *, .corneta *::before, .corneta *::after { box-sizing: border-box; }
-
-  .corneta .page {
-    max-width: var(--wide);
-    margin: 0 auto;
-    padding: clamp(2.5rem, 6vw, 5.5rem) clamp(1.25rem, 5vw, 3rem) 5rem;
-    display: flex;
-    flex-direction: column;
-    gap: clamp(3rem, 7vw, 5rem);
-  }
-
-  /* ---------- tipografía base ---------- */
-
-  .corneta h1,
-  .corneta h2,
-  .corneta h3 {
-    font-family: var(--f-display);
-    text-wrap: balance;
-    margin: 0;
-    line-height: 1.08;
-    letter-spacing: -0.022em;
-    color: var(--ink);
-  }
-
-  .corneta h1 { font-size: clamp(2.6rem, 7.5vw, 4.5rem); font-weight: 700; letter-spacing: -0.035em; }
-  .corneta h2 { font-size: clamp(1.5rem, 3.4vw, 2rem); font-weight: 700; letter-spacing: -0.02em; }
-  .corneta h3 { font-size: clamp(1.45rem, 3.6vw, 2.15rem); font-weight: 700; letter-spacing: -0.025em; }
-
-  .corneta p { margin: 0; max-width: var(--measure); }
-
-  .corneta .eyebrow {
-    font-family: var(--f-mono);
-    font-size: 0.7rem;
-    font-weight: 600;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin: 0;
-  }
-
-  .corneta strong { font-weight: 600; color: var(--ink); }
-  .corneta em { font-style: italic; }
-
-  .corneta a {
-    color: var(--accent-ink);
-    text-decoration-thickness: 1px;
-    text-underline-offset: 3px;
-  }
-  .corneta a:focus-visible,
-  .corneta summary:focus-visible {
-    outline: 2px solid var(--focus);
-    outline-offset: 3px;
-    border-radius: 2px;
-  }
-
-  .corneta .cta {
-    font-family: var(--f-mono);
-    font-size: 0.78rem;
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    text-decoration: none;
-    border-bottom: 2px solid var(--accent);
-    padding-bottom: 2px;
-  }
-  .corneta .cta:hover { color: var(--accent); }
-
-  /* ---------- cabecera ---------- */
-
-  .corneta .masthead {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-  }
-
-  .corneta .masthead h1 { max-width: 12ch; }
-
-  .corneta .masthead .lede {
-    font-size: clamp(1.1rem, 2.2vw, 1.25rem);
-    color: var(--ink-soft);
-    max-width: 38rem;
-  }
-
-  /* rampa del índice de calidad del aire: la firma de la página, una sola vez */
-  .corneta .aqi-rule {
-    height: 5px;
-    border: 0;
-    margin: 0;
-    background: linear-gradient(
-      to right,
-      #4C9A5B 0%, #4C9A5B 18%,
-      #E4C13C 18%, #E4C13C 38%,
-      #E08A2E 38%, #E08A2E 58%,
-      #C4462A 58%, #C4462A 78%,
-      #7C4A78 78%, #7C4A78 100%
-    );
-  }
-
-  .corneta .affil {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem 1.5rem;
-    font-family: var(--f-mono);
-    font-size: 0.78rem;
-    letter-spacing: 0.04em;
-    color: var(--ink-soft);
-    margin: 0;
-    padding: 0;
-    list-style: none;
-  }
-
-  .corneta .affil li { display: flex; align-items: center; gap: 0.5rem; }
-  .corneta .affil li::before {
-    content: "";
-    width: 5px; height: 5px;
-    border-radius: 50%;
-    background: var(--accent);
-    flex: none;
-  }
-
-  /* ---------- secciones ---------- */
-
-  .corneta section {
-    display: flex;
-    flex-direction: column;
-    gap: 1.25rem;
-  }
-
-  .corneta .section-head {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    padding-bottom: 0.85rem;
-    border-bottom: 1px solid var(--line);
-  }
-
-  /* ---------- fichas de episodio ---------- */
-
-  .corneta .episodes {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-  }
-
-  .corneta .ep {
-    background: var(--surface);
-    border: 1px solid var(--line);
-    padding: clamp(1.5rem, 3.5vw, 2.5rem);
-    display: flex;
-    flex-direction: column;
-    gap: 1.25rem;
-  }
-
-  .corneta .ep-tag {
-    font-family: var(--f-mono);
-    font-size: 0.7rem;
-    font-weight: 600;
-    letter-spacing: 0.13em;
-    text-transform: uppercase;
-    color: var(--accent-ink);
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.65rem;
-    align-items: baseline;
-    max-width: none;
-  }
-
-  .corneta .ep-tag .aside {
-    color: var(--muted);
-    font-weight: 400;
-    letter-spacing: 0.08em;
-  }
-
-  .corneta .ep-hook {
-    font-size: 1.075rem;
-    color: var(--ink-soft);
-    max-width: 42rem;
-  }
-
-  .corneta .stats {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 1px;
-    background: var(--line-soft);
-    border-top: 1px solid var(--line-soft);
-    border-bottom: 1px solid var(--line-soft);
-  }
-
-  @media (min-width: 46rem) {
-    .corneta .stats { grid-template-columns: 1fr 1fr; }
-  }
-
-  .corneta .stat {
-    background: var(--surface);
-    padding: 1.15rem 0 1.15rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.35rem;
-  }
-
-  @media (min-width: 46rem) {
-    .corneta .stat { padding: 1.15rem clamp(1rem, 2vw, 1.75rem) 1.15rem 0; }
-    .corneta .stat:nth-child(even) { padding-left: clamp(1rem, 2vw, 1.75rem); padding-right: 0; }
-  }
-
-  .corneta .stat-figure {
-    font-family: var(--f-display);
-    font-weight: 700;
-    font-size: clamp(1.9rem, 4.5vw, 2.4rem);
-    line-height: 1;
-    letter-spacing: -0.04em;
-    font-variant-numeric: tabular-nums;
-    color: var(--ink);
-  }
-
-  .corneta .stat-figure.own { color: var(--hot); }
-
-  .corneta .stat-text {
-    font-size: 0.95rem;
-    color: var(--ink-soft);
-    max-width: 30rem;
-  }
-
-  .corneta .src {
-    font-family: var(--f-mono);
-    font-size: 0.66rem;
-    letter-spacing: 0.09em;
-    text-transform: uppercase;
-    color: var(--muted);
-    white-space: nowrap;
-  }
-
-  .corneta .src.own { color: var(--hot); }
-
-  .corneta .ep-cabina {
-    font-size: 0.98rem;
-    color: var(--ink-soft);
-    border-left: 2px solid var(--accent);
-    padding-left: 1rem;
-    max-width: 42rem;
-  }
-
-  .corneta .ep-cabina b {
-    font-family: var(--f-mono);
-    font-size: 0.68rem;
-    font-weight: 600;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--accent-ink);
-    display: block;
-    margin-bottom: 0.3rem;
-  }
-
-  /* ---------- papers ---------- */
-
-  .corneta .papers {
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-    margin: 0;
-    padding: 0;
-    list-style: none;
-  }
-
-  .corneta .paper {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 0.4rem;
-    padding: 1.15rem 0;
-    border-bottom: 1px solid var(--line-soft);
-  }
-
-  @media (min-width: 46rem) {
-    .corneta .paper { grid-template-columns: 9.5rem 1fr; gap: 0 2rem; align-items: baseline; }
-  }
-
-  .corneta .paper:first-child { border-top: 1px solid var(--line-soft); }
-
-  .corneta .status {
-    font-family: var(--f-mono);
-    font-size: 0.68rem;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-  }
-
-  .corneta .status.pub    { color: var(--accent-ink); }
-  .corneta .status.review { color: var(--muted); }
-
-  .corneta .paper-body { display: flex; flex-direction: column; gap: 0.3rem; }
-  .corneta .paper-title { font-weight: 600; }
-  .corneta .paper-meta { font-size: 0.92rem; color: var(--muted); max-width: 36rem; }
-
-  /* ---------- pendiente / contacto ---------- */
-
-  .corneta .slot {
-    background: var(--surface-alt);
-    border: 1px dashed var(--line);
-    padding: clamp(1.25rem, 3vw, 1.75rem);
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-
-  .corneta .contact {
-    background: var(--surface);
-    border: 1px solid var(--line);
-    border-top: 3px solid var(--accent);
-    padding: clamp(1.5rem, 3.5vw, 2.25rem);
-    display: flex;
-    flex-direction: column;
-    gap: 0.85rem;
-  }
-
-  .corneta .note {
-    font-size: 0.92rem;
-    color: var(--muted);
-    max-width: 40rem;
-  }
-
-  @media (prefers-reduced-motion: no-preference) {
-    .corneta a { transition: color 120ms ease; }
-  }
-</style>
