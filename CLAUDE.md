@@ -38,6 +38,16 @@ public/             # Static assets (images, CV PDF, favicon)
 - **Data-driven pages:** Publications, CV entries, research areas defined as TypeScript arrays in `src/data/`. Components consume these directly.
 - **Components:** `ResearchHero` for page headers (supports background image or gradient fallback). `PublicationList` groups publications by status (published, R&R, under review, working papers).
 - **Nav highlighting:** Active tab determined by current URL path matching nav `href`.
+- **A paper's citation lives in TWO places, and both must move together.** The
+  publications list reads `src/data/publications.ts`; the ED-visits outreach hub
+  reads the `PAPER` constant in `src/data/outreach.ts`, which also feeds the
+  eyebrow and the "Cite the paper" block in `paper/HubContent.astro`. Status
+  words leak further still, into `src/data/tools.ts` and the meta descriptions
+  of both hub index pages. Grep the journal name, never just `publications.ts`.
+- **The downloadable CV PDF is a build artifact copied in from another repo.**
+  `~/projects/cv` owns it; `./render.sh all` there rewrites
+  `public/cv/Luis_Sarmiento_CV.pdf` and the deploy still needs a commit here.
+  Editing `src/data/publications.ts` alone leaves the PDF contradicting the page.
 
 ## Deployment
 **luissarmiento.com is served by Netlify**, which builds from `main` on push.
