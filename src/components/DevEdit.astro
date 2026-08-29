@@ -76,7 +76,12 @@
         !n.closest("svg") &&
         n.childNodes.length > 0 &&
         [...n.childNodes].every((c) => c.nodeType === Node.TEXT_NODE || (c as HTMLElement).tagName === "BR") &&
-        (n.textContent ?? "").trim().length >= 4
+        /* Two characters, not four. Four excluded short figures (a percentage
+           of two digits, say) from editing altogether. Ambiguity is caught by
+           the server, which counts occurrences and refuses a string that is
+           not unique — so do not write a literal example here, or this comment
+           becomes the second occurrence and blocks the very edit it explains. */
+        (n.textContent ?? "").trim().length >= 2
       ) {
         out.push(n);
       }
@@ -87,8 +92,14 @@
 
   const norm = (s: string) => s.replace(/\s+/g, " ").trim();
 
+  const FLAG = "dev-edit-on";
+
   function enter() {
     on = true;
+    /* Saving rewrites the source, which makes Vite reload the page and drop
+       edit mode. Remembering it for the tab means a save no longer kicks you
+       out; unsaved edits in OTHER leaves are still lost, so save as you go. */
+    try { sessionStorage.setItem(FLAG, "1"); } catch {}
     original.clear();
     for (const el of leaves()) {
       original.set(el, norm(el.textContent ?? ""));
@@ -102,6 +113,7 @@
 
   function leave(restore: boolean) {
     on = false;
+    try { sessionStorage.removeItem(FLAG); } catch {}
     for (const [el, text] of original) {
       if (restore && norm(el.textContent ?? "") !== text) el.textContent = text;
       el.contentEditable = "false";
@@ -160,19 +172,34 @@
     );
   }
 
-  document.addEventListener("keydown", (e) => {
-    const mod = e.metaKey || e.ctrlKey;
-    if (mod && e.shiftKey && e.code === "KeyE") {
-      e.preventDefault();
-      on ? leave(true) : enter();
-    } else if (on && mod && !e.shiftKey && e.code === "KeyS") {
-      e.preventDefault();
-      save();
-    } else if (on && e.key === "Escape") {
-      e.preventDefault();
-      leave(true);
-    }
-  });
+  /* Capture phase, so nothing downstream — a contenteditable leaf, a stray
+     handler — can consume the chord before this sees it. */
+  document.addEventListener(
+    "keydown",
+    (e) => {
+      const mod = e.metaKey || e.ctrlKey;
+      if (mod && e.shiftKey && e.code === "KeyE") {
+        e.preventDefault();
+        on ? leave(true) : enter();
+      } else if (mod && !e.shiftKey && e.code === "KeyS") {
+        /* Swallow Cmd/Ctrl+S whenever the overlay is loaded, not only while
+           editing. Gating it on edit mode let the browser's "Save page as…"
+           dialog open over the page the moment the chord arrived early. The
+           overlay is dev-only, so this never affects the published site. */
+        e.preventDefault();
+        if (on) save();
+      } else if (on && e.key === "Escape") {
+        e.preventDefault();
+        leave(true);
+      }
+    },
+    { capture: true }
+  );
   document.getElementById("dev-edit-save")!.addEventListener("click", save);
   document.getElementById("dev-edit-cancel")!.addEventListener("click", () => leave(true));
+
+  /* Come back into edit mode after the reload a save triggers. */
+  try {
+    if (sessionStorage.getItem(FLAG)) enter();
+  } catch {}
 </script>

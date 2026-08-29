@@ -74,9 +74,28 @@ function readBody(req) {
 }
 
 export default function devEditPlugin() {
+  /** Absolute paths this plugin just wrote, with the time of the write. */
+  const ownWrites = new Map();
+  const OWN_WRITE_MS = 2000;
+  const norm = (f) => String(f).replace(/\\/g, "/");
+
   return {
     name: "dev-edit",
     apply: "serve",
+
+    /* A save rewrites the source, which Vite sees as an edit and answers with a
+       full page reload — losing scroll position, open disclosures and any leaf
+       edited but not yet saved. The browser already shows exactly what was
+       written, so for our own writes there is nothing to re-render: veto the
+       update. Edits from an editor or another process still reload normally. */
+    handleHotUpdate(ctx) {
+      const at = ownWrites.get(norm(ctx.file));
+      if (at && Date.now() - at < OWN_WRITE_MS) {
+        ownWrites.delete(norm(ctx.file));
+        return [];
+      }
+    },
+
     configureServer(server) {
       const root = server.config.root;
       server.middlewares.use("/__dev-edit", async (req, res) => {
@@ -96,7 +115,7 @@ export default function devEditPlugin() {
         const after = String(body.after ?? "").trim();
         if (!before) return send(400, { error: "empty `before`" });
         if (before === after) return send(200, { ok: true, unchanged: true });
-        if (before.length < 4) return send(400, { error: "text too short to locate safely" });
+        if (before.length < 2) return send(400, { error: "text too short to locate safely" });
 
         const files = (await Promise.all(ROOTS.map((r) => listFiles(path.join(root, r))))).flat();
         const sources = [];
@@ -126,7 +145,9 @@ export default function devEditPlugin() {
             });
           }
           const updated = h.src.slice(0, m.index) + after + h.src.slice(m.index + m[0].length);
-          await fs.writeFile(path.join(root, h.file), updated, "utf8");
+          const abs = path.join(root, h.file);
+          ownWrites.set(norm(abs), Date.now());
+          await fs.writeFile(abs, updated, "utf8");
           return send(200, { ok: true, file: h.file });
         }
 
@@ -197,7 +218,9 @@ export default function devEditPlugin() {
         }
         out += rest;
         const updated = h.src.slice(0, h.start) + out + h.src.slice(h.end);
-        await fs.writeFile(path.join(root, h.file), updated, "utf8");
+        const absTpl = path.join(root, h.file);
+        ownWrites.set(norm(absTpl), Date.now());
+        await fs.writeFile(absTpl, updated, "utf8");
         return send(200, { ok: true, file: h.file, interpolations: exprs.length - dropped, dropped });
       });
     },
