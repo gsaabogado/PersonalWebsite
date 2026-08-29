@@ -27,8 +27,8 @@ export const tools: Tool[] = [
       es: "Cómo la temperatura diaria mueve las visitas a urgencias en México, con la totalidad de los hospitales públicos, 2008 a 2021. Los días fríos reducen las visitas y el efecto se acumula durante el mes siguiente; los calurosos las aumentan el mismo día. Cada figura es una estimación del artículo, con su intervalo de confianza y los números detrás, por edad, por diagnóstico y proyectada a mediados de siglo.",
     },
     audience: {
-      en: "Companion to a paper forthcoming in the Journal of Economic Behavior & Organization.",
-      es: "Complemento de un artículo en prensa en el Journal of Economic Behavior & Organization.",
+      en: "Companion to a paper published in the Journal of Economic Behavior & Organization.",
+      es: "Complemento de un artículo publicado en el Journal of Economic Behavior & Organization.",
     },
   },
   {

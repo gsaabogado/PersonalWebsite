@@ -60,7 +60,7 @@ const mod = (id: string) => MODULES.find((m) => m.id === id)!;
 
 const strings = {
   en: {
-    eyebrow: `${PAPER.journal} · forthcoming`,
+    eyebrow: `${PAPER.journal} · ${PAPER.year}`,
     h1: "Cold weather reduces emergency department visits in Mexico by more than heat increases them.",
     lede: "Daily records from the universe of public hospitals in Mexico, 2008 to 2021, show three things.",
     findings: [
@@ -96,7 +96,7 @@ const strings = {
       "The full replication package, including the code that produced every estimate on this site, and the archived data.",
   },
   es: {
-    eyebrow: `${PAPER.journal} · en prensa`,
+    eyebrow: `${PAPER.journal} · ${PAPER.year}`,
     h1: "El frío reduce las visitas a urgencias en México más de lo que el calor las aumenta.",
     lede: "Los registros diarios de la totalidad de los hospitales públicos de México, de 2008 a 2021, muestran tres cosas.",
     findings: [
@@ -231,7 +231,10 @@ const strings = {
       </h2>
       <p class="mt-3 text-[14.5px] leading-relaxed text-slate-light">
         {PAPER.authors}. <span class="italic">{PAPER.title[lang]}</span>.{" "}
-        {PAPER.journal}.
+        {PAPER.journal} {PAPER.volume} ({PAPER.year}), {PAPER.articleNo}.
+      </p>
+      <p class="mt-3 text-[14px]">
+        <a href={PAPER.doiUrl} class="hub-link tnum">doi:{PAPER.doi}</a>
       </p>
     </div>
     <div>

@@ -134,6 +134,11 @@ export function outreachAlternatePath(pathname: string): string | null {
 export const PAPER = {
   authors: "Luis Sarmiento, Francesco Pietro Colelli and Filippo Pavanello",
   journal: "Journal of Economic Behavior & Organization",
+  volume: "250",
+  articleNo: "107728",
+  year: 2026,
+  doi: "10.1016/j.jebo.2026.107728",
+  doiUrl: "https://doi.org/10.1016/j.jebo.2026.107728",
   title: {
     en: "Emergency department visits and temperature: Evidence from Mexico",
     es: "Visitas a urgencias y temperatura: evidencia de México",

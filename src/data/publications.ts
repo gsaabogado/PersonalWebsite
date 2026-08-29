@@ -26,8 +26,9 @@ export const publications: Publication[] = [
   {
     title: "Emergency department visits and temperature: Evidence from Mexico",
     authors: "Luis Sarmiento, Francesco Pietro Colelli, Filippo Pavanello",
-    journal: "Journal of Economic Behavior and Organization (Forthcoming)",
+    journal: "Journal of Economic Behavior and Organization 250, 107728",
     year: 2026,
+    doi: "10.1016/j.jebo.2026.107728",
     status: "published",
     area: "econometrics",
     workingPaper: {

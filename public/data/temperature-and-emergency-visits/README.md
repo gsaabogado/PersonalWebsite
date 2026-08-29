@@ -2,7 +2,8 @@
 
 Sarmiento, L., F. P. Colelli and F. Pavanello.
 "Emergency department visits and temperature: Evidence from Mexico."
-*Journal of Economic Behavior & Organization.*
+*Journal of Economic Behavior & Organization* 250 (2026), 107728.
+doi:10.1016/j.jebo.2026.107728
 
 These CSVs contain the estimates plotted on the site and nothing more.
 For the full data and the code that produced them, see the replication
