@@ -18,7 +18,7 @@ export interface Thread {
   sources: string;
 }
 
-const REPO = "https://github.com/gsaabogado/mexico-en-datos/tree/main";
+const REPO = "https://github.com/gsaabogado/post-de-x-y-linkedin/tree/main";
 
 export const threads: Thread[] = [
   {
