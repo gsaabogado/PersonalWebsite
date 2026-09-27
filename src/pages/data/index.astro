@@ -1,0 +1,11 @@
+---
+import PageLayout from "../../layouts/PageLayout.astro";
+import DataIndex from "../../components/data/DataIndex.astro";
+import { getLangFromUrl, t } from "../../i18n/utils";
+
+const lang = getLangFromUrl(Astro.url);
+---
+
+<PageLayout title={`${t(lang, "data.title")} — Luis Sarmiento`}>
+  <DataIndex />
+</PageLayout>

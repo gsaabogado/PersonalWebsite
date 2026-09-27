@@ -1,0 +1,17 @@
+---
+import PageLayout from "../../../layouts/PageLayout.astro";
+import ThreadPage from "../../../components/data/ThreadPage.astro";
+import { threads } from "../../../data/threads";
+import { getLangFromUrl } from "../../../i18n/utils";
+
+export function getStaticPaths() {
+  return threads.map((thread) => ({ params: { slug: thread.slug }, props: { thread } }));
+}
+
+const { thread } = Astro.props;
+const lang = getLangFromUrl(Astro.url);
+---
+
+<PageLayout title={`${thread.title[lang]} — Luis Sarmiento`} description={thread.summary[lang]}>
+  <ThreadPage thread={thread} />
+</PageLayout>

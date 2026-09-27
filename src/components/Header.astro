@@ -8,13 +8,14 @@ const lang = getLangFromUrl(Astro.url);
 const navigation = getNavigation(lang);
 const currentPath = Astro.url.pathname;
 /* A tab is active on its own page and on pages that live under it. The
-   temperature companion has its own top-level slugs but belongs to Tools. */
-const TOOL_SECTIONS = ["/temperature-and-emergency-visits", "/es/temperatura-y-urgencias"];
+   temperature companion has its own top-level slugs, and the tools keep
+   their /tools/ paths, but all of them belong to the Data tab. */
+const TOOL_SECTIONS = ["/temperature-and-emergency-visits", "/es/temperatura-y-urgencias", "/tools/", "/es/tools/"];
 const isActive = (href: string) => {
   if (currentPath === href) return true;
   if (href === "/" || href === "/es/") return false;
   if (currentPath.startsWith(href)) return true;
-  return /\/tools\/$/.test(href) && TOOL_SECTIONS.some((s) => currentPath.startsWith(s));
+  return /\/data\/$/.test(href) && TOOL_SECTIONS.some((s) => currentPath.startsWith(s));
 };
 const alternatePath = getAlternatePath(Astro.url);
 const alternateLang = lang === "en" ? "es" : "en";

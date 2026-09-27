@@ -1,0 +1,33 @@
+---
+import { getLangFromUrl, t } from "../../i18n/utils";
+import { threads } from "../../data/threads";
+
+const lang = getLangFromUrl(Astro.url);
+const base = lang === "es" ? "/es/data/" : "/data/";
+---
+
+<div class="space-y-6">
+  {threads.map((th, i) => (
+    <a
+      href={`${base}${th.slug}/`}
+      data-animate
+      data-delay={`${0.1 + i * 0.1}s`}
+      class="group block bg-white rounded-xl overflow-hidden border border-cool-gray hover:border-slate-light hover:shadow-md transition-all duration-300"
+    >
+      <img src={th.figures[0].src[lang]} alt={th.figures[0].alt[lang]} loading="lazy"
+           class="w-full aspect-[16/9] object-cover object-top border-b border-cool-gray" />
+      <div class="p-8">
+        <h3 class="text-2xl font-heading font-bold text-charcoal group-hover:text-slate transition-colors mb-3">
+          {th.title[lang]}
+        </h3>
+        <p class="text-charcoal/70 leading-relaxed">{th.summary[lang]}</p>
+        <span class="inline-flex items-center gap-2 mt-6 text-sm font-medium text-slate group-hover:text-sky transition-colors">
+          {t(lang, "data.read")}
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+          </svg>
+        </span>
+      </div>
+    </a>
+  ))}
+</div>

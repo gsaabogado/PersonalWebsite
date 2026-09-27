@@ -12,7 +12,7 @@ export function getNavigation(lang: Lang): NavItem[] {
       { label: "Investigación", href: "/es/research/" },
       { label: "Publicaciones", href: "/es/publications/" },
       { label: "Financiamiento", href: "/es/grants/" },
-      { label: "Herramientas", href: "/es/tools/" },
+      { label: "Datos", href: "/es/data/" },
       { label: "Curriculum", href: "/es/cv/" },
       { label: "Contacto", href: "/es/contact/" },
     ];
@@ -23,7 +23,7 @@ export function getNavigation(lang: Lang): NavItem[] {
     { label: "Research", href: "/research/" },
     { label: "Publications", href: "/publications/" },
     { label: "Grants", href: "/grants/" },
-    { label: "Tools", href: "/tools/" },
+    { label: "Data", href: "/data/" },
     { label: "Curriculum", href: "/cv/" },
     { label: "Contact", href: "/contact/" },
   ];

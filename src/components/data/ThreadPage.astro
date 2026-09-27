@@ -1,0 +1,33 @@
+---
+import type { Thread } from "../../data/threads";
+import { getLangFromUrl, t } from "../../i18n/utils";
+
+interface Props { thread: Thread }
+const { thread } = Astro.props;
+const lang = getLangFromUrl(Astro.url);
+const back = lang === "es" ? "/es/data/" : "/data/";
+---
+
+<article class="py-16 px-4 bg-warm-gray">
+  <div class="max-w-4xl mx-auto">
+    <a href={back} class="text-sm font-medium text-slate hover:text-sky transition-colors">← {t(lang, "data.back")}</a>
+    <h1 class="text-4xl font-heading font-bold text-charcoal mt-6 mb-4">{thread.title[lang]}</h1>
+    <p class="text-lg text-charcoal/70 leading-relaxed mb-8">{thread.summary[lang]}</p>
+    <a href={thread.code} target="_blank" rel="noopener noreferrer"
+       class="inline-flex items-center gap-2 px-5 py-3 rounded-lg bg-slate text-white text-sm font-medium hover:bg-sky transition-colors">
+      {t(lang, "data.code")}
+    </a>
+    <div class="mt-12 space-y-10">
+      {thread.body[lang].map((para, i) => (
+        <>
+          <p class="text-charcoal/80 leading-relaxed text-lg">{para}</p>
+          {thread.figures[i] && (
+            <img src={thread.figures[i].src[lang]} alt={thread.figures[i].alt[lang]} loading="lazy"
+                 class="w-full rounded-lg border border-cool-gray bg-white" />
+          )}
+        </>
+      ))}
+    </div>
+    <p class="mt-12 text-sm text-charcoal/50">{t(lang, "data.sources")}: {thread.sources}</p>
+  </div>
+</article>

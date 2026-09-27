@@ -14,3 +14,17 @@
   to = "/es/corneta"
   status = 301
   force = true
+
+# Tools became the Data tab (2026-09-27): data threads plus the interactive
+# tools. The tools keep their own /tools/<name>/ pages; only the index moved.
+[[redirects]]
+  from = "/tools/"
+  to = "/data/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/es/tools/"
+  to = "/es/data/"
+  status = 301
+  force = true
