@@ -22,6 +22,46 @@ const REPO = "https://github.com/gsaabogado/post-de-x-y-linkedin/tree/main";
 
 export const threads: Thread[] = [
   {
+    slug: "mexico-fiscal-profiles",
+    date: "2026-10",
+    title: {
+      en: "Who pays and who receives in Mexico, by age?",
+      es: "¿Quién paga y quién recibe en México, según la edad?",
+    },
+    summary: {
+      en: "Mexicans pay more in contributions than they receive from the government only between ages 23 and 59. A simple illustrative exercise shows why births matter so much for public finances.",
+      es: "Solo entre los 23 y los 59 años los mexicanos pagan más contribuciones de lo que reciben del gobierno. Un ejercicio ilustrativo muestra por qué los nacimientos pesan tanto en las finanzas públicas.",
+    },
+    body: {
+      en: [
+        "How much does an average person in Mexico pay in contributions, and how much does that person receive from the government, at each age? I calculated it with the 2024 household income and spending survey (ENIGH) and the public accounts. Only between ages 23 and 59 do people pay more than they receive. In pesos of August 2026, the balance peaks at 46,722 pesos a year at age 35 (about US$2,740) and falls to minus 109,796 pesos at age 70 (about US$6,440).",
+        "The number of people at each age matters more for the budget. Those aged 23 to 59 put in a net 2.3 trillion pesos a year (US$137 billion). The young and the old receive 2.8 trillion (US$165 billion).",
+        "What would happen to these figures if fertility stayed at 1.2 or 1.46 children per woman until 2075? In a simple illustrative exercise, the gap between what people pay and what they receive would go from 1.4% of GDP today to between 7.6% and 9.2%. While this is not a precise forecast, it shows why births matter so much for public finances.",
+        "The last chart follows the deficit per person in both scenarios. With fewer children it would be lower until 2056, with less school to pay for. From 2048 workers would be missing, and by 2075 it would reach 22,502 pesos against 18,998 (about US$1,320 against US$1,110).",
+        "Note that this exercise does not identify the government deficit per se, because taxes paid by companies and spending that reaches no particular person are left out.",
+      ],
+      es: [
+        "Calculé cuánto paga en contribuciones y cuánto recibe del gobierno una persona promedio en México a cada edad, con la ENIGH 2024 y las cuentas públicas. Solo entre los 23 y los 59 años se paga más de lo que se recibe. A los 70 el saldo es de −109,796 pesos al año.",
+        "Podemos también ver qué sucede cuando consideramos el número de personas en cada rango de edad, lo cual es más relevante para cuestiones de presupuesto. Quienes tienen de 23 a 59 años aportan 2.3 billones de pesos netos al año. Los más jóvenes y los mayores reciben 2.8 billones.",
+        "Podemos preguntarnos qué sucedería con estas figuras si la fecundidad se queda en 1.2 o 1.46 hijos por mujer hasta 2075. Con este simple ejercicio ilustrativo podemos observar cómo el déficit total pasaría de 1.4% del PIB a entre 7.6% y 9.2%.",
+        "La gráfica sigue el déficit por persona en ambos escenarios. Con menos hijos sería menor hasta 2056, con menos escuela que pagar. Desde 2048 faltarían trabajadores y en 2075 llegaría a 22,502 pesos contra 18,998.",
+        "El déficit de estas figuras no es el del gobierno, porque faltan los impuestos de las empresas y el gasto que no llega a una persona en particular.",
+      ],
+    },
+    figures: [
+      { src: { en: "/images/data/fiscal-f1-en.webp", es: "/images/data/fiscal-f1-es.webp" },
+        alt: { en: "Contributions paid and transfers received per person by age, Mexico 2024", es: "Contribuciones pagadas y transferencias recibidas por persona a cada edad, México 2024" } },
+      { src: { en: "/images/data/fiscal-f2-en.webp", es: "/images/data/fiscal-f2-es.webp" },
+        alt: { en: "Contributions paid and transfers received in total by age, Mexico 2024", es: "Contribuciones pagadas y transferencias recibidas en total por edad, México 2024" } },
+      { src: { en: "/images/data/fiscal-f3-en.webp", es: "/images/data/fiscal-f3-es.webp" },
+        alt: { en: "Contributions and transfers by age in 2075 with 1.2 and 1.46 children per woman", es: "Contribuciones y transferencias por edad en 2075 con 1.2 y 1.46 hijos por mujer" } },
+      { src: { en: "/images/data/fiscal-f4-en.webp", es: "/images/data/fiscal-f4-es.webp" },
+        alt: { en: "Average deficit per person, 2025 to 2075, with 1.2 and 1.46 children per woman", es: "Déficit promedio por persona, 2025 a 2075, con 1.2 y 1.46 hijos por mujer" } },
+    ],
+    code: `${REPO}/01-mexico-fiscal-profiles`,
+    sources: "INEGI, ENIGH 2024, Encuesta Intercensal 2025 y Estadística de Nacimientos Registrados 2025. CONAPO, Proyecciones de la población 2020-2070. SHCP, SAT, Cuenta Pública y SEP. FRED.",
+  },
+  {
     slug: "solar-panels",
     date: "2026-09",
     title: {
