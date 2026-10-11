@@ -22,6 +22,43 @@ const REPO = "https://github.com/gsaabogado/post-de-x-y-linkedin/tree/main";
 
 export const threads: Thread[] = [
   {
+    slug: "mexico-temperature-rainfall",
+    date: "2026-11",
+    title: {
+      en: "Is Mexico really a hot country?",
+      es: "¿De verdad México es un país caluroso?",
+    },
+    summary: {
+      en: "Referees often ask why temperature in Mexico is worth studying if the country is so hot. Three maps of its 1991 to 2020 climate show how uneven it is, with cities of the world for comparison.",
+      es: "Los revisores suelen preguntar por qué estudiar la temperatura en México si es un país tan caluroso. Tres mapas de su clima de 1991 a 2020 muestran qué tan disparejo es, con ciudades del mundo como comparación.",
+    },
+    body: {
+      en: [
+        "Referees often ask me what the international relevance is of studying the effects of temperature and climate change in Mexico when it is such a hot country (aka external validity).",
+        "These maps are my answer. Mexico is not the hot desert Hollywood shows us. Some 28% of the territory averages below 18 °C and only 21% above 24 °C. Height above sea level explains 81% of the differences in temperature across the country, and half of the territory lies above 1,000 metres.",
+        "The distribution of rainfall is also quite uneven. In an average year, 14% of the territory gets less than 250 millimetres (about 10 inches) and another 14% gets more than 1,500. The wettest quarter of the country receives 51% of all the rain. The driest half receives 23%.",
+        "The third map shows both at once. In a single country there are 50,000 km² (about 1.2 times the size of Switzerland) with temperature and precipitation similar to those of Phoenix, 26,000 to those of Paris, and 65,000 to those of Hong Kong (within 1.5 °C and 20% of the rainfall).",
+        "The data are ERA5-Land, a reanalysis that combines measurements with a climate model, at about 11 km of detail. They are not direct station readings. The two-variable map follows an idea by Milos Popovic for the Iberian peninsula.",
+      ],
+      es: [
+        "Los revisores de mis artículos suelen preguntarme cuál es la relevancia internacional de estudiar los efectos de la temperatura y el cambio climático en México cuando es un país tan caluroso. Este mapa es mi respuesta. México no es el desierto caliente que Hollywood nos muestra.",
+        "La distribución de precipitación también es bastante dispareja. Este mapa muestra la de un año promedio: 14% del territorio recibe menos de 250 milímetros y otro 14% recibe más de 1,500. La cuarta parte más lluviosa del país recibe 51% de toda la lluvia. La mitad más seca, 23%.",
+        "Aquí cada color combina temperatura y lluvia, y el recuadro ubica ciudades del mundo con los mismos datos. En un solo país hay 50,000 km² con el promedio anual de Phoenix, 26,000 con el de París y 65,000 con el de Hong Kong (a menos de 1.5 °C y 20% de lluvia).",
+        "Los datos son un reanálisis (ERA5-Land), no lecturas de estaciones, y en un lugar concreto pueden diferir de ellas. El mapa combinado sigue una idea de Milos Popovic para la península ibérica.",
+      ],
+    },
+    figures: [
+      { src: { en: "/images/data/climate-f1-en.webp", es: "/images/data/climate-f1-es.webp" },
+        alt: { en: "Map of the average daily temperature of the year in Mexico, 1991 to 2020", es: "Mapa de la temperatura promedio diaria del año en México, 1991 a 2020" } },
+      { src: { en: "/images/data/climate-f2-en.webp", es: "/images/data/climate-f2-es.webp" },
+        alt: { en: "Map of the rain of an average year in Mexico, 1991 to 2020", es: "Mapa de la lluvia de un año promedio en México, 1991 a 2020" } },
+      { src: { en: "/images/data/climate-f3-en.webp", es: "/images/data/climate-f3-es.webp" },
+        alt: { en: "Map of temperature and rainfall in Mexico at once, with cities of the world for comparison", es: "Mapa de temperatura y lluvia de México a la vez, con ciudades del mundo como comparación" } },
+    ],
+    code: `${REPO}/07-mexico-temperature-precipitation`,
+    sources: "ERA5-Land, Servicio de Cambio Climático de Copernicus (promedios 1991-2020). Relieve: Terrain Tiles (Mapzen, datos abiertos en AWS). Límite nacional: GADM 4.1.",
+  },
+  {
     slug: "mexico-fiscal-profiles",
     date: "2026-10",
     title: {
