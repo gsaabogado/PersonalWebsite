@@ -202,6 +202,17 @@ export const awards: Award[] = [
     coauthorsEs: "Con Piero Basaglia",
     country: "Germany",
   },
+  {
+    title: "CONACYT Scholarship for Graduate Studies Abroad",
+    titleEs: "Beca CONACYT para estudios de posgrado en el extranjero",
+    body: "M.S. (Humboldt University of Berlin) and PhD (DIW Berlin)",
+    bodyEs: "Maestría (Universidad Humboldt de Berlín) y doctorado (DIW Berlín)",
+    year: "2014–2020",
+    paper: "",
+    coauthors: "",
+    coauthorsEs: "",
+    country: "Mexico",
+  },
 ];
 
 export const teaching: Teaching[] = [

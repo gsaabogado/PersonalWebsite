@@ -47,7 +47,7 @@ const awardItems = awards.map((a) => ({
   dates: a.year,
   title: a.title,
   subtitle: a.body,
-  details: [a.paper, a.coauthors],
+  details: [a.paper, a.coauthors].filter(Boolean),
   country: a.country,
 }));
 

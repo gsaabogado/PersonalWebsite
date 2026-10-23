@@ -19,7 +19,7 @@ const awardItems = awards.map((a) => ({
   dates: a.year,
   title: a.titleEs,
   subtitle: a.bodyEs,
-  details: [a.paper, a.coauthorsEs],
+  details: [a.paper, a.coauthorsEs].filter(Boolean),
   country: ({ Mexico: "México", Germany: "Alemania" } as Record<string, string>)[a.country] || a.country,
 }));
 ---
