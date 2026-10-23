@@ -134,6 +134,31 @@ export const publications: Publication[] = [
     ],
   },
   {
+    title: "Recycling in a Globalised Economy",
+    authors: "Eugénie Joltreau, Luis Sarmiento",
+    journal: "Journal of Applied Economics 29(1), 2699509",
+    year: 2026,
+    doi: "10.1080/15140326.2026.2699509",
+    status: "published",
+    area: "econometrics",
+    workingPaper: {
+      series: "RFF Working Paper 25-19",
+      url: "https://www.rff.org/publications/working-papers/recycling-in-a-globalised-economy/",
+    },
+    question: "How do material imbalances between countries and recycling policies shape international waste trade?",
+    questionEs: "¿Cómo influyen los desequilibrios de materiales entre países y las políticas de reciclaje en el comercio internacional de residuos?",
+    findings: [
+      "Countries experience material imbalances (disparities between production material needs and consumption waste) that drive international waste trade flows.",
+      "Gravity model estimates show an elasticity of 0.8 between country-pair material imbalances and waste exports, confirming their role as a key determinant.",
+      "Poorly designed recycling policies may encourage waste exports to developing countries rather than enhance domestic recycling, raising environmental and ethical concerns.",
+    ],
+    findingsEs: [
+      "Los países experimentan desequilibrios de materiales (disparidades entre las necesidades de materiales de producción y los residuos de consumo) que impulsan los flujos de comercio internacional de residuos.",
+      "Las estimaciones del modelo gravitacional muestran una elasticidad de 0.8 entre los desequilibrios de materiales por par de países y las exportaciones de residuos, confirmando su papel como determinante clave.",
+      "Las políticas de reciclaje mal diseñadas pueden fomentar las exportaciones de residuos a países en desarrollo en lugar de mejorar el reciclaje doméstico, generando preocupaciones ambientales y éticas.",
+    ],
+  },
+  {
     title: "Health and Air Pollutant Emission Impacts of Net Zero CO2 by 2050 Scenarios from the Energy Modeling Forum 37",
     authors: "Daniel Loughlin, Luis Sarmiento, Johannes Emmerling, et al.",
     journal: "Energy and Climate Change 5, 100165",
@@ -471,30 +496,6 @@ export const publications: Publication[] = [
       "Un aumento marginal en PM2.5 genera un incremento del 2.3% en las tasas de visitas a urgencias, utilizando la altura de la capa límite como instrumento cuasi-aleatorio.",
       "Los efectos varían significativamente por grupo de edad y niveles de exposición, con la mayoría de los aumentos impulsados por condiciones respiratorias.",
       "Primera evaluación a nivel nacional de la demanda de urgencias atribuible a la contaminación del aire en un país en desarrollo, cubriendo el universo de visitas de triaje en hospitales públicos de México.",
-    ],
-  },
-  {
-    title: "Recycling in a Globalised Economy",
-    authors: "Eugénie Joltreau, Luis Sarmiento",
-    journal: "Empirical Economics (Accepted)",
-    year: 2024,
-    status: "revise-resubmit",
-    area: "econometrics",
-    workingPaper: {
-      series: "RFF Working Paper 25-19",
-      url: "https://www.rff.org/publications/working-papers/recycling-in-a-globalised-economy/",
-    },
-    question: "How do material imbalances between countries and recycling policies shape international waste trade?",
-    questionEs: "¿Cómo influyen los desequilibrios de materiales entre países y las políticas de reciclaje en el comercio internacional de residuos?",
-    findings: [
-      "Countries experience material imbalances (disparities between production material needs and consumption waste) that drive international waste trade flows.",
-      "Gravity model estimates show an elasticity of 0.8 between country-pair material imbalances and waste exports, confirming their role as a key determinant.",
-      "Poorly designed recycling policies may encourage waste exports to developing countries rather than enhance domestic recycling, raising environmental and ethical concerns.",
-    ],
-    findingsEs: [
-      "Los países experimentan desequilibrios de materiales (disparidades entre las necesidades de materiales de producción y los residuos de consumo) que impulsan los flujos de comercio internacional de residuos.",
-      "Las estimaciones del modelo gravitacional muestran una elasticidad de 0.8 entre los desequilibrios de materiales por par de países y las exportaciones de residuos, confirmando su papel como determinante clave.",
-      "Las políticas de reciclaje mal diseñadas pueden fomentar las exportaciones de residuos a países en desarrollo en lugar de mejorar el reciclaje doméstico, generando preocupaciones ambientales y éticas.",
     ],
   },
   {
