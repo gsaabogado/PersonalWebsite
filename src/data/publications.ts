@@ -19,6 +19,8 @@ export interface Publication {
   findingsEs?: string[];
   image?: string;
   workingPaper?: WorkingPaper;
+  award?: string;
+  awardEs?: string;
 }
 
 export const publications: Publication[] = [
@@ -597,6 +599,8 @@ export const publications: Publication[] = [
     journal: "",
     year: 2024,
     status: "working-paper",
+    award: "Honorable Mention, Premio Banamex de Economía 2026",
+    awardEs: "Mención Honorífica, Premio Banamex de Economía 2026",
     area: "econometrics",
     question: "How do temperature shocks in both the US and Mexico affect remittance flows to Mexican municipalities?",
     questionEs: "¿Cómo afectan los choques de temperatura tanto en EE.UU. como en México a los flujos de remesas hacia municipios mexicanos?",

@@ -41,6 +41,18 @@ export interface Grant {
   country: string;
 }
 
+export interface Award {
+  title: string;
+  titleEs: string;
+  body: string;
+  bodyEs: string;
+  year: string;
+  paper: string;
+  coauthors: string;
+  coauthorsEs: string;
+  country: string;
+}
+
 export interface Skill {
   name: string;
   level: number; // 1-5
@@ -164,6 +176,20 @@ export const grants: Grant[] = [
     amount: "CHF 220,000",
     period: "2027–2029",
     country: "Switzerland",
+  },
+];
+
+export const awards: Award[] = [
+  {
+    title: "Honorable Mention, Premio Banamex de Economía",
+    titleEs: "Mención Honorífica, Premio Banamex de Economía",
+    body: "Research category",
+    bodyEs: "Categoría Investigación",
+    year: "2026",
+    paper: "The Transnational Effect of Temperature on Remittances",
+    coauthors: "With Daniel Osuna-Gómez and Gonzalo Ares de Parga-Regalado",
+    coauthorsEs: "Con Daniel Osuna-Gómez y Gonzalo Ares de Parga-Regalado",
+    country: "Mexico",
   },
 ];
 

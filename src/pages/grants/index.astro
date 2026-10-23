@@ -3,7 +3,7 @@ import PageLayout from "../../layouts/PageLayout.astro";
 import ResearchHero from "../../components/research/ResearchHero.astro";
 import Timeline from "../../components/cv/Timeline.astro";
 import { getLangFromUrl, t } from "../../i18n/utils";
-import { grants } from "../../data/cv";
+import { grants, awards } from "../../data/cv";
 
 const lang = getLangFromUrl(Astro.url);
 
@@ -14,6 +14,14 @@ const grantItems = grants.map((g) => ({
   details: [g.role, g.amount],
   country: g.country,
 }));
+
+const awardItems = awards.map((a) => ({
+  dates: a.year,
+  title: a.title,
+  subtitle: a.body,
+  details: [a.paper, a.coauthors],
+  country: a.country,
+}));
 ---
 
 <PageLayout title={`${t(lang, "grants.title")} · Luis Sarmiento`}>
@@ -23,7 +31,20 @@ const grantItems = grants.map((g) => ({
   />
   <section class="py-20 px-4 bg-warm-gray">
     <div class="max-w-4xl mx-auto">
+      <h2 data-animate class="text-2xl font-heading font-bold text-slate-dark mb-8">
+        {t(lang, "cv.grants")}
+      </h2>
       <Timeline items={grantItems} />
     </div>
   </section>
+  {awardItems.length > 0 && (
+    <section id="awards" class="py-20 px-4 bg-white scroll-mt-36">
+      <div class="max-w-4xl mx-auto">
+        <h2 data-animate class="text-2xl font-heading font-bold text-slate-dark mb-8">
+          {t(lang, "cv.awards")}
+        </h2>
+        <Timeline items={awardItems} />
+      </div>
+    </section>
+  )}
 </PageLayout>

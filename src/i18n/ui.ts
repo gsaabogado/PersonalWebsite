@@ -78,6 +78,7 @@ export const ui = {
     "cv.education": "Education",
     "cv.publications": "Research",
     "cv.grants": "Grants and Funding",
+    "cv.awards": "Honors and Awards",
     "cv.teaching": "Teaching",
     "cv.skills": "Technical Skills",
     "cv.languages": "Languages",
@@ -122,8 +123,8 @@ export const ui = {
     "data.sources": "Sources",
     "data.back": "All data threads",
 
-    "grants.title": "Grants and Funding",
-    "grants.description": "Competitive research funding awarded as principal or co-investigator.",
+    "grants.title": "Grants and Awards",
+    "grants.description": "Competitive research funding awarded as principal or co-investigator, and honors received for research.",
 
     // Contact page
     "contact.heroTitle": "Contact",
@@ -219,6 +220,7 @@ export const ui = {
     "cv.education": "Educación",
     "cv.publications": "Investigación",
     "cv.grants": "Financiamiento",
+    "cv.awards": "Distinciones",
     "cv.teaching": "Docencia",
     "cv.skills": "Habilidades técnicas",
     "cv.languages": "Idiomas",
@@ -263,8 +265,8 @@ export const ui = {
     "data.sources": "Fuentes",
     "data.back": "Todos los hilos con datos",
 
-    "grants.title": "Financiamiento",
-    "grants.description": "Financiamiento competitivo para investigación obtenido como investigador principal o coinvestigador.",
+    "grants.title": "Financiamiento y distinciones",
+    "grants.description": "Financiamiento competitivo para investigación obtenido como investigador principal o coinvestigador, y distinciones a la investigación.",
 
     // Contact page
     "contact.heroTitle": "Contacto",
