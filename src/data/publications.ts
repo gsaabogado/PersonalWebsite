@@ -481,6 +481,8 @@ export const publications: Publication[] = [
     journal: "Journal of Environmental Economics and Management (Under Review)",
     year: 2024,
     status: "under-review",
+    award: "Third Place, Best Paper, Essen Health Conference 2026",
+    awardEs: "Tercer lugar, mejor artículo, Essen Health Conference 2026",
     area: "econometrics",
     workingPaper: {
       series: "CESifo Working Paper No. 11901",

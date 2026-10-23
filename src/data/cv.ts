@@ -191,6 +191,17 @@ export const awards: Award[] = [
     coauthorsEs: "Con Daniel Osuna-Gómez y Gonzalo Ares de Parga-Regalado",
     country: "Mexico",
   },
+  {
+    title: "Third Place, Best Paper Competition",
+    titleEs: "Tercer lugar, concurso al mejor artículo",
+    body: "Essen Health Conference 2026, University of Duisburg-Essen",
+    bodyEs: "Essen Health Conference 2026, Universidad de Duisburg-Essen",
+    year: "2026",
+    paper: "When the Boundary Layer Drops: Air Quality and Healthcare Use in Mexico",
+    coauthors: "With Piero Basaglia",
+    coauthorsEs: "Con Piero Basaglia",
+    country: "Germany",
+  },
 ];
 
 export const teaching: Teaching[] = [
