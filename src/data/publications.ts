@@ -478,9 +478,9 @@ export const publications: Publication[] = [
   {
     title: "When the Boundary Layer Drops: Air Quality and Healthcare Use in Mexico",
     authors: "Piero Basaglia, Luis Sarmiento",
-    journal: "Journal of Environmental Economics and Management (Under Review)",
+    journal: "",
     year: 2024,
-    status: "under-review",
+    status: "working-paper",
     award: "Third Place, Best Paper, Essen Health Conference 2026",
     awardEs: "Tercer lugar, mejor artículo, Essen Health Conference 2026",
     area: "econometrics",
