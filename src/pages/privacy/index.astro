@@ -1,0 +1,41 @@
+---
+import PageLayout from "../../layouts/PageLayout.astro";
+import ResearchHero from "../../components/research/ResearchHero.astro";
+---
+
+<PageLayout title="Privacy · Luis Sarmiento">
+  <ResearchHero
+    title="Privacy"
+    description="How this website and Luis Sarmiento's own tools handle personal data."
+  />
+
+  <section class="py-16 px-4 bg-white">
+    <div class="max-w-3xl mx-auto prose prose-slate">
+      <p>
+        This website and the small tools Luis Sarmiento runs for his own work handle personal data in three places.
+      </p>
+
+      <h2>Website analytics</h2>
+      <p>
+        The site uses Google Analytics 4 to count visits and clicks on publications, the CV and the contact links. Google sets cookies for this and processes the data on Luis Sarmiento's behalf. Event data is kept for 14 months, and Google Signals is switched off. You can block these cookies in your browser at any time, and the site works the same without them.
+      </p>
+
+      <h2>Contact form</h2>
+      <p>
+        Messages sent through the contact form go to Formspree, which forwards them to Luis Sarmiento by email. He uses your name, email address and message only to reply, and deletes them on request.
+      </p>
+
+      <h2>Claude Google access</h2>
+      <p>
+        This Google Cloud app connects Luis Sarmiento's own Google accounts to tools running on his computer. It reads and edits files in those accounts only. It stores its access tokens encrypted on his computer, shares no data with third parties and serves no other users.
+      </p>
+
+      <h2>Questions</h2>
+      <p>
+        For any question about your data, write to <a href="mailto:gsaabogado@gmail.com">gsaabogado@gmail.com</a>.
+      </p>
+
+      <p class="text-sm text-slate-500">Last updated 5 November 2026.</p>
+    </div>
+  </section>
+</PageLayout>
